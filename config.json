@@ -121,8 +121,7 @@
       "filterscripts/PlayerInteriors",
       "filterscripts/Server",
       "filterscripts/yom_buttons",
-      "filterscripts/sapd",
-      "filterscripts/sfa"
+      "filterscripts/sapd"
     ]
   },
   "rcon": {
