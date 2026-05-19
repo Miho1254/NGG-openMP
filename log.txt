@@ -1,0 +1,946 @@
+Starting open.mp server (1.5.8.3079) from commit c6759bd8d265171ae3d86598895a23d5a8d92a3b
+Loading component $CAPI.dll
+	Successfully loaded component C-API (1.5.8.3079) with UID 10467dd8d4c56fc6
+Loading component Actors.dll
+	Successfully loaded component Actors (1.5.8.3079) with UID c81ca021eae2ad5c
+Loading component Checkpoints.dll
+	Successfully loaded component Checkpoints (1.5.8.3079) with UID 44a937350d611dde
+Loading component Classes.dll
+	Successfully loaded component Classes (1.5.8.3079) with UID 8cfb3183976da208
+Loading component Console.dll
+	Successfully loaded component Console (1.5.8.3079) with UID bfa24e49d0c95ee4
+Loading component CustomModels.dll
+	Successfully loaded component CustomModels (1.5.8.3079) with UID 15e3cb1e7c77ffff
+Loading component Databases.dll
+	Successfully loaded component Databases (1.5.8.3079) with UID 80092e7eb5821a96
+Loading component Dialogs.dll
+	Successfully loaded component Dialogs (1.5.8.3079) with UID 44a111350d611dde
+Loading component GangZones.dll
+	Successfully loaded component GangZones (1.5.8.3079) with UID b3351d11ee8d8056
+Loading component LegacyConfig.dll
+	Successfully loaded component LegacyConfig (1.5.8.3079) with UID 24ef6216838f9ffc
+Loading component LegacyNetwork.dll
+	Successfully loaded component RakNetLegacyNetwork (1.5.8.3079) with UID ea9799fd79cf8442
+Loading component Menus.dll
+	Successfully loaded component Menus (1.5.8.3079) with UID 621e219eb97ee0b2
+Loading component NPCs.dll
+	Successfully loaded component NPCs (1.5.8.3079) with UID 3d0e59e87f4e90bc
+Loading component Objects.dll
+	Successfully loaded component Objects (1.5.8.3079) with UID 59f8415f72da6160
+Loading component Pawn.dll
+	Successfully loaded component Pawn (1.5.8.3079) with UID 78906cd9f19c36a6
+Loading component pawncmd.dll
+	Successfully loaded component Pawn.CMD (0.3.4.0) with UID a03b47c907a96c29
+Loading component pawnraknet.dll
+	Successfully loaded component Pawn.RakNet (0.1.6.0) with UID 4a8b15c16d23e42f
+Loading component Pickups.dll
+	Successfully loaded component Pickups (1.5.8.3079) with UID cf304faa363dd971
+Loading component Recordings.dll
+	Successfully loaded component Recordings (1.5.8.3079) with UID 871144d399f5f613
+Loading component streamer.dll
+	Failed to load component: it is a SA-MP plugin, put it in plugins/ folder.
+Loading component TextDraws.dll
+	Successfully loaded component TextDraws (1.5.8.3079) with UID 9b5dc2b1d15c992a
+Loading component TextLabels.dll
+	Successfully loaded component TextLabels (1.5.8.3079) with UID a0c57ea80a009742
+Loading component Timers.dll
+	Successfully loaded component Timers (1.5.8.3079) with UID 2ad8124c5ea257a3
+Loading component Variables.dll
+	Successfully loaded component Variables (1.5.8.3079) with UID 75e121848bc01fa2
+Loading component Vehicles.dll
+	Successfully loaded component Vehicles (1.5.8.3079) with UID 3f1f62ee9e22ab19
+Loaded 24 component(s) from C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\components
+[17:04:49] [Info] [Pawn.RakNet] plugin v1.6.0 loading...
+[17:04:49] [Info] [Pawn.RakNet] 
+
+    | Pawn.RakNet 1.6.0 | open.mp | 2016 - 2023
+    |--------------------------------------------
+    | Author and maintainer: katursis
+
+
+    | Compiled: Feb 12 2023 at 16:51:14
+    |--------------------------------------------------------------
+    | Repository: https://github.com/katursis/Pawn.RakNet/tree/omp
+    |--------------------------------------------------------------
+    | Wiki: https://github.com/katursis/Pawn.RakNet/wiki
+
+[17:04:49] [Info] [Pawn.CMD] plugin v3.4.0 loading...
+[17:04:49] [Info] [Pawn.CMD] 
+
+    | Pawn.CMD 3.4.0 | open.mp | 2016 - 2023
+    |-----------------------------------------
+    | Author and maintainer: katursis
+
+
+    | Compiled: Feb 12 2023 at 17:25:09
+    |----------------------------------------------------------
+    | Repository: https://github.com/katursis/Pawn.CMD/tree/omp
+
+[17:04:49] [Info] Loading plugin: crashdetect
+[17:04:49] [Info]   CrashDetect v4.16 is OK.
+[17:04:49] [Info] Loading plugin: mysql
+[17:04:49] [Info]  >> plugin.mysql: R41-3 successfully loaded.
+[17:04:49] [Info] Loading plugin: sscanf
+[17:04:49] [Info] 
+
+[17:04:49] [Info]  ===============================
+
+[17:04:49] [Info]       sscanf plugin loaded.     
+
+[17:04:49] [Info]          Version:  2.8.2        
+
+[17:04:49] [Info]    (c) 2012 Alex "Y_Less" Cole  
+
+[17:04:49] [Info]  ===============================
+
+[17:04:49] [Info] Loading plugin: gvar
+[17:04:49] [Info] 
+
+*** GVar Plugin v1.3 by Incognito loaded ***
+
+[17:04:49] [Info] Loading plugin: streamer
+[17:04:49] [Info] 
+
+*** Streamer Plugin v2.9.4 by Incognito loaded ***
+
+[17:04:49] [Info] Loading plugin: Whirlpool
+[17:04:49] [Info]  
+[17:04:49] [Info]  ==================
+[17:04:49] [Info]  
+[17:04:49] [Info]   Whirlpool loaded
+[17:04:49] [Info]  
+[17:04:49] [Info]  ==================
+[17:04:49] [Info]  
+[17:04:49] [Info] AMX (70286712) loaded
+[17:04:49] [Info]  
+[17:04:49] [Info]  
+[17:04:49] [Info]  
+[17:04:49] [Info]  ======================================= 
+[17:04:49] [Info]  |                                     | 
+[17:04:49] [Info]  |        YSI version 4.00.0001        | 
+[17:04:49] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:04:49] [Info]  |                                     | 
+[17:04:49] [Info]  ======================================= 
+[17:04:49] [Info]  
+[17:04:50] [Info] 
+Progress Bar Editor loaded!
+[17:04:50] [Info] Use the /bar command to begin editing.
+
+[17:04:50] [Info] AMX (49214488) loaded
+[17:04:50] [Info] AMX (49200240) loaded
+[17:04:50] [Info]  
+[17:04:50] [Info]  
+[17:04:50] [Info]  
+[17:04:50] [Info]  ======================================= 
+[17:04:50] [Info]  |                                     | 
+[17:04:50] [Info]  |        YSI version 4.00.0001        | 
+[17:04:50] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:04:50] [Info]  |                                     | 
+[17:04:50] [Info]  ======================================= 
+[17:04:50] [Info]  
+[17:04:50] [Info] AMX (49192400) loaded
+[17:04:50] [Info]  
+[17:04:50] [Info]  
+[17:04:50] [Info]  
+[17:04:50] [Info]  ======================================= 
+[17:04:50] [Info]  |                                     | 
+[17:04:50] [Info]  |        YSI version 4.00.0001        | 
+[17:04:50] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:04:50] [Info]  |                                     | 
+[17:04:50] [Info]  ======================================= 
+[17:04:50] [Info]  
+[17:04:50] [Info] 
+
+[17:04:50] [Info]   |---------------------------------------------------
+[17:04:51] [Info]   |--- LS Apartments 1 Filterscript
+[17:04:51] [Info]   |--  Script v1.02
+[17:04:51] [Info]   |--  5th February 2015
+[17:04:51] [Info]   |---------------------------------------------------
+[17:04:51] [Info]   |--  LS Apartments 1 Building object created
+[17:04:51] [Info]   |--  LS Apartments 1 Car Park object created
+[17:04:51] [Info]   |--  LS Apartments 1 Elevator created
+[17:04:51] [Info]   |---------------------------------------------------
+[17:04:51] [Info] AMX (50876976) loaded
+[17:04:51] [Info]  
+[17:04:51] [Info]  
+[17:04:51] [Info]  
+[17:04:51] [Info]  ======================================= 
+[17:04:51] [Info]  |                                     | 
+[17:04:51] [Info]  |        YSI version 4.00.0001        | 
+[17:04:51] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:04:51] [Info]  |                                     | 
+[17:04:51] [Info]  ======================================= 
+[17:04:51] [Info]  
+[17:04:51] [Info] 
+
+[17:04:51] [Info]   |---------------------------------------------------
+[17:04:51] [Info]   |--- LS BeachSide Filterscript
+[17:04:51] [Info]   |--  Script v1.03
+[17:04:51] [Info]   |--  19th April 2015
+[17:04:51] [Info]   |---------------------------------------------------
+[17:04:51] [Info]   |--  LS BeachSide Building Elevator created
+[17:04:51] [Info]   |---------------------------------------------------
+[17:04:51] [Info] *** Streamer Plugin: Include file version (0x293) does not match plugin version (0x294) (script might need to be recompiled with the correct include file).
+[17:04:51] [Info] AMX (18149144) loaded
+[17:04:51] [Info]  
+[17:04:51] [Info]  
+[17:04:51] [Info]  
+[17:04:51] [Info]  ======================================= 
+[17:04:51] [Info]  |                                     | 
+[17:04:51] [Info]  |        YSI version 4.00.0001        | 
+[17:04:51] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:04:51] [Info]  |                                     | 
+[17:04:51] [Info]  ======================================= 
+[17:04:51] [Info]  
+[17:04:52] [Info] AMX (77809048) loaded
+[17:04:52] [Info]  
+[17:04:52] [Info]  
+[17:04:52] [Info]  
+[17:04:52] [Info]  ======================================= 
+[17:04:52] [Info]  |                                     | 
+[17:04:52] [Info]  |        YSI version 4.00.0001        | 
+[17:04:52] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:04:52] [Info]  |                                     | 
+[17:04:52] [Info]  ======================================= 
+[17:04:52] [Info]  
+[17:05:04] [Info] AMX (79400992) loaded
+[17:05:04] [Info]  
+[17:05:04] [Info]  
+[17:05:04] [Info]  
+[17:05:04] [Info]  ======================================= 
+[17:05:04] [Info]  |                                     | 
+[17:05:04] [Info]  |        YSI version 4.00.0001        | 
+[17:05:04] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:05:04] [Info]  |                                     | 
+[17:05:04] [Info]  ======================================= 
+[17:05:04] [Info]  
+[17:05:06] [Info] AMX (70286920) loaded
+[17:05:07] [Info]  
+[17:05:07] [Info]  
+[17:05:07] [Info]  
+[17:05:07] [Info]  ======================================= 
+[17:05:07] [Info]  |                                     | 
+[17:05:07] [Info]  |        YSI version 4.00.0001        | 
+[17:05:07] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:05:07] [Info]  |                                     | 
+[17:05:07] [Info]  ======================================= 
+[17:05:07] [Info]  
+[17:05:07] [Info] AMX (75343728) loaded
+[17:05:07] [Warning] Deprecated function RedirectDownload used. This function was replaced by artwork cdn config option.
+[17:05:07] [Warning] Deprecated function GetVehiclePoolSize used. This function was replaced by MAX_VEHICLES.
+[17:05:07] [Warning] Deprecated function GetPlayerPoolSize used. This function was replaced by MAX_PLAYERS.
+[17:05:07] [Warning] Deprecated functions will be removed in the next open.mp release.
+[17:05:07] [Info]  
+[17:05:07] [Info]  
+[17:05:07] [Info]  
+[17:05:07] [Info]  ======================================= 
+[17:05:07] [Info]  |                                     | 
+[17:05:07] [Info]  |        YSI version 4.00.0001        | 
+[17:05:07] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:05:07] [Info]  |                                     | 
+[17:05:07] [Info]  ======================================= 
+[17:05:07] [Info]  
+[17:05:25] [Info] [Streamer] Loading Dynamic Areas...
+[17:05:25] [Info] [Streamer] Loading Dynamic Buttons...
+[17:05:25] [Info] [Streamer] Dynamic Buttons has been loaded.
+[17:05:25] [Info] [Streamer] Loading Dynamic Objects...
+[17:05:25] [Info] [Streamer] Dynamic Objects has been loaded.
+[17:05:25] [Info] [Streamer] Loading Dynamic Pickups...
+[17:05:25] [Info] [Streamer] Dynamic Pickups have been loaded.
+[17:05:25] [Info] [Streamer] Loading 3D Text Labels...
+[17:05:25] [Info] [Streamer] Dynamic 3D Text Labels has been loaded.
+[17:05:25] [Info] [Streamer] Loading Dynamic Static Vehicles...
+[17:05:25] [Info] [Streamer] Dynamic Static Vehicles have been loaded.
+[17:05:25] [Info] [Pawn.CMD] Dang tien hanh viet hoa (alias) toan bo he thong lenh...
+[17:05:25] [Info] [Pawn.CMD] Hoan tat nap Alias.
+[17:05:25] [Info] Preparing the gamemode, please wait...
+[17:05:25] [Info] [MySQL] (Main Pipelines) Connecting to localhost...
+[17:05:25] [Info] [MySQL] (MainPipeline) Connection successful toward MySQL Database Server!
+[17:05:25] [Info] [Dynamic Giftbox] Loading the Dynamic Giftbox...
+[17:05:25] [Info] [LoadHouses] Loading data from database...
+[17:05:25] [Info] [LoadDynamicDoors] Loading data from database...
+[17:05:25] [Info] [LoadDynamicMapIcons] Loading data from database...
+[17:05:25] [Info] [LoadMailboxes] Loading data from database...
+[17:05:25] [Info] [LoadBusinesses] Loading data from database...
+[17:05:25] [Info] [LoadAuctions] Loading data from database...
+[17:05:25] [Info] [LoadTxtLabels] Loading data from database...
+[17:05:25] [Info] [SpeedCameras] Loading data from database...
+[17:05:25] [Info] [LoadPayNSprays] Loading data from database...
+[17:05:25] [Info] [LoadArrestPoints] Loading data from database...
+[17:05:25] [Info] [LoadImpoundPoints] Loading data from database...
+[17:05:25] [Info] [LoadRelayForLifeTeams] Loading data from database...
+[17:05:25] [Info] [LoadGarages] Loading data from database...
+[17:05:25] [Info] [LoadCrimes] Loading Crimes...
+[17:05:25] [Info] [LoadDynamicSafeZone] 15 safezone rehashed/loaded.
+[17:05:25] [Info] [LoadBusinessSales] Loading data from database...
+[17:05:25] [Info] [LoadPaintballArenas] Loading Paintball Arenas from the database, please wait...
+[17:05:25] [Info] [LoadGates] Loading data from database...
+[17:05:25] [Info] [Dynamic Points] Loading Dynamic Points from the database, please wait...
+[17:05:25] [Info] [Turf Wars] Loading turfs from the database, please wait...
+[17:05:25] [Info] [LoadPlants] Loading data from database...
+[17:05:25] [Info] [LoadHelp] Loading data from database...
+[17:05:25] [Info] [MiscLoad] Misc Loaded
+[17:05:25] [Info] Resetting news...
+[17:05:25] [Info] Resetting default server variables..
+[17:05:25] [Info] Adjusted the server time...
+[17:05:25] [Info] [LoadParkingMeters] Loading data from database...
+[17:05:25] [Info] [Streamer] ATM Points Loaded
+[17:05:25] [Info] [Streamer] Bank System Loaded
+[17:05:25] [Info] [Pay Phones] Loading pay phones from database...
+[17:05:25] [Info] [Textdraws] Loading Textdraws...
+[17:05:25] [Info] [Textdraws] Loaded textdraws.
+[17:05:25] [Info] [Dynamic Groups] Loading Dynamic Groups...
+[17:05:25] [Info] [Dynamic Groups] Loading Dynamic Groups Vehicles...
+[17:05:25] [Info] [Dynamic Crate Boxes] Loading Dynamic Crate Boxes from the database, please wait...
+[17:05:25] [Info] [Dynamic Crate Facility] Loading Dynamic Crate Facilities from the database, please wait...
+[17:05:25] [Info] [LoadDynamicCrateVehicles] Loading data from database...
+[17:05:25] [Info] [Dynamic Jobs Names] Loading Dynamic Job names from the database, please wait...
+[17:05:25] [Info] [Dynamic Jobs] Loading Dynamic Jobs from the database, please wait...
+[17:05:25] [Info] 
+-------------------------------------------
+[17:05:25] [Info] GTA.Network
+
+[17:05:25] [Info] Copyright (C) GTA.Network, LLC (2010-2014)
+[17:05:25] [Info] All Rights Reserved
+[17:05:25] [Info] -------------------------------------------
+
+[17:05:25] [Info] Successfully initiated the gamemode...
+[17:05:25] [Info] Legacy Network started on port 7777
+[17:05:25] [Info] [Dynamic Giftbox] Successfully loaded the dynamic giftbox.
+[17:05:25] [Info] [LoadHouses] 3941 houses rehashed/loaded.
+[17:05:25] [Info] [LoadDynamicDoors] 2389 doors rehashed/loaded.
+[17:05:25] [Info] [LoadDynamicMapIcons] 180 map icons rehashed/loaded.
+[17:05:25] [Info] [LoadMailboxes] 15 mailboxes rehashed/loaded.
+[17:05:25] [Info] [LoadBusinesses] 106 businesses rehashed/loaded.
+[17:05:25] [Info] [SpeedCameras] Loaded 6 Speed Cameras.
+[17:05:25] [Info] [LoadRelayForLifeTeams] Failed to load any teams.
+[17:05:25] [Info] [LoadGarages] Failed to load any garages.
+[17:05:25] [Info] [LoadCrimes] Crime Data Loaded.
+[17:05:25] [Info] TotalSold0: 0 | AmountMade0: 0
+[17:05:25] [Info] TotalSold1: 0 | AmountMade1: 0
+[17:05:25] [Info] TotalSold2: 0 | AmountMade2: 0
+[17:05:25] [Info] TotalSold3: 0 | AmountMade3: 0
+[17:05:25] [Info] TotalSold4: 0 | AmountMade4: 0
+[17:05:25] [Info] TotalSold5: 0 | AmountMade5: 0
+[17:05:25] [Info] TotalSold6: 0 | AmountMade6: 0
+[17:05:25] [Info] TotalSold7: 0 | AmountMade7: 0
+[17:05:25] [Info] TotalSold8: 0 | AmountMade8: 0
+[17:05:25] [Info] TotalSold9: 0 | AmountMade9: 0
+[17:05:25] [Info] TotalSold10: 0 | AmountMade10: 0
+[17:05:25] [Info] TotalSold11: 0 | AmountMade11: 0
+[17:05:25] [Info] TotalSold12: 0 | AmountMade12: 0
+[17:05:25] [Info] TotalSold13: 0 | AmountMade13: 0
+[17:05:25] [Info] TotalSold14: 0 | AmountMade14: 0
+[17:05:25] [Info] TotalSold15: 0 | AmountMade15: 0
+[17:05:25] [Info] TotalSold16: 0 | AmountMade16: 0
+[17:05:25] [Info] TotalSold17: 0 | AmountMade17: 0
+[17:05:25] [Info] TotalSold18: 0 | AmountMade18: 0
+[17:05:25] [Info] TotalSold19: 0 | AmountMade19: 0
+[17:05:25] [Info] TotalSold20: 0 | AmountMade20: 0
+[17:05:25] [Info] TotalSold21: 0 | AmountMade21: 0
+[17:05:25] [Info] TotalSold22: 0 | AmountMade22: 0
+[17:05:25] [Info] TotalSold23: 0 | AmountMade23: 0
+[17:05:25] [Info] TotalSold24: 0 | AmountMade24: 0
+[17:05:25] [Info] TotalSold25: 0 | AmountMade25: 0
+[17:05:25] [Info] TotalSold26: 0 | AmountMade26: 0
+[17:05:25] [Info] TotalSold27: 0 | AmountMade27: 0
+[17:05:25] [Info] TotalSold28: 0 | AmountMade28: 0
+[17:05:25] [Info] TotalSold29: 0 | AmountMade29: 0
+[17:05:25] [Info] TotalSold30: 0 | AmountMade30: 0
+[17:05:25] [Info] TotalSold31: 0 | AmountMade31: 0
+[17:05:25] [Info] TotalSold32: 0 | AmountMade32: 0
+[17:05:25] [Info] TotalSold33: 0 | AmountMade33: 0
+[17:05:25] [Info] TotalSold34: 0 | AmountMade34: 0
+[17:05:25] [Info] TotalSold35: 0 | AmountMade35: 0
+[17:05:25] [Info] TotalSold36: 0 | AmountMade36: 0
+[17:05:25] [Info] TotalSold37: 0 | AmountMade37: 0
+[17:05:25] [Info] TotalSold38: 0 | AmountMade38: 0
+[17:05:25] [Info] TotalSold39: 0 | AmountMade39: 0
+[17:05:25] [Info] TotalSold40: 0 | AmountMade40: 0
+[17:05:25] [Info] TotalSold41: 0 | AmountMade41: 0
+[17:05:25] [Info] TotalSold42: 0 | AmountMade42: 0
+[17:05:25] [Info] TotalSold43: 0 | AmountMade43: 0
+[17:05:25] [Info] TotalSoldMicro0: 0 | AmountMadeMicro0: 0
+[17:05:25] [Info] TotalSoldMicro1: 0 | AmountMadeMicro1: 0
+[17:05:25] [Info] TotalSoldMicro2: 0 | AmountMadeMicro2: 0
+[17:05:25] [Info] TotalSoldMicro3: 0 | AmountMadeMicro3: 0
+[17:05:25] [Info] TotalSoldMicro4: 0 | AmountMadeMicro4: 0
+[17:05:25] [Info] TotalSoldMicro5: 0 | AmountMadeMicro5: 0
+[17:05:25] [Info] TotalSoldMicro6: 0 | AmountMadeMicro6: 0
+[17:05:25] [Info] TotalSoldMicro7: 0 | AmountMadeMicro7: 0
+[17:05:25] [Info] TotalSoldMicro8: 0 | AmountMadeMicro8: 0
+[17:05:25] [Info] TotalSoldMicro9: 0 | AmountMadeMicro9: 0
+[17:05:25] [Info] TotalSoldMicro10: 0 | AmountMadeMicro10: 0
+[17:05:25] [Info] TotalSoldMicro11: 0 | AmountMadeMicro11: 0
+[17:05:25] [Info] TotalSoldMicro12: 0 | AmountMadeMicro12: 0
+[17:05:25] [Info] TotalSoldMicro13: 0 | AmountMadeMicro13: 0
+[17:05:25] [Info] TotalSoldMicro14: 0 | AmountMadeMicro14: 0
+[17:05:25] [Info] TotalSoldMicro15: 0 | AmountMadeMicro15: 0
+[17:05:25] [Info] TotalSoldMicro16: 0 | AmountMadeMicro16: 0
+[17:05:25] [Info] TotalSoldMicro17: 0 | AmountMadeMicro17: 0
+[17:05:25] [Info] TotalSoldMicro18: 0 | AmountMadeMicro18: 0
+[17:05:25] [Info] TotalSoldMicro19: 0 | AmountMadeMicro19: 0
+[17:05:25] [Info] [LoadPaintBallArenas] No Paintball Arenas have been loaded.
+[17:05:25] [Info] [Dynamic Points] No dynamic points has been loaded.
+[17:05:25] [Info] [LoadTurfWars] Failed to load any turfs.
+[17:05:25] [Info] [LoadPlants] Error: Failed to load any plants!
+[17:05:25] [Info] [LoadHelp] 2 help entries rehashed/loaded.
+[17:05:25] [Info] [Parking Meters] No parking meters loaded.
+[17:05:25] [Info] [Gov Weapon Prices] Loaded 0 Weapons
+[17:05:25] [Info] [Metal Detectors] Successfully loaded 4 metal detectors
+[17:05:25] [Info] [Pay Phones] No pay phones were found in the database.
+[17:05:25] [Info] 300
+[17:05:25] [Info] 301
+[17:05:25] [Info] 302
+[17:05:25] [Info] 303
+[17:05:25] [Info] 304
+[17:05:25] [Info] 305
+[17:05:25] [Info] 306
+[17:05:25] [Info] 307
+[17:05:25] [Info] 308
+[17:05:25] [Info] 309
+[17:05:25] [Info] 310
+[17:05:25] [Info] 311
+[17:05:25] [Info] 312
+[17:05:25] [Info] 313
+[17:05:25] [Info] 314
+[17:05:25] [Info] 315
+[17:05:25] [Info] 316
+[17:05:25] [Info] 317
+[17:05:25] [Info] 318
+[17:05:25] [Info] 319
+[17:05:25] [Info] 320
+[17:05:25] [Info] 321
+[17:05:25] [Info] 322
+[17:05:25] [Info] 323
+[17:05:26] [Info] [Dynamic Crate Boxes] There are no dynamic crate boxes to load.
+[17:05:26] [Info] [Dynamic Crate Facility] 10 dynamic Crate Facilities have been loaded.
+[17:05:26] [Info] [LoadDynamicCrateVehicles] No dynamic crate vehicles have been loaded.
+[17:05:26] [Info] [Dynamic Job Names] 24 dynamic job names have been loaded.
+[17:05:26] [Info] [Dynamic Job Points] 10 dynamic job points has been loaded.
+[17:05:26] [Info] [Gang Tags] There are no gang tags in the database.
+[17:05:26] [Info] [Furniture System] Loaded 2 pieces of furniture from the catalog.
+[17:05:26] [Error] SetTimer(Ex): There was a problem in calling Malloc_SolidifyTimer: (sleep mode)
+[17:05:26] [Error] SetTimer(Ex): There was a problem in calling Malloc_SolidifyTimer: (sleep mode)
+[17:05:36] [Warning] Couldn't announce legacy network to open.mp list.
+[17:05:36] [Warning] 	 Status: 406
+[17:05:36] [Warning] 	 Message: {"error":"failed to query server: socket read timed out"}
+[17:05:36] [Warning] This won't affect the server's behaviour.
+[17:05:49] [Info] [connection] incoming connection: 127.0.0.1:61598 id: 0
+[17:05:49] [Info] [join] Miho_Ikuyo has joined the server (0:127.0.0.1)
+[17:05:49] [Info] [PlayerName] Formatted Miho_Ikuyo to the correct RP-format standards.
+[17:05:49] [Warning] Insufficient specifiers given to `format`: "{F5CB42}Chao mung den voi may chu GTA Network" < 1
+[17:05:51] [Info] [LOGIN] [User: Miho Ikuyo(9)] [IP: 127.0.0.1] [Credits: 20,000]
+[17:05:51] [Info] Miho Ikuyo has logged in.
+[17:05:51] [Info] 1926-1-1 -pBirthDate
+[17:05:51] [Info] 2026-5-19 -getdate
+[17:05:51] [Info] [MySQL] Query Error - (ErrorID: 1054)
+[17:05:51] [Info] [MySQL] Check mysql_log.txt to review the query that threw the error.
+[17:05:51] [Info] Dumping query from 2026/5/19 (17:5:51)
+Description: Unknown column 'b.needs_Tue' in 'field list' (index 0). Query:
+
+[17:05:51] [Info] SELECT b.shift, b.needs_Tue, COUNT(DISTINCT s.id) as ShiftCount FROM cp_shift_blocks b LEFT JOIN cp_shifts s ON b.shift_id = s.shift_id AND s.date = '2026-05-19' AND s.status >= 2 AND s.type = 1 WHERE b.time_start = '17:00:00' GROUP BY b.shift, b.needs_Tue
+[17:06:22] [Info] [part] Miho_Ikuyo has left the server (0:1)
+[17:06:41] [Info] [Pawn.RakNet] plugin unloaded
+[17:06:41] [Info] [Pawn.CMD] plugin unloaded
+[17:06:41] [Info] Exiting the gamemode, please wait...
+[17:06:41] [Info] Progress Bar Editor unloaded!
+[17:06:41] [Info]   |--  LS Apartments 1 Elevator destroyed
+[17:06:41] [Info]   |---------------------------------------------------
+[17:06:41] [Info]   |--  LS BeachSide Building Elevator destroyed
+[17:06:41] [Info]   |---------------------------------------------------
+[17:06:41] [Info] 
+
+*** GVar Plugin v1.3 by Incognito unloaded ***
+
+[17:06:41] [Info] 
+
+*** Streamer Plugin v2.9.4 by Incognito unloaded ***
+
+[17:06:41] [Info] 
+
+[17:06:41] [Info]  ===============================
+
+[17:06:41] [Info]      sscanf plugin unloaded.    
+
+[17:06:41] [Info]  ===============================
+
+[17:06:41] [Info]  
+[17:06:41] [Info]  ====================
+[17:06:41] [Info]  
+[17:06:41] [Info]   Whirlpool unloaded
+[17:06:41] [Info]  
+[17:06:41] [Info]  ====================
+[17:06:41] [Info]  
+[17:06:41] [Info] plugin.mysql: Unloading plugin...
+Starting open.mp server (1.5.8.3079) from commit c6759bd8d265171ae3d86598895a23d5a8d92a3b
+Loading component $CAPI.dll
+	Successfully loaded component C-API (1.5.8.3079) with UID 10467dd8d4c56fc6
+Loading component Actors.dll
+	Successfully loaded component Actors (1.5.8.3079) with UID c81ca021eae2ad5c
+Loading component Checkpoints.dll
+	Successfully loaded component Checkpoints (1.5.8.3079) with UID 44a937350d611dde
+Loading component Classes.dll
+	Successfully loaded component Classes (1.5.8.3079) with UID 8cfb3183976da208
+Loading component Console.dll
+	Successfully loaded component Console (1.5.8.3079) with UID bfa24e49d0c95ee4
+Loading component CustomModels.dll
+	Successfully loaded component CustomModels (1.5.8.3079) with UID 15e3cb1e7c77ffff
+Loading component Databases.dll
+	Successfully loaded component Databases (1.5.8.3079) with UID 80092e7eb5821a96
+Loading component Dialogs.dll
+	Successfully loaded component Dialogs (1.5.8.3079) with UID 44a111350d611dde
+Loading component GangZones.dll
+	Successfully loaded component GangZones (1.5.8.3079) with UID b3351d11ee8d8056
+Loading component LegacyConfig.dll
+	Successfully loaded component LegacyConfig (1.5.8.3079) with UID 24ef6216838f9ffc
+Loading component LegacyNetwork.dll
+	Successfully loaded component RakNetLegacyNetwork (1.5.8.3079) with UID ea9799fd79cf8442
+Loading component Menus.dll
+	Successfully loaded component Menus (1.5.8.3079) with UID 621e219eb97ee0b2
+Loading component NPCs.dll
+	Successfully loaded component NPCs (1.5.8.3079) with UID 3d0e59e87f4e90bc
+Loading component Objects.dll
+	Successfully loaded component Objects (1.5.8.3079) with UID 59f8415f72da6160
+Loading component Pawn.dll
+	Successfully loaded component Pawn (1.5.8.3079) with UID 78906cd9f19c36a6
+Loading component pawncmd.dll
+	Successfully loaded component Pawn.CMD (0.3.4.0) with UID a03b47c907a96c29
+Loading component pawnraknet.dll
+	Successfully loaded component Pawn.RakNet (0.1.6.0) with UID 4a8b15c16d23e42f
+Loading component Pickups.dll
+	Successfully loaded component Pickups (1.5.8.3079) with UID cf304faa363dd971
+Loading component Recordings.dll
+	Successfully loaded component Recordings (1.5.8.3079) with UID 871144d399f5f613
+Loading component streamer.dll
+	Failed to load component: it is a SA-MP plugin, put it in plugins/ folder.
+Loading component TextDraws.dll
+	Successfully loaded component TextDraws (1.5.8.3079) with UID 9b5dc2b1d15c992a
+Loading component TextLabels.dll
+	Successfully loaded component TextLabels (1.5.8.3079) with UID a0c57ea80a009742
+Loading component Timers.dll
+	Successfully loaded component Timers (1.5.8.3079) with UID 2ad8124c5ea257a3
+Loading component Variables.dll
+	Successfully loaded component Variables (1.5.8.3079) with UID 75e121848bc01fa2
+Loading component Vehicles.dll
+	Successfully loaded component Vehicles (1.5.8.3079) with UID 3f1f62ee9e22ab19
+Loaded 24 component(s) from C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\components
+[17:07:23] [Info] [Pawn.RakNet] plugin v1.6.0 loading...
+[17:07:23] [Info] [Pawn.RakNet] 
+
+    | Pawn.RakNet 1.6.0 | open.mp | 2016 - 2023
+    |--------------------------------------------
+    | Author and maintainer: katursis
+
+
+    | Compiled: Feb 12 2023 at 16:51:14
+    |--------------------------------------------------------------
+    | Repository: https://github.com/katursis/Pawn.RakNet/tree/omp
+    |--------------------------------------------------------------
+    | Wiki: https://github.com/katursis/Pawn.RakNet/wiki
+
+[17:07:23] [Info] [Pawn.CMD] plugin v3.4.0 loading...
+[17:07:23] [Info] [Pawn.CMD] 
+
+    | Pawn.CMD 3.4.0 | open.mp | 2016 - 2023
+    |-----------------------------------------
+    | Author and maintainer: katursis
+
+
+    | Compiled: Feb 12 2023 at 17:25:09
+    |----------------------------------------------------------
+    | Repository: https://github.com/katursis/Pawn.CMD/tree/omp
+
+[17:07:23] [Info] Loading plugin: crashdetect
+[17:07:23] [Info]   CrashDetect v4.16 is OK.
+[17:07:23] [Info] Loading plugin: mysql
+[17:07:23] [Info]  >> plugin.mysql: R41-3 successfully loaded.
+[17:07:23] [Info] Loading plugin: sscanf
+[17:07:23] [Info] 
+
+[17:07:23] [Info]  ===============================
+
+[17:07:23] [Info]       sscanf plugin loaded.     
+
+[17:07:23] [Info]          Version:  2.8.2        
+
+[17:07:23] [Info]    (c) 2012 Alex "Y_Less" Cole  
+
+[17:07:23] [Info]  ===============================
+
+[17:07:23] [Info] Loading plugin: gvar
+[17:07:23] [Info] 
+
+*** GVar Plugin v1.3 by Incognito loaded ***
+
+[17:07:23] [Info] Loading plugin: streamer
+[17:07:23] [Info] 
+
+*** Streamer Plugin v2.9.4 by Incognito loaded ***
+
+[17:07:23] [Info] Loading plugin: Whirlpool
+[17:07:23] [Info]  
+[17:07:23] [Info]  ==================
+[17:07:23] [Info]  
+[17:07:23] [Info]   Whirlpool loaded
+[17:07:23] [Info]  
+[17:07:23] [Info]  ==================
+[17:07:23] [Info]  
+[17:07:23] [Info] AMX (13489488) loaded
+[17:07:23] [Info]  
+[17:07:23] [Info]  
+[17:07:23] [Info]  
+[17:07:23] [Info]  ======================================= 
+[17:07:23] [Info]  |                                     | 
+[17:07:23] [Info]  |        YSI version 4.00.0001        | 
+[17:07:23] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:07:23] [Info]  |                                     | 
+[17:07:23] [Info]  ======================================= 
+[17:07:23] [Info]  
+[17:07:23] [Info] 
+Progress Bar Editor loaded!
+[17:07:23] [Info] Use the /bar command to begin editing.
+
+[17:07:23] [Info] AMX (44000032) loaded
+[17:07:24] [Info] AMX (45620584) loaded
+[17:07:24] [Info]  
+[17:07:24] [Info]  
+[17:07:24] [Info]  
+[17:07:24] [Info]  ======================================= 
+[17:07:24] [Info]  |                                     | 
+[17:07:24] [Info]  |        YSI version 4.00.0001        | 
+[17:07:24] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:07:24] [Info]  |                                     | 
+[17:07:24] [Info]  ======================================= 
+[17:07:24] [Info]  
+[17:07:24] [Info] AMX (14479128) loaded
+[17:07:24] [Info]  
+[17:07:24] [Info]  
+[17:07:24] [Info]  
+[17:07:24] [Info]  ======================================= 
+[17:07:24] [Info]  |                                     | 
+[17:07:24] [Info]  |        YSI version 4.00.0001        | 
+[17:07:24] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:07:24] [Info]  |                                     | 
+[17:07:24] [Info]  ======================================= 
+[17:07:24] [Info]  
+[17:07:24] [Info] 
+
+[17:07:24] [Info]   |---------------------------------------------------
+[17:07:24] [Info]   |--- LS Apartments 1 Filterscript
+[17:07:24] [Info]   |--  Script v1.02
+[17:07:24] [Info]   |--  5th February 2015
+[17:07:24] [Info]   |---------------------------------------------------
+[17:07:24] [Info]   |--  LS Apartments 1 Building object created
+[17:07:24] [Info]   |--  LS Apartments 1 Car Park object created
+[17:07:24] [Info]   |--  LS Apartments 1 Elevator created
+[17:07:24] [Info]   |---------------------------------------------------
+[17:07:24] [Info] AMX (64941440) loaded
+[17:07:25] [Info]  
+[17:07:25] [Info]  
+[17:07:25] [Info]  
+[17:07:25] [Info]  ======================================= 
+[17:07:25] [Info]  |                                     | 
+[17:07:25] [Info]  |        YSI version 4.00.0001        | 
+[17:07:25] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:07:25] [Info]  |                                     | 
+[17:07:25] [Info]  ======================================= 
+[17:07:25] [Info]  
+[17:07:25] [Info] 
+
+[17:07:25] [Info]   |---------------------------------------------------
+[17:07:25] [Info]   |--- LS BeachSide Filterscript
+[17:07:25] [Info]   |--  Script v1.03
+[17:07:25] [Info]   |--  19th April 2015
+[17:07:25] [Info]   |---------------------------------------------------
+[17:07:25] [Info]   |--  LS BeachSide Building Elevator created
+[17:07:25] [Info]   |---------------------------------------------------
+[17:07:25] [Info] *** Streamer Plugin: Include file version (0x293) does not match plugin version (0x294) (script might need to be recompiled with the correct include file).
+[17:07:25] [Info] AMX (64941648) loaded
+[17:07:25] [Info]  
+[17:07:25] [Info]  
+[17:07:25] [Info]  
+[17:07:25] [Info]  ======================================= 
+[17:07:25] [Info]  |                                     | 
+[17:07:25] [Info]  |        YSI version 4.00.0001        | 
+[17:07:25] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:07:25] [Info]  |                                     | 
+[17:07:25] [Info]  ======================================= 
+[17:07:25] [Info]  
+[17:07:26] [Info] AMX (64941856) loaded
+[17:07:26] [Info]  
+[17:07:26] [Info]  
+[17:07:26] [Info]  
+[17:07:26] [Info]  ======================================= 
+[17:07:26] [Info]  |                                     | 
+[17:07:26] [Info]  |        YSI version 4.00.0001        | 
+[17:07:26] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:07:26] [Info]  |                                     | 
+[17:07:26] [Info]  ======================================= 
+[17:07:26] [Info]  
+[17:07:38] [Info] AMX (73244696) loaded
+[17:07:38] [Info]  
+[17:07:38] [Info]  
+[17:07:38] [Info]  
+[17:07:38] [Info]  ======================================= 
+[17:07:38] [Info]  |                                     | 
+[17:07:38] [Info]  |        YSI version 4.00.0001        | 
+[17:07:38] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:07:38] [Info]  |                                     | 
+[17:07:38] [Info]  ======================================= 
+[17:07:38] [Info]  
+[17:07:41] [Info] AMX (45643728) loaded
+[17:07:42] [Info]  
+[17:07:42] [Info]  
+[17:07:42] [Info]  
+[17:07:42] [Info]  ======================================= 
+[17:07:42] [Info]  |                                     | 
+[17:07:42] [Info]  |        YSI version 4.00.0001        | 
+[17:07:42] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:07:42] [Info]  |                                     | 
+[17:07:42] [Info]  ======================================= 
+[17:07:42] [Info]  
+[17:07:42] [Info] AMX (74052144) loaded
+[17:07:42] [Warning] Deprecated function RedirectDownload used. This function was replaced by artwork cdn config option.
+[17:07:43] [Warning] Deprecated function GetVehiclePoolSize used. This function was replaced by MAX_VEHICLES.
+[17:07:43] [Warning] Deprecated function GetPlayerPoolSize used. This function was replaced by MAX_PLAYERS.
+[17:07:43] [Warning] Deprecated functions will be removed in the next open.mp release.
+[17:07:43] [Info]  
+[17:07:43] [Info]  
+[17:07:43] [Info]  
+[17:07:43] [Info]  ======================================= 
+[17:07:43] [Info]  |                                     | 
+[17:07:43] [Info]  |        YSI version 4.00.0001        | 
+[17:07:43] [Info]  |        By Alex "Y_Less" Cole        | 
+[17:07:43] [Info]  |                                     | 
+[17:07:43] [Info]  ======================================= 
+[17:07:43] [Info]  
+[17:07:59] [Info] [Streamer] Loading Dynamic Areas...
+[17:07:59] [Info] [Streamer] Loading Dynamic Buttons...
+[17:07:59] [Info] [Streamer] Dynamic Buttons has been loaded.
+[17:07:59] [Info] [Streamer] Loading Dynamic Objects...
+[17:07:59] [Info] [Streamer] Dynamic Objects has been loaded.
+[17:07:59] [Info] [Streamer] Loading Dynamic Pickups...
+[17:07:59] [Info] [Streamer] Dynamic Pickups have been loaded.
+[17:07:59] [Info] [Streamer] Loading 3D Text Labels...
+[17:07:59] [Info] [Streamer] Dynamic 3D Text Labels has been loaded.
+[17:07:59] [Info] [Streamer] Loading Dynamic Static Vehicles...
+[17:07:59] [Info] [Streamer] Dynamic Static Vehicles have been loaded.
+[17:07:59] [Info] [Pawn.CMD] Dang tien hanh viet hoa (alias) toan bo he thong lenh...
+[17:07:59] [Info] [Pawn.CMD] Hoan tat nap Alias.
+[17:07:59] [Info] Preparing the gamemode, please wait...
+[17:07:59] [Info] [MySQL] (Main Pipelines) Connecting to localhost...
+[17:07:59] [Info] [MySQL] (MainPipeline) Connection successful toward MySQL Database Server!
+[17:07:59] [Info] [Dynamic Giftbox] Loading the Dynamic Giftbox...
+[17:07:59] [Info] [LoadHouses] Loading data from database...
+[17:07:59] [Info] [LoadDynamicDoors] Loading data from database...
+[17:07:59] [Info] [LoadDynamicMapIcons] Loading data from database...
+[17:07:59] [Info] [LoadMailboxes] Loading data from database...
+[17:07:59] [Info] [LoadBusinesses] Loading data from database...
+[17:07:59] [Info] [LoadAuctions] Loading data from database...
+[17:07:59] [Info] [LoadTxtLabels] Loading data from database...
+[17:07:59] [Info] [SpeedCameras] Loading data from database...
+[17:07:59] [Info] [LoadPayNSprays] Loading data from database...
+[17:07:59] [Info] [LoadArrestPoints] Loading data from database...
+[17:07:59] [Info] [LoadImpoundPoints] Loading data from database...
+[17:07:59] [Info] [LoadRelayForLifeTeams] Loading data from database...
+[17:07:59] [Info] [LoadGarages] Loading data from database...
+[17:07:59] [Info] [LoadCrimes] Loading Crimes...
+[17:07:59] [Info] [LoadDynamicSafeZone] 15 safezone rehashed/loaded.
+[17:07:59] [Info] [LoadBusinessSales] Loading data from database...
+[17:07:59] [Info] [LoadPaintballArenas] Loading Paintball Arenas from the database, please wait...
+[17:07:59] [Info] [LoadGates] Loading data from database...
+[17:07:59] [Info] [Dynamic Points] Loading Dynamic Points from the database, please wait...
+[17:07:59] [Info] [Turf Wars] Loading turfs from the database, please wait...
+[17:07:59] [Info] [LoadPlants] Loading data from database...
+[17:07:59] [Info] [LoadHelp] Loading data from database...
+[17:07:59] [Info] [MiscLoad] Misc Loaded
+[17:07:59] [Info] Resetting news...
+[17:07:59] [Info] Resetting default server variables..
+[17:07:59] [Info] Adjusted the server time...
+[17:07:59] [Info] [LoadParkingMeters] Loading data from database...
+[17:07:59] [Info] [Streamer] ATM Points Loaded
+[17:07:59] [Info] [Streamer] Bank System Loaded
+[17:07:59] [Info] [Pay Phones] Loading pay phones from database...
+[17:07:59] [Info] [Textdraws] Loading Textdraws...
+[17:07:59] [Info] [Textdraws] Loaded textdraws.
+[17:07:59] [Info] [Dynamic Groups] Loading Dynamic Groups...
+[17:07:59] [Info] [Dynamic Groups] Loading Dynamic Groups Vehicles...
+[17:07:59] [Info] [Dynamic Crate Boxes] Loading Dynamic Crate Boxes from the database, please wait...
+[17:07:59] [Info] [Dynamic Crate Facility] Loading Dynamic Crate Facilities from the database, please wait...
+[17:07:59] [Info] [LoadDynamicCrateVehicles] Loading data from database...
+[17:07:59] [Info] [Dynamic Jobs Names] Loading Dynamic Job names from the database, please wait...
+[17:07:59] [Info] [Dynamic Jobs] Loading Dynamic Jobs from the database, please wait...
+[17:07:59] [Info] 
+-------------------------------------------
+[17:07:59] [Info] GTA.Network
+
+[17:07:59] [Info] Copyright (C) GTA.Network, LLC (2010-2014)
+[17:07:59] [Info] All Rights Reserved
+[17:07:59] [Info] -------------------------------------------
+
+[17:07:59] [Info] Successfully initiated the gamemode...
+[17:07:59] [Info] Legacy Network started on port 7777
+[17:07:59] [Info] [Dynamic Giftbox] Successfully loaded the dynamic giftbox.
+[17:07:59] [Info] [LoadHouses] 3941 houses rehashed/loaded.
+[17:07:59] [Info] [LoadDynamicDoors] 2389 doors rehashed/loaded.
+[17:07:59] [Info] [LoadDynamicMapIcons] 180 map icons rehashed/loaded.
+[17:07:59] [Info] [LoadMailboxes] 15 mailboxes rehashed/loaded.
+[17:07:59] [Info] [LoadBusinesses] 106 businesses rehashed/loaded.
+[17:07:59] [Info] [SpeedCameras] Loaded 6 Speed Cameras.
+[17:07:59] [Info] [LoadRelayForLifeTeams] Failed to load any teams.
+[17:07:59] [Info] [LoadGarages] Failed to load any garages.
+[17:07:59] [Info] [LoadCrimes] Crime Data Loaded.
+[17:07:59] [Info] TotalSold0: 0 | AmountMade0: 0
+[17:07:59] [Info] TotalSold1: 0 | AmountMade1: 0
+[17:07:59] [Info] TotalSold2: 0 | AmountMade2: 0
+[17:07:59] [Info] TotalSold3: 0 | AmountMade3: 0
+[17:07:59] [Info] TotalSold4: 0 | AmountMade4: 0
+[17:07:59] [Info] TotalSold5: 0 | AmountMade5: 0
+[17:07:59] [Info] TotalSold6: 0 | AmountMade6: 0
+[17:07:59] [Info] TotalSold7: 0 | AmountMade7: 0
+[17:07:59] [Info] TotalSold8: 0 | AmountMade8: 0
+[17:07:59] [Info] TotalSold9: 0 | AmountMade9: 0
+[17:07:59] [Info] TotalSold10: 0 | AmountMade10: 0
+[17:07:59] [Info] TotalSold11: 0 | AmountMade11: 0
+[17:07:59] [Info] TotalSold12: 0 | AmountMade12: 0
+[17:07:59] [Info] TotalSold13: 0 | AmountMade13: 0
+[17:07:59] [Info] TotalSold14: 0 | AmountMade14: 0
+[17:07:59] [Info] TotalSold15: 0 | AmountMade15: 0
+[17:07:59] [Info] TotalSold16: 0 | AmountMade16: 0
+[17:07:59] [Info] TotalSold17: 0 | AmountMade17: 0
+[17:07:59] [Info] TotalSold18: 0 | AmountMade18: 0
+[17:07:59] [Info] TotalSold19: 0 | AmountMade19: 0
+[17:07:59] [Info] TotalSold20: 0 | AmountMade20: 0
+[17:07:59] [Info] TotalSold21: 0 | AmountMade21: 0
+[17:07:59] [Info] TotalSold22: 0 | AmountMade22: 0
+[17:07:59] [Info] TotalSold23: 0 | AmountMade23: 0
+[17:07:59] [Info] TotalSold24: 0 | AmountMade24: 0
+[17:07:59] [Info] TotalSold25: 0 | AmountMade25: 0
+[17:07:59] [Info] TotalSold26: 0 | AmountMade26: 0
+[17:07:59] [Info] TotalSold27: 0 | AmountMade27: 0
+[17:07:59] [Info] TotalSold28: 0 | AmountMade28: 0
+[17:07:59] [Info] TotalSold29: 0 | AmountMade29: 0
+[17:07:59] [Info] TotalSold30: 0 | AmountMade30: 0
+[17:07:59] [Info] TotalSold31: 0 | AmountMade31: 0
+[17:07:59] [Info] TotalSold32: 0 | AmountMade32: 0
+[17:07:59] [Info] TotalSold33: 0 | AmountMade33: 0
+[17:07:59] [Info] TotalSold34: 0 | AmountMade34: 0
+[17:07:59] [Info] TotalSold35: 0 | AmountMade35: 0
+[17:07:59] [Info] TotalSold36: 0 | AmountMade36: 0
+[17:07:59] [Info] TotalSold37: 0 | AmountMade37: 0
+[17:07:59] [Info] TotalSold38: 0 | AmountMade38: 0
+[17:07:59] [Info] TotalSold39: 0 | AmountMade39: 0
+[17:07:59] [Info] TotalSold40: 0 | AmountMade40: 0
+[17:07:59] [Info] TotalSold41: 0 | AmountMade41: 0
+[17:07:59] [Info] TotalSold42: 0 | AmountMade42: 0
+[17:07:59] [Info] TotalSold43: 0 | AmountMade43: 0
+[17:07:59] [Info] TotalSoldMicro0: 0 | AmountMadeMicro0: 0
+[17:07:59] [Info] TotalSoldMicro1: 0 | AmountMadeMicro1: 0
+[17:07:59] [Info] TotalSoldMicro2: 0 | AmountMadeMicro2: 0
+[17:07:59] [Info] TotalSoldMicro3: 0 | AmountMadeMicro3: 0
+[17:07:59] [Info] TotalSoldMicro4: 0 | AmountMadeMicro4: 0
+[17:07:59] [Info] TotalSoldMicro5: 0 | AmountMadeMicro5: 0
+[17:07:59] [Info] TotalSoldMicro6: 0 | AmountMadeMicro6: 0
+[17:07:59] [Info] TotalSoldMicro7: 0 | AmountMadeMicro7: 0
+[17:07:59] [Info] TotalSoldMicro8: 0 | AmountMadeMicro8: 0
+[17:07:59] [Info] TotalSoldMicro9: 0 | AmountMadeMicro9: 0
+[17:07:59] [Info] TotalSoldMicro10: 0 | AmountMadeMicro10: 0
+[17:07:59] [Info] TotalSoldMicro11: 0 | AmountMadeMicro11: 0
+[17:07:59] [Info] TotalSoldMicro12: 0 | AmountMadeMicro12: 0
+[17:07:59] [Info] TotalSoldMicro13: 0 | AmountMadeMicro13: 0
+[17:07:59] [Info] TotalSoldMicro14: 0 | AmountMadeMicro14: 0
+[17:07:59] [Info] TotalSoldMicro15: 0 | AmountMadeMicro15: 0
+[17:07:59] [Info] TotalSoldMicro16: 0 | AmountMadeMicro16: 0
+[17:07:59] [Info] TotalSoldMicro17: 0 | AmountMadeMicro17: 0
+[17:07:59] [Info] TotalSoldMicro18: 0 | AmountMadeMicro18: 0
+[17:07:59] [Info] TotalSoldMicro19: 0 | AmountMadeMicro19: 0
+[17:07:59] [Info] [LoadPaintBallArenas] No Paintball Arenas have been loaded.
+[17:07:59] [Info] [Dynamic Points] No dynamic points has been loaded.
+[17:07:59] [Info] [LoadTurfWars] Failed to load any turfs.
+[17:07:59] [Info] [LoadPlants] Error: Failed to load any plants!
+[17:07:59] [Info] [LoadHelp] 2 help entries rehashed/loaded.
+[17:07:59] [Info] [Parking Meters] No parking meters loaded.
+[17:07:59] [Info] [Gov Weapon Prices] Loaded 0 Weapons
+[17:07:59] [Info] [Metal Detectors] Successfully loaded 4 metal detectors
+[17:07:59] [Info] [Pay Phones] No pay phones were found in the database.
+[17:07:59] [Info] 300
+[17:07:59] [Info] 301
+[17:07:59] [Info] 302
+[17:07:59] [Info] 303
+[17:07:59] [Info] 304
+[17:07:59] [Info] 305
+[17:07:59] [Info] 306
+[17:07:59] [Info] 307
+[17:07:59] [Info] 308
+[17:07:59] [Info] 309
+[17:07:59] [Info] 310
+[17:07:59] [Info] 311
+[17:07:59] [Info] 312
+[17:07:59] [Info] 313
+[17:07:59] [Info] 314
+[17:07:59] [Info] 315
+[17:07:59] [Info] 316
+[17:07:59] [Info] 317
+[17:07:59] [Info] 318
+[17:07:59] [Info] 319
+[17:07:59] [Info] 320
+[17:07:59] [Info] 321
+[17:07:59] [Info] 322
+[17:07:59] [Info] 323
+[17:07:59] [Info] [Dynamic Crate Boxes] There are no dynamic crate boxes to load.
+[17:07:59] [Info] [Dynamic Crate Facility] 10 dynamic Crate Facilities have been loaded.
+[17:07:59] [Info] [LoadDynamicCrateVehicles] No dynamic crate vehicles have been loaded.
+[17:07:59] [Info] [Dynamic Job Names] 24 dynamic job names have been loaded.
+[17:07:59] [Info] [Dynamic Job Points] 10 dynamic job points has been loaded.
+[17:07:59] [Info] [Gang Tags] There are no gang tags in the database.
+[17:07:59] [Info] [Furniture System] Loaded 2 pieces of furniture from the catalog.
+[17:07:59] [Error] SetTimer(Ex): There was a problem in calling Malloc_SolidifyTimer: (sleep mode)
+[17:07:59] [Error] SetTimer(Ex): There was a problem in calling Malloc_SolidifyTimer: (sleep mode)
+[17:08:01] [Info] [connection] incoming connection: 127.0.0.1:53565 id: 0
+[17:08:01] [Info] [join] Miho_Ikuyo has joined the server (0:127.0.0.1)
+[17:08:01] [Info] [PlayerName] Formatted Miho_Ikuyo to the correct RP-format standards.
+[17:08:01] [Warning] Insufficient specifiers given to `format`: "{F5CB42}Chao mung den voi may chu GTA Network" < 1
+[17:08:03] [Info] [LOGIN] [User: Miho Ikuyo(9)] [IP: 127.0.0.1] [Credits: 20,000]
+[17:08:03] [Info] Miho Ikuyo has logged in.
+[17:08:03] [Info] 1926-1-1 -pBirthDate
+[17:08:03] [Info] 2026-5-19 -getdate
+[17:08:10] [Warning] Couldn't announce legacy network to open.mp list.
+[17:08:10] [Warning] 	 Status: 406
+[17:08:10] [Warning] 	 Message: {"error":"failed to query server: socket read timed out"}
+[17:08:10] [Warning] This won't affect the server's behaviour.
+[17:08:26] [Info] [zcmd] [Miho Ikuyo]: makeleader
+[17:08:32] [Info] [zcmd] [Miho Ikuyo]: makegang
+[17:08:33] [Info] [part] Miho_Ikuyo has left the server (0:1)
+[17:08:55] [Info] [Pawn.RakNet] plugin unloaded
+[17:08:55] [Info] [Pawn.CMD] plugin unloaded
+[17:08:55] [Info] Exiting the gamemode, please wait...
+[17:08:55] [Info] Progress Bar Editor unloaded!
+[17:08:55] [Info]   |--  LS Apartments 1 Elevator destroyed
+[17:08:55] [Info]   |---------------------------------------------------
+[17:08:55] [Info]   |--  LS BeachSide Building Elevator destroyed
+[17:08:55] [Info]   |---------------------------------------------------
+[17:08:55] [Info] 
+
+*** GVar Plugin v1.3 by Incognito unloaded ***
+
+[17:08:55] [Info] 
+
+*** Streamer Plugin v2.9.4 by Incognito unloaded ***
+
+[17:08:55] [Info] 
+
+[17:08:55] [Info]  ===============================
+
+[17:08:55] [Info]      sscanf plugin unloaded.    
+
+[17:08:55] [Info]  ===============================
+
+[17:08:55] [Info]  
+[17:08:55] [Info]  ====================
+[17:08:55] [Info]  
+[17:08:55] [Info]   Whirlpool unloaded
+[17:08:55] [Info]  
+[17:08:55] [Info]  ====================
+[17:08:55] [Info]  
+[17:08:55] [Info] plugin.mysql: Unloading plugin...
