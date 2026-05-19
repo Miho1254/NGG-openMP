@@ -5575,7 +5575,7 @@ CMD:togradio(playerid, params[])
 
 CMD:makeleader(playerid, params[])
 {
-	if (PlayerInfo[playerid][pAdmin] >= 4 && PlayerInfo[playerid][pGangModerator] >= 1 || PlayerInfo[playerid][pFactionModerator] >= 2)
+	if (PlayerInfo[playerid][pAdmin] >= 4)
 	{
 		new giveplayerid;
 		if(sscanf(params, "u", giveplayerid)) {
@@ -5597,7 +5597,7 @@ CMD:makeleader(playerid, params[])
 
 CMD:leaders(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] >= 3 || PlayerInfo[playerid][pFactionModerator] >= 1) {
+	if(PlayerInfo[playerid][pAdmin] >= 3) {
 		SendClientMessageEx(playerid, COLOR_WHITE, "Group leaders online:");
 
 		new	string[128], sz_FacInfo[3][64];
