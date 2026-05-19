@@ -687,7 +687,7 @@ public OnPlayerLoad(playerid)
 			FixHour(tmphour);
 			getdate(year, month, day);	
 			format(string, sizeof(string), "[LOGIN]: Ban da dang nhap voi tu cach la mot %s{FFFFFF}.", GetStaffRank(playerid));
-			mysql_format(MainPipeline, query, sizeof(query), "SELECT b.shift, b.needs_%s, COUNT(DISTINCT s.id) as ShiftCount FROM cp_shift_blocks b LEFT JOIN cp_shifts s ON b.shift_id = s.shift_id AND s.date = '%d-%02d-%02d' AND s.status >= 2 AND s.type = 1 WHERE b.time_start = '%02d:00:00' GROUP BY b.shift, b.needs_%s", GetWeekday(), year, month, day, tmphour, GetWeekday());
+			mysql_format(MainPipeline, query, sizeof(query), "SELECT b.shift, b.needs_%s, COUNT(DISTINCT s.id) as ShiftCount FROM cp_shift_blocks b LEFT JOIN cp_shifts s ON b.shift_id = s.shift_id AND s.date = '%d-%02d-%02d' AND s.status >= 2 AND s.type = 1 WHERE b.time_start = '%02d:00:00' GROUP BY b.shift, b.needs_%s", GetSQLWeekday(), year, month, day, tmphour, GetSQLWeekday());
 			mysql_tquery(MainPipeline, query, "GetShiftInfo", "is", playerid, string);
 			format(string, sizeof(string), "[LOGIN]: %s da dang nhap voi tu cach la %s{FFFFFF}.", GetPlayerNameEx(playerid), GetStaffRank(playerid));
 		}

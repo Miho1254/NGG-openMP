@@ -90,41 +90,77 @@ stock SetPlayerJoinCamera(playerid)
 
 stock ShowMainMenuDialog(playerid, frame)
 {
-	new titlestring[64];
-	new string[512];
-	TextDrawShowForPlayer(playerid, TDE_LOGINGTN[0]);
-	TextDrawShowForPlayer(playerid, TDE_LOGINGTN[1]);
-	switch(frame)
-	{
-		case 1:
-		{
-			format(titlestring, sizeof(titlestring), "{F5CB42}Chao mung den voi may chu GTA Network", GetPlayerNameEx(playerid));
-			format(string, sizeof(string), "{FFFFFF}Tai khoan cua nay {4EC25D}da duoc dang ky{FFFFFF}.\n\n{F5CB42}Dang nhap tai khoan: {FFFFFF}%s\n\nHay nhap mat khau de dang nhap vao game:", GetPlayerNameEx(playerid));
-			ShowPlayerDialogEx(playerid,MAINMENU,DIALOG_STYLE_PASSWORD,titlestring,string,"Dang nhap","Thoat");
-		}
-		case 2:
-		{
-			format(titlestring, sizeof(titlestring), "{3399FF}Chao mung den voi may chu GTA Network", GetPlayerNameEx(playerid));
-			format(string, sizeof(string), "{FFFFFF}Tai khoan cua nay {FF0000}chua duoc dang ky{FFFFFF}.\n\n{F5CB42}Dang ky tai khoan: {FFFFFF}%s\n\n{FFFFFF}Hay nhap mat khau cho tai khoan cua ban:", GetPlayerNameEx(playerid));
-			if(PassComplexCheck) strcat(string, "\n\n- Mat khau cua ban co ky tu khong duoi 8 hoac qua 64 ky tu\n\
-			- Mat khau bao gom co ky tu, chu viet, so de mat khau cua ban kho bi doan hon.\n\
-			- Nhan vat khong hop le: %");
-			ShowPlayerDialogEx(playerid,MAINMENU2,DIALOG_STYLE_PASSWORD,titlestring,string,"Dang ky","Thoat");
-		}
-		case 3:
-		{
-			format(titlestring, sizeof(titlestring), "{F5CB42}Chao mung den voi may chu GTA Network", GetPlayerNameEx(playerid));
-			format(string, sizeof(string), "{FF0000}Mat khau khong hop le!{FFFFFF}\n\n{FFFFFF}Tai khoan cua nay {4EC25D}da duoc dang ky{FFFFFF}.\n\n{F5CB42}Dang nhap tai khoan: {FFFFFF}%s\n\nHay nhap mat khau de dang nhap vao game:", GetPlayerNameEx(playerid));
-			ShowPlayerDialogEx(playerid,MAINMENU,DIALOG_STYLE_PASSWORD,titlestring,string,"Dang Nhap","Thoat");
-		}
-		case 4:
-		{
-			format(titlestring, sizeof(titlestring), "{3399FF}Tai khoan bi khoa - %s", GetPlayerNameEx(playerid));
-			format(string, sizeof(string), "{FFFFFF}Du lieu bao rang %s hien dang dang nhap neu day la loi vui long lien he admin.", GetPlayerNameEx(playerid));
-			ShowPlayerDialogEx(playerid,MAINMENU3,DIALOG_STYLE_MSGBOX,titlestring,string,"Thoat","");
-		}
-	}
-	return 1;
+    new titlestring[128];
+    new string[1024]; // Tăng lên 1024 cho thoải mái chứa màu và text dài
+    TextDrawShowForPlayer(playerid, TDE_LOGINGTN[0]);
+    TextDrawShowForPlayer(playerid, TDE_LOGINGTN[1]);
+    
+    // Khai báo tên người chơi 1 lần cho lẹ, đỡ phải GetPlayerNameEx nhiều lần
+    new pName[MAX_PLAYER_NAME];
+    format(pName, sizeof(pName), "%s", GetPlayerNameEx(playerid));
+
+    switch(frame)
+    {
+        case 1: // Đăng nhập bình thường
+        {
+            format(titlestring, sizeof(titlestring), "{00FFCC}GTA NETWORK {FFFFFF}» Đăng Nhập");
+            format(string, sizeof(string), "\
+            {FFFFFF}Chào mừng trở lại, {00FFCC}%s{FFFFFF}!\n\
+            {FFFFFF}Trạng thái định danh: {4EC25D}Đã có dữ liệu{FFFFFF}.\n\
+            {A9A9A9}------------------------------------------------\n\n\
+            {FFFFFF}Hệ thống an ninh yêu cầu mã bảo mật để truy cập.\n\
+            {A9A9A9}Vui lòng nhập mật khẩu của bạn vào ô bên dưới:", pName);
+            
+            ShowPlayerDialogEx(playerid, MAINMENU, DIALOG_STYLE_PASSWORD, titlestring, string, "Truy cap", "Thoat");
+        }
+        case 2: // Đăng ký mới
+        {
+            format(titlestring, sizeof(titlestring), "{00FFCC}GTA NETWORK {FFFFFF}» Đăng Ký Định Danh");
+            format(string, sizeof(string), "\
+            {FFFFFF}Nhận diện cư dân mới: {00FFCC}%s{FFFFFF}\n\
+            {FFFFFF}Trạng thái định danh: {FF4C4C}Chưa có hồ sơ{FFFFFF}.\n\
+            {A9A9A9}------------------------------------------------\n\n\
+            {FFFFFF}Vui lòng thiết lập mã bảo mật (mật khẩu) để tạo tài khoản:", pName);
+            
+            if(PassComplexCheck) 
+            {
+                strcat(string, "\n\n\
+                {FFCC00}⚠ Yêu cầu bảo mật hệ thống:{FFFFFF}\n\
+                {A9A9A9}• Độ dài từ 8 đến 64 ký tự.\n\
+                • Khuyên dùng kết hợp chữ, số và ký tự đặc biệt.\n\
+                • Ký tự bị cấm: {FF4C4C}%%{A9A9A9} (Phần trăm)");
+            }
+            
+            ShowPlayerDialogEx(playerid, MAINMENU2, DIALOG_STYLE_PASSWORD, titlestring, string, "Khoi tao", "Thoat");
+        }
+        case 3: // Sai mật khẩu
+        {
+            format(titlestring, sizeof(titlestring), "{FF4C4C}CẢNH BÁO {FFFFFF}» Sai Mã Bảo Mật");
+            format(string, sizeof(string), "\
+            {FF4C4C}✖ Mật khẩu không chính xác! Vui lòng kiểm tra lại.{FFFFFF}\n\n\
+            {FFFFFF}Tài khoản truy cập: {00FFCC}%s{FFFFFF}\n\
+            {A9A9A9}------------------------------------------------\n\n\
+            {FFFFFF}Hệ thống đang chờ mã bảo mật hợp lệ.\n\
+            {A9A9A9}Nếu quên mật khẩu, vui lòng liên hệ Ban Quản Trị qua Discord.", pName);
+            
+            ShowPlayerDialogEx(playerid, MAINMENU, DIALOG_STYLE_PASSWORD, titlestring, string, "Thu lai", "Thoat");
+        }
+        case 4: // Kẹt acc (Đang online)
+        {
+            format(titlestring, sizeof(titlestring), "{FFCC00}LỖI TRUY CẬP {FFFFFF}» Tài Khoản Đang Hoạt Động");
+            format(string, sizeof(string), "\
+            {FFCC00}⚠ Hệ thống phát hiện bất thường!{FFFFFF}\n\n\
+            Định danh {00FFCC}%s{FFFFFF} hiện đang trực tuyến trên máy chủ.\n\
+            {A9A9A9}------------------------------------------------\n\n\
+            {FFFFFF}Nguyên nhân có thể do:\n\
+            {A9A9A9}• Bạn vừa bị văng game (Kẹt Acc) - Hãy thử vào lại sau 1-2 phút.\n\
+            • Có người khác đang đăng nhập vào tài khoản của bạn.\n\n\
+            {FFFFFF}Nếu tình trạng tiếp diễn, hãy báo ngay cho Admin!", pName);
+            
+            ShowPlayerDialogEx(playerid, MAINMENU3, DIALOG_STYLE_MSGBOX, titlestring, string, "Da ro", "");
+        }
+    }
+    return 1;
 }
 
 stock SafeLogin(playerid, type)

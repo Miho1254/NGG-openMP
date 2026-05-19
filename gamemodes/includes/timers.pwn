@@ -430,7 +430,7 @@ task SyncTime[60000]()
 		format(szMiscArray, sizeof(szMiscArray), "Bay gio la %s. ((ST: %s))", ConvertToTwelveHour(ttTime), ConvertToTwelveHour(tmphour));
 		SendClientMessageToAllEx(COLOR_WHITE, szMiscArray);
 		new query[300];
-		mysql_format(MainPipeline, query, sizeof(query), "SELECT b.shift, b.needs_%e, COUNT(DISTINCT s.id) as ShiftCount FROM cp_shift_blocks b LEFT JOIN cp_shifts s ON b.shift_id = s.shift_id AND s.date = '%d-%02d-%02d' AND s.status >= 2 AND s.type = 1 WHERE b.time_start = '%02d:00:00' AND b.type = 1 GROUP BY b.shift, b.needs_%e", GetWeekday(), year, month, day, tmphour, GetWeekday());
+		mysql_format(MainPipeline, query, sizeof(query), "SELECT b.shift, b.needs_%s, COUNT(DISTINCT s.id) as ShiftCount FROM cp_shift_blocks b LEFT JOIN cp_shifts s ON b.shift_id = s.shift_id AND s.date = '%d-%02d-%02d' AND s.status >= 2 AND s.type = 1 WHERE b.time_start = '%02d:00:00' AND b.type = 1 GROUP BY b.shift, b.needs_%s", GetSQLWeekday(), year, month, day, tmphour, GetSQLWeekday());
 		mysql_tquery(MainPipeline, query, "GetShiftInfo", "is", INVALID_PLAYER_ID, szMiscArray);
 		foreach(new i: Player)
 		{
@@ -3106,4 +3106,25 @@ ptask ShopItemQueue[60000](i)
 		mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "SELECT * FROM `order_delivery_status` WHERE `player_id` = %d AND `status` = 0", GetPlayerSQLId(i));
 		mysql_tquery(ShopPipeline, szMiscArray, "ExecuteShopQueue", "ii", i, 1);
 	}
+}
+
+stock GetSQLWeekday()
+{
+    new year, month, day;
+    getdate(year, month, day);
+    
+    if (month <= 2) {
+        month += 12;
+        year--;
+    }
+    
+    new j = year / 100;
+    new k = year % 100;
+    // Thuật toán Zeller
+    new h = (day + (13 * (month + 1)) / 5 + k + k / 4 + j / 4 + 5 * j) % 7;
+
+    // ĐỔI DÒNG NÀY: Dùng tên tiếng Anh đầy đủ để khớp với table gốc của NGG
+    new days[7][10] = {"Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+    
+    return days[h];
 }
