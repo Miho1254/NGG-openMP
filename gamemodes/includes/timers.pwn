@@ -2897,10 +2897,11 @@ ptask EMSUpdate[5000](i) {
 		if(GetPVarInt(i, "EMSAttempt") != 0)
 		{
 
+			new Float:health;
+			GetHealth(i,health);
+
 			if(GetPVarInt(i, "Dead") != 1)
 			{
-				new Float:health;
-				GetHealth(i,health);
 				if(PlayerInfo[i][mCooldown][4])
 				{
 					if(!GetPVarType(i, "_energybar")) SetPVarInt(i, "_energybar", 60);
@@ -2909,76 +2910,7 @@ ptask EMSUpdate[5000](i) {
 				}
 				else SetHealth(i, health-1);
 			}
-			if(GetPVarInt(i, "EMSAttempt") == -1)
-			{
-				// if(GetPlayerAnimationIndex(i) != 746) ClearAnimationsEx(i), PlayDeathAnimation(i);
-				if(!GetPVarType(i, "StreamPrep") && !IsPlayerInRangeOfPoint(i, 3.0, GetPVarFloat(i,"MedicX"), GetPVarFloat(i,"MedicY"), GetPVarFloat(i,"MedicZ")) && !GetPVarInt(i, "OnStretcher"))
-				{
-					SendClientMessageEx(i, COLOR_WHITE, "Ban da bi bat tinh va lap tuc duoc dua den benh vien.");
-					KillEMSQueue(i);
-					SpawnPlayer(i);
-				}
-				if(GetPVarInt(i, "Dead") == 1)
-					GameTextForPlayer(i, "~r~Da chet~n~~w~/chapnhan chet", 5000, 3);
-				else
-					GameTextForPlayer(i, "~r~Bi thuong~n~~w~/chapnhan chet hoac /dichvu medic", 5000, 3);
-			}
-			if(GetPVarInt(i, "EMSAttempt") == 1)
-			{
-				// if(GetPlayerAnimationIndex(i) != 746) ClearAnimationsEx(i), PlayDeathAnimation(i);
-				if(!GetPVarType(i, "StreamPrep") && !IsPlayerInRangeOfPoint(i, 3.0, GetPVarFloat(i,"MedicX"), GetPVarFloat(i,"MedicY"), GetPVarFloat(i,"MedicZ")) && !GetPVarInt(i, "OnStretcher"))
-				{
-					SendClientMessageEx(i, COLOR_WHITE, "Ban da bi bat tinh va lap tuc duoc dua den benh vien.");
-					KillEMSQueue(i);
-					SpawnPlayer(i);
-				}
-				GameTextForPlayer(i, "~r~Bi thuong~n~~w~Cho cuu thuong den...", 5000, 3);
-			}
-			if(GetPVarInt(i, "EMSAttempt") == 2)
-			{
-				if(!GetPVarType(i, "StreamPrep") && !IsPlayerInRangeOfPoint(i, 3.0, GetPVarFloat(i,"MedicX"), GetPVarFloat(i,"MedicY"), GetPVarFloat(i,"MedicZ")) && !GetPVarInt(i, "OnStretcher"))
-				{
-					SetPVarInt(i, "EMSWarns", GetPVarInt(i, "EMSWarns")+1);
-					if(GetPVarInt(i, "EMSWarns") == 2)
-					{
-						SendClientMessageEx(i, COLOR_WHITE, "Ban da bi bat tinh va lap tuc duoc dua den benh vien.");
-						KillEMSQueue(i);
-						SpawnPlayer(i);
-						DeletePVar(i, "EMSWarns");
-					}
-				}
-				GameTextForPlayer(i, "~g~So cuu~n~~w~Dang dieu tri...", 5000, 3);
-			}
-			if(GetPVarInt(i, "EMSAttempt") == 3)
-			{
-				if(IsPlayerInAnyVehicle(i))
-				{
-					new ambmodel = GetPlayerVehicleID(i);
-					if(IsAnAmbulance(ambmodel))
-					{
-						GameTextForPlayer(i, "~g~So cuu~n~~w~Cho EMS dua den benh vien...", 5000, 3);
-					}
-					else
-					{
-						SendClientMessageEx(i, COLOR_WHITE, "You fell unconscious due to no life support, you were immediately sent to the hospital.");
-						KillEMSQueue(i);
-						SpawnPlayer(i);
-					}
-				}
-				else
-				{
-					SetPVarInt(i, "EMSWarnst", GetPVarInt(i, "EMSWarnst")+1);
-					if(GetPVarInt(i, "EMSWarnst") == 2)
-					{
-						SendClientMessageEx(i, COLOR_WHITE, "Ban da bi vang ra khoi xe, ban se duoc dua den benh vien.");
-						KillEMSQueue(i);
-						SpawnPlayer(i);
-						DeletePVar(i, "EMSWarnst");
-					}
-				}
-			}
 
-			GetHealth(i, health);
 			if(health <= 5 && GetPVarInt(i, "Dead") != 1)
 			{
 				SendClientMessageEx(i, COLOR_WHITE, "Ban da bat tinh va duoc dua den benh vien.");
