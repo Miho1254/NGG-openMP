@@ -386,7 +386,7 @@ stock RehashDynamicDoor(doorid)
 	DDoorsInfo[doorid][ddVIP] = 0;
 	DDoorsInfo[doorid][ddAllegiance] = 0;
 	DDoorsInfo[doorid][ddGroupType] = 0;
-	DDoorsInfo[doorid][ddFaction] = 0;
+	DDoorsInfo[doorid][ddFaction] = INVALID_GROUP_ID;
 	DDoorsInfo[doorid][ddAdmin] = 0;
 	DDoorsInfo[doorid][ddWanted] = 0;
 	DDoorsInfo[doorid][ddVehicleAble] = 0;
@@ -1101,7 +1101,7 @@ CMD:ddedit(playerid, params[])
 			DDoorsInfo[doorid][ddDPC] = 0;
 			DDoorsInfo[doorid][ddAllegiance] = 0;
 			DDoorsInfo[doorid][ddGroupType] = 0;
-			DDoorsInfo[doorid][ddFaction] = 0;
+			DDoorsInfo[doorid][ddFaction] = INVALID_GROUP_ID;
 			DDoorsInfo[doorid][ddAdmin] = 0;
 			DDoorsInfo[doorid][ddWanted] = 0;
 			DDoorsInfo[doorid][ddVehicleAble] = 0;
@@ -1240,7 +1240,7 @@ public DeleteDynamicDoor(doorid, adminid)
 	DDoorsInfo[doorid][ddDPC] = 0;
 	DDoorsInfo[doorid][ddAllegiance] = 0;
 	DDoorsInfo[doorid][ddGroupType] = 0;
-	DDoorsInfo[doorid][ddFaction] = 0;
+	DDoorsInfo[doorid][ddFaction] = INVALID_GROUP_ID;
 	DDoorsInfo[doorid][ddAdmin] = 0;
 	DDoorsInfo[doorid][ddWanted] = 0;
 	DDoorsInfo[doorid][ddVehicleAble] = 0;
