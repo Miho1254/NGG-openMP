@@ -122,7 +122,8 @@
             "filterscripts/PlayerExteriors",
             "filterscripts/PlayerInteriors",
             "filterscripts/Server",
-            "filterscripts/yom_buttons"
+            "filterscripts/yom_buttons",
+            "filterscripts/sapd"
         ]            },
     "rcon": {
         "allow_teleport": false,
