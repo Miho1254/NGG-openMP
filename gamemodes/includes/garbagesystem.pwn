@@ -98,7 +98,7 @@ hook OnPlayerEnterCheckpoint(playerid)
  	return 1;
 }
 
-command(garbagerun, playerid, params[])
+CMD:garbagerun(playerid, params[])
 {
 	if(PlayerInfo[playerid][pJob] == 25 || PlayerInfo[playerid][pJob2] == 25 || PlayerInfo[playerid][pJob3] == 25)
 	{
