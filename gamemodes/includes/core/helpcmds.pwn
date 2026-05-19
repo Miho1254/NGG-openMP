@@ -1528,7 +1528,7 @@ CMD:ohelp(playerid, params[])
 		case 19: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /bannuoc");
 		case 20: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /layhang /kiemtrahang /cuophang");
 		case 21: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /laybanh");
-		case 27: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /garbagerun");
+		case 25: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /garbagerun");
 	}
 	switch(PlayerInfo[playerid][pJob2])
 	{
@@ -1549,7 +1549,7 @@ CMD:ohelp(playerid, params[])
 		case 19: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /bannuoc");
 		case 20: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /layhang /kiemtrahang /cuophang");
 		case 21: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /laybanh");
-		case 27: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /garbagerun");
+		case 25: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /garbagerun");
 	}
 	switch(PlayerInfo[playerid][pJob3])
 	{
@@ -1570,7 +1570,7 @@ CMD:ohelp(playerid, params[])
 		case 19: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /bannuoc");
 		case 20: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /layhang /kiemtrahang /cuophang");
 		case 21: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /laybanh");
-		case 27: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /garbagerun");
+		case 25: SendClientMessageEx(playerid,COLOR_WHITE,"CONG VIEC : /garbagerun");
 	}
 	new iGroupID = PlayerInfo[playerid][pMember];
 	if(iGroupID != INVALID_GROUP_ID)

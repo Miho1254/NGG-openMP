@@ -36,6 +36,7 @@ public PC_OnInit()
     SafeRegAlias("killcheckpoint", "xoamuctieu");
     SafeRegAlias("map", "timdiadiem");
     SafeRegAlias("map", "timduong");
+    SafeRegAlias("garbagerun", "donrac");
 
     // Nhóm lệnh thông tin cá nhân
     SafeRegAlias("skill", "kynang");

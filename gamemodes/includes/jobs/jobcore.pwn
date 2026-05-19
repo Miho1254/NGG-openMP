@@ -163,6 +163,15 @@ stock GetJobLevel(playerid, job)
 			else if(skilllevel >= 300 && skilllevel <= 599) jlevel = 4;
 			else if(skilllevel >= 600) jlevel = 5;
 		}
+		case 25:
+		{
+			new skilllevel = PlayerInfo[playerid][pGarbageSkill];
+			if(skilllevel >= 0 && skilllevel < 50) jlevel = 1;
+			else if(skilllevel >= 50 && skilllevel < 150) jlevel = 2;
+			else if(skilllevel >= 150 && skilllevel < 300) jlevel = 3;
+			else if(skilllevel >= 300 && skilllevel < 500) jlevel = 4;
+			else if(skilllevel >= 500) jlevel = 5;
+		}
 	}
 	return jlevel;
 }
@@ -229,6 +238,10 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					case 12: //Pizza Boy
 					{
 						ShowPlayerDialogEx(playerid, PIZZAJOB, DIALOG_STYLE_MSGBOX, "Pizza Boy","Thong tin:\nCong viec nay co the kiem tien bang cach giao nhung chiec banh pizza cho khach.\n Neu ban giao nhanh thi se cang duoc nhieu tien.\n\nLenh:\n/laybanh.", "Ok", "Huy");
+					}
+					case 13: //Garbage Man
+					{
+						ShowPlayerDialogEx(playerid, JOBHELPMENU+1, DIALOG_STYLE_MSGBOX, "Nhan vien don rac","Thong tin:\nCong viec nay ban se tai xe don rac di thu thap rac quanh thanh pho.\nBan se duoc tra tien sau moi chuyen di hoan thanh.\n\nLenh:\n/garbagerun\n\nLuu y: Ngoi tren xe don rac va su dung lenh.", "Ok", "Huy");
 					}
 				}
 			}
@@ -780,7 +793,7 @@ CMD:skill(playerid, params[])
 }
 
 CMD:jobhelp(playerid, params[]) {
-    return ShowPlayerDialogEx(playerid, JOBHELPMENU, DIALOG_STYLE_LIST, "Ban giup do cong viec nao?","Tham tu\nLuat su\nGai diem\nBan thuoc phien\nTho sua xe\nVe si\nBan vu khi\nTaxi Driver\nVan chuyen thuoc phien\nTho thu cong\nBartender\nTrucker\nPizza Boy", "Chon", "Huy");
+    return ShowPlayerDialogEx(playerid, JOBHELPMENU, DIALOG_STYLE_LIST, "Ban giup do cong viec nao?","Tham tu\nLuat su\nGai diem\nBan thuoc phien\nTho sua xe\nVe si\nBan vu khi\nTaxi Driver\nVan chuyen thuoc phien\nTho thu cong\nBartender\nTrucker\nPizza Boy\nNhan vien don rac", "Chon", "Huy");
 }
 
 CMD:quitjob(playerid, params[])
