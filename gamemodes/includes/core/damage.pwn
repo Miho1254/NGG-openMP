@@ -972,6 +972,12 @@ public OnPlayerDeath(playerid, killerid, reason)
 		ResetPlayerWeaponsEx(playerid);
 		GameTextForPlayer(playerid, " ", 0, 3);
 
+		DestroyDynamic3DTextLabel(Text3D:GetPVarInt(playerid, "InjuredTL"));
+		DeletePVar(playerid, "InjuredTL");
+		new Float: dX, Float: dY, Float: dZ;
+		GetPlayerPos(playerid, dX, dY, dZ);
+		SetPVarInt(playerid, "InjuredTL", _:CreateDynamic3DTextLabel("{FF0000}(Nguoi choi da chet).", COLOR_LIGHTBLUE, dX, dY, dZ+0.1, 5, .attachedplayer = playerid, .worldid = GetPlayerVirtualWorld(playerid), .interiorid = GetPlayerInterior(playerid), .streamdistance = 5));
+
 		if(PlayerInfo[playerid][pDonateRank] >= 4)
 		{
 			SetPVarInt(playerid, "InjuredWait", gettime());
