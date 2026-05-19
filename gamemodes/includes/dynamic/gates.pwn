@@ -727,7 +727,7 @@ CMD:gedit(playerid, params[])
 		else if(strcmp(x_job, "groupid", true) == 0)
 		{
 		    new value = floatround(ofloat, floatround_round);
-		    GateInfo[gateid][gGroupID] = value;
+		    GateInfo[gateid][gGroupID] = value - 1;
 		    format(string, sizeof(string), "Group ID %d assigned to Gate %d", GateInfo[gateid][gGroupID], gateid);
 		    SendClientMessageEx(playerid, COLOR_WHITE, string);
 		    SaveGate(gateid);
