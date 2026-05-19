@@ -6673,3 +6673,107 @@ public GetGroupBudget(groupid) {
 	}
 	return 0;
 }
+
+stock Group_FindFreeSlot()
+{
+	for(new i = 0; i < MAX_GROUPS; i++) {
+		if(arrGroupData[i][g_szGroupName][0] == 0) return i;
+	}
+	return -1;
+}
+
+stock Group_CreateGroup(playerid, name[], type, allegiance)
+{
+	new slot = Group_FindFreeSlot();
+	if(slot == -1) return SendClientMessageEx(playerid, COLOR_GREY, "Khong con slot trong de tao nhom moi.");
+
+	new dbid = slot + 1;
+	arrGroupData[slot][g_iGroupType] = type;
+	arrGroupData[slot][g_iAllegiance] = allegiance;
+	format(arrGroupData[slot][g_szGroupName], GROUP_MAX_NAME_LEN, "%s", name);
+	arrGroupData[slot][g_hDutyColour] = 0xFFFFFF;
+	arrGroupData[slot][g_hRadioColour] = 0xFFFFFF;
+
+	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "INSERT INTO `groups` (`id`, `Name`, `Type`, `Allegiance`) VALUES ('%d', '%e', '%d', '%d')", dbid, name, type, allegiance);
+	mysql_tquery(MainPipeline, szMiscArray, "OnGroupCreated", "ddds", slot, type, allegiance, name);
+	return 1;
+}
+
+forward OnGroupCreated(slot, type, allegiance, name[]);
+public OnGroupCreated(slot, type, allegiance, name[])
+{
+	SaveGroup(slot);
+
+	new typeStr[32];
+	switch(type) {
+		case GROUP_TYPE_CRIMINAL: format(typeStr, sizeof(typeStr), "Family");
+		case GROUP_TYPE_LEA: format(typeStr, sizeof(typeStr), "LEA");
+		case GROUP_TYPE_MEDIC: format(typeStr, sizeof(typeStr), "Medic");
+		case GROUP_TYPE_GOV: format(typeStr, sizeof(typeStr), "GOV");
+		case GROUP_TYPE_JUDICIAL: format(typeStr, sizeof(typeStr), "Judicial");
+		case GROUP_TYPE_CONTRACT: format(typeStr, sizeof(typeStr), "Contract");
+		case GROUP_TYPE_NEWS: format(typeStr, sizeof(typeStr), "News");
+		case GROUP_TYPE_TAXI: format(typeStr, sizeof(typeStr), "Taxi");
+		case GROUP_TYPE_TOWING: format(typeStr, sizeof(typeStr), "Towing");
+		default: format(typeStr, sizeof(typeStr), "Unknown");
+	}
+
+	printf("[Group] Created %s: %s (Slot: %d, Allegiance: %d)", typeStr, name, slot+1, allegiance);
+	return 1;
+}
+
+CMD:createfamily(playerid, params[])
+{
+	if(PlayerInfo[playerid][pAdmin] < 1337) return SendClientMessageEx(playerid, COLOR_WHITE, "SERVER: Ban khong duoc phep su dung lenh nay.");
+
+	new allegiance, name[GROUP_MAX_NAME_LEN];
+	if(sscanf(params, "ds[32]", allegiance, name)) {
+		SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /createfamily [allegiance] [name]");
+		SendClientMessageEx(playerid, COLOR_GREY, "Allegiance: 1 = SA, 2 = NE");
+		return 1;
+	}
+	if(allegiance < 1 || allegiance > 2) return SendClientMessageEx(playerid, COLOR_GREY, "Allegiance phai la 1 (SA) hoac 2 (NE).");
+
+	Group_CreateGroup(playerid, name, GROUP_TYPE_CRIMINAL, allegiance);
+
+	format(szMiscArray, sizeof(szMiscArray), "Ban da tao family: %s (Allegiance: %s)", name, (allegiance == 1) ? "SA" : "NE");
+	SendClientMessageEx(playerid, COLOR_LIGHTBLUE, szMiscArray);
+	SendClientMessageEx(playerid, COLOR_LIGHTBLUE, "Su dung /editgroup va /setleader de cau hinh.");
+	return 1;
+}
+
+CMD:createfaction(playerid, params[])
+{
+	if(PlayerInfo[playerid][pAdmin] < 1337) return SendClientMessageEx(playerid, COLOR_WHITE, "SERVER: Ban khong duoc phep su dung lenh nay.");
+
+	new type, allegiance, name[GROUP_MAX_NAME_LEN];
+	if(sscanf(params, "dds[32]", type, allegiance, name)) {
+		SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /createfaction [type] [allegiance] [name]");
+		SendClientMessageEx(playerid, COLOR_GREY, "Type: 1=LEA, 2=Contract, 3=Medic, 4=News, 5=GOV, 6=Judicial, 7=Taxi, 8=Towing, 9=Criminal");
+		SendClientMessageEx(playerid, COLOR_GREY, "Allegiance: 1 = SA, 2 = NE");
+		return 1;
+	}
+	if(type < 1 || type > 9) return SendClientMessageEx(playerid, COLOR_GREY, "Type phai tu 1 den 9.");
+	if(allegiance < 1 || allegiance > 2) return SendClientMessageEx(playerid, COLOR_GREY, "Allegiance phai la 1 (SA) hoac 2 (NE).");
+
+	Group_CreateGroup(playerid, name, type, allegiance);
+
+	new typeStr[32];
+	switch(type) {
+		case GROUP_TYPE_CRIMINAL: format(typeStr, sizeof(typeStr), "Family");
+		case GROUP_TYPE_LEA: format(typeStr, sizeof(typeStr), "LEA");
+		case GROUP_TYPE_MEDIC: format(typeStr, sizeof(typeStr), "Medic");
+		case GROUP_TYPE_GOV: format(typeStr, sizeof(typeStr), "GOV");
+		case GROUP_TYPE_JUDICIAL: format(typeStr, sizeof(typeStr), "Judicial");
+		case GROUP_TYPE_CONTRACT: format(typeStr, sizeof(typeStr), "Contract");
+		case GROUP_TYPE_NEWS: format(typeStr, sizeof(typeStr), "News");
+		case GROUP_TYPE_TAXI: format(typeStr, sizeof(typeStr), "Taxi");
+		case GROUP_TYPE_TOWING: format(typeStr, sizeof(typeStr), "Towing");
+		default: format(typeStr, sizeof(typeStr), "Unknown");
+	}
+
+	format(szMiscArray, sizeof(szMiscArray), "Ban da tao %s: %s (Allegiance: %s)", typeStr, name, (allegiance == 1) ? "SA" : "NE");
+	SendClientMessageEx(playerid, COLOR_LIGHTBLUE, szMiscArray);
+	SendClientMessageEx(playerid, COLOR_LIGHTBLUE, "Su dung /editgroup va /setleader de cau hinh.");
+	return 1;
+}

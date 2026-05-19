@@ -242,6 +242,10 @@ public PC_OnInit()
     SafeRegAlias("oah", "ch");
     SafeRegAlias("destroycar", "dtc");
     SafeRegAlias("destroycars", "dtcs");
+    SafeRegAlias("addcrime", "themtoi");
+    SafeRegAlias("deletecrime", "xoatoi");
+    SafeRegAlias("createfamily", "taofamily");
+    SafeRegAlias("createfaction", "taofaction");
 
     printf("[Pawn.CMD] Hoan tat nap Alias.");
     return 1;
