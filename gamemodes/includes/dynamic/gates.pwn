@@ -447,7 +447,7 @@ CMD:gedit(playerid, params[])
 	{
 		new x_job[128], gateid, Float:ofloat, string[128];
 
-		if(sscanf(params, "s[128]iF", x_job, gateid, ofloat))
+		if(sscanf(params, "s[128]iF(0.0)", x_job, gateid, ofloat))
 		{
 			SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /gedit [name] [gateid] [value]");
 			SendClientMessageEx(playerid, COLOR_GREY, "Available names: HID, Model, VW, Int, Open, Closed, PosX(M), PosY(M), PosZ(M), RotX(M), RotZ(M), ToMe(M)");
