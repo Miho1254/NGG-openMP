@@ -1433,7 +1433,7 @@ CMD:shopbusiness(playerid, params[])
 	}
 
 	new string[128], choice[32], businessid, amount, invoice[64];
-	if(sscanf(params, "s[32]dDs[64]", choice, businessid, amount, invoice))
+	if(sscanf(params, "s[32]dD(0)s[64]", choice, businessid, amount, invoice))
 	{
 		SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /shopbusiness [name] [business ID] [Amount] [invoice #]");
 		SendClientMessageEx(playerid, COLOR_GREY, "Available names: Exterior, Interior, SupplyPoint, Price, Type, Inventory, InventoryCapacity, Delete");
@@ -1897,7 +1897,7 @@ CMD:bsafe(playerid, params[])
 	}
 	else {
 	    new choice[10], Amount, string[256];
-	    if(sscanf(params, "s[10]D", choice, Amount)) {
+	    if(sscanf(params, "s[10]D(0)", choice, Amount)) {
 			SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /bsafe [tuy chon] [amount]");
 			SendClientMessageEx(playerid, COLOR_GREY, "TUY CHON: Balance, Withdraw, Deposit");
 			return 1;

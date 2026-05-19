@@ -40,7 +40,7 @@ CMD:tledit(playerid, params[])
 	if(PlayerInfo[playerid][pAdmin] >= 1337)
 	{
 		new string[128], choice[32], labelid, amount;
-		if(sscanf(params, "s[32]dD", choice, labelid, amount))
+		if(sscanf(params, "s[32]dD(0)", choice, labelid, amount))
 		{
 			SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /tledit [name] [labelid] [amount]");
 			SendClientMessageEx(playerid, COLOR_GREY, "Available names: Position, Color, PickupModel, Delete");

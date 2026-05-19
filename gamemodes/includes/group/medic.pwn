@@ -211,21 +211,29 @@ Medic_GetPatient(playerid, params[]) {
 	return 1;
 }
 
+//mọi xe đều là ambulance (Normal RP)
 stock IsAnAmbulance(carid)
 {
 	if(DynVeh[carid] != -1)
 	{
 	    new iDvSlotID = DynVeh[carid], iGroupID = DynVehicleInfo[iDvSlotID][gv_igID];
+
 	    if((0 <= iGroupID < MAX_GROUPS))
 	    {
-	    	if(arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_MEDIC) return 1;
-			else if(arrGroupData[iGroupID][g_iMedicAccess] != INVALID_DIVISION) return 1;
-			else if(carid == 416) return 1;
+	    	if(arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_MEDIC)
+				return 1;
+
+			else if(arrGroupData[iGroupID][g_iMedicAccess] != INVALID_DIVISION)
+				return 1;
+
+			else if(GetVehicleModel(carid) == 416)
+				return 1;
 		}
 	}
-	return 0;
-}
+	else return 1;
 
+	return 1;
+}
 /*
 CMD:aid(playerid, params[]) {
 

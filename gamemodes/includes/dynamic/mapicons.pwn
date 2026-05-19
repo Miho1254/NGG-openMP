@@ -240,7 +240,7 @@ CMD:dmpedit(playerid, params[])
 	}
 
 	new string[128], choice[32], mapiconid, amount;
-	if(sscanf(params, "s[32]dD", choice, mapiconid, amount))
+	if(sscanf(params, "s[32]dD(0)", choice, mapiconid, amount))
 	{
 		SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /dmpedit [name] [mapiconid] [(Optional)amount]");
 		SendClientMessageEx(playerid, COLOR_GREY, "Available names: Position, Type, Color, Delete");

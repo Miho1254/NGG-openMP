@@ -3809,7 +3809,7 @@ CMD:dgedit(playerid, params[])
 		format(string, sizeof(string), "Timer: %d min(s)\nAmount: %d\n%s", dgTimerTime, dgAmount, (dgTimer != -1)?("{FF0606}Disable"):("{00ff00}Enable"));
 		return ShowPlayerDialogEx(playerid, DIALOG_DGRAUTORESET, DIALOG_STYLE_LIST, "Dynamic Giftbox Auto Reset - Select to modify", string, "Select", "Close");
 	}
-	if(sscanf(params, "s[32]dD", choice, type, amount))
+	if(sscanf(params, "s[32]dD(0)", choice, type, amount))
 	{
 		SendClientMessageEx(playerid, COLOR_GRAD1, "Usage: /dgedit [choice] [type] [value]");
 		SendClientMessageEx(playerid, COLOR_GRAD1, "Available Choices: Money, RimKit, Firework, 7DayGVIP, 1MonthGVIP, 7DaySVIP, 1MonthSVIP, CarSlot, ToySlot");

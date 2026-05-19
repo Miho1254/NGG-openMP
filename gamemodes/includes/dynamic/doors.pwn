@@ -778,7 +778,7 @@ CMD:ddedit(playerid, params[])
  	if(PlayerInfo[playerid][pAdmin] >= 4 || PlayerInfo[playerid][pASM] >= 1 || PlayerInfo[playerid][pShopTech] >= 1)
 	{
 		new string[128], choice[32], doorid, amount;
-		if(sscanf(params, "s[32]dD", choice, doorid, amount))
+		if(sscanf(params, "s[32]dD(0)", choice, doorid, amount))
 		{
 			SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /ddedit [name] [doorid] [amount]");
 			SendClientMessageEx(playerid, COLOR_GREY, "Available names: Exterior, Interior, CustomInterior, CustomExterior, Type, Rank, VIP, Famed");

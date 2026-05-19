@@ -1021,7 +1021,7 @@ CMD:hedit(playerid, params[])
 	}
 
 	new string[128], choice[32], houseid, amount;
-	if(sscanf(params, "s[32]dD", choice, houseid, amount))
+	if(sscanf(params, "s[32]dD(0)", choice, houseid, amount))
 	{
 		SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /hedit [name] [houseid] [(Optional)amount]");
 		SendClientMessageEx(playerid, COLOR_GREY, "Available names: Exterior, Interior, VW, CustomInterior, CustomExterior, Class (1-3), Level, Price, Delete, Ignore");
@@ -1238,7 +1238,7 @@ CMD:shophouse(playerid, params[])
 	if(PlayerInfo[playerid][pShopTech] < 1) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong duoc phep su dung lenh do.");
 
 	new string[128], choice[32], houseid, amount, invoice[64];
-	if(sscanf(params, "s[32]dDs[64]", choice, houseid, amount, invoice))
+	if(sscanf(params, "s[32]dD(0)s[64]", choice, houseid, amount, invoice))
 	{
 		SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /shophouse [name] [houseid] [amount] [invoice #]");
 		SendClientMessageEx(playerid, COLOR_GREY, "Available names: Exterior, Interior, CustomInterior, Class (1-3), Level, Price");

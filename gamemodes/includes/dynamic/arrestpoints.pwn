@@ -286,7 +286,7 @@ CMD:arrestedit(playerid, params[])
 	if (PlayerInfo[playerid][pAdmin] >= 4 || PlayerInfo[playerid][pASM] >= 1)
 	{
 		new string[128], choice[32], id, amount;
-		if(sscanf(params, "s[32]dD", choice, id, amount))
+		if(sscanf(params, "s[32]dD(0)", choice, id, amount))
 		{
 			SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /arrestedit [name] [id] [amount]");
 			SendClientMessageEx(playerid, COLOR_GREY, "Available names: Position, Type, jailpos1, jailpos2, Delete");
