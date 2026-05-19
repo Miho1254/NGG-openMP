@@ -1,3 +1,0 @@
-C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(100) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "command"
-Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
-
