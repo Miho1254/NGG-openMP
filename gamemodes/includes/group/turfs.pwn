@@ -507,7 +507,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					ShowPlayerDialogEx(playerid,TWEDITTURFSOWNER,DIALOG_STYLE_INPUT,"Turf Wars - Edit Turfs Owner Menu:","Please enter nhom ID that you wish to assign to this turf:\n\nHint: Enter -1 if you wish to vacant the turf.","Change","Back");
 					return 1;
 				}
-				SetOwnerTurfWarsZone(1, tw, strval(inputtext));
+				SetOwnerTurfWarsZone(1, tw, strval(inputtext) - 1);
 				SaveTurfWar(tw);
 				ShowPlayerDialogEx(playerid,TWEDITTURFSMENU,DIALOG_STYLE_LIST,"Turf Wars - Edit Turfs Menu:","Edit Dimensions...\nEdit Owners...\nEdit Vulnerable Time...\nEdit Locked...\nEdit Perks...\nReset War...\nDestroy Turf","Select","Back");
 			}

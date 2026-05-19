@@ -583,9 +583,9 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			{
 				case 2:
 				{
-					if(iGroupID >= 0 && iGroupID <= MAX_GROUPS)
+					if(iGroupID >= 1 && iGroupID <= MAX_GROUPS)
 					{
-						PollInfo[iPollID][poll_iTypeID] = iGroupID;
+						PollInfo[iPollID][poll_iTypeID] = iGroupID - 1;
 						SendClientMessageEx(playerid, COLOR_WHITE, "Poll type ID edited successfully.");
 
 						ShowPlayerEditPollDialog(playerid);
