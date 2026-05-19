@@ -970,6 +970,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 		SetPVarInt(playerid, "Dead", 1);
 		SetPVarInt(playerid, "EMSAttempt", -1);
 		ResetPlayerWeaponsEx(playerid);
+		GameTextForPlayer(playerid, " ", 0, 3);
 
 		if(PlayerInfo[playerid][pDonateRank] >= 4)
 		{
