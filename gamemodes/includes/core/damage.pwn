@@ -955,7 +955,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 		return 1;
 	}
 
-	if(GetPVarInt(playerid, "Injured") == 1)
+	if(GetPVarInt(playerid, "Injured") == 1 && GetPVarInt(playerid, "Dead") == 0)
 	{
 		foreach(new i: Player)
 		{
@@ -967,7 +967,24 @@ public OnPlayerDeath(playerid, killerid, reason)
 				DisablePlayerCheckpoint(i);
 			}
 		}
-		SendClientMessageEx(playerid, COLOR_WHITE, "Ban dang bi thuong tram trong , bac si dang co gang cuu ban.");
+		SetPVarInt(playerid, "Dead", 1);
+		SetPVarInt(playerid, "EMSAttempt", -1);
+		ResetPlayerWeaponsEx(playerid);
+
+		if(PlayerInfo[playerid][pDonateRank] >= 4)
+		{
+			SetPVarInt(playerid, "InjuredWait", gettime());
+			SendClientMessageEx(playerid, COLOR_WHITE, "Ban da chet. /chapnhan chet de den benh vien ngay lap tuc.");
+		}
+		else
+		{
+			SetPVarInt(playerid, "InjuredWait", gettime() + 300);
+			SendClientMessageEx(playerid, COLOR_WHITE, "Ban da chet. Phai cho 300 giay moi co the chap nhan chet.");
+		}
+		return 1;
+	}
+	else if(GetPVarInt(playerid, "Dead") == 1)
+	{
 		KillEMSQueue(playerid);
 		ResetPlayerWeaponsEx(playerid);
 		return 1;
@@ -980,7 +997,10 @@ public OnPlayerDeath(playerid, killerid, reason)
 			if(HungerPlayerInfo[playerid][hgInEvent] != 1)
 			{
 				SetPVarInt(playerid, "Injured", 1);
-				SetPVarInt(playerid, "InjuredWait", gettime()+90);
+				if(PlayerInfo[playerid][pDonateRank] >= 4)
+					SetPVarInt(playerid, "InjuredWait", gettime()+80);
+				else
+					SetPVarInt(playerid, "InjuredWait", gettime()+180);
 
 				new Float:mX, Float:mY, Float:mZ;
 				GetPlayerPos(playerid, mX, mY, mZ);

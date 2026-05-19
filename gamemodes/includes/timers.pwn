@@ -2915,7 +2915,10 @@ ptask EMSUpdate[5000](i) {
 					KillEMSQueue(i);
 					SpawnPlayer(i);
 				}
-				GameTextForPlayer(i, "~r~Bi thuong~n~~w~/chapnhan chet hoac /dichvu medic", 5000, 3);
+				if(GetPVarInt(i, "Dead") == 1)
+					GameTextForPlayer(i, "~r~Da chet~n~~w~/chapnhan chet", 5000, 3);
+				else
+					GameTextForPlayer(i, "~r~Bi thuong~n~~w~/chapnhan chet hoac /dichvu medic", 5000, 3);
 			}
 			if(GetPVarInt(i, "EMSAttempt") == 1)
 			{

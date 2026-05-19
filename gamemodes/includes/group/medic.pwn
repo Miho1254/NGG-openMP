@@ -94,6 +94,7 @@ public KillEMSQueue(playerid)
 	DeletePVar(playerid, "DS_OBJ");
     DeletePVar(playerid, "Injured");
     DeletePVar(playerid, "InjuredWait");
+    DeletePVar(playerid, "Dead");
     DeletePVar(playerid, "EMSAttempt");
 	SetPVarInt(playerid, "MedicBill", 1);
 	DeletePVar(playerid, "MedicCall");

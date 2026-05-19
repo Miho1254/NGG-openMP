@@ -427,13 +427,23 @@ CMD:accept(playerid, params[])
 			DeletePVar(playerid, "Business_VehicleSlot");
         }
         else if(strcmp(params, "chet", true) == 0) {
-            if(GetPVarInt(playerid, "Injured") == 1) {
+            if(GetPVarInt(playerid, "Injured") == 1 || GetPVarInt(playerid, "Dead") == 1) {
 
-            	if(GetPVarInt(playerid, "InjuredWait") > gettime())
-            		return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the tu bo bay gio, vui long cho doi.");
+            	new timeLeft = GetPVarInt(playerid, "InjuredWait") - gettime();
+            	if(timeLeft > 0)
+            	{
+            		new msg[128];
+            		format(msg, sizeof(msg), "Ban khong the tu bo bay gio, con %d giay nua.", timeLeft);
+            		return SendClientMessageEx(playerid, COLOR_GRAD2, msg);
+            	}
 
-                SendClientMessageEx(playerid, COLOR_WHITE, "Ban da chet va cam thay bi thuong nang, da duoc lap tuc dua den benh vien.");
+            	if(GetPVarInt(playerid, "Dead") == 1)
+            		SendClientMessageEx(playerid, COLOR_WHITE, "Ban da chet va duoc dua den benh vien.");
+            	else
+            		SendClientMessageEx(playerid, COLOR_WHITE, "Ban bi thuong nang va duoc dua den benh vien.");
+
                 KillEMSQueue(playerid);
+                DeletePVar(playerid, "Dead");
                 ResetPlayerWeaponsEx(playerid);
                 SpawnPlayer(playerid);
             }

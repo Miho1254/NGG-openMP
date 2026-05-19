@@ -59,6 +59,11 @@ CMD:service(playerid, params[])
 			SendClientMessageEx(playerid, COLOR_GREY, "Hien tai ban khong bi thuong de su dung dich vu nay!");
 			return 1;
 		}
+		if(GetPVarInt(playerid, "Dead") == 1)
+		{
+			SendClientMessageEx(playerid, COLOR_GREY, "Ban da chet, khong the goi cuu thuong!");
+			return 1;
+		}
 		new zone[MAX_ZONE_NAME];
 		GetPlayer2DZone(playerid, zone, MAX_ZONE_NAME);
 		SetPVarInt(playerid, "EMSAttempt", 1);
