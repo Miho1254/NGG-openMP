@@ -5718,28 +5718,35 @@ public HitmanTrace(playerid, iTargetID) {
 }
 
 CMD:f(playerid, params[]) return callcmd::g(playerid, params);
+
 CMD:g(playerid, params[])
 {
-
-	if(PlayerTied[playerid] != 0 || PlayerCuffed[playerid] != 0 || PlayerInfo[playerid][pJailTime] > 0) return SendClientMessageEx(playerid, COLOR_GRAD2, "You cannot do this at this time.");
-	if(PlayerInfo[playerid][pJailTime] && strfind(PlayerInfo[playerid][pPrisonReason], "[OOC]", true) != -1) return SendClientMessageEx(playerid, COLOR_GREY, "OOC prisoners are restricted to only speak in /b");
-	new iGroupID = PlayerInfo[playerid][pMember],
-		iRank = PlayerInfo[playerid][pRank];
-	if(isnull(params)) return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /g [group OOC chat]");
-	if(iGroupID == INVALID_GROUP_ID) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong trong group nao ca.");
-	if(iRank >= arrGroupData[iGroupID][g_iOOCChat])
-	{
-		new string[128];
-		format(string, sizeof(string), "(( (%d) %s (%s) %s: %s ))", iRank, arrGroupRanks[iGroupID][iRank], (0 <= PlayerInfo[playerid][pDivision] < MAX_GROUP_DIVS && arrGroupDivisions[iGroupID][PlayerInfo[playerid][pDivision]][0] ? arrGroupDivisions[iGroupID][PlayerInfo[playerid][pDivision]]:("None")), GetPlayerNameEx(playerid), params);
-		foreach(new i: Player) {
-			if(PlayerInfo[i][pMember] == iGroupID && GetPVarInt(i, "OOCRadioTogged") == 0) {
-
-				ChatTrafficProcess(i, arrGroupData[iGroupID][g_hOOCColor] * 256 + 255, string, 11);
-			}
-		}
-	}
-	else SendClientMessageEx(playerid, COLOR_GREY, "Ban khong the thuc hien lenh nay.");
-	return 1;
+    if(PlayerTied[playerid] != 0 || PlayerCuffed[playerid] != 0 || PlayerInfo[playerid][pJailTime] > 0) 
+        return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the su dung chat Group ngay luc nay (Dang bi troi/cong/di tu).");
+        
+    if(PlayerInfo[playerid][pJailTime] && strfind(PlayerInfo[playerid][pPrisonReason], "[OOC]", true) != -1) 
+        return SendClientMessageEx(playerid, COLOR_GREY, "Nguoi choi bi tu OOC chi co the su dung /b.");
+        
+    new iGroupID = PlayerInfo[playerid][pMember],
+        iRank = PlayerInfo[playerid][pRank];
+        
+    if(isnull(params)) return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /g [Noi dung chat OOC Group]");
+    
+    if(iGroupID == INVALID_GROUP_ID) 
+        return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong nam trong Group/Faction nao ca.");
+        
+    // Đã tiễn vong cái điều kiện check Rank xàm loz. Qua ải INVALID_GROUP_ID là táng luôn!
+    new string[128];
+    format(string, sizeof(string), "(( (%d) %s (%s) %s: %s ))", iRank, arrGroupRanks[iGroupID][iRank], (0 <= PlayerInfo[playerid][pDivision] < MAX_GROUP_DIVS && arrGroupDivisions[iGroupID][PlayerInfo[playerid][pDivision]][0] ? arrGroupDivisions[iGroupID][PlayerInfo[playerid][pDivision]]:("None")), GetPlayerNameEx(playerid), params);
+    
+    foreach(new i: Player) 
+    {
+        if(PlayerInfo[i][pMember] == iGroupID && GetPVarInt(i, "OOCRadioTogged") == 0) 
+        {
+            ChatTrafficProcess(i, arrGroupData[iGroupID][g_hOOCColor] * 256 + 255, string, 11);
+        }
+    }
+    return 1;
 }
 
 CMD:togfam(playerid, params[])

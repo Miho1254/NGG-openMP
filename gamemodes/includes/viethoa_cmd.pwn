@@ -33,6 +33,9 @@ public PC_OnInit()
     SafeRegAlias("checkcargo", "kiemtrahang");
     SafeRegAlias("hijackcargo", "cuophang");
     SafeRegAlias("quitjob", "nghiviec");
+    SafeRegAlias("killcheckpoint", "xoamuctieu");
+    SafeRegAlias("map", "timdiadiem");
+    SafeRegAlias("map", "timduong");
 
     // Nhóm lệnh thông tin cá nhân
     SafeRegAlias("skill", "kynang");

@@ -3926,7 +3926,7 @@ CMD:jail(playerid, params[])
 	return 1;
 }
 
-CMD:gnsetstatst(playerid, params[])
+CMD:setstats(playerid, params[])
 {
 	if(PlayerInfo[playerid][pAdmin] >= 1337 || PlayerInfo[playerid][pShopTech] >= 2)
 	{
@@ -4803,121 +4803,128 @@ CMD:gotocar(playerid, params[])
 
 CMD:gotoid(playerid, params[])
 {
-	new giveplayerid;
-	if(sscanf(params, "u", giveplayerid)) return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /gotoid [player]");
+    new giveplayerid;
+    if(sscanf(params, "u", giveplayerid)) return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /gotoid [player]");
 
-	new Float:plocx,Float:plocy,Float:plocz;
-	if (IsPlayerConnected(giveplayerid))
-	{
-		if (PlayerInfo[playerid][pAdmin] >= 2)
-		{
-			if(GetPlayerState(giveplayerid) == PLAYER_STATE_SPECTATING)
-			{
-				SendClientMessageEx(playerid, COLOR_GRAD2, "Nguoi choi dang SPEC.");
-				return 1;
-			}
-			if(GetPlayerState(playerid) == PLAYER_STATE_SPECTATING)
-			{
-				SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay khi dang SPEC.");
-				return 1;
-			}
-			if(PlayerInfo[giveplayerid][pAdmin] >= 1337 && !GetPVarType(giveplayerid, "EATeleportable")) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong the dich chuyen den nguoi nay");
-			GetPlayerPos(giveplayerid, plocx, plocy, plocz);
-			SetPlayerVirtualWorld(playerid, PlayerInfo[giveplayerid][pVW]);
-			Streamer_UpdateEx(playerid, plocx, plocy, plocz);
+    new Float:plocx, Float:plocy, Float:plocz;
+    if (IsPlayerConnected(giveplayerid))
+    {
+        if (PlayerInfo[playerid][pAdmin] >= 2)
+        {
+            if(GetPlayerState(giveplayerid) == PLAYER_STATE_SPECTATING)
+            {
+                SendClientMessageEx(playerid, COLOR_GRAD2, "Nguoi choi do dang SPEC.");
+                return 1;
+            }
+            if(GetPlayerState(playerid) == PLAYER_STATE_SPECTATING)
+            {
+                SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay khi dang SPEC.");
+                return 1;
+            }
+            // Sửa lại text tiếng Anh thành tiếng Việt không dấu
+            if(PlayerInfo[giveplayerid][pAdmin] >= 1337 && !GetPVarType(giveplayerid, "EATeleportable")) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong the dich chuyen den lanh dao nay.");
+            
+            GetPlayerPos(giveplayerid, plocx, plocy, plocz);
+            SetPlayerVirtualWorld(playerid, PlayerInfo[giveplayerid][pVW]);
+            Streamer_UpdateEx(playerid, plocx, plocy, plocz);
 
-			if (GetPlayerState(playerid) == 2)
-			{
-				new tmpcar = GetPlayerVehicleID(playerid);
-				SetVehiclePos(tmpcar, plocx, plocy+4, plocz);
-				fVehSpeed[playerid] = 0.0;
-			}
-			else
-			{
-				SetPlayerPos(playerid,plocx,plocy+2, plocz);
-				SetPlayerInterior(playerid, GetPlayerInterior(giveplayerid));
-				SetPlayerVirtualWorld(playerid, GetPlayerVirtualWorld(giveplayerid));
-			}
+            if (GetPlayerState(playerid) == 2)
+            {
+                new tmpcar = GetPlayerVehicleID(playerid);
+                SetVehiclePos(tmpcar, plocx, plocy+4, plocz);
+                fVehSpeed[playerid] = 0.0;
+            }
+            else
+            {
+                SetPlayerPos(playerid, plocx, plocy+2, plocz);
+                SetPlayerInterior(playerid, GetPlayerInterior(giveplayerid));
+                SetPlayerVirtualWorld(playerid, GetPlayerVirtualWorld(giveplayerid));
+            }
 
-			SendClientMessageEx(playerid, COLOR_GRAD1, "Ban da duoc dich chuyen!");
-		}
-		else
-		{
-			SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong duoc phep su dung lenh do.");
-		}
-
-	}
-	else SendClientMessageEx(playerid, COLOR_GRAD1, "Nguoi choi khong truc tuyen.");
-	return 1;
+            SendClientMessageEx(playerid, COLOR_GRAD1, "Ban da duoc dich chuyen!");
+        }
+        else
+        {
+            SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong duoc phep su dung lenh nay.");
+        }
+    }
+    else SendClientMessageEx(playerid, COLOR_GRAD1, "Nguoi choi khong truc tuyen.");
+    return 1;
 }
 
 CMD:sendtoid(playerid, params[])
 {
-	new string[128];
-	new giveplayerid;
-	new targetplayerid;
-	if(sscanf(params, "uu", giveplayerid, targetplayerid)) return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /sendtoid [player] [target player]");
+    new string[128];
+    new giveplayerid;
+    new targetplayerid;
+    if(sscanf(params, "uu", giveplayerid, targetplayerid)) return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /sendtoid [nguoi bi chuyen] [nguoi nhan]");
 
-	new Float:plocx,Float:plocy,Float:plocz;
+    new Float:plocx, Float:plocy, Float:plocz;
 
-	if(IsPlayerConnected(giveplayerid) && IsPlayerConnected(targetplayerid))
-	{
-		if (PlayerInfo[playerid][pAdmin] >= 2)
-		{
-			if(GetPlayerState(giveplayerid) == PLAYER_STATE_SPECTATING || GetPlayerState(targetplayerid) == PLAYER_STATE_SPECTATING)
-			{
-				return SendClientMessageEx(playerid, COLOR_GRAD2, "Nguoi do dang Spec.");
-			}
-			if(giveplayerid == playerid)
-			{
-				return SendClientMessageEx(playerid, COLOR_GRAD2, "Hay su dung /gotoid de dich chuyen den do!");
-			}
-			if(targetplayerid == playerid)
-			{
-				return SendClientMessageEx(playerid, COLOR_GRAD2, "Hay su dung /gethere de dich chuyen den do!");
-			}
-			if(PlayerInfo[targetplayerid][pAdmin] >= PlayerInfo[playerid][pAdmin])
-			{
-				return SendClientMessageEx(playerid, COLOR_GRAD2, "You cannot use this command on a Admin with the same/greater Administrative Level than you.");
-			}
-			if(GetPVarType(giveplayerid, "IsInArena"))
-			{
-			    SetPVarInt(playerid, "tempPBP", giveplayerid);
-			    format(string, sizeof(string), "%s (ID: %d) is currently in an active Paintball game.\n\nDo you want to force this player out?", GetPlayerNameEx(giveplayerid), giveplayerid);
-			    return ShowPlayerDialogEx(playerid, PBFORCE, DIALOG_STYLE_MSGBOX, "Paintball", string, "Yes", "No");
-			}
-			if(PlayerInfo[giveplayerid][pAdmin] == 99999 && !GetPVarType(giveplayerid, "EATeleportable")) return SendClientMessageEx(playerid, COLOR_WHITE, "You cannot teleport them");
-			if(PlayerInfo[targetplayerid][pAdmin] == 99999 && !GetPVarType(targetplayerid, "EATeleportable")) return SendClientMessageEx(playerid, COLOR_WHITE, "You cannot teleport to them");
-			GetPlayerPos(targetplayerid, plocx, plocy, plocz);
-			SetPlayerVirtualWorld(giveplayerid, PlayerInfo[targetplayerid][pVW]);
-			Streamer_UpdateEx(giveplayerid, plocx, plocy, plocz);
-			DeletePVar(giveplayerid, "BusinessesID");
-			if (GetPlayerState(giveplayerid) == 2)
-			{
-				new tmpcar = GetPlayerVehicleID(giveplayerid);
-				SetVehiclePos(tmpcar, plocx, plocy+4, plocz);
-				fVehSpeed[giveplayerid] = 0.0;
-			}
-			else
-			{
-				SetPlayerPos(giveplayerid,plocx,plocy+2, plocz);
-				SetPlayerInterior(giveplayerid, GetPlayerInterior(targetplayerid));
-				SetPlayerVirtualWorld(giveplayerid, GetPlayerVirtualWorld(targetplayerid));
-			}
+    if(IsPlayerConnected(giveplayerid) && IsPlayerConnected(targetplayerid))
+    {
+        if (PlayerInfo[playerid][pAdmin] >= 2)
+        {
+            if(GetPlayerState(giveplayerid) == PLAYER_STATE_SPECTATING || GetPlayerState(targetplayerid) == PLAYER_STATE_SPECTATING)
+            {
+                return SendClientMessageEx(playerid, COLOR_GRAD2, "Mot trong hai nguoi dang SPEC.");
+            }
+            if(giveplayerid == playerid)
+            {
+                return SendClientMessageEx(playerid, COLOR_GRAD2, "Hay su dung /gotoid de dich chuyen den do!");
+            }
+            if(targetplayerid == playerid)
+            {
+                return SendClientMessageEx(playerid, COLOR_GRAD2, "Hay su dung /gethere de keo ho den day!");
+            }
+            
+            // ĐÃ FIX: Chỉ block nếu target hoặc người bị chuyển có cấp Admin LỚN HƠN bạn. Cùng cấp giờ xài vô tư!
+            if(PlayerInfo[targetplayerid][pAdmin] > PlayerInfo[playerid][pAdmin] || PlayerInfo[giveplayerid][pAdmin] > PlayerInfo[playerid][pAdmin])
+            {
+                return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the thao tac voi Admin co cap bac cao hon minh.");
+            }
+            
+            if(GetPVarType(giveplayerid, "IsInArena"))
+            {
+                SetPVarInt(playerid, "tempPBP", giveplayerid);
+                format(string, sizeof(string), "%s (ID: %d) hien dang trong tran Paintball.\n\nBan co muon ep nguoi nay thoat ra khong?", GetPlayerNameEx(giveplayerid), giveplayerid);
+                return ShowPlayerDialogEx(playerid, PBFORCE, DIALOG_STYLE_MSGBOX, "Paintball", string, "Co", "Khong");
+            }
+            
+            // Dịch nốt mấy cái báo lỗi của Owner (99999)
+            if(PlayerInfo[giveplayerid][pAdmin] == 99999 && !GetPVarType(giveplayerid, "EATeleportable")) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong the dich chuyen lanh dao nay.");
+            if(PlayerInfo[targetplayerid][pAdmin] == 99999 && !GetPVarType(targetplayerid, "EATeleportable")) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong the dich chuyen ai do den cho lanh dao nay.");
+            
+            GetPlayerPos(targetplayerid, plocx, plocy, plocz);
+            SetPlayerVirtualWorld(giveplayerid, PlayerInfo[targetplayerid][pVW]);
+            Streamer_UpdateEx(giveplayerid, plocx, plocy, plocz);
+            DeletePVar(giveplayerid, "BusinessesID");
+            
+            if (GetPlayerState(giveplayerid) == 2)
+            {
+                new tmpcar = GetPlayerVehicleID(giveplayerid);
+                SetVehiclePos(tmpcar, plocx, plocy+4, plocz);
+                fVehSpeed[giveplayerid] = 0.0;
+            }
+            else
+            {
+                SetPlayerPos(giveplayerid, plocx, plocy+2, plocz);
+                SetPlayerInterior(giveplayerid, GetPlayerInterior(targetplayerid));
+                SetPlayerVirtualWorld(giveplayerid, GetPlayerVirtualWorld(targetplayerid));
+            }
 
-			format(string, sizeof(string), "Ban da duoc dich chuyen den %s", GetPlayerNameEx(targetplayerid));
-			SendClientMessageEx(giveplayerid, COLOR_GRAD1, string);
-			format(string, sizeof(string), "Ban da dich chuyen %s den %s", GetPlayerNameEx(giveplayerid), GetPlayerNameEx(targetplayerid));
-			SendClientMessageEx(playerid, COLOR_GRAD1, string);
-		}
-		else
-		{
-			return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong duoc phep su dung lenh do.");
-		}
-
-	}
-	else SendClientMessageEx(playerid, COLOR_GRAD1, "Invalid player specified.");
-	return 1;
+            format(string, sizeof(string), "Ban da duoc dich chuyen den %s", GetPlayerNameEx(targetplayerid));
+            SendClientMessageEx(giveplayerid, COLOR_GRAD1, string);
+            format(string, sizeof(string), "Ban da dich chuyen %s den cho %s", GetPlayerNameEx(giveplayerid), GetPlayerNameEx(targetplayerid));
+            SendClientMessageEx(playerid, COLOR_GRAD1, string);
+        }
+        else
+        {
+            return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong duoc phep su dung lenh nay.");
+        }
+    }
+    else SendClientMessageEx(playerid, COLOR_GRAD1, "Nguoi choi khong hop le hoac chua dang nhap.");
+    return 1;
 }
 
 CMD:gethere(playerid, params[])

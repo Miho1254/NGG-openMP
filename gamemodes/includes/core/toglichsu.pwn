@@ -30,40 +30,33 @@ CMD:toglichsu(playerid, params[])
 
 hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
 {
-    if(InfoDame[playerid] == true)
- 	{
-       if(issuerid != INVALID_PLAYER_ID)
-       {
-        new
-            infoString[128],
-            weaponName[24],
-            victimName[MAX_PLAYER_NAME],
-            attackerName[MAX_PLAYER_NAME];
-        GetPlayerName(playerid, victimName, sizeof (victimName));
-        GetPlayerName(issuerid, attackerName, sizeof (attackerName));
-        GetWeaponName(weaponid, weaponName, sizeof (weaponName));
-        format(infoString, sizeof(infoString), "[DAMAGE] Ban da bi {339966}%s{FFFFFF} tan cong bang {FFCC33}%s{FFFFFF} ton hai {b30707}%.02fHP", attackerName, weaponName, amount);
-        SendClientMessage(playerid, 0xFFFFFFFF, infoString);
-        }
+    if(InfoDame[playerid] == true && issuerid != INVALID_PLAYER_ID)
+    {
+        new infoString[128], weaponName[24];
+        
+        // Weapon ID 0 là đấm tay không hoặc ngã, 54 là fall damage, không có tên súng
+        if(weaponid == 0 || weaponid == 54) format(weaponName, sizeof(weaponName), "Tay Khong/Va Dap");
+        else GetWeaponName(weaponid, weaponName, sizeof(weaponName));
+
+        // Format: [Tổn hại] << -25.5 HP (Bởi: Thang_Ban | Súng: M4)
+        format(infoString, sizeof(infoString), "{FF4C4C}<< -%.1f HP {FFFFFF}| Tu: {00FFCC}%s {FFFFFF}| Vu khi: {FFCC00}%s", amount, GetPlayerNameEx(issuerid), weaponName);
+        SendClientMessage(playerid, -1, infoString);
     }
     return 1;
 }
-hook OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)//add vao OnPlayerGiveDamage
+
+hook OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)
 {
-	if(InfoDame[playerid] == true)
+    if(InfoDame[playerid] == true && damagedid != INVALID_PLAYER_ID)
     {
- 	new string[128], victim[MAX_PLAYER_NAME], attacker[MAX_PLAYER_NAME];
-    new weaponname[24];
-    
-		
-    GetPlayerName(playerid, attacker, sizeof (attacker));
-    GetPlayerName(damagedid, victim, sizeof (victim));
-    GetWeaponName(weaponid, weaponname, sizeof (weaponname));
-    
-	
-    format(string, sizeof(string), "[DAMAGE] Ban da tan cong {339966}%s{FFFFFF} bang vu khi {FFCC33}%s{FFFFFF} gay ra {b30707}%.02fDMG", victim, weaponname, amount);
-    SendClientMessage(playerid, -1, string);
-    return 1;
+        new string[128], weaponName[24];
+        
+        if(weaponid == 0 || weaponid == 54) format(weaponName, sizeof(weaponName), "Tay Khong");
+        else GetWeaponName(weaponid, weaponName, sizeof(weaponName));
+        
+        // Format: [Trúng đích] >> +25.5 DMG (Mục tiêu: Thang_Dich | Súng: M4)
+        format(string, sizeof(string), "{4EC25D}>> +%.1f DMG {FFFFFF}| Muc tieu: {00FFCC}%s {FFFFFF}| Vu khi: {FFCC00}%s", amount, GetPlayerNameEx(damagedid), weaponName);
+        SendClientMessage(playerid, -1, string);
     }
     return 1;
 }

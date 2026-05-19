@@ -609,64 +609,77 @@ hook OnPlayerUpdate(playerid) {
 
 CMD:spec(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 2 && PlayerInfo[playerid][pPWSpec] < 1 && PlayerInfo[playerid][pHelper] < 3 && !GetPVarType(playerid, "pWatchdogWatching"))
-	{
-		SendClientMessageEx(playerid, COLOR_GREY, "Ban khong duoc phep su dung lenh nay.");
-		return 1;
-	}
-	if(strcmp(params, "off", true) == 0)
-	{
-		if(Spectating[playerid] > 0 && PlayerInfo[playerid][pAdmin] >= 2 || PlayerInfo[playerid][pHelper] >= 2 && Spectating[playerid] > 0)
-		{
-		    if(GetPVarType(playerid, "pWatchdogWatching"))
-			{
-			    SendClientMessage(playerid, COLOR_WHITE, "You have stopped DM Watching.");
-				DeletePVar(playerid, "pWatchdogWatching");
-			}
-			GettingSpectated[Spectate[playerid]] = INVALID_PLAYER_ID;
-			Spectating[playerid] = 0;
-			Spectate[playerid] = INVALID_PLAYER_ID;
-			SetPVarInt(playerid, "SpecOff", 1 );
-			TogglePlayerSpectating(playerid, false);
-			SetCameraBehindPlayer(playerid);
-			StopSpectate(playerid);
-			return 1;
-		}
-		else
-		{
-			SendClientMessageEx(playerid, COLOR_GREY, "You're not spectating anyone.");
-			return 1;
-		}
-	}
+    if(PlayerInfo[playerid][pAdmin] < 2 && PlayerInfo[playerid][pPWSpec] < 1 && PlayerInfo[playerid][pHelper] < 3 && !GetPVarType(playerid, "pWatchdogWatching"))
+    {
+        SendClientMessageEx(playerid, COLOR_GREY, "Ban khong duoc phep su dung lenh nay.");
+        return 1;
+    }
+    if(strcmp(params, "off", true) == 0)
+    {
+        // Tao gom () lại cho logic nó rõ ràng, code gốc để trần nhìn ngu vãi
+        if((Spectating[playerid] > 0 && PlayerInfo[playerid][pAdmin] >= 2) || (PlayerInfo[playerid][pHelper] >= 2 && Spectating[playerid] > 0))
+        {
+            if(GetPVarType(playerid, "pWatchdogWatching"))
+            {
+                SendClientMessage(playerid, COLOR_WHITE, "Ban da ngung che do DM Watching.");
+                DeletePVar(playerid, "pWatchdogWatching");
+            }
+            GettingSpectated[Spectate[playerid]] = INVALID_PLAYER_ID;
+            Spectating[playerid] = 0;
+            Spectate[playerid] = INVALID_PLAYER_ID;
+            SetPVarInt(playerid, "SpecOff", 1);
+            TogglePlayerSpectating(playerid, false);
+            SetCameraBehindPlayer(playerid);
+            StopSpectate(playerid);
+            return 1;
+        }
+        else
+        {
+            SendClientMessageEx(playerid, COLOR_GREY, "Ban dang khong theo doi ai ca.");
+            return 1;
+        }
+    }
 
-	new giveplayerid;
-	if(sscanf(params, "u", giveplayerid)) return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /spec (playerid/off)");
-	if(IsPlayerConnected(giveplayerid))
-	{
-	    if((PlayerInfo[playerid][pHelper] >= 3 && !(2 <= PlayerInfo[giveplayerid][pHelper] <= 4)) && !GetPVarType(playerid, "pWatchdogWatching"))
-	    {
-	        SendClientMessageEx(playerid, COLOR_GREY, "You can only spectate other advisors");
-			return 1;
-		}
-		if(GetPVarType(playerid, "pWatchdogWatching") && (GetPVarInt(playerid, "pWatchdogWatching") != giveplayerid))
-		{
-		    SendClientMessageEx(playerid, COLOR_GREY, "You can only spectate the person you are DM Watching.");
-			return 1;
-		}
-		if(PlayerInfo[giveplayerid][pAdmin] == 99999 && !GetPVarType(giveplayerid, "EASpecable")) return SendClientMessageEx(playerid, COLOR_WHITE, "You cannot spectate this person.");
-		if(PlayerInfo[playerid][pAdmin] >= 4 && Spectate[giveplayerid] != INVALID_PLAYER_ID && Spectating[giveplayerid] == 1)
-		{
-			new string[128];
-			format(string, sizeof(string), "Admin %s is speccing %s", GetPlayerNameEx(giveplayerid), GetPlayerNameEx(Spectate[giveplayerid]));
-			SendClientMessageEx(playerid, COLOR_GREEN, string);
-			return 1;
-		}
-		SpectatePlayer(playerid, giveplayerid);
-		StartSpectate(playerid, giveplayerid);
-	}
-	else
-	{
-		SendClientMessageEx(playerid, COLOR_WHITE, "Target is not available.");
-	}
-	return 1;
+    new giveplayerid;
+    if(sscanf(params, "u", giveplayerid)) return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /spec [playerid / off]");
+    
+    if(IsPlayerConnected(giveplayerid))
+    {
+        if((PlayerInfo[playerid][pHelper] >= 3 && !(2 <= PlayerInfo[giveplayerid][pHelper] <= 4)) && !GetPVarType(playerid, "pWatchdogWatching"))
+        {
+            SendClientMessageEx(playerid, COLOR_GREY, "Ban chi co the theo doi cac Advisor khac.");
+            return 1;
+        }
+        if(GetPVarType(playerid, "pWatchdogWatching") && (GetPVarInt(playerid, "pWatchdogWatching") != giveplayerid))
+        {
+            SendClientMessageEx(playerid, COLOR_GREY, "Ban chi co the theo doi nguoi ma ban dang DM Watching.");
+            return 1;
+        }
+        
+        // ĐÃ FIX: Chặn spec Admin có cấp cao hơn. Bằng cấp (cùng level) thì soi vô tư!
+        if(PlayerInfo[giveplayerid][pAdmin] > PlayerInfo[playerid][pAdmin])
+        {
+            return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong the theo doi Admin co cap bac cao hon minh.");
+        }
+
+        if(PlayerInfo[giveplayerid][pAdmin] == 99999 && !GetPVarType(giveplayerid, "EASpecable")) 
+            return SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong the theo doi lanh dao nay.");
+            
+        // Nếu thằng kia đang spec thằng khác thì báo cho mình biết (Tránh bị bug đè camera)
+        if(PlayerInfo[playerid][pAdmin] >= 4 && Spectate[giveplayerid] != INVALID_PLAYER_ID && Spectating[giveplayerid] == 1)
+        {
+            new string[128];
+            format(string, sizeof(string), "Admin %s hien dang theo doi %s.", GetPlayerNameEx(giveplayerid), GetPlayerNameEx(Spectate[giveplayerid]));
+            SendClientMessageEx(playerid, COLOR_GREEN, string);
+            return 1;
+        }
+        
+        SpectatePlayer(playerid, giveplayerid);
+        StartSpectate(playerid, giveplayerid);
+    }
+    else
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "Nguoi choi khong hop le hoac chua dang nhap.");
+    }
+    return 1;
 }
