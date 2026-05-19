@@ -442,6 +442,8 @@ CMD:accept(playerid, params[])
             	else
             		SendClientMessageEx(playerid, COLOR_WHITE, "Ban bi thuong nang va duoc dua den benh vien.");
 
+                DestroyDynamic3DTextLabel(Text3D:GetPVarInt(playerid, "InjuredTL"));
+                DeletePVar(playerid, "InjuredTL");
                 KillEMSQueue(playerid);
                 DeletePVar(playerid, "Dead");
                 ResetPlayerWeaponsEx(playerid);
