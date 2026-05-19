@@ -2468,6 +2468,7 @@ CMD:cancel(playerid, params[])
 		if(vehicleid == 0) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban can phai in a valid vehicle.");
  		DeletePVar(playerid, "pGarbageRun");
 		DeletePVar(playerid, "pGarbageStage");
+		DeletePVar(playerid, "pGarbagePath");
 
  		DisablePlayerCheckpoint(playerid);
 	}

@@ -71,6 +71,7 @@ hook OnPlayerEnterCheckpoint(playerid)
 		    	
 		    	DeletePVar(playerid, "pGarbageRun");
        			DeletePVar(playerid, "pGarbageStage");
+       			DeletePVar(playerid, "pGarbagePath");
        			
        			DisablePlayerCheckpoint(playerid);
 		    	
@@ -109,7 +110,7 @@ command(garbagerun, playerid, params[])
 	        	
                 SetPVarInt(playerid, "pGarbageRun", 1);
                 DeletePVar(playerid, "pGarbageStage");
-                SetPVarInt(playerid, "pGarbagePath", random(5));
+                SetPVarInt(playerid, "pGarbagePath", random(9));
                     
                 SendClientMessageEx(playerid, COLOR_YELLOW, "Ban da bat dau di don rac, tim duong den diem dau tien cua ban.");
                 AdvanceGarbageJob(playerid);
