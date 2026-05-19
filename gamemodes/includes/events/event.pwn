@@ -654,16 +654,16 @@ CMD:editevent(playerid, params[])
 			new choice[32], opstring[64];
 			if(EventKernel[EventType] == 1)
 			{
-			    if(sscanf(params, "s[32]S[64]", choice, opstring))
-				{
-					SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /editevent [name]");
-					SendClientMessageEx(playerid, COLOR_GREY, "Available names: Jointext, Limit, Health, Armor, Gun1, Gun2, Gun3, Gun4, Gun5");
-					return 1;
-				}
-			}
-			else if(EventKernel[EventType] == 2)
+		    if(sscanf(params, "s[32]S("")[64]", choice, opstring))
 			{
-			    if(sscanf(params, "s[32]S[64]", choice, opstring))
+				SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /editevent [name]");
+				SendClientMessageEx(playerid, COLOR_GREY, "Available names: Jointext, Limit, Health, Armor, Gun1, Gun2, Gun3, Gun4, Gun5");
+				return 1;
+			}
+		}
+		else if(EventKernel[EventType] == 2)
+		{
+		    if(sscanf(params, "s[32]S("")[64]", choice, opstring))
 				{
 					SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /editevent [name]");
 					SendClientMessageEx(playerid, COLOR_GREY, "Available names: Jointext, Limit, CustomInterior, Team1Skin, Team2Skin, Team1Color, Team2Color");
@@ -684,12 +684,12 @@ CMD:editevent(playerid, params[])
 			}
 			else if(EventKernel[EventType] == 4)
 			{
-			    if(sscanf(params, "s[32]S[64]", choice, opstring))
-				{
-					SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /editevent [name]");
-					SendClientMessageEx(playerid, COLOR_GREY, "Available names: Jointext, Limit, Health, Armor, Gun1, Gun2, Gun3, Gun4, Gun5");
-					return 1;
-				}
+		    if(sscanf(params, "s[32]S("")[64]", choice, opstring))
+			{
+				SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /editevent [name]");
+				SendClientMessageEx(playerid, COLOR_GREY, "Available names: Jointext, Limit, Health, Armor, Gun1, Gun2, Gun3, Gun4, Gun5");
+				return 1;
+			}
 			}
 			else
 			{
