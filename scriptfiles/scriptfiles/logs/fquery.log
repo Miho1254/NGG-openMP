@@ -1,0 +1,1 @@
+[2020/7/19 - 19:11:27] SELECT * FROM `shop_orders` WHERE `user_id` = 9 AND `status` = 0 | Dialog ID: 8032 | SQL ID: 9
