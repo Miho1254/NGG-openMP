@@ -971,6 +971,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 		SetPVarInt(playerid, "EMSAttempt", -1);
 		ResetPlayerWeaponsEx(playerid);
 		GameTextForPlayer(playerid, " ", 0, 3);
+		SetPlayerHealth(playerid, 99999);
 
 		DestroyDynamic3DTextLabel(Text3D:GetPVarInt(playerid, "InjuredTL"));
 		DeletePVar(playerid, "InjuredTL");
@@ -988,12 +989,6 @@ public OnPlayerDeath(playerid, killerid, reason)
 			SetPVarInt(playerid, "InjuredWait", gettime() + 300);
 			SendClientMessageEx(playerid, COLOR_WHITE, "Ban da chet. Phai cho 300 giay moi co the chap nhan chet.");
 		}
-		return 1;
-	}
-	else if(GetPVarInt(playerid, "Dead") == 1)
-	{
-		KillEMSQueue(playerid);
-		ResetPlayerWeaponsEx(playerid);
 		return 1;
 	}
 
