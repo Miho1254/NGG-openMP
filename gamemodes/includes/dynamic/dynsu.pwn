@@ -417,6 +417,87 @@ CMD:osu(playerid, params[])
 	return 1;
 }
 
+CMD:addcrime(playerid, params[])
+{
+	if(PlayerInfo[playerid][pAdmin] < 4 && PlayerInfo[playerid][pASM] < 1 && !PlayerInfo[playerid][pFactionModerator]) return SendClientMessageEx(playerid, COLOR_WHITE, "SERVER: Ban khong duoc phep su dung lenh nay.");
+
+	new type, nation, name[32], jtime, fine;
+	if(sscanf(params, "dds[32]dd", type, nation, name, jtime, fine)) {
+		SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /addcrime [type] [nation] [name] [jailtime(min)] [fine]");
+		SendClientMessageEx(playerid, COLOR_GREY, "type: 1 = toi nhe, 2 = toi nang | nation: 1 = SA, 2 = NE");
+		return 1;
+	}
+	if(type < 1 || type > 2) return SendClientMessageEx(playerid, COLOR_GREY, "Type phai la 1 (toi nhe) hoac 2 (toi nang).");
+	if(nation < 1 || nation > 2) return SendClientMessageEx(playerid, COLOR_GREY, "Nation phai la 1 (SA) hoac 2 (NE).");
+	if(strlen(name) > 32) return SendClientMessageEx(playerid, COLOR_GREY, "Ten toi khong qua 32 ky tu.");
+	if(jtime < 1) return SendClientMessageEx(playerid, COLOR_GREY, "Thoi gian tu phai lon hon 0.");
+	if(fine < 0) return SendClientMessageEx(playerid, COLOR_GREY, "Tien phat khong duoc am.");
+
+	new slot = -1;
+	for(new i = 0; i < MAX_CRIMES; i++) {
+		if(arrCrimeData[i][c_iID] == 0) {
+			slot = i;
+			break;
+		}
+	}
+	if(slot == -1) return SendClientMessageEx(playerid, COLOR_GREY, "Khong con slot trong de them toi.");
+
+	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "INSERT INTO `crimesdata` (`type`, `nation`, `name`, `jailtime`, `fine`, `bail`) VALUES ('%d', '%d', '%e', '%d', '%d', '0')", type, nation, name, jtime, fine);
+	mysql_tquery(MainPipeline, szMiscArray, "OnCrimeAdded", "dsddddd", playerid, name, slot, type, nation, jtime, fine);
+	return 1;
+}
+
+forward OnCrimeAdded(playerid, name[], slot, type, nation, jtime, fine);
+public OnCrimeAdded(playerid, name[], slot, type, nation, jtime, fine)
+{
+	new insertid = cache_insert_id();
+	if(insertid == 0) return SendClientMessageEx(playerid, COLOR_GREY, "Loi khi them toi vao database.");
+
+	arrCrimeData[slot][c_iID] = insertid;
+	arrCrimeData[slot][c_iType] = type;
+	arrCrimeData[slot][c_iNation] = nation;
+	format(arrCrimeData[slot][c_szName], 32, "%s", name);
+	arrCrimeData[slot][c_iJTime] = jtime;
+	arrCrimeData[slot][c_iJFine] = fine;
+	arrCrimeData[slot][c_iBail] = 0;
+
+	format(szMiscArray, sizeof(szMiscArray), "Da them toi: %s (ID: %d, Type: %s, Nation: %s, Time: %dmin, Fine: $%s)", name, insertid, (type == 1) ? "Toi nhe" : "Toi nang", (nation == 1) ? "SA" : "NE", jtime, number_format(fine));
+	SendClientMessageEx(playerid, COLOR_LIGHTBLUE, szMiscArray);
+	return 1;
+}
+
+CMD:deletecrime(playerid, params[])
+{
+	if(PlayerInfo[playerid][pAdmin] < 4 && PlayerInfo[playerid][pASM] < 1 && !PlayerInfo[playerid][pFactionModerator]) return SendClientMessageEx(playerid, COLOR_WHITE, "SERVER: Ban khong duoc phep su dung lenh nay.");
+
+	new crimeid;
+	if(sscanf(params, "d", crimeid)) return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /deletecrime [crime id] (xem ID bang /clist)");
+
+	new slot = -1;
+	for(new i = 0; i < MAX_CRIMES; i++) {
+		if(arrCrimeData[i][c_iID] == crimeid) {
+			slot = i;
+			break;
+		}
+	}
+	if(slot == -1) return SendClientMessageEx(playerid, COLOR_GREY, "Khong tim thay toi voi ID nay.");
+
+	format(szMiscArray, sizeof(szMiscArray), "Da xoa toi: %s (ID: %d)", arrCrimeData[slot][c_szName], arrCrimeData[slot][c_iID]);
+	SendClientMessageEx(playerid, COLOR_LIGHTBLUE, szMiscArray);
+
+	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "DELETE FROM `crimesdata` WHERE `id` = '%d'", crimeid);
+	mysql_tquery(MainPipeline, szMiscArray, "OnQueryFinish", "i", SENDDATA_THREAD);
+
+	arrCrimeData[slot][c_iID] = 0;
+	arrCrimeData[slot][c_iType] = 0;
+	arrCrimeData[slot][c_iNation] = 0;
+	arrCrimeData[slot][c_szName][0] = 0;
+	arrCrimeData[slot][c_iJTime] = 0;
+	arrCrimeData[slot][c_iJFine] = 0;
+	arrCrimeData[slot][c_iBail] = 0;
+	return 1;
+}
+
 ShowCrimesList(playerid)
 {
 	szMiscArray[0] = 0;
