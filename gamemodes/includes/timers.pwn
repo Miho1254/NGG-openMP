@@ -2897,15 +2897,18 @@ ptask EMSUpdate[5000](i) {
 		if(GetPVarInt(i, "EMSAttempt") != 0)
 		{
 
-			new Float:health;
-			GetHealth(i,health);
-			if(PlayerInfo[i][mCooldown][4])
+			if(GetPVarInt(i, "Dead") != 1)
 			{
-				if(!GetPVarType(i, "_energybar")) SetPVarInt(i, "_energybar", 60);
-				if(GetPVarType(i, "_energybar") && GetPVarInt(i, "_energybar")) SetPVarInt(i, "_energybar", GetPVarInt(i, "_energybar")-1);
+				new Float:health;
+				GetHealth(i,health);
+				if(PlayerInfo[i][mCooldown][4])
+				{
+					if(!GetPVarType(i, "_energybar")) SetPVarInt(i, "_energybar", 60);
+					if(GetPVarType(i, "_energybar") && GetPVarInt(i, "_energybar")) SetPVarInt(i, "_energybar", GetPVarInt(i, "_energybar")-1);
+					else SetHealth(i, health-1);
+				}
 				else SetHealth(i, health-1);
 			}
-			else SetHealth(i, health-1);
 			if(GetPVarInt(i, "EMSAttempt") == -1)
 			{
 				// if(GetPlayerAnimationIndex(i) != 746) ClearAnimationsEx(i), PlayDeathAnimation(i);
@@ -2976,7 +2979,7 @@ ptask EMSUpdate[5000](i) {
 			}
 
 			GetHealth(i, health);
-			if(health <= 5)
+			if(health <= 5 && GetPVarInt(i, "Dead") != 1)
 			{
 				SendClientMessageEx(i, COLOR_WHITE, "Ban da bat tinh va duoc dua den benh vien.");
 				KillEMSQueue(i);

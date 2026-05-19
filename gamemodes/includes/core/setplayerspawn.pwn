@@ -280,6 +280,21 @@ SetPlayerSpawn(playerid)
 		}
 		if(GetPVarInt(playerid, "Injured") == 1)
 		{
+			if(GetPVarInt(playerid, "Dead") == 1)
+			{
+				new Float: mX, Float: mY, Float: mZ;
+				mX = GetPVarFloat(playerid, "MedicX");
+				mY = GetPVarFloat(playerid, "MedicY");
+				mZ = GetPVarFloat(playerid, "MedicZ");
+				SetPlayerPos(playerid, mX, mY, mZ);
+				SetPlayerVirtualWorld(playerid, GetPVarInt(playerid, "MedicVW"));
+				SetPlayerInterior(playerid, GetPVarInt(playerid, "MedicInt"));
+				TogglePlayerControllable(playerid, 0);
+				SetPlayerHealth(playerid, 100);
+				ApplyAnimation(playerid, "CRACK", "crckdeth2", 4.0, 1, 0, 0, 0, 0, 1);
+				SetCameraBehindPlayer(playerid);
+				return 1;
+			}
 		    switch(aLastShotWeapon[playerid])
 			{
 				case WEAPON_BRASSKNUCKLE, WEAPON_GOLFCLUB, WEAPON_BAT, WEAPON_SHOVEL, WEAPON_POOLSTICK, WEAPON_DILDO, WEAPON_DILDO2, WEAPON_VIBRATOR,
