@@ -385,7 +385,7 @@ CMD:buygun(playerid, params[])
 	new business = InBusiness(playerid);
 
 	if(business == INVALID_BUSINESS_ID || Businesses[business][bType] != BUSINESS_TYPE_GUNSHOP) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong dung tai a gunshop!");
-	if(PlayerInfo[playerid][pConnectHours] < 8) return SendClientMessageEx(playerid, COLOR_WHITE, "You have not played enough to obtain a weapon!");
+	if(!CanPlayerBuyGuns(playerid)) return SendClientMessageEx(playerid, COLOR_WHITE, "You have not played enough to obtain a weapon!");
 
 	ShowAmmunationDialog(playerid);
 

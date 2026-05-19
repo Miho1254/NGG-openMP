@@ -2047,7 +2047,7 @@ CMD:trunktake(playerid, params[]) {
 	if(PlayerInfo[playerid][pAccountRestricted] != 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Tai khoan cua ban dang bi han che!");
 	else if(GetPVarType(playerid, "IsInArena")) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong the lam dieu nay khi dang trong dau truong!");
 	else if(GetPVarInt( playerid, "EventToken") != 0) return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong the lam dieu nay khi dang trong su kien.");
-	else if(PlayerInfo[playerid][pConnectHours] < 2 || PlayerInfo[playerid][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay, vi ban dang bi han che su dung vu khi!");
+	else if(IsPlayerWeaponRestricted(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay, vi ban dang bi han che su dung vu khi!");
 	else if(GetPVarInt(playerid, "GiveWeaponTimer") >= 1)
 	{
 		new szMessage[59];
@@ -2313,7 +2313,7 @@ CMD:getgun(playerid, params[])
 		{
 			if(GetPlayerSQLId(playerid) == HouseInfo[i][hOwnerID] && IsPlayerInRangeOfPoint(playerid, 50, HouseInfo[i][hInteriorX], HouseInfo[i][hInteriorY], HouseInfo[i][hInteriorZ]) && GetPlayerVirtualWorld(playerid) == HouseInfo[i][hIntVW] && GetPlayerInterior(playerid) == HouseInfo[i][hIntIW])
 			{
-				if(PlayerInfo[playerid][pConnectHours] < 2 || PlayerInfo[playerid][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay, vi ban dang bi han che su dung vu khi!");
+				if(IsPlayerWeaponRestricted(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay, vi ban dang bi han che su dung vu khi!");
 
 				if(sscanf(params, "d", slot))
 				{

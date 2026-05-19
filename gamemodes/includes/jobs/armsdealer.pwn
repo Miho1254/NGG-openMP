@@ -125,7 +125,7 @@ CMD:sellgun(playerid, params[])
 		{
 			if(IsPlayerInAnyVehicle(id)) return SendClientMessage(playerid, COLOR_GRAD1, "Ban khong the ban sung cho ai do trong xe!");
 			if(!ProxDetectorS(8.0, playerid, id)) return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong gan nguoi choi do.");
-			if(PlayerInfo[id][pConnectHours] < 2 || PlayerInfo[id][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GREY, "Nguoi nay khong the su dung vu khi!");
+			if(IsPlayerWeaponRestricted(id)) return SendClientMessageEx(playerid, COLOR_GREY, "Nguoi nay khong the su dung vu khi!");
 
 			if(strcmp(weapon, "Flowers", true) == 0 && PlayerInfo[playerid][pArmsSkill] >= 0)
 			{

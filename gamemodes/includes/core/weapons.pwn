@@ -138,6 +138,34 @@ stock IsWeaponPrimary(weaponid) {
 	return false;
 }
 
+stock IsPlayerNewbie(playerid) {
+	return (PlayerInfo[playerid][pConnectHours] < 2);
+}
+
+stock IsPlayerWeaponRestricted(playerid) {
+	return (PlayerInfo[playerid][pConnectHours] < 2 || PlayerInfo[playerid][pWRestricted] > 0);
+}
+
+stock CanPlayerBuyGuns(playerid) {
+	return (PlayerInfo[playerid][pConnectHours] >= 8);
+}
+
+stock KickNewbieWeaponHacker(playerid) {
+	new WeaponName[32];
+	GetWeaponName(GetPlayerWeapon(playerid), WeaponName, sizeof(WeaponName));
+	new String[128];
+	format(String, sizeof(String), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName);
+	ABroadCast(COLOR_LIGHTRED, String, 2);
+	SendClientMessage(playerid, COLOR_LIGHTRED, String);
+	SetPVarInt(playerid, "_HACK_WARNINGS", 0);
+	ResetPlayerWeaponsEx(playerid);
+	new playerip[32];
+	GetPlayerIp(playerid, playerip, sizeof(playerip));
+	format(String, sizeof(String), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
+	Log("logs/HackVuKhi.log", String);
+	SetTimerEx("KickEx", 1000, 0, "i", playerid);
+}
+
 forward SetPlayerWeapons(playerid);
 public SetPlayerWeapons(playerid)
 {
@@ -362,24 +390,7 @@ OnPlayerChangeWeapon(playerid, newweapon)
 		}
 		else if( PlayerInfo[playerid][pGuns][1] != 4 && GetPlayerWeapon( playerid ) == 4)
 		{
-		    if(PlayerInfo[playerid][pLevel] < 2 || PlayerInfo[playerid][pMember] != 8)
-		    {
-			    new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+		    if(IsPlayerNewbie(playerid) || PlayerInfo[playerid][pMember] != 8) KickNewbieWeaponHacker(playerid);
 			ExecuteHackerAction( playerid, newweapon );
 		}
 		else if( PlayerInfo[playerid][pGuns][1] != 5 && GetPlayerWeapon( playerid ) == 5)
@@ -400,46 +411,12 @@ OnPlayerChangeWeapon(playerid, newweapon)
         }
         else if( PlayerInfo[playerid][pGuns][1] != 9 && GetPlayerWeapon( playerid ) == 9)
         {
-            if(PlayerInfo[playerid][pLevel] < 2)
-		    {
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
 			ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][2] != 22 && GetPlayerWeapon( playerid ) == 22)
         {
-            if(PlayerInfo[playerid][pLevel] < 2)
-		    {
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][2] != 23 && GetPlayerWeapon( playerid ) == 23)
@@ -447,24 +424,7 @@ OnPlayerChangeWeapon(playerid, newweapon)
             if(IsACop(playerid) || PlayerInfo[playerid][pMember] == 4 && PlayerInfo[playerid][pDivision] == 2 || PlayerInfo[playerid][pMember] == 4 && PlayerInfo[playerid][pRank] >= 5) {}
             else
             {
-            	if(PlayerInfo[playerid][pLevel] < 2)
-			    {
-			    new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-				}
+            	if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             	ExecuteHackerAction( playerid, newweapon );
             }
         }
@@ -473,24 +433,7 @@ OnPlayerChangeWeapon(playerid, newweapon)
             if(IsACop(playerid)) {}
             else
             {
-                if(PlayerInfo[playerid][pLevel] < 2)
-			    {
-			    	new WeaponName[32];
-					GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-					new String[128];
-		            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-					ABroadCast( COLOR_LIGHTRED, String, 2 );
-					SendClientMessage(playerid, COLOR_LIGHTRED, String );
-					SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-					
-					ResetPlayerWeaponsEx(playerid);
-					new playerip[32];
-					GetPlayerIp(playerid, playerip, sizeof(playerip));
-					format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-					
-					Log("logs/HackVuKhi.log", String);
-					SetTimerEx("KickEx", 1000, 0, "i", playerid);
-				}
+                if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             	ExecuteHackerAction( playerid, newweapon );
             }
         }
@@ -499,222 +442,53 @@ OnPlayerChangeWeapon(playerid, newweapon)
             if(IsACop(playerid)) {}
             else
             {
-                if(PlayerInfo[playerid][pLevel] < 2)
-			    {
-				    new WeaponName[32];
-					GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-					new String[128];
-		            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-					ABroadCast( COLOR_LIGHTRED, String, 2 );
-					SendClientMessage(playerid, COLOR_LIGHTRED, String );
-					SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-					
-					ResetPlayerWeaponsEx(playerid);
-					new playerip[32];
-					GetPlayerIp(playerid, playerip, sizeof(playerip));
-					format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-					
-					Log("logs/HackVuKhi.log", String);
-					SetTimerEx("KickEx", 1000, 0, "i", playerid);
-				}
+                if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             	ExecuteHackerAction( playerid, newweapon );
             }
         }
         else if( PlayerInfo[playerid][pGuns][3] != 26 && GetPlayerWeapon( playerid ) == 26)
         {
-            if(PlayerInfo[playerid][pLevel] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][3] != 27 && GetPlayerWeapon( playerid ) == 27)
         {
-            if(PlayerInfo[playerid][pLevel] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][4] != 28 && GetPlayerWeapon( playerid ) == 28)
         {
-            if(PlayerInfo[playerid][pLevel] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][4] != 29 && GetPlayerWeapon( playerid ) == 29)
         {
-            if(PlayerInfo[playerid][pConnectHours] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][5] != 30 && GetPlayerWeapon( playerid ) == 30)
         {
-            if(PlayerInfo[playerid][pConnectHours] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][4] != 32 && GetPlayerWeapon( playerid ) == 32)
         {
-            if(PlayerInfo[playerid][pConnectHours] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][5] != 31 && GetPlayerWeapon( playerid ) == 31)
         {
-            if(PlayerInfo[playerid][pConnectHours] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][6] != 33 && GetPlayerWeapon( playerid ) == 33)
         {
-            if(PlayerInfo[playerid][pConnectHours] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][6] != 34 && GetPlayerWeapon( playerid ) == 34)
         {
-            if(PlayerInfo[playerid][pConnectHours] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][7] != 35 && GetPlayerWeapon( playerid ) == 35)
@@ -848,44 +622,12 @@ OnPlayerChangeWeapon(playerid, newweapon)
         }
         else if( PlayerInfo[playerid][pGuns][9] != 41 && GetPlayerWeapon( playerid ) == 41)
         {
-            if(PlayerInfo[playerid][pConnectHours] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][9] != 42 && GetPlayerWeapon( playerid ) == 42)
         {
-            if(PlayerInfo[playerid][pConnectHours] < 2)
-    		{
-		    	new WeaponName[32];
-				GetWeaponName(newweapon, WeaponName, sizeof(WeaponName));
-				new String[128];
-	            format( String, sizeof( String ), "AdmCmd: %s da bi kick boi he thong, ly do: Hack vu khi (%s).", GetPlayerNameEx(playerid), WeaponName );
-				ABroadCast( COLOR_LIGHTRED, String, 2 );
-				SendClientMessage(playerid, COLOR_LIGHTRED, String );
-				SetPVarInt(playerid, "_HACK_WARNINGS", 0 );
-				ResetPlayerWeaponsEx(playerid);
-				new playerip[32];
-				GetPlayerIp(playerid, playerip, sizeof(playerip));
-				format( String, sizeof( String ), "AdmCmd: %s (IP:%s) nghi van: Hack vu khi (%s)", GetPlayerNameEx(playerid), playerip, WeaponName);
-				
-				Log("logs/HackVuKhi.log", String);
-				SetTimerEx("KickEx", 1000, 0, "i", playerid);
-			}
+            if(IsPlayerNewbie(playerid)) KickNewbieWeaponHacker(playerid);
             ExecuteHackerAction( playerid, newweapon );
         }
         else if( PlayerInfo[playerid][pGuns][9] != 43 && GetPlayerWeapon( playerid ) == 43)
@@ -1183,7 +925,7 @@ CMD:giveweapon(playerid, params[])
 		SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong the dua vu khi cho nguoi khac to chuc cua ban!");
 		return 1;
 	}
-	if(PlayerInfo[giveplayerid][pConnectHours] < 2 || PlayerInfo[giveplayerid][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GRAD2, "Nguoi nay hien dang bi han che su dung vu khi.");
+	if(IsPlayerWeaponRestricted(giveplayerid)) return SendClientMessageEx(playerid, COLOR_GRAD2, "Nguoi nay hien dang bi han che su dung vu khi.");
 	if(IsPlayerInAnyVehicle(giveplayerid)) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban can xuong phuong tien moi co the su dung lenh nay.");
 	if(strcmp(weapon, "sdpistol", true) == 0)
 	{

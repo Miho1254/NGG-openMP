@@ -1880,7 +1880,7 @@ CMD:cgun(playerid, params[]) {
 	new box, title[32];
 	if(!ValidGroup(PlayerInfo[playerid][pMember])) return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban can phai apart of nhom to use this command!");
 	if(PlayerInfo[playerid][pAccountRestricted] != 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Your account is restricted!");
-	if(PlayerInfo[playerid][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "You can't take weapons out as you're currently weapon restricted!");
+	if(IsPlayerWeaponRestricted(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD1, "You can't take weapons out as you're currently weapon restricted!");
 	if(PlayerBusy(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay ngay bay gio.");
 	GetCrateBox(playerid, box, 2.0);
 	if(box == -1) return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong dung ganany crate boxes.");

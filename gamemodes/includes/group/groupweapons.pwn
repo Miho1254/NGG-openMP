@@ -111,7 +111,7 @@ Dialog:weapon_withdraw(playerid, response, listitem, inputtext[]) {
 	if(response) {
 		szMiscArray[0] = 0;
 		if(PlayerInfo[playerid][pAccountRestricted] != 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Your account is restricted!");
-		if(PlayerInfo[playerid][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "You can't take weapons out as you're currently weapon restricted!");
+		if(IsPlayerWeaponRestricted(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD1, "You can't take weapons out as you're currently weapon restricted!");
 		new GunID = arrGroupData[group][g_iLockerGuns][listitem];
 
 		if(!GunID) return SendClientMessageEx(playerid, COLOR_WHITE, "Theres no weapon assigned to that slot!"), WeaponMenu(playerid, PlayerInfo[playerid][pMember]);
@@ -537,7 +537,7 @@ CMD:allow(playerid, params[]) {
 	if(!LockerReq[target][0]) return SendClientMessageEx(playerid, COLOR_GRAD2, "%s hasn't requested to withdraw a weapon!", GetPlayerNameEx(target));
 	if(LockerReq[target][2] < gettime()) return SendClientMessageEx(playerid, COLOR_GRAD2, "%s's request either expired or one wasn't made!", GetPlayerNameEx(target));
 	if(PlayerInfo[target][pAccountRestricted] != 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Unable to process weapon - The player is restricted.");
-	if(PlayerInfo[target][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Unable to process weapon - The player is currently weapon restricted!");
+	if(IsPlayerWeaponRestricted(target)) return SendClientMessageEx(playerid, COLOR_GRAD1, "Unable to process weapon - The player is currently weapon restricted!");
 	if(PlayerBusy(playerid) || PlayerInfo[target][pJailTime] > 0 || PlayerCuffed[target] != 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Unable to process weapon - The player is currently busy!");
 	for(new i; i < MAX_GROUPS; i++)
 	{

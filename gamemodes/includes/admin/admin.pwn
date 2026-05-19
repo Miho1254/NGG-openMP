@@ -308,7 +308,7 @@ CMD:givegun(playerid, params[])
             { SendClientMessageEx(playerid, COLOR_GRAD1, "sai ID vu khi!"); return 1; }
         if(IsPlayerConnected(playa))
 		{
-            if((PlayerInfo[playa][pLevel] < 2 || PlayerInfo[playa][pWRestricted] > 0) && gun != 46 && gun != 43) return SendClientMessageEx(playerid, COLOR_GRAD2, "Nguoi nay hien tai dang bi gioi han cam vu khi");
+            if((IsPlayerWeaponRestricted(playa)) && gun != 46 && gun != 43) return SendClientMessageEx(playerid, COLOR_GRAD2, "Nguoi nay hien tai dang bi gioi han cam vu khi");
 			if(PlayerInfo[playa][pAccountRestricted] != 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong the lam dieu nay voi nguoi dang bi han che su dung chuc nang tai khoan!");
 		    if(playa != INVALID_PLAYER_ID && gun <= 20 || gun >= 22) {
                 PlayerInfo[playa][pGuns][GetWeaponSlot(gun)] = gun;
@@ -4139,7 +4139,7 @@ CMD:setstats(playerid, params[])
 				}
 				case 38:
 				{
-					if(PlayerInfo[giveplayerid][pConnectHours] >= 2) {
+					if(!IsPlayerNewbie(giveplayerid)) {
 						PlayerInfo[giveplayerid][pWRestricted] = amount;
 						if(amount) ResetPlayerWeaponsEx(giveplayerid);
 						format(string, sizeof(string), "   %s's(%d) Weapon Restricted Time has been set to %d.", GetPlayerNameEx(giveplayerid), GetPlayerSQLId(giveplayerid), amount);
@@ -4499,7 +4499,7 @@ CMD:setmystat(playerid, params[])
 			}
 		case 38:
 			{
-				if(PlayerInfo[playerid][pConnectHours] >= 2) {
+				if(!IsPlayerNewbie(playerid)) {
 					PlayerInfo[playerid][pWRestricted] = amount;
 					format(string, sizeof(string), "   %s's Weapon Restricted Time has been set to %d.", GetPlayerNameEx(playerid), amount);
 				}

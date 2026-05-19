@@ -2810,7 +2810,7 @@ stock GiftPlayer(playerid, giveplayerid, gtype = 2) // Default is the normal gif
 				new gift = Random(1, 12);
 				if(gift == 1)
 				{
-					if(PlayerInfo[giveplayerid][pLevel] < 2 || PlayerInfo[giveplayerid][pWRestricted] > 0) return GiftPlayer(playerid, giveplayerid);
+					if(IsPlayerWeaponRestricted(giveplayerid)) return GiftPlayer(playerid, giveplayerid);
 					return GiftPlayer(playerid, giveplayerid);
 					/* GivePlayerValidWeapon(giveplayerid, 27, 100);
 					GivePlayerValidWeapon(giveplayerid, 24, 100);

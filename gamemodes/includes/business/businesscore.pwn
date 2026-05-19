@@ -2620,7 +2620,7 @@ CMD:addmaterials(playerid, params[])
 	if (InBusiness(playerid) != PlayerInfo[playerid][pBusiness]) {
 		return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong dung taiside the business!");
 	}
-	if(PlayerInfo[buyerid][pConnectHours] < 2 || PlayerInfo[buyerid][pWRestricted] > 0) {
+	if(IsPlayerWeaponRestricted(buyerid)) {
 		return SendClientMessageEx(playerid, COLOR_GREY, "That player is currently weapon restricted!");
 	}
 	new b = InBusiness(playerid);

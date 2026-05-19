@@ -6,7 +6,7 @@ CMD:buygun(playerid, params[])
 	new business = InBusiness(playerid);
 
 	if(business == INVALID_BUSINESS_ID || Businesses[business][bType] != BUSINESS_TYPE_GUNSHOP) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong dung tai cua hang vu khi!");
-	if(PlayerInfo[playerid][pConnectHours] < 8) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban can online du 8h de co the mua vu khi!");
+	if(!CanPlayerBuyGuns(playerid)) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban can online du 8h de co the mua vu khi!");
 
 	format(szMiscArray, sizeof(szMiscArray), "Weapon\tPrice\n9mm Pistol\t$%s\nPump Shotgun\t$%s\nDeagle\t$%s", number_format(GunPrices[0]), number_format(GunPrices[1]), number_format(GunPrices[2]));
 	ShowPlayerDialogEx(playerid, DIALOG_AMMUNATION_GUNS, DIALOG_STYLE_TABLIST_HEADERS, "Ammunation Menu - Mua vu khi", szMiscArray, "Chon", "Thoat");

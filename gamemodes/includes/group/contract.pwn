@@ -333,7 +333,7 @@ CMD:order(playerid, params[])
 	    if(IsPlayerInAnyVehicle(playerid)) return SendClientMessageEx(playerid, COLOR_GREY, "You cannot do this right now.");
 		if(IsPlayerInRangeOfPoint(playerid, 4.0, 63.973995, 1973.618774, -68.786064))
 		{
-			if(PlayerInfo[playerid][pLevel] < 2 || PlayerInfo[playerid][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay, vi ban dang bi han che su dung vu khi!");
+			if(IsPlayerWeaponRestricted(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay, vi ban dang bi han che su dung vu khi!");
 			new string[128];
 			format(string, sizeof(string), "Health and Armour\t\t $2000\nWeapons\nUniform\nName Change");
 			ShowPlayerDialogEx(playerid, DIALOG_ORDER_HMA1, DIALOG_STYLE_LIST, "HMA Order Weapons", string, "Order", "Cancel");

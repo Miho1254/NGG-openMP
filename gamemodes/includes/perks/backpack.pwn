@@ -258,7 +258,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 						ShowBackpackMenu(playerid, DIALOG_BNARCOTICS, "- {02B0F5}Select a narcotic");
 					}
 					case 2: { // Guns
-						if(PlayerInfo[playerid][pWRestricted] || PlayerInfo[playerid][pAccountRestricted]) return SendClientMessageEx(playerid, COLOR_GRAD2, "You cannot use this option while being restricted.");
+						if(IsPlayerWeaponRestricted(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD2, "You cannot use this option while being restricted.");
 						ShowBackpackMenu(playerid, DIALOG_BGUNS, "- {02B0F5}Select a weapon");
 					}
 					case 3: { // Energy Bars

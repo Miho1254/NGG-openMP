@@ -357,7 +357,7 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 
 		if(PlayerInfo[playerid][pAccountRestricted] == 1 || PlayerInfo[damagedid][pAccountRestricted] == 1) return 1;
 		if(PlayerInfo[playerid][pHospital] == 1 || PlayerInfo[damagedid][pHospital] == 1) return 1;
-		if(!IsACop(playerid) && GetPVarInt(playerid, "EventToken") == 0 && !GetPVarType(playerid, "IsInArena") && (inSafeZone{playerid} || PlayerInfo[playerid][pConnectHours] < 2 || PlayerInfo[damagedid][pConnectHours] < 2 || inSafeZone{damagedid})) {
+		if(!IsACop(playerid) && GetPVarInt(playerid, "EventToken") == 0 && !GetPVarType(playerid, "IsInArena") && (inSafeZone{playerid} || IsPlayerNewbie(playerid) || IsPlayerNewbie(damagedid) || inSafeZone{damagedid})) {
 			if(pTazer{playerid} != 1) {
 				
 				SendClientMessage(playerid, -1, "Khong duoc tan cong trong khu vuc SafeZone/Newbie");
@@ -587,7 +587,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 			if(armour < 0.0) SetArmour(playerid, 0.0), GetArmour(playerid, armour);
 			if(armour > 150.0) SetArmour(playerid, 150.0), GetArmour(playerid, armour);
 		}
-		if(PlayerInfo[playerid][pConnectHours] <= 2) return 1;
+		if(IsPlayerNewbie(playerid)) return 1;
 		if(PlayerInfo[playerid][pHospital] == 1) return 1;
 		if(GetPVarInt(playerid, "PlayerCuffed") == 1) return 1;
 

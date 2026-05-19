@@ -385,7 +385,7 @@ PayDay(i) {
 			PlayerInfo[i][pConnectSeconds] = 0;
 			PlayerInfo[i][pPayCheck] = 0;
 			if(++PlayerInfo[i][pConnectHours] == 2) {
-				SendClientMessageEx(i, COLOR_LIGHTRED, "Bay gio ban co the so huu/ su dung vu khi!");
+				SendClientMessageEx(i, COLOR_LIGHTRED, "Bay gio ban co the so huu/ su dung vu khi! (Gioi han newbie da duoc go bo)");
 			}
 			if(PlayerInfo[i][pDonateRank] > 0 && ++PlayerInfo[i][pPayDayHad] >= 5) {
 				PlayerInfo[i][pExp]++;

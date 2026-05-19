@@ -1701,7 +1701,7 @@ CMD:tazer(playerid, params[])
 	if(IsACop(playerid))
 	{
 		new string[128];
-		if(PlayerInfo[playerid][pConnectHours] < 2 || PlayerInfo[playerid][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GRAD2, "Hien tai ban dang bi han che su dung vu khi nen khong the su dung lenh nay!");
+		if(IsPlayerWeaponRestricted(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD2, "Hien tai ban dang bi han che su dung vu khi nen khong the su dung lenh nay!");
 
 		if(IsPlayerInAnyVehicle(playerid))
 		{

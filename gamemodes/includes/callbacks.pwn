@@ -3711,7 +3711,7 @@ public OnPlayerEnterCheckpoint(playerid)
 				    SendClientMessageEx(playerid, COLOR_LIGHTBLUE, string);
 					if(truckdeliver == 5) // Weapons
 					{
-						if(PlayerInfo[playerid][pConnectHours] >= 2 && PlayerInfo[playerid][pWRestricted] <= 0)
+						if(!IsPlayerWeaponRestricted(playerid))
 						{
 							switch(level) {
 								case 0 .. 99: GivePlayerValidWeapon(playerid, WEAPON_BAT);

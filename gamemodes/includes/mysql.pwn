@@ -792,7 +792,7 @@ public OnQueryFinish(resultid, extraid, handleid)
 					SetPVarInt(extraid, "RestartKick", 1);
 					return OnPlayerStatsUpdate(extraid);
 				}
-				ABroadCast(COLOR_YELLOW, "{AA3333}[KM] {FFFF00}Lien he Zalo: 0867016836 de duoc tu van ve Eshop.", 1);
+				ABroadCast(COLOR_YELLOW, "{AA3333}[THONG BAO] {FFFF00}DA LUU LAI DU LIEU THANH CONG.", 1);
 				//g_mysql_DumpAccounts();
 
 				SetTimer("FinishMaintenance", 1500, false);
@@ -807,7 +807,7 @@ public OnQueryFinish(resultid, extraid, handleid)
 						OnPlayerStatsUpdate(i);
 					}
 				}
-				ABroadCast(COLOR_YELLOW, "{AA3333}[KM] {FFFF00}Lien he Zalo: 0867016836 de duoc tu van ve Eshop.", 2);
+				ABroadCast(COLOR_YELLOW, "{AA3333}[THONG BAO] {FFFF00}DA LUU LAI DU LIEU THANH CONG.", 1);
 				print("Account Saving Complete");
 				foreach(new i: Player)
 				{
