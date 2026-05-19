@@ -2859,7 +2859,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			SendClientMessageEx(playerid, COLOR_YELLOW, "VIP: Ban khong co du token de lay!");
 			return 1;
 		}
-		if(PlayerInfo[playerid][pLevel] < 2 || PlayerInfo[playerid][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay, vi ban dang bi han che su dung vu khi!");
+		if(IsPlayerWeaponRestricted(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay, vi ban dang bi han che su dung vu khi!");
 		//if(!CanGetVIPWeapon(playerid) && (listitem < 4 || listitem == 8)) return SendClientMessageEx(playerid, COLOR_WHITE, "You can no longer withdraw anymore VIP weapons today, wait until tomorrow!");
 		switch( listitem )
 		{
@@ -3096,7 +3096,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 	if(dialogid == 3498) //Famed Weapon Locker
 	{
 		if(!response) return SendClientMessageEx(playerid, COLOR_GRAD2, "You exited the famed locker.");
-		if(PlayerInfo[playerid][pLevel] < 2 || PlayerInfo[playerid][pWRestricted] > 0) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay, vi ban dang bi han che su dung vu khi!");
+		if(IsPlayerWeaponRestricted(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay, vi ban dang bi han che su dung vu khi!");
 
 		switch(listitem)
 		{

@@ -568,7 +568,7 @@ task ProductionUpdate[300000]()
 		{
 			SendClientMessageEx(i, COLOR_LIGHTBLUE, "Neu ban can giup do hay dung lenh (/yeucautrogiup) de duoc Advisor den ho tro.");
 		}
-		if(PlayerInfo[i][pLevel] < 2) {
+		if(IsPlayerNewbie(i)) {
 			SendClientMessageEx(i, COLOR_LIGHTRED, "[HAN CHE] Ban la nguoi choi moi nen se bi han che vu khi.");
 		}
 
