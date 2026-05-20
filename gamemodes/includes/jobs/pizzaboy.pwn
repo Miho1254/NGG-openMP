@@ -114,7 +114,7 @@ CMD:getpizza(playerid, params[]) {
 		format(str, sizeof(str), "Vui long doi %d giay nua de tiep tuc lay banh.", GetPVarInt(playerid, "PizzaCoolDown")-gettime());
 		SendClientMessageEx(playerid,COLOR_GREY, str);
 	}
-	else if(IsPlayerInRangeOfPoint(playerid, 3.0, -1713.961425, 1348.545166, 7.180452)) { // Pier 69
+	else if(IsPlayerInRangeOfPoint(playerid, 5.0, -1713.961425, 1348.545166, 7.180452)) { // Pier 69
 
 		new rand = random(MAX_HOUSES - 1), i;
 		while(!(HouseInfo[rand][hOwned] && IsInRangeOfPoint(HouseInfo[rand][hExteriorX], HouseInfo[rand][hExteriorY], HouseInfo[rand][hExteriorZ], -1713.961425, 1348.545166, 7.180452, 1000.0) && HouseInfo[rand][hExtIW] == PlayerInfo[playerid][pVW] && HouseInfo[rand][hExtVW] == PlayerInfo[playerid][pInt])) {
