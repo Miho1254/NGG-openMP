@@ -2900,6 +2900,18 @@ ptask EMSUpdate[5000](i) {
 			new Float:health;
 			GetHealth(i,health);
 
+			// Anti ESC bug: force animation + strip weapons
+			if(GetPVarInt(i, "Dead") == 1)
+			{
+				if(GetPlayerWeapon(i) != 0) SetPlayerArmedWeapon(i, 0);
+				ApplyAnimation(i, "CRACK", "crckdeth2", 4.0, 1, 0, 0, 0, 0, 1);
+			}
+			else
+			{
+				if(GetPlayerWeapon(i) != 0) SetPlayerArmedWeapon(i, 0);
+				ApplyAnimation(i, "CRACK", "crckdeth2", 4.0, 1, 0, 0, 0, 0, 1);
+			}
+
 			if(GetPVarInt(i, "Dead") != 1)
 			{
 				if(PlayerInfo[i][mCooldown][4])
@@ -2936,6 +2948,22 @@ ptask PlayerMicroBeat[500](i) {
 	if(_vhudVisible[i] == 1 && !IsPlayerInAnyVehicle(i))
 	{
 		HideVehicleHUDForPlayer(i);
+	}
+
+	// Fall out of world check for ALL players
+	if(GetPlayerState(i) == PLAYER_STATE_ONFOOT || GetPlayerState(i) == PLAYER_STATE_DRIVER || GetPlayerState(i) == PLAYER_STATE_PASSENGER)
+	{
+		new Float:_fX, Float:_fY, Float:_fZ;
+		GetPlayerPos(i, _fX, _fY, _fZ);
+		if(_fZ < -900.0 || _fZ > 90000.0)
+		{
+			if(GetPVarInt(i, "Injured") == 1 || GetPVarInt(i, "Dead") == 1)
+			{
+				KillEMSQueue(i);
+				DeletePVar(i, "Dead");
+			}
+			SetPlayerHealth(i, 0);
+		}
 	}
 
 	switch(GetPlayerState(i))

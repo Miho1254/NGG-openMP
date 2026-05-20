@@ -5182,6 +5182,11 @@ public OnPlayerText(playerid, text[])
 		SendClientMessageEx(playerid, COLOR_RED, "Ban chua dang nhap.");
 		return 0;
 	}
+	if(GetPVarInt(playerid, "Dead") == 1)
+	{
+		SendClientMessageEx(playerid, COLOR_GREY, "Ban da chet, khong the noi chuyen.");
+		return 0;
+	}
 	if(server_restaring) {
 		SendClientMessage(playerid, -1, "Server dang bao tri, vui long thoat khoi tro choi");
 		return 0;
