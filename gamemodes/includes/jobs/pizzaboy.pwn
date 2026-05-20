@@ -96,12 +96,12 @@ CMD:getpizza(playerid, params[]) {
 		SendClientMessageEx(playerid,COLOR_GREY,"Ban khong dung tai diem nhan banh pizza!");
 	}
 	else if(IsPlayerInRangeOfPoint(playerid, 5.0, -1713.961425, 1348.545166, 7.180452)) { // Pier 69 (SF)
-		new houseid = Pizza_FindHouse(playerid, -1713.961425, 1348.545166, 7.180452, 1000.0);
+		new houseid = Pizza_FindHouse(playerid, -1713.961425, 1348.545166, 7.180452, 500.0);
 		if(houseid == -1) return SendClientMessageEx(playerid, COLOR_GREY, "Khong tim thay nha nao phu hop gan day.");
 		Pizza_StartDelivery(playerid, houseid);
 	}
 	else if(IsPlayerInRangeOfPoint(playerid, 5.0, 2103.6714,-1785.5222,12.9849)) { // Idlewood (LS)
-		new houseid = Pizza_FindHouse(playerid, 2103.6714, -1785.5222, 12.9849, 1000.0);
+		new houseid = Pizza_FindHouse(playerid, 2103.6714, -1785.5222, 12.9849, 500.0);
 		if(houseid == -1) return SendClientMessageEx(playerid, COLOR_GREY, "Khong tim thay nha nao phu hop gan day.");
 		Pizza_StartDelivery(playerid, houseid);
 	}
