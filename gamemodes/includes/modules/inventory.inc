@@ -1348,9 +1348,23 @@ Function: InventoryTimer_(playerid)
 
 Function: TakeAmmoDeathPlayer(playerid)
 {
-    // Clear equipped weapons on death — player must re-equip from /balo
+    // Sync ammo from equip [1] back to bag [0] before clearing
     for(new i = 0; i < 7; i++)
     {
+        if(CharacterInfo[playerid][1][cb_ItemID][i] != INVALID_OBJECT_ID)
+        {
+            new itemid = CharacterInfo[playerid][1][cb_ItemID][i];
+            new currentAmmo = CharacterInfo[playerid][1][cb_ItemAmount][i];
+            for(new k = 0; k < MAX_PLAYER_CB_ITEM; k++)
+            {
+                if(CharacterInfo[playerid][0][cb_ItemID][k] == itemid)
+                {
+                    CharacterInfo[playerid][0][cb_ItemAmount][k] = currentAmmo;
+                    CharacterInfo[playerid][0][cb_ItemWeight][k] = GetItemWeight(itemid) * currentAmmo;
+                    break;
+                }
+            }
+        }
         CharacterInfo[playerid][1][cb_ItemID][i] = INVALID_OBJECT_ID;
         CharacterInfo[playerid][1][cb_ItemWeight][i] = 0.0;
         CharacterInfo[playerid][1][cb_ItemDurability][i] = 0;
@@ -4276,6 +4290,18 @@ stock Balo_UnequipWeapon(playerid, itemid)
     {
         if(CharacterInfo[playerid][1][cb_ItemID][i] == itemid)
         {
+            // Sync ammo from equip [1] back to bag [0]
+            new currentAmmo = CharacterInfo[playerid][1][cb_ItemAmount][i];
+            for(new k = 0; k < MAX_PLAYER_CB_ITEM; k++)
+            {
+                if(CharacterInfo[playerid][0][cb_ItemID][k] == itemid)
+                {
+                    CharacterInfo[playerid][0][cb_ItemAmount][k] = currentAmmo;
+                    CharacterInfo[playerid][0][cb_ItemWeight][k] = GetItemWeight(itemid) * currentAmmo;
+                    break;
+                }
+            }
+
             CharacterInfo[playerid][1][cb_ItemID][i] = INVALID_OBJECT_ID;
             CharacterInfo[playerid][1][cb_ItemWeight][i] = 0.0;
             CharacterInfo[playerid][1][cb_ItemDurability][i] = 0;
