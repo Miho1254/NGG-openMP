@@ -388,8 +388,8 @@ CMD:lawlocker(playerid, params[])
 
     new str[512];
     format(str, sizeof(str), "Hop dan tich hop (1200 dan)\n");
-    format(str, sizeof(str), "%s{FF0000}M4 LAW\t{FFFFFF}(Khoa)\n", str);
-    format(str, sizeof(str), "%s{FF0000}AK LAW\t{FFFFFF}(Khoa)\n", str);
+    format(str, sizeof(str), "%sM4 LAW\t(199 dan)\n", str);
+    format(str, sizeof(str), "%sAK LAW\t(199 dan)\n", str);
     format(str, sizeof(str), "%sDeagle LAW\t(199 dan)\n", str);
     format(str, sizeof(str), "%s9mm LAW\t(29 dan)\n", str);
     format(str, sizeof(str), "%sMP5 LAW\t(120 dan)\n", str);
@@ -402,11 +402,6 @@ Dialog:DIALOG_LAW_WEAPON(playerid, response, listitem, inputtext[])
 {
     if(response)
     {
-        if (listitem == 1 || listitem == 2)
-        {
-            return SendClientMessageEx(playerid, COLOR_RED, "Muc nay da bi khoa/ngan cam lay ra khoi tu do boi FMod.");
-        }
-        
         new item;
         
         if(listitem != 0) item = listitem + 43; 
