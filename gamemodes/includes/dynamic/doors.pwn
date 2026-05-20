@@ -979,6 +979,16 @@ CMD:ddedit(playerid, params[])
 		}
 		else if(strcmp(choice, "faction", true) == 0)
 		{
+			if(amount == 0)
+			{
+				DDoorsInfo[doorid][ddFaction] = INVALID_GROUP_ID;
+				format(string, sizeof(string), "You have cleared the Faction for Door %d.", doorid);
+				SendClientMessageEx(playerid, COLOR_WHITE, string);
+				SaveDynamicDoor(doorid);
+				format(string, sizeof(string), "%s has cleared DoorID %d's Faction.", GetPlayerNameEx(playerid), doorid);
+				Log("logs/ddedit.log", string);
+				return 1;
+			}
 			DDoorsInfo[doorid][ddFaction] = amount-1;
 			if (DDoorsInfo[doorid][ddFaction] < 0 || DDoorsInfo[doorid][ddFaction] >= MAX_GROUPS) return SendClientMessage(playerid, -1, "Group khong hop le");
 			format(string, sizeof(string), "You have changed the Faction to %d.", amount);
