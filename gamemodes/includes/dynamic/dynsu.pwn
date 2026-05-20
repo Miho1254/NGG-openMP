@@ -114,24 +114,26 @@ stock ShowCrimesDialog(iPlayerID, iSuspectID = INVALID_PLAYER_ID, iDialogID = DI
 	{
 		case DIALOG_SHOW_CRIMES:
 		{
-			format(szMiscArray, sizeof(szMiscArray), "----Toi nhe----\n");
+			format(szMiscArray, sizeof(szMiscArray), "ID\tStars\tTen toi\tTien phat\tThoi gian\n");
 			for(new i = 0; i < MAX_CRIMES; i++)
 			{
-				if(arrCrimeData[i][c_iNation] == arrGroupData[PlayerInfo[iPlayerID][pMember]][g_iAllegiance] && arrCrimeData[i][c_iType] == 1)
+				if(arrCrimeData[i][c_iNation] == arrGroupData[PlayerInfo[iPlayerID][pMember]][g_iAllegiance])
 				{
-					format(szMiscArray, sizeof(szMiscArray), "%s{FFFF00}%i\t%s\n", szMiscArray, arrCrimeData[i][c_iID], arrCrimeData[i][c_szName]);
-				}
-			}
-			format(szMiscArray, sizeof(szMiscArray), "%s----Toi nang----\n", szMiscArray);
-			for(new i = 0; i < MAX_CRIMES; i++)
-			{
-				if(arrCrimeData[i][c_iNation] == arrGroupData[PlayerInfo[iPlayerID][pMember]][g_iAllegiance] && arrCrimeData[i][c_iType] == 2)
-				{
-					format(szMiscArray, sizeof(szMiscArray), "%s{AA3333}%i\t%s\n", szMiscArray, arrCrimeData[i][c_iID], arrCrimeData[i][c_szName]);
+					new starsStr[32];
+					switch(arrCrimeData[i][c_iType]) {
+						case 1: format(starsStr, sizeof(starsStr), "{FFFF00}*");
+						case 2: format(starsStr, sizeof(starsStr), "{FFFF00}**");
+						case 3: format(starsStr, sizeof(starsStr), "{FFAA00}***");
+						case 4: format(starsStr, sizeof(starsStr), "{FF5500}****");
+						case 5: format(starsStr, sizeof(starsStr), "{FF0000}*****");
+						case 6: format(starsStr, sizeof(starsStr), "{FF0000}******");
+						default: format(starsStr, sizeof(starsStr), "{FFFF00}*");
+					}
+					format(szMiscArray, sizeof(szMiscArray), "%s{FFFFFF}%i\t%s\t%s\t$%s\t%d min\n", szMiscArray, arrCrimeData[i][c_iID], starsStr, arrCrimeData[i][c_szName], number_format(arrCrimeData[i][c_iJFine]), arrCrimeData[i][c_iJTime]);
 				}
 			}
 			SetPVarInt(iPlayerID, "suspect_TargetID", iSuspectID);
-			ShowPlayerDialogEx(iPlayerID, iDialogID, DIALOG_STYLE_LIST, "Chon mot toi pham", szMiscArray, "Chon", "Thoat");
+			ShowPlayerDialogEx(iPlayerID, iDialogID, DIALOG_STYLE_TABLIST_HEADERS, "Chon mot toi pham", szMiscArray, "Chon", "Thoat");
 		}
 		case DIALOG_EDIT_CRIMES:
 		{
@@ -144,23 +146,25 @@ stock ShowCrimesDialog(iPlayerID, iSuspectID = INVALID_PLAYER_ID, iDialogID = DI
 stock ShowOfflineCrimesDialog(playerid)
 {
 	szMiscArray[0] = 0;
-	format(szMiscArray, sizeof(szMiscArray), "----Toi nhe----\n");
+	format(szMiscArray, sizeof(szMiscArray), "ID\tStars\tTen toi\n");
 	for(new i = 0; i < MAX_CRIMES; i++)
 	{
-		if(arrCrimeData[i][c_iNation] == arrGroupData[PlayerInfo[playerid][pMember]][g_iAllegiance] && arrCrimeData[i][c_iType] == 1)
+		if(arrCrimeData[i][c_iNation] == arrGroupData[PlayerInfo[playerid][pMember]][g_iAllegiance])
 		{
-			format(szMiscArray, sizeof(szMiscArray), "%s{FFFF00}%i\t%s\n", szMiscArray, arrCrimeData[i][c_iID], arrCrimeData[i][c_szName]);
+			new starsStr[32];
+			switch(arrCrimeData[i][c_iType]) {
+				case 1: format(starsStr, sizeof(starsStr), "{FFFF00}*");
+				case 2: format(starsStr, sizeof(starsStr), "{FFFF00}**");
+				case 3: format(starsStr, sizeof(starsStr), "{FFAA00}***");
+				case 4: format(starsStr, sizeof(starsStr), "{FF5500}****");
+				case 5: format(starsStr, sizeof(starsStr), "{FF0000}*****");
+				case 6: format(starsStr, sizeof(starsStr), "{FF0000}******");
+				default: format(starsStr, sizeof(starsStr), "{FFFF00}*");
+			}
+			format(szMiscArray, sizeof(szMiscArray), "%s{FFFFFF}%i\t%s\t%s\n", szMiscArray, arrCrimeData[i][c_iID], starsStr, arrCrimeData[i][c_szName]);
 		}
 	}
-	format(szMiscArray, sizeof(szMiscArray), "%s----Toi nang----\n", szMiscArray);
-	for(new i = 0; i < MAX_CRIMES; i++)
-	{
-		if(arrCrimeData[i][c_iNation] == arrGroupData[PlayerInfo[playerid][pMember]][g_iAllegiance] && arrCrimeData[i][c_iType] == 2)
-		{
-			format(szMiscArray, sizeof(szMiscArray), "%s{AA3333}%i\t%s\n", szMiscArray, arrCrimeData[i][c_iID], arrCrimeData[i][c_szName]);
-		}
-	}
-	ShowPlayerDialogEx(playerid, DIALOG_SHOW_OFFLINE_CRIMES, DIALOG_STYLE_LIST, "Chon mot toi pham", szMiscArray, "Chon", "Thoat");
+	ShowPlayerDialogEx(playerid, DIALOG_SHOW_OFFLINE_CRIMES, DIALOG_STYLE_TABLIST_HEADERS, "Chon mot toi pham", szMiscArray, "Chon", "Thoat");
 	return 1;
 }
 
@@ -461,7 +465,7 @@ public OnCrimeAdded(playerid, name[], slot, type, nation, jtime, fine)
 	arrCrimeData[slot][c_iJFine] = fine;
 	arrCrimeData[slot][c_iBail] = 0;
 
-	format(szMiscArray, sizeof(szMiscArray), "Da them toi: %s (ID: %d, Type: %s, Nation: %s, Time: %dmin, Fine: $%s)", name, insertid, (type == 1) ? "Toi nhe" : "Toi nang", (nation == 1) ? "SA" : "NE", jtime, number_format(fine));
+	format(szMiscArray, sizeof(szMiscArray), "Da them toi: %s (ID: %d, Stars: %d, Nation: %s, Time: %dmin, Fine: $%s)", name, insertid, type, (nation == 1) ? "SA" : "NE", jtime, number_format(fine));
 	SendClientMessageEx(playerid, COLOR_LIGHTBLUE, szMiscArray);
 	return 1;
 }
