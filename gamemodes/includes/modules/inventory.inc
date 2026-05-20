@@ -3569,55 +3569,57 @@ Dialog:DIALOG_AMMOBOX_WPChoice(playerid, response, listitem, inputtext[])
     {
         if(CharacterInfo[playerid][1][cb_ItemID][listitem] == 8 || CharacterInfo[playerid][1][cb_ItemID][listitem] == 9)
         {
-            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}TUI DO{FFFFFF}]: Khong the nap dan doi voi vat pham nay.");
-            SetPVarInt(playerid, "CheckDialogInventory", 0);
-            return 1;
+            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Khong the nap dan doi voi vat pham nay.");
+            return Balo_ShowMain(playerid);
+        }
+        if(CharacterInfo[playerid][1][cb_ItemID][listitem] == INVALID_OBJECT_ID)
+        {
+            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Slot trong, khong co vu khi de nap.");
+            return Balo_ShowMain(playerid);
         }
         if(CharacterInfo[playerid][1][cb_ItemAmount][listitem] >= GetAmmoWeaponLimit(CharacterInfo[playerid][1][cb_ItemID][listitem]))
         {
-            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}TUI DO{FFFFFF}]: Vu khi nay da day dan khong the tiep tuc nap.");
-            SetPVarInt(playerid, "CheckDialogInventory", 0);
-            return 1;
+            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Vu khi nay da day dan khong the tiep tuc nap.");
+            return Balo_ShowMain(playerid);
         }
-        if(CharacterInfo[playerid][0][cb_ItemAmount][GetPVarInt(playerid, "Inventory_SelectItem")] <= 0)
+        new ammoSlot = GetPVarInt(playerid, "Inventory_SelectItem");
+        if(CharacterInfo[playerid][0][cb_ItemAmount][ammoSlot] <= 0)
         {
-            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}TUI DO{FFFFFF}]: Ban khong the nap dan vi khong con du so dan trong hop.");
-            SetPVarInt(playerid, "CheckDialogInventory", 0);
-            return 1;
+            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban khong the nap dan vi khong con du so dan trong hop.");
+            return Balo_ShowMain(playerid);
         }
-        new amount = CharacterInfo[playerid][0][cb_ItemAmount][GetPVarInt(playerid, "Inventory_SelectItem")];
+
+        new amount = CharacterInfo[playerid][0][cb_ItemAmount][ammoSlot];
+        new maxAmmo = GetAmmoWeaponLimit(CharacterInfo[playerid][1][cb_ItemID][listitem]);
+        new currentAmmo = CharacterInfo[playerid][1][cb_ItemAmount][listitem];
+        new needed = maxAmmo - currentAmmo;
+
+        if(amount > needed) amount = needed;
+
         CharacterInfo[playerid][1][cb_ItemAmount][listitem] += amount;
-        if(CharacterInfo[playerid][1][cb_ItemAmount][listitem] > GetAmmoWeaponLimit(CharacterInfo[playerid][1][cb_ItemID][listitem]))
+        CharacterInfo[playerid][0][cb_ItemAmount][ammoSlot] -= amount;
+
+        if(CharacterInfo[playerid][0][cb_ItemAmount][ammoSlot] <= 0)
         {
-            new hrand = 0;
-            hrand = CharacterInfo[playerid][1][cb_ItemAmount][listitem] - GetAmmoWeaponLimit(CharacterInfo[playerid][1][cb_ItemID][listitem]);
-            CharacterInfo[playerid][1][cb_ItemAmount][listitem] -= hrand;
-            CharacterInfo[playerid][0][cb_ItemAmount][GetPVarInt(playerid, "Inventory_SelectItem")] = hrand;
+            CharacterInfo[playerid][0][cb_ItemID][ammoSlot] = INVALID_OBJECT_ID;
+            CharacterInfo[playerid][0][cb_ItemWeight][ammoSlot] = 0.0;
+            CharacterInfo[playerid][0][cb_ItemDurability][ammoSlot] = 0;
+            CharacterInfo[playerid][0][cb_ItemAmount][ammoSlot] = 0;
         }
-        else
-        {
-            CharacterInfo[playerid][0][cb_ItemAmount][GetPVarInt(playerid, "Inventory_SelectItem")] -= amount;
-            if(CharacterInfo[playerid][0][cb_ItemAmount][GetPVarInt(playerid, "Inventory_SelectItem")] <= 0)
-            {
-                CharacterInfo[playerid][0][cb_ItemID][GetPVarInt(playerid, "Inventory_SelectItem")] = INVALID_OBJECT_ID;
-                CharacterInfo[playerid][0][cb_ItemWeight][GetPVarInt(playerid, "Inventory_SelectItem")] = 0.0;
-                CharacterInfo[playerid][0][cb_ItemDurability][GetPVarInt(playerid, "Inventory_SelectItem")] = 0;
-                CharacterInfo[playerid][0][cb_ItemAmount][GetPVarInt(playerid, "Inventory_SelectItem")] = 0;
-            }
-        }
-        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}TUI DO{FFFFFF}]: Ban da nap dan cho vu khi thanh cong.");
-            
+
         SetPlayerAmmo(playerid, GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][listitem]), CharacterInfo[playerid][1][cb_ItemAmount][listitem]);
 
-        PlayerPlaySound(playerid, 1130, 0.0, 0.0, 0.0); // am thanh ghep
+        new str[128];
+        format(str, sizeof(str), "[{FFB561}BALO{FFFFFF}]: Ban da nap %d dan cho %s. (%d/%d)",
+            amount,
+            Inventory_ListItems[CharacterInfo[playerid][1][cb_ItemID][listitem] - 1],
+            CharacterInfo[playerid][1][cb_ItemAmount][listitem],
+            maxAmmo);
+        SendClientMessageEx(playerid, COLOR_WHITE, str);
 
-        Inventory_Action(playerid, -1); // clear var
+        PlayerPlaySound(playerid, 1130, 0.0, 0.0, 0.0);
     }
-    else
-    {
-        SetPVarInt(playerid, "CheckDialogInventory", 0);
-    }
-    return 1;
+    return Balo_ShowMain(playerid);
 }
 
 CMD:giftplayeritem(playerid, params[])
