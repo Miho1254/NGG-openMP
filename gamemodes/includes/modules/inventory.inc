@@ -3753,7 +3753,7 @@ stock Balo_ShowMain(playerid)
     format(title, sizeof(title), "BALO {FFFFFF}| %s {FFFFFF}| {F5CB42}%.1f{FFFFFF}/{F5CB42}%.1f{FFFFFF} kg | {57FF57}$%s",
         GetPlayerNameEx(playerid), totalWeight, CharacterInfo[playerid][0][cb_Weight], number_format(GetPlayerCash(playerid)));
 
-    format(szStr, sizeof(szStr), "#\tVat pham\tSL\tKG\tDo ben\n");
+    format(szStr, sizeof(szStr), "#\tVat pham\tSL\tKG\tTrang bi\n");
 
     for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
     {
@@ -3765,15 +3765,29 @@ stock Balo_ShowMain(playerid)
         {
             count++;
             new itemid = CharacterInfo[playerid][0][cb_ItemID][i];
-            new color[8];
-            if(GetIDWeapon(itemid)) color = "FF6347";
-            else color = "FFFFFF";
-            format(szStr, sizeof(szStr), "%s{F5CB42}%d\t{%s}%s\t{FFFFFF}%d\t{FFFFFF}%.1f\t{FFFFFF}%d\n",
+            new color[8], equipStr[24];
+
+            if(GetIDWeapon(itemid))
+            {
+                color = "FF6347";
+                // Check if this weapon is equipped in tab [1]
+                if(Balo_IsItemEquipped(playerid, itemid))
+                    equipStr = "{57FF57}Dang mang";
+                else
+                    equipStr = "{888888}---";
+            }
+            else
+            {
+                color = "FFFFFF";
+                equipStr = "{888888}---";
+            }
+
+            format(szStr, sizeof(szStr), "%s{F5CB42}%d\t{%s}%s\t{FFFFFF}%d\t{FFFFFF}%.1f\t%s\n",
                 szStr, i + 1, color,
                 Inventory_ListItems[itemid - 1],
                 CharacterInfo[playerid][0][cb_ItemAmount][i],
                 CharacterInfo[playerid][0][cb_ItemWeight][i],
-                CharacterInfo[playerid][0][cb_ItemDurability][i]);
+                equipStr);
         }
     }
 
@@ -3782,6 +3796,16 @@ stock Balo_ShowMain(playerid)
 
     Dialog_Show(playerid, DIALOG_BALO_MAIN, DIALOG_STYLE_TABLIST_HEADERS, title, szStr, "Thao tac", "Dong");
     return 1;
+}
+
+stock Balo_IsItemEquipped(playerid, itemid)
+{
+    for(new i = 0; i < 7; i++)
+    {
+        if(CharacterInfo[playerid][1][cb_ItemID][i] == itemid)
+            return 1;
+    }
+    return 0;
 }
 
 CMD:balomobile(playerid, params[])
@@ -3828,7 +3852,12 @@ Dialog:DIALOG_BALO_MAIN(playerid, response, listitem, inputtext[])
     format(str, sizeof(str), "%s{FFFFFF}Xem thong tin\n", str);
 
     if(GetIDWeapon(itemid))
-        format(str, sizeof(str), "%s{FFB561}Trang bi len nguoi\n", str);
+    {
+        if(Balo_IsItemEquipped(playerid, itemid))
+            format(str, sizeof(str), "%s{FFB561}Thao trang bi\n", str);
+        else
+            format(str, sizeof(str), "%s{FFB561}Trang bi len nguoi\n", str);
+    }
     else
         format(str, sizeof(str), "%s{FFB561}Phan tach so luong\n", str);
 
@@ -3877,6 +3906,10 @@ Dialog:DIALOG_BALO_ACTION(playerid, response, listitem, inputtext[])
     else if(strcmp(inputtext, "Trang bi len nguoi", true) == 0 || strcmp(inputtext, "{FFB561}Trang bi len nguoi", true) == 0)
     {
         Balo_EquipWeapon(playerid, slot);
+    }
+    else if(strcmp(inputtext, "Thao trang bi", true) == 0 || strcmp(inputtext, "{FFB561}Thao trang bi", true) == 0)
+    {
+        Balo_UnequipWeapon(playerid, itemid);
     }
     else if(strcmp(inputtext, "Vut bo vat pham", true) == 0 || strcmp(inputtext, "{FF6347}Vut bo vat pham", true) == 0)
     {
@@ -4020,10 +4053,7 @@ stock Balo_EquipWeapon(playerid, slot)
             CharacterInfo[playerid][1][cb_ItemDurability][i] = CharacterInfo[playerid][0][cb_ItemDurability][slot];
             CharacterInfo[playerid][1][cb_ItemAmount][i] = CharacterInfo[playerid][0][cb_ItemAmount][slot];
 
-            CharacterInfo[playerid][0][cb_ItemID][slot] = INVALID_OBJECT_ID;
-            CharacterInfo[playerid][0][cb_ItemWeight][slot] = 0.0;
-            CharacterInfo[playerid][0][cb_ItemDurability][slot] = 0;
-            CharacterInfo[playerid][0][cb_ItemAmount][slot] = 0;
+            // Item stays in bag - don't remove from tab [0]
 
             GivePlayerValidWeaponEx(playerid, weaponid, CharacterInfo[playerid][1][cb_ItemAmount][i]);
 
@@ -4033,6 +4063,39 @@ stock Balo_EquipWeapon(playerid, slot)
     }
 
     SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Khong con slot trang bi trong.");
+    return Balo_ShowMain(playerid);
+}
+
+stock Balo_UnequipWeapon(playerid, itemid)
+{
+    for(new i = 0; i < 7; i++)
+    {
+        if(CharacterInfo[playerid][1][cb_ItemID][i] == itemid)
+        {
+            CharacterInfo[playerid][1][cb_ItemID][i] = INVALID_OBJECT_ID;
+            CharacterInfo[playerid][1][cb_ItemWeight][i] = 0.0;
+            CharacterInfo[playerid][1][cb_ItemDurability][i] = 0;
+            CharacterInfo[playerid][1][cb_ItemAmount][i] = 0;
+
+            // Remove SA-MP weapon
+            new weaponid = GetIDWeapon(itemid);
+            if(weaponid > 0) ResetPlayerWeapons(playerid);
+
+            // Re-equip remaining weapons from tab [1]
+            for(new j = 0; j < 7; j++)
+            {
+                if(CharacterInfo[playerid][1][cb_ItemID][j] != INVALID_OBJECT_ID)
+                {
+                    new wid = GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][j]);
+                    if(wid > 0) GivePlayerValidWeaponEx(playerid, wid, CharacterInfo[playerid][1][cb_ItemAmount][j]);
+                }
+            }
+
+            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da thao trang bi vu khi.");
+            return Balo_ShowMain(playerid);
+        }
+    }
+    SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Khong tim thay vu khi dang trang bi.");
     return Balo_ShowMain(playerid);
 }
 
