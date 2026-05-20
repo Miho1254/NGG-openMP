@@ -904,6 +904,18 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				//if(IsACriminal(playerid) || IsARacer(playerid)) return ShowGroupWeapons(playerid, iGroupID);
 				return ShowGroupWeapons(playerid, iGroupID);
 			}
+			if (strcmp("LAW Weapons", inputtext) == 0) {
+				if(!IsACop(playerid))
+					return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong phai canh sat / nhan vien chinh phu.");
+				new str[512];
+				format(str, sizeof(str), "Hop dan tich hop (1200 dan)\n");
+				format(str, sizeof(str), "%s{FF0000}M4 LAW\t{FFFFFF}(Khoa)\n", str);
+				format(str, sizeof(str), "%s{FF0000}AK LAW\t{FFFFFF}(Khoa)\n", str);
+				format(str, sizeof(str), "%sDeagle LAW\t(199 dan)\n", str);
+				format(str, sizeof(str), "%s9mm LAW\t(29 dan)\n", str);
+				format(str, sizeof(str), "%sMP5 LAW\t(120 dan)\n", str);
+				return Dialog_Show(playerid, DIALOG_LAW_WEAPON, DIALOG_STYLE_LIST, "TU DO VU KHI LAW", str, "Lay", "Thoat");
+			}
 			if (strcmp("Crate Transfer", inputtext) == 0) {
 				//if(IsACriminal(playerid) || IsARacer(playerid)) return ShowGroupWeapons(playerid, iGroupID);
 				return CrateTransferOption(playerid, iGroupID);
@@ -5821,14 +5833,14 @@ CMD:locker(playerid, params[]) {
 
 					    if(PlayerInfo[playerid][pRank] >= arrGroupData[iGroupID][g_iFreeNameChange] && (PlayerInfo[playerid][pDivision] == arrGroupData[iGroupID][g_iFreeNameChangeDiv] || arrGroupData[iGroupID][g_iFreeNameChangeDiv] == INVALID_DIVISION)) // name-change point in faction lockers for free namechange factions
 						{
-							format(szDialog, sizeof(szDialog), "Duty\nWeapons\nCrate Transfer\nUniform%s", (arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_LEA) ? ("\nClear Suspect\nFirst Aid & Kevlar\nPortable Medkit & Vest Kit\nTazer & Cuffs\nName Change\nAccessories") : ((arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_MEDIC || arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_GOV) ? ("\nPortable Medkit & Vest Kit\nFirst Aid & Kevlar\nName Change") : ("")));
-						}
-						else if(arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_GOV) {
-							format(szDialog, sizeof(szDialog), "Duty\nWeapons\nCrate Transfer\nUniform\nPortable Medkit & Vest Kit\nFirst Aid & Kevlar");
-						}
-						else
-						{
-							format(szDialog, sizeof(szDialog), "Duty\nWeapons\nCrate Transfer\nUniform%s", (arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_LEA) ? ("\nClear Suspect\nFirst Aid & Kevlar\nPortable Medkit & Vest Kit\nTazer & Cuffs\nAccessories") : ((arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_MEDIC || arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_NEWS || arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_GOV || arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_TOWING) ? ("\nPortable Medkit & Vest Kit\nFirst Aid & Kevlar") : ("")));
+						format(szDialog, sizeof(szDialog), "Duty\nWeapons\nLAW Weapons\nCrate Transfer\nUniform%s", (arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_LEA) ? ("\nClear Suspect\nFirst Aid & Kevlar\nPortable Medkit & Vest Kit\nTazer & Cuffs\nName Change\nAccessories") : ((arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_MEDIC || arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_GOV) ? ("\nPortable Medkit & Vest Kit\nFirst Aid & Kevlar\nName Change") : ("")));
+					}
+					else if(arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_GOV) {
+						format(szDialog, sizeof(szDialog), "Duty\nWeapons\nLAW Weapons\nCrate Transfer\nUniform\nPortable Medkit & Vest Kit\nFirst Aid & Kevlar");
+					}
+					else
+					{
+						format(szDialog, sizeof(szDialog), "Duty\nWeapons\nLAW Weapons\nCrate Transfer\nUniform%s", (arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_LEA) ? ("\nClear Suspect\nFirst Aid & Kevlar\nPortable Medkit & Vest Kit\nTazer & Cuffs\nAccessories") : ((arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_MEDIC || arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_NEWS || arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_GOV || arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_TOWING) ? ("\nPortable Medkit & Vest Kit\nFirst Aid & Kevlar") : ("")));
 						}
 						ShowPlayerDialogEx(playerid, G_LOCKER_MAIN, DIALOG_STYLE_LIST, szTitle, szDialog, "Select", "Cancel");
 						return 1;
