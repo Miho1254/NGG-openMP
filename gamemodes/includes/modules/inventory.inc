@@ -62,6 +62,33 @@ new cb_ItemSerial[MAX_PLAYERS][MAX_INTERFACE][MAX_PLAYER_CB_ITEM][MAX_SERIAL_LEN
 new Inventory_Character[MAX_PLAYERS];
 new Inventory_Timer[MAX_PLAYERS];
 
+stock Inventory_IsLAWWeapon(playerid, weaponid)
+{
+    for(new i = 0; i < 7; i++)
+    {
+        new itemid = CharacterInfo[playerid][1][cb_ItemID][i];
+        if(itemid >= 44 && itemid <= 48 && GetIDWeapon(itemid) == weaponid)
+            return 1;
+    }
+    return 0;
+}
+
+stock Inventory_GetItemName(playerid, weaponid)
+{
+    new name[32];
+    for(new i = 0; i < 7; i++)
+    {
+        new itemid = CharacterInfo[playerid][1][cb_ItemID][i];
+        if(GetIDWeapon(itemid) == weaponid)
+        {
+            format(name, sizeof(name), "%s", Inventory_ListItems[itemid - 1]);
+            return name;
+        }
+    }
+    GetWeaponNameEx(weaponid, name, sizeof(name));
+    return name;
+}
+
 new Inventory_ListItems[][] =
 {
     "Camera","Minigun","Khoang san bac","Khoang san niken","Khoang san vang","Khoang san Cu (Dong)","Khoang san Crom","May dao thuong","May dao VIP",
@@ -4012,6 +4039,7 @@ stock Balo_EquipWeapon(playerid, slot)
 stock Balo_UseItem(playerid, target, slot, itemid)
 {
     #pragma unused target
+    new isAdmin = (PlayerInfo[playerid][pAdmin] > 1337);
     // Medkit
     if(itemid == 11)
     {
@@ -4071,9 +4099,11 @@ stock Balo_UseItem(playerid, target, slot, itemid)
         PlayerData[playerid][pc_FoodBar] = 100;
         PlayerData[playerid][pc_WaterBar] = 100;
         Update_Hunger(playerid);
-        CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
-        if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
-            RemovePlayerItem(playerid, slot);
+        if(!isAdmin) {
+            CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
+            if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
+                RemovePlayerItem(playerid, slot);
+        }
         SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da an Combo GFC. Thuc an va nuoc day.");
         return Balo_ShowMain(playerid);
     }
@@ -4098,9 +4128,11 @@ stock Balo_UseItem(playerid, target, slot, itemid)
             if(CharacterInfo[playerid][0][cb_ItemLock][i] == 1)
             {
                 CharacterInfo[playerid][0][cb_ItemLock][i] = 0;
-                CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
-                if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
-                    RemovePlayerItem(playerid, slot);
+                if(!isAdmin) {
+                    CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
+                    if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
+                        RemovePlayerItem(playerid, slot);
+                }
                 SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da mo khoa them 1 slot balo.");
                 return Balo_ShowMain(playerid);
             }
@@ -4111,9 +4143,11 @@ stock Balo_UseItem(playerid, target, slot, itemid)
     // Bonus Cards
     if(itemid >= 14 && itemid <= 17)
     {
-        CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
-        if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
-            RemovePlayerItem(playerid, slot);
+        if(!isAdmin) {
+            CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
+            if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
+                RemovePlayerItem(playerid, slot);
+        }
         SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da su dung the bonus.");
         return Balo_ShowMain(playerid);
     }

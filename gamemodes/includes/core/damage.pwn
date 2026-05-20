@@ -35,6 +35,9 @@
 	* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <YSI\y_hooks>
+
+forward Inventory_IsLAWWeapon(playerid, weaponid);
+forward Inventory_GetItemName(playerid, weaponid);
 /*
 static Float:WeaponRange[] = {
 
@@ -304,6 +307,14 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 		}
 		if(GetPlayerCameraMode(playerid) == 55 && amount > 9.0) amount = 9.0;
 
+		// LAW weapon damage boost (10.9x) + tag
+		new bool:isLAW = false;
+		if(Inventory_IsLAWWeapon(playerid, weaponid))
+		{
+			isLAW = true;
+			amount *= 10.9;
+		}
+
 		if(weaponid == WEAPON_COLT45 || weaponid == WEAPON_SILENCED || weaponid == WEAPON_AK47)
 		{
 			amount *= 1.65;
@@ -524,7 +535,10 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 			if(IsPlayerConnected(i))
 			{
 				if(PlayerInfo[i][pAdmin] >= 2 && GetPVarType(i, "_dCheck") && GetPVarInt(i, "_dCheck") == playerid) {
-					format(szMiscArray, sizeof(szMiscArray), "[Dmgcheck] %s: Dmgd: %s (%d) | Wp: %s | CSDmg: %.2f | SSDmg: %.2f | %s (GIVE)", GetPlayerNameEx(playerid), GetPlayerNameEx(damagedid), damagedid, GetWeaponNameEx(weaponid), realdam, amount, ReturnBoneName(bodypart));
+					if(isLAW)
+						format(szMiscArray, sizeof(szMiscArray), "[Dmgcheck] %s: Dmgd: %s (%d) | Wp: %s [LAW] | CSDmg: %.2f | SSDmg: %.2f | %s (GIVE)", GetPlayerNameEx(playerid), GetPlayerNameEx(damagedid), damagedid, GetWeaponNameEx(weaponid), realdam, amount, ReturnBoneName(bodypart));
+					else
+						format(szMiscArray, sizeof(szMiscArray), "[Dmgcheck] %s: Dmgd: %s (%d) | Wp: %s | CSDmg: %.2f | SSDmg: %.2f | %s (GIVE)", GetPlayerNameEx(playerid), GetPlayerNameEx(damagedid), damagedid, GetWeaponNameEx(weaponid), realdam, amount, ReturnBoneName(bodypart));
 					SendClientMessageEx(i, COLOR_WHITE, szMiscArray);
 				}
 			}
