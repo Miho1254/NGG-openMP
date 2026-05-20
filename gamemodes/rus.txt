@@ -1,5 +1,6 @@
 ./includes/events/event.pwn(664) : íåïðàâèëüíàÿ òàáóëÿöèÿ
 ./includes/group/groupcore.pwn(5838) : íåïðàâèëüíàÿ òàáóëÿöèÿ
 ./includes/modules/inventory.inc(1183) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "exp"
+./includes/modules/inventory.inc(4532) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "itemid"
 Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
 
