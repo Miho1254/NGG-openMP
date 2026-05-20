@@ -1328,16 +1328,9 @@ Function: InventoryTimer_(playerid)
 
 Function: TakeAmmoDeathPlayer(playerid)
 {
-    for(new i = 0 ; i < 7 ; i++)
-    {
-        if(CharacterInfo[playerid][1][cb_ItemID][i] != INVALID_OBJECT_ID && CharacterInfo[playerid][1][cb_ItemID][i] != 8 && CharacterInfo[playerid][1][cb_ItemID][i] != 9)
-        {
-            CharacterInfo[playerid][1][cb_ItemID][i] = INVALID_OBJECT_ID;
-            CharacterInfo[playerid][1][cb_ItemWeight][i] = 0.0;
-            CharacterInfo[playerid][1][cb_ItemDurability][i] = 0;
-            CharacterInfo[playerid][1][cb_ItemAmount][i] = 0;
-        }
-    }
+    // Don't clear equipped weapons - they stay in inventory
+    // Only reset SA-MP weapons, player will re-equip from /balo
+    ResetPlayerWeapons(playerid);
     return 1;
 }
 
@@ -3757,7 +3750,21 @@ stock Balo_ShowMain(playerid)
 
     format(szStr, sizeof(szStr), "#\tVat pham\tSL\tKG\tTrang bi\n");
 
-    for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+    // Find last used slot to determine display range
+    new lastUsed = 12; // Minimum show 13 slots (default unlocked)
+    for(new i = MAX_PLAYER_CB_ITEM - 1; i >= 0; i--)
+    {
+        if(CharacterInfo[playerid][0][cb_ItemID][i] != INVALID_OBJECT_ID || CharacterInfo[playerid][0][cb_ItemLock][i] == 1)
+        {
+            lastUsed = i;
+            break;
+        }
+    }
+    // Show at least 13 slots, or up to last used + 3 empty
+    new showSlots = (lastUsed + 3 > 12) ? lastUsed + 3 : 12;
+    if(showSlots >= MAX_PLAYER_CB_ITEM) showSlots = MAX_PLAYER_CB_ITEM - 1;
+
+    for(new i = 0; i <= showSlots; i++)
     {
         if(CharacterInfo[playerid][0][cb_ItemLock][i] == 1)
             format(szStr, sizeof(szStr), "%s{666666}%d\t{666666}--- Khoa ---\t\t\t\n", szStr, i + 1);
@@ -3796,6 +3803,37 @@ stock Balo_ShowMain(playerid)
     if(count == 0)
         format(szStr, sizeof(szStr), "%s\n{888888}Balo trong. Mua do tai cua hang hoac nhat tu ground.", szStr);
 
+    // Show equipped weapons section
+    new equipCount = 0;
+    for(new i = 0; i < 7; i++)
+    {
+        if(CharacterInfo[playerid][1][cb_ItemID][i] != INVALID_OBJECT_ID)
+        {
+            equipCount++;
+            break;
+        }
+    }
+    if(equipCount > 0)
+    {
+        format(szStr, sizeof(szStr), "%s\n{FFB561}--- VU KHI DANG TRANG BI ---\n", szStr);
+        for(new i = 0; i < 7; i++)
+        {
+            if(CharacterInfo[playerid][1][cb_ItemID][i] != INVALID_OBJECT_ID)
+            {
+                new eqItemid = CharacterInfo[playerid][1][cb_ItemID][i];
+                format(szStr, sizeof(szStr), "%s{F5CB42}%d\t{FF6347}%s\t{FFFFFF}%d\t{FFFFFF}%.1f\t{57FF57}Dang mang\n",
+                    szStr, i + 1,
+                    Inventory_ListItems[eqItemid - 1],
+                    CharacterInfo[playerid][1][cb_ItemAmount][i],
+                    CharacterInfo[playerid][1][cb_ItemWeight][i]);
+            }
+            else
+            {
+                format(szStr, sizeof(szStr), "%s{F5CB42}%d\t{444444}Trong\t\t\t\n", szStr, i + 1);
+            }
+        }
+    }
+
     Dialog_Show(playerid, DIALOG_BALO_MAIN, DIALOG_STYLE_TABLIST_HEADERS, title, szStr, "Thao tac", "Dong");
     return 1;
 }
@@ -3808,6 +3846,16 @@ stock Balo_IsItemEquipped(playerid, itemid)
             return 1;
     }
     return 0;
+}
+
+stock Balo_IsUsable(itemid)
+{
+    // Usable items: consumables, boxes, ammo, jerry can, etc.
+    if(itemid >= 10 && itemid <= 22) return 1;  // Coin exchange, medkit, gatacetamol, slot card, bonus cards, boxes, jerry can
+    if(itemid == 41) return 1;                   // Ammo box
+    if(itemid == 42) return 1;                   // Combo GFC
+    if(itemid == 43) return 1;                   // Treasure map
+    return 0;                                    // Weapons, materials, fish = not usable directly
 }
 
 CMD:balomobile(playerid, params[])
@@ -3850,7 +3898,10 @@ Dialog:DIALOG_BALO_MAIN(playerid, response, listitem, inputtext[])
 
     format(title, sizeof(title), "Thao tac: {F5CB42}%s {FFFFFF}| SL: %d", Inventory_ListItems[itemid - 1], CharacterInfo[playerid][0][cb_ItemAmount][slot]);
 
-    format(str, sizeof(str), "{57FF57}Su dung vat pham\n");
+    // Only show "Su dung" for usable items
+    if(Balo_IsUsable(itemid))
+        format(str, sizeof(str), "{57FF57}Su dung vat pham\n");
+
     format(str, sizeof(str), "%s{FFFFFF}Xem thong tin\n", str);
 
     if(GetIDWeapon(itemid))
@@ -3912,6 +3963,12 @@ Dialog:DIALOG_BALO_ACTION(playerid, response, listitem, inputtext[])
     else if(strcmp(inputtext, "Thao trang bi", true) == 0 || strcmp(inputtext, "{FFB561}Thao trang bi", true) == 0)
     {
         Balo_UnequipWeapon(playerid, itemid);
+    }
+    else if(strcmp(inputtext, "Phan tach so luong", true) == 0 || strcmp(inputtext, "{FFB561}Phan tach so luong", true) == 0)
+    {
+        new title[128];
+        format(title, sizeof(title), "Phan tach: {F5CB42}%s {FFFFFF}(SL: %d)", Inventory_ListItems[itemid - 1], CharacterInfo[playerid][0][cb_ItemAmount][slot]);
+        Dialog_Show(playerid, DIALOG_BALO_SPLIT, DIALOG_STYLE_INPUT, title, "{FFFFFF}Nhap so luong muon phan tach:", "Phan tach", "Huy");
     }
     else if(strcmp(inputtext, "Vut bo vat pham", true) == 0 || strcmp(inputtext, "{FF6347}Vut bo vat pham", true) == 0)
     {
@@ -4013,6 +4070,53 @@ Dialog:DIALOG_BALO_DROP(playerid, response, listitem, inputtext[])
     return Balo_ShowMain(playerid);
 }
 
+Dialog:DIALOG_BALO_SPLIT(playerid, response, listitem, inputtext[])
+{
+    #pragma unused listitem
+    if(!response)
+        return Balo_ShowMain(playerid);
+
+    new slot = GetPVarInt(playerid, "Inventory_SelectItem");
+    if(slot < 0 || slot >= MAX_PLAYER_CB_ITEM) return Balo_ShowMain(playerid);
+
+    new itemid = CharacterInfo[playerid][0][cb_ItemID][slot];
+    if(itemid == INVALID_OBJECT_ID)
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Slot trong.");
+        return Balo_ShowMain(playerid);
+    }
+
+    new amount = strval(inputtext);
+    if(amount <= 0 || amount >= CharacterInfo[playerid][0][cb_ItemAmount][slot])
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: So luong khong hop le.");
+        return Balo_ShowMain(playerid);
+    }
+
+    // Find empty slot for split items
+    for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+    {
+        if(CharacterInfo[playerid][0][cb_ItemLock][i] == 0 && CharacterInfo[playerid][0][cb_ItemID][i] == INVALID_OBJECT_ID)
+        {
+            CharacterInfo[playerid][0][cb_ItemID][i] = itemid;
+            CharacterInfo[playerid][0][cb_ItemAmount][i] = amount;
+            CharacterInfo[playerid][0][cb_ItemWeight][i] = GetItemWeight(itemid) * amount;
+            CharacterInfo[playerid][0][cb_ItemDurability][i] = CharacterInfo[playerid][0][cb_ItemDurability][slot];
+
+            CharacterInfo[playerid][0][cb_ItemAmount][slot] -= amount;
+            CharacterInfo[playerid][0][cb_ItemWeight][slot] = GetItemWeight(itemid) * CharacterInfo[playerid][0][cb_ItemAmount][slot];
+
+            new str[128];
+            format(str, sizeof(str), "[{FFB561}BALO{FFFFFF}]: Da phan tach %d %s sang slot %d.", amount, Inventory_ListItems[itemid - 1], i + 1);
+            SendClientMessageEx(playerid, COLOR_WHITE, str);
+            return Balo_ShowMain(playerid);
+        }
+    }
+
+    SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Khong con slot trong de phan tach.");
+    return Balo_ShowMain(playerid);
+}
+
 stock Balo_EquipWeapon(playerid, slot)
 {
     if(slot < 0 || slot >= MAX_PLAYER_CB_ITEM) return 1;
@@ -4058,6 +4162,7 @@ stock Balo_EquipWeapon(playerid, slot)
             // Item stays in bag - don't remove from tab [0]
 
             GivePlayerValidWeaponEx(playerid, weaponid, CharacterInfo[playerid][1][cb_ItemAmount][i]);
+            SetPlayerAmmo(playerid, weaponid, CharacterInfo[playerid][1][cb_ItemAmount][i]);
 
             SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da trang bi vu khi.");
             return Balo_ShowMain(playerid);
