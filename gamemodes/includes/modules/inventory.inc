@@ -46,6 +46,26 @@ public Inventory_ShowBDKBTimer(playerid) {
     return 1;
 }
 
+forward Inventory_AutoSave();
+public Inventory_AutoSave()
+{
+    foreach(new i : Player)
+    {
+        if(gPlayerLogged{i})
+        {
+            Inventory_SaveData(i);
+            SavePlayerAccountic(i);
+        }
+    }
+    return 1;
+}
+
+hook OnGameModeInit()
+{
+    SetTimer("Inventory_AutoSave", 300000, true); // 5 minutes
+    return 1;
+}
+
 enum cb_Info // character inventory info
 {
     Float:cb_Weight,
@@ -1328,8 +1348,14 @@ Function: InventoryTimer_(playerid)
 
 Function: TakeAmmoDeathPlayer(playerid)
 {
-    // Don't clear equipped weapons - they stay in inventory
-    // Only reset SA-MP weapons, player will re-equip from /balo
+    // Clear equipped weapons on death — player must re-equip from /balo
+    for(new i = 0; i < 7; i++)
+    {
+        CharacterInfo[playerid][1][cb_ItemID][i] = INVALID_OBJECT_ID;
+        CharacterInfo[playerid][1][cb_ItemWeight][i] = 0.0;
+        CharacterInfo[playerid][1][cb_ItemDurability][i] = 0;
+        CharacterInfo[playerid][1][cb_ItemAmount][i] = 0;
+    }
     ResetPlayerWeapons(playerid);
     return 1;
 }
@@ -3745,8 +3771,8 @@ stock Balo_ShowMain(playerid)
             totalWeight += CharacterInfo[playerid][0][cb_ItemWeight][i];
     }
 
-    format(title, sizeof(title), "BALO {FFFFFF}| %s {FFFFFF}| {F5CB42}%.1f{FFFFFF}/{F5CB42}%.1f{FFFFFF} kg | {57FF57}$%s",
-        GetPlayerNameEx(playerid), totalWeight, CharacterInfo[playerid][0][cb_Weight], number_format(GetPlayerCash(playerid)));
+    format(title, sizeof(title), "BALO {FFFFFF}| %s {FFFFFF}| {F5CB42}%.1f{FFFFFF}/{F5CB42}%.1f{FFFFFF} kg | {FFFFFF}Items: {F5CB42}%d {FFFFFF}| {57FF57}$%s",
+        GetPlayerNameEx(playerid), totalWeight, CharacterInfo[playerid][0][cb_Weight], count, number_format(GetPlayerCash(playerid)));
 
     format(szStr, sizeof(szStr), "#\tVat pham\tSL\tKG\tTrang bi\n");
 
@@ -3815,6 +3841,7 @@ stock Balo_ShowMain(playerid)
     }
     if(equipCount > 0)
     {
+        SetPVarInt(playerid, "Balo_EquipOffset", showSlots + 2); // +2 for empty line + header
         format(szStr, sizeof(szStr), "%s\n{FFB561}--- VU KHI DANG TRANG BI ---\n", szStr);
         for(new i = 0; i < 7; i++)
         {
@@ -3832,6 +3859,10 @@ stock Balo_ShowMain(playerid)
                 format(szStr, sizeof(szStr), "%s{F5CB42}%d\t{444444}Trong\t\t\t\n", szStr, i + 1);
             }
         }
+    }
+    else
+    {
+        SetPVarInt(playerid, "Balo_EquipOffset", 0);
     }
 
     Dialog_Show(playerid, DIALOG_BALO_MAIN, DIALOG_STYLE_TABLIST_HEADERS, title, szStr, "Thao tac", "Dong");
@@ -3877,6 +3908,31 @@ Dialog:DIALOG_BALO_MAIN(playerid, response, listitem, inputtext[])
     if(listitem < 0) return 1;
 
     new slot = listitem;
+    new equipOffset = GetPVarInt(playerid, "Balo_EquipOffset");
+
+    // Check if click is in equipped section
+    if(equipOffset > 0 && slot >= equipOffset && slot < equipOffset + 7)
+    {
+        new equipSlot = slot - equipOffset;
+        if(equipSlot < 0 || equipSlot >= 7) return Balo_ShowMain(playerid);
+
+        if(CharacterInfo[playerid][1][cb_ItemID][equipSlot] == INVALID_OBJECT_ID)
+        {
+            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Slot trang bi trong.");
+            return Balo_ShowMain(playerid);
+        }
+
+        new itemid = CharacterInfo[playerid][1][cb_ItemID][equipSlot];
+        new title[128], str[256];
+        format(title, sizeof(title), "Trang bi: {F5CB42}%s {FFFFFF}| SL: %d", Inventory_ListItems[itemid - 1], CharacterInfo[playerid][1][cb_ItemAmount][equipSlot]);
+        format(str, sizeof(str), "{FFFFFF}Xem thong tin\n{FFB561}Thao trang bi");
+
+        SetPVarInt(playerid, "Inventory_SelectItem", equipSlot);
+        SetPVarInt(playerid, "Inventory_SelectTarget", 1);
+        Dialog_Show(playerid, DIALOG_BALO_ACTION, DIALOG_STYLE_LIST, title, str, "Chon", "Quay lai");
+        return 1;
+    }
+
     if(slot < 0 || slot >= MAX_PLAYER_CB_ITEM) return 1;
 
     if(CharacterInfo[playerid][0][cb_ItemLock][slot] == 1)
@@ -3911,7 +3967,7 @@ Dialog:DIALOG_BALO_MAIN(playerid, response, listitem, inputtext[])
         else
             format(str, sizeof(str), "%s{FFB561}Trang bi len nguoi\n", str);
     }
-    else
+    else if(CharacterInfo[playerid][0][cb_ItemAmount][slot] > 1)
         format(str, sizeof(str), "%s{FFB561}Phan tach so luong\n", str);
 
     format(str, sizeof(str), "%s{FF6347}Vut bo vat pham\n", str);
@@ -3945,32 +4001,31 @@ Dialog:DIALOG_BALO_ACTION(playerid, response, listitem, inputtext[])
         return Balo_ShowMain(playerid);
     }
 
-    if(strcmp(inputtext, "Su dung vat pham", true) == 0 || strcmp(inputtext, "{57FF57}Su dung vat pham", true) == 0)
+    if(strfind(inputtext, "Su dung vat pham", true) != -1)
     {
         SetPVarInt(playerid, "Inventory_SelectItem", slot);
         SetPVarInt(playerid, "Inventory_SelectTarget", target);
-        // Route to existing item use logic
         Balo_UseItem(playerid, target, slot, itemid);
     }
-    else if(strcmp(inputtext, "Xem thong tin", true) == 0 || strcmp(inputtext, "{FFFFFF}Xem thong tin", true) == 0)
+    else if(strfind(inputtext, "Xem thong tin", true) != -1)
     {
         Balo_ShowInfo(playerid, target, slot, itemid);
     }
-    else if(strcmp(inputtext, "Trang bi len nguoi", true) == 0 || strcmp(inputtext, "{FFB561}Trang bi len nguoi", true) == 0)
+    else if(strfind(inputtext, "Trang bi len nguoi", true) != -1)
     {
         Balo_EquipWeapon(playerid, slot);
     }
-    else if(strcmp(inputtext, "Thao trang bi", true) == 0 || strcmp(inputtext, "{FFB561}Thao trang bi", true) == 0)
+    else if(strfind(inputtext, "Thao trang bi", true) != -1)
     {
         Balo_UnequipWeapon(playerid, itemid);
     }
-    else if(strcmp(inputtext, "Phan tach so luong", true) == 0 || strcmp(inputtext, "{FFB561}Phan tach so luong", true) == 0)
+    else if(strfind(inputtext, "Phan tach so luong", true) != -1)
     {
         new title[128];
         format(title, sizeof(title), "Phan tach: {F5CB42}%s {FFFFFF}(SL: %d)", Inventory_ListItems[itemid - 1], CharacterInfo[playerid][0][cb_ItemAmount][slot]);
         Dialog_Show(playerid, DIALOG_BALO_SPLIT, DIALOG_STYLE_INPUT, title, "{FFFFFF}Nhap so luong muon phan tach:", "Phan tach", "Huy");
     }
-    else if(strcmp(inputtext, "Vut bo vat pham", true) == 0 || strcmp(inputtext, "{FF6347}Vut bo vat pham", true) == 0)
+    else if(strfind(inputtext, "Vut bo vat pham", true) != -1)
     {
         new title[128];
         format(title, sizeof(title), "Xac nhan vut: {F5CB42}%s", Inventory_ListItems[itemid - 1]);
@@ -3978,12 +4033,11 @@ Dialog:DIALOG_BALO_ACTION(playerid, response, listitem, inputtext[])
         format(str, sizeof(str), "{FFFFFF}Ban co chac chan muon vut {FF6347}%s {FFFFFF}(%d)?\n\n{FF0000}Han dong nay khong the hoan tac!", Inventory_ListItems[itemid - 1], CharacterInfo[playerid][0][cb_ItemAmount][slot]);
         Dialog_Show(playerid, DIALOG_BALO_DROP, DIALOG_STYLE_MSGBOX, title, str, "Vut", "Huy");
     }
-    else if(strcmp(inputtext, "Tieu thu nhien lieu", true) == 0 || strcmp(inputtext, "{00BFFF}Tieu thu nhien lieu", true) == 0)
+    else if(strfind(inputtext, "Tieu thu nhien lieu", true) != -1)
     {
-        // Jerry can logic - delegate to existing handler
         Balo_ConsumeFuel(playerid, slot, itemid);
     }
-    else if(strcmp(inputtext, "Admin Panel", true) == 0 || strcmp(inputtext, "{888888}Admin Panel", true) == 0)
+    else if(strfind(inputtext, "Admin Panel", true) != -1)
     {
         if(PlayerInfo[playerid][pAdmin] > 1337)
         {
@@ -4056,7 +4110,7 @@ Dialog:DIALOG_BALO_DROP(playerid, response, listitem, inputtext[])
     // Check if it's a LAW weapon
     if(itemid >= 44 && itemid <= 48)
     {
-        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Khong the vut vu khi LAW.");
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Khong the vut vu khi LAW. Vu khi LAW chi co the thao trang bi.");
         return Balo_ShowMain(playerid);
     }
 
@@ -4132,16 +4186,20 @@ stock Balo_EquipWeapon(playerid, slot)
     new weapontype = GetWeaponType(itemid);
 
     // Check if already have same weapon type equipped
+    // Exception: LAW weapons (44-48) can be equipped alongside normal weapons of same type
+    new bool:isNewLAW = (itemid >= 44 && itemid <= 48);
     for(new i = 0; i < 7; i++)
     {
         if(CharacterInfo[playerid][1][cb_ItemID][i] != INVALID_OBJECT_ID)
         {
-            if(GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][i]) == weaponid)
+            if(CharacterInfo[playerid][1][cb_ItemID][i] == itemid)
             {
                 SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da mang vu khi nay roi.");
                 return Balo_ShowMain(playerid);
             }
-            if(GetWeaponType(CharacterInfo[playerid][1][cb_ItemID][i]) == weapontype)
+            new bool:isEquippedLAW = (CharacterInfo[playerid][1][cb_ItemID][i] >= 44 && CharacterInfo[playerid][1][cb_ItemID][i] <= 48);
+            // Allow LAW + normal of same type, but block same type otherwise
+            if(GetWeaponType(CharacterInfo[playerid][1][cb_ItemID][i]) == weapontype && !(isNewLAW || isEquippedLAW))
             {
                 SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da mang vu khi cung loai.");
                 return Balo_ShowMain(playerid);
@@ -4245,6 +4303,21 @@ stock Balo_UseItem(playerid, target, slot, itemid)
     // Ammo Box
     if(itemid == 41)
     {
+        // Check if any weapons equipped
+        new hasWeapon = 0;
+        for(new i = 0; i < 7; i++)
+        {
+            if(CharacterInfo[playerid][1][cb_ItemID][i] != INVALID_OBJECT_ID && GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][i]))
+            {
+                hasWeapon = 1;
+                break;
+            }
+        }
+        if(!hasWeapon)
+        {
+            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Khong co vu khi nao dang trang bi. Hay trang bi vu khi truoc khi nap dan.");
+            return Balo_ShowMain(playerid);
+        }
         new string[560];
         format(string, sizeof(string), "Slot\tVu khi\tSo dan\n");
         for(new i = 0; i < 7; i++)
