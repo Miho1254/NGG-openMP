@@ -1,37 +1,4 @@
-pawno\include\sscanf2.inc(149) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "i" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-pawno\include\sscanf2.inc(193) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "i" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-pawno\include\YSI\y_debug.inc(395) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_debug.inc(395) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(393) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(393) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(437) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(437) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(522) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(522) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(658) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(658) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(832) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(832) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(958) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(958) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(966) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_amx.inc(966) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\internal\..\y_utils.inc(248) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\internal\..\y_utils.inc(248) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\internal\..\y_utils.inc(250) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "i" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-pawno\include\YSI\internal\..\y_utils.inc(371) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\internal\..\y_utils.inc(371) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\internal\..\y_utils.inc(373) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "i" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-pawno\include\YSI\y_malloc.inc(881) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_malloc.inc(881) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_malloc.inc(886) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_malloc.inc(886) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_iterate.inc(623) : îøèáêà 036: ïóñòîå äåéñòâèå
-pawno\include\YSI\y_iterate.inc(623) : îøèáêà 036: ïóñòîå äåéñòâèå
-
-Êîìïèëÿöèÿ îñòàíîâëåíà.
-
+C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/events/event.pwn(664) : íåïðàâèëüíàÿ òàáóëÿöèÿ
+C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/inventory.inc(1136) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "exp"
 Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
 
-
-Îøèáîê:26.

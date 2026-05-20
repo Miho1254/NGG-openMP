@@ -1,11 +1,8 @@
 {
   "announce": true,
   "artwork": {
-    "cdn": "",
     "enable": true,
-    "models_path": "models",
-    "port": 7777,
-    "web_server_bind": ""
+    "models_url": "http://160.187.229.19/models/"
   },
   "banners": {
     "dark": "",
