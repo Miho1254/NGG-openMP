@@ -89,19 +89,21 @@
 
 #undef  MAX_PLAYERS
 #define MAX_PLAYERS (500)
+// Block crashdetect.inc from being included (open.mp has built-in debug)
+#define _crashdetect_included
+stock PrintBacktrace() { return 0; }
+stock PrintAmxBacktrace() { return 0; }
 #include <logger>
 #include <errors>
 #include <rAct>
 #include <Pawn.RakNet>
 
 #include <YSI\y_utils>
-#include <crashdetect>
 #include <a_mysql>
 #include <streamer>
 #include <yom_buttons>
 #include <Pawn.CMD>
 #include <sscanf2>
-#include <crashdetect>
 #include <YSI\y_timers>
 #include <YSI\y_utils>
 #include <mSelection>

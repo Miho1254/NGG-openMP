@@ -100,7 +100,6 @@
   "password": "",
   "pawn": {
     "legacy_plugins": [
-      "crashdetect",
       "mysql",
       "sscanf",
       "gvar",
