@@ -3695,75 +3695,468 @@ CMD:balo(playerid, params[])
 	if(gPlayerLogged{playerid})
     {
         new i;
-        if(GuideTimer[playerid] != 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban dang thao tac qua nhanh.");
         if(GetPVarInt(playerid, "EventToken"))
             return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong the lam dieu nay ngay bay gio khi event dang dien ra.");
         if(GetPVarType(playerid, "PlayerCuffed") || GetPVarInt(playerid, "pBagged") >= 1 || GetPVarType(playerid, "Injured") || GetPVarType(playerid, "IsFrozen"))
             return SendClientMessage(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay ngay bay gio!");
-        if(Inventory_Show[playerid] != 0) return SendClientMessageEx(playerid, COLOR_WHITE, "[{EB8034}Warning{FFFFFF}]: Hay tat tui do hien tai truoc khi bat tui do moi.");
-        for(i = 0 ; i < MAX_EVENT_SPAWN ; i++)
-            if(Event_Show[i][playerid] != 0) return SendClientMessageEx(playerid, COLOR_WHITE, "[{EB8034}Warning{FFFFFF}]: Hay tat event shop truoc khi mo guide.");
-        if(TaskFarm_Show[playerid] != 0) return SendClientMessageEx(playerid, COLOR_WHITE, "[{EB8034}Warning{FFFFFF}]: Hay tat nhiem vu hang ngay truoc khi mo guide.");
         
         if(CharacterInfo[playerid][0][cb_Weight] == 45.0) CharacterInfo[playerid][0][cb_Weight] = 60.0;
         for(i = 11 ; i < 13 ; i++)
         {
             if(CharacterInfo[playerid][0][cb_ItemLock][i] == 1)
-            {
                 CharacterInfo[playerid][0][cb_ItemLock][i] = 0;
-            }
         }
-        
-        if(IsPlayerUsingSampMobile(playerid)) return callcmd::balomobile(playerid, params);
-        else return Inventory_Action(playerid, 0);
-        /*new str[256];
-        format(str, sizeof(str), "Tui do custom (PC - TextDraw)\nTui do mobile (Dialog)");
-		return Dialog_Show(playerid, DIALOG_INVMOBILE_CHOICE, DIALOG_STYLE_LIST, "Ban dang su dung thiet bi gi?", str, "Chon", "Huy");*/
+
+        Balo_ShowMain(playerid);
 	}
 	return 1;
 }
 
+stock Balo_ShowMain(playerid)
+{
+    new title[128], szStr[4096], count;
+    new Float:totalWeight;
+
+    for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+    {
+        if(CharacterInfo[playerid][0][cb_ItemID][i] != INVALID_OBJECT_ID)
+            totalWeight += CharacterInfo[playerid][0][cb_ItemWeight][i];
+    }
+
+    format(title, sizeof(title), "BALO {FFFFFF}| %s {FFFFFF}| {F5CB42}%.1f{FFFFFF}/{F5CB42}%.1f{FFFFFF} kg | {57FF57}$%s",
+        GetPlayerNameEx(playerid), totalWeight, CharacterInfo[playerid][0][cb_Weight], number_format(GetPlayerCash(playerid)));
+
+    format(szStr, sizeof(szStr), "#\tVat pham\tSL\tKG\tDo ben\n");
+
+    for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+    {
+        if(CharacterInfo[playerid][0][cb_ItemLock][i] == 1)
+            format(szStr, sizeof(szStr), "%s{666666}%d\t{666666}--- Khoa ---\t\t\t\n", szStr, i + 1);
+        else if(CharacterInfo[playerid][0][cb_ItemID][i] == INVALID_OBJECT_ID)
+            format(szStr, sizeof(szStr), "%s{444444}%d\t{444444}Trong\t\t\t\n", szStr, i + 1);
+        else
+        {
+            count++;
+            new itemid = CharacterInfo[playerid][0][cb_ItemID][i];
+            new color[8];
+            if(GetIDWeapon(itemid)) color = "FF6347";
+            else color = "FFFFFF";
+            format(szStr, sizeof(szStr), "%s{F5CB42}%d\t{%s}%s\t{FFFFFF}%d\t{FFFFFF}%.1f\t{FFFFFF}%d\n",
+                szStr, i + 1, color,
+                Inventory_ListItems[itemid - 1],
+                CharacterInfo[playerid][0][cb_ItemAmount][i],
+                CharacterInfo[playerid][0][cb_ItemWeight][i],
+                CharacterInfo[playerid][0][cb_ItemDurability][i]);
+        }
+    }
+
+    if(count == 0)
+        format(szStr, sizeof(szStr), "%s\n{888888}Balo trong. Mua do tai cua hang hoac nhat tu ground.", szStr);
+
+    Dialog_Show(playerid, DIALOG_BALO_MAIN, DIALOG_STYLE_TABLIST_HEADERS, title, szStr, "Thao tac", "Dong");
+    return 1;
+}
+
 CMD:balomobile(playerid, params[])
 {
-    if(gPlayerLogged{playerid})
-    {
-        new str[256];
-        format(str, sizeof(str), "Danh sach vat pham so huu\nDanh sach trang bi dang mang\n");
-        Dialog_Show(playerid, DIALOG_INVMOBILE_CHOICE, DIALOG_STYLE_LIST, "Ban muon chon muc gi?", str, "Chon", "Huy");
-    }
-    return 1;
+    return callcmd::balo(playerid, params);
 }
 
 CMD:closeinv(playerid, params[])
 {
-    if(gPlayerLogged{playerid})
+    DeletePVar(playerid, "Inventory_SelectItem");
+    DeletePVar(playerid, "Inventory_SelectTarget");
+    SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da dong balo.");
+    return 1;
+}
+
+Dialog:DIALOG_BALO_MAIN(playerid, response, listitem, inputtext[])
+{
+    if(!response) return 1;
+    if(listitem < 0) return 1;
+
+    new slot = listitem;
+    if(slot < 0 || slot >= MAX_PLAYER_CB_ITEM) return 1;
+
+    if(CharacterInfo[playerid][0][cb_ItemLock][slot] == 1)
     {
-        if(Inventory_Show[playerid] != 0)
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Slot nay bi khoa.");
+        return Balo_ShowMain(playerid);
+    }
+    if(CharacterInfo[playerid][0][cb_ItemID][slot] == INVALID_OBJECT_ID)
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Slot trong.");
+        return Balo_ShowMain(playerid);
+    }
+
+    SetPVarInt(playerid, "Inventory_SelectItem", slot);
+    SetPVarInt(playerid, "Inventory_SelectTarget", 0);
+
+    new itemid = CharacterInfo[playerid][0][cb_ItemID][slot];
+    new title[128], str[512];
+
+    format(title, sizeof(title), "Thao tac: {F5CB42}%s {FFFFFF}| SL: %d", Inventory_ListItems[itemid - 1], CharacterInfo[playerid][0][cb_ItemAmount][slot]);
+
+    format(str, sizeof(str), "{57FF57}Su dung vat pham\n");
+    format(str, sizeof(str), "%s{FFFFFF}Xem thong tin\n", str);
+
+    if(GetIDWeapon(itemid))
+        format(str, sizeof(str), "%s{FFB561}Trang bi len nguoi\n", str);
+    else
+        format(str, sizeof(str), "%s{FFB561}Phan tach so luong\n", str);
+
+    format(str, sizeof(str), "%s{FF6347}Vut bo vat pham\n", str);
+
+    if(itemid == 21 || itemid == 22)
+        format(str, sizeof(str), "%s{00BFFF}Tieu thu nhien lieu\n", str);
+
+    if(PlayerInfo[playerid][pAdmin] > 1337)
+        format(str, sizeof(str), "%s{888888}Admin Panel\n", str);
+
+    Dialog_Show(playerid, DIALOG_BALO_ACTION, DIALOG_STYLE_LIST, title, str, "Chon", "Quay lai");
+    return 1;
+}
+
+Dialog:DIALOG_BALO_ACTION(playerid, response, listitem, inputtext[])
+{
+    if(!response)
+        return Balo_ShowMain(playerid);
+
+    new slot = GetPVarInt(playerid, "Inventory_SelectItem");
+    new target = GetPVarInt(playerid, "Inventory_SelectTarget");
+    if(slot < 0) return Balo_ShowMain(playerid);
+
+    new itemid;
+    if(target == 0) itemid = CharacterInfo[playerid][0][cb_ItemID][slot];
+    else itemid = CharacterInfo[playerid][1][cb_ItemID][slot];
+
+    if(itemid == INVALID_OBJECT_ID)
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Vat pham khong ton tai.");
+        return Balo_ShowMain(playerid);
+    }
+
+    if(strcmp(inputtext, "Su dung vat pham", true) == 0 || strcmp(inputtext, "{57FF57}Su dung vat pham", true) == 0)
+    {
+        SetPVarInt(playerid, "Inventory_SelectItem", slot);
+        SetPVarInt(playerid, "Inventory_SelectTarget", target);
+        // Route to existing item use logic
+        Balo_UseItem(playerid, target, slot, itemid);
+    }
+    else if(strcmp(inputtext, "Xem thong tin", true) == 0 || strcmp(inputtext, "{FFFFFF}Xem thong tin", true) == 0)
+    {
+        Balo_ShowInfo(playerid, target, slot, itemid);
+    }
+    else if(strcmp(inputtext, "Trang bi len nguoi", true) == 0 || strcmp(inputtext, "{FFB561}Trang bi len nguoi", true) == 0)
+    {
+        Balo_EquipWeapon(playerid, slot);
+    }
+    else if(strcmp(inputtext, "Vut bo vat pham", true) == 0 || strcmp(inputtext, "{FF6347}Vut bo vat pham", true) == 0)
+    {
+        new title[128];
+        format(title, sizeof(title), "Xac nhan vut: {F5CB42}%s", Inventory_ListItems[itemid - 1]);
+        new str[256];
+        format(str, sizeof(str), "{FFFFFF}Ban co chac chan muon vut {FF6347}%s {FFFFFF}(%d)?\n\n{FF0000}Han dong nay khong the hoan tac!", Inventory_ListItems[itemid - 1], CharacterInfo[playerid][0][cb_ItemAmount][slot]);
+        Dialog_Show(playerid, DIALOG_BALO_DROP, DIALOG_STYLE_MSGBOX, title, str, "Vut", "Huy");
+    }
+    else if(strcmp(inputtext, "Tieu thu nhien lieu", true) == 0 || strcmp(inputtext, "{00BFFF}Tieu thu nhien lieu", true) == 0)
+    {
+        // Jerry can logic - delegate to existing handler
+        Balo_ConsumeFuel(playerid, slot, itemid);
+    }
+    else if(strcmp(inputtext, "Admin Panel", true) == 0 || strcmp(inputtext, "{888888}Admin Panel", true) == 0)
+    {
+        if(PlayerInfo[playerid][pAdmin] > 1337)
         {
-            for(new i = 0 ; i < MAX_PLAYER_TD_INVENTORY ; i++)
-            {
-                PlayerTextDrawDestroy(playerid, GTASA_Inventory[playerid][0][i]);
-                if(i < MAX_PLAYER_TD_INVENTORYINFO)
-                {
-                    PlayerTextDrawDestroy(playerid, GTASA_Inventory[playerid][1][i]);
-                    GTASA_Inventory[playerid][1][i] = PlayerText:INVALID_TEXT_DRAW;
-                }
-                GTASA_Inventory[playerid][0][i] = PlayerText:INVALID_TEXT_DRAW;
-            }
-            Guide_ReadPost[playerid] = 0;
-            Inventory_Character[playerid] = 0;
-            DeletePVar(playerid, "AdminYourSelf");
-            DeletePVar(playerid, "Inventory_SelectItem");
-            DeletePVar(playerid, "Inventory_SelectTarget");
-            DeletePVar(playerid, "Exchange_Coin_Request");
-            DeletePVar(playerid, "Inventory_GraftingItem");
-            DeletePVar(playerid, "CheckDialogInventory");
-            CancelSelectTextDraw(playerid);
-            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}TUI DO{FFFFFF}]: Ban da dong 'TUI DO' thanh cong.");
-            Inventory_Show[playerid] = 0;
+            SetPVarInt(playerid, "Inventory_SelectItem", slot);
+            SetPVarInt(playerid, "Inventory_SelectTarget", target);
+            new str[128];
+            format(str, sizeof(str), "- {FF0000}Xoa bo\n- Admin: Them so luong\n- Admin: Xem chi tiet");
+            Dialog_Show(playerid, DIALOG_INVENTORY_ACTION, DIALOG_STYLE_LIST, "Admin Panel", str, "Chon", "Huy");
         }
     }
     return 1;
+}
+
+stock Balo_ShowInfo(playerid, target, slot, itemid)
+{
+    new title[128], str[512];
+    format(title, sizeof(title), "Thong tin: {F5CB42}%s", Inventory_ListItems[itemid - 1]);
+
+    new typeStr[32];
+    if(GetIDWeapon(itemid)) typeStr = "Vu khi";
+    else if(itemid >= 3 && itemid <= 7) typeStr = "Khoang san";
+    else if(itemid >= 37 && itemid <= 39) typeStr = "Hai san";
+    else if(itemid == 41) typeStr = "Hop dan";
+    else if(itemid >= 18 && itemid <= 20) typeStr = "Hop do";
+    else typeStr = "Vat pham";
+
+    format(str, sizeof(str), "{F5CB42}Ten: {FFFFFF}%s\n", Inventory_ListItems[itemid - 1]);
+    format(str, sizeof(str), "%s{F5CB42}Loai: {FFFFFF}%s\n", str, typeStr);
+    format(str, sizeof(str), "%s{F5CB42}So luong: {FFFFFF}%d", str, CharacterInfo[playerid][target][cb_ItemAmount][slot]);
+
+    if(GetIDWeapon(itemid))
+        format(str, sizeof(str), "%s/{FFFFFF}%d (dan)\n", str, GetAmmoWeaponLimit(itemid));
+    else
+        format(str, sizeof(str), "%s/{FFFFFF}%d (toi da)\n", str, GetAmountItemLimit(itemid));
+
+    format(str, sizeof(str), "%s{F5CB42}Trong luong: {FFFFFF}%.2f kg\n", str, CharacterInfo[playerid][target][cb_ItemWeight][slot]);
+    format(str, sizeof(str), "%s{F5CB42}Do ben: {FFFFFF}%d/100\n\n", str, CharacterInfo[playerid][target][cb_ItemDurability][slot]);
+    format(str, sizeof(str), "%s{AAAAAA}%s", str, GetItemInfo(itemid));
+
+    Dialog_Show(playerid, DIALOG_BALO_INFO, DIALOG_STYLE_MSGBOX, title, str, "Quay lai", "Dong");
+    return 1;
+}
+
+Dialog:DIALOG_BALO_INFO(playerid, response, listitem, inputtext[])
+{
+    #pragma unused listitem, inputtext
+    if(response)
+        return Balo_ShowMain(playerid);
+    return 1;
+}
+
+Dialog:DIALOG_BALO_DROP(playerid, response, listitem, inputtext[])
+{
+    #pragma unused listitem, inputtext
+    if(!response)
+        return Balo_ShowMain(playerid);
+
+    new slot = GetPVarInt(playerid, "Inventory_SelectItem");
+    if(slot < 0 || slot >= MAX_PLAYER_CB_ITEM) return Balo_ShowMain(playerid);
+
+    if(CharacterInfo[playerid][0][cb_ItemID][slot] == INVALID_OBJECT_ID)
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Slot trong.");
+        return Balo_ShowMain(playerid);
+    }
+
+    new itemid = CharacterInfo[playerid][0][cb_ItemID][slot];
+    new amount = CharacterInfo[playerid][0][cb_ItemAmount][slot];
+
+    // Check if it's a LAW weapon
+    if(itemid >= 44 && itemid <= 48)
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Khong the vut vu khi LAW.");
+        return Balo_ShowMain(playerid);
+    }
+
+    RemovePlayerItem(playerid, slot);
+    ApplyAnimation(playerid, "PED", "BIKE_elbowL", 4.1, 0, 0, 0, 0, 0, 1);
+
+    new str[128];
+    format(str, sizeof(str), "[{FFB561}BALO{FFFFFF}]: Ban da vut %s (x%d).", Inventory_ListItems[itemid - 1], amount);
+    SendClientMessageEx(playerid, COLOR_WHITE, str);
+
+    return Balo_ShowMain(playerid);
+}
+
+stock Balo_EquipWeapon(playerid, slot)
+{
+    if(slot < 0 || slot >= MAX_PLAYER_CB_ITEM) return 1;
+
+    new itemid = CharacterInfo[playerid][0][cb_ItemID][slot];
+    if(itemid == INVALID_OBJECT_ID || !GetIDWeapon(itemid))
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Vat pham nay khong phai vu khi.");
+        return Balo_ShowMain(playerid);
+    }
+
+    new weaponid = GetIDWeapon(itemid);
+    new weapontype = GetWeaponType(itemid);
+
+    // Check if already have same weapon type equipped
+    for(new i = 0; i < 7; i++)
+    {
+        if(CharacterInfo[playerid][1][cb_ItemID][i] != INVALID_OBJECT_ID)
+        {
+            if(GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][i]) == weaponid)
+            {
+                SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da mang vu khi nay roi.");
+                return Balo_ShowMain(playerid);
+            }
+            if(GetWeaponType(CharacterInfo[playerid][1][cb_ItemID][i]) == weapontype)
+            {
+                SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da mang vu khi cung loai.");
+                return Balo_ShowMain(playerid);
+            }
+        }
+    }
+
+    // Find empty equip slot
+    for(new i = 0; i < 7; i++)
+    {
+        if(CharacterInfo[playerid][1][cb_ItemLock][i] == 0 && CharacterInfo[playerid][1][cb_ItemID][i] == INVALID_OBJECT_ID)
+        {
+            CharacterInfo[playerid][1][cb_ItemID][i] = CharacterInfo[playerid][0][cb_ItemID][slot];
+            CharacterInfo[playerid][1][cb_ItemWeight][i] = CharacterInfo[playerid][0][cb_ItemWeight][slot];
+            CharacterInfo[playerid][1][cb_ItemDurability][i] = CharacterInfo[playerid][0][cb_ItemDurability][slot];
+            CharacterInfo[playerid][1][cb_ItemAmount][i] = CharacterInfo[playerid][0][cb_ItemAmount][slot];
+
+            CharacterInfo[playerid][0][cb_ItemID][slot] = INVALID_OBJECT_ID;
+            CharacterInfo[playerid][0][cb_ItemWeight][slot] = 0.0;
+            CharacterInfo[playerid][0][cb_ItemDurability][slot] = 0;
+            CharacterInfo[playerid][0][cb_ItemAmount][slot] = 0;
+
+            GivePlayerValidWeaponEx(playerid, weaponid, CharacterInfo[playerid][1][cb_ItemAmount][i]);
+
+            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da trang bi vu khi.");
+            return Balo_ShowMain(playerid);
+        }
+    }
+
+    SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Khong con slot trang bi trong.");
+    return Balo_ShowMain(playerid);
+}
+
+stock Balo_UseItem(playerid, target, slot, itemid)
+{
+    #pragma unused target
+    // Medkit
+    if(itemid == 11)
+    {
+        SetPVarInt(playerid, "usg_ItemIDs", 11);
+        SetPVarInt(playerid, "usg_ItemTimers", 15);
+        ItemGain(playerid, 1);
+        return 1;
+    }
+    // Gatacetamol
+    if(itemid == 12)
+    {
+        SetPVarInt(playerid, "usg_ItemIDs", 12);
+        SetPVarInt(playerid, "usg_ItemTimers", 15);
+        ItemGain(playerid, 1);
+        return 1;
+    }
+    // Coin Exchange
+    if(itemid == 10)
+    {
+        new string[456];
+        SetPVarInt(playerid, "Exchange_Coin_Request", 1);
+        format(string, sizeof(string), "Ban dang su dung vat pham {FF0000}'CHUYEN DOI GP SANG COIN'{FFFFFF}\n\
+        So GP ban hien dang co: {62FF00}%d{FFFFFF}.\n\n\
+        Bang quy doi:\n\
+        \t1 coin\t1,000 GP\n\
+        \t10 coin\t10,000 GP\n\
+        \t100 coin\t100,000 GP\n\
+        \t1000 coin\t1,000,000 GP\n\n\
+        Hay nhan 'Dong Y' neu nhu ban muon chuyen doi hoac 'Huy' neu khong muon chuyen doi",
+        PlayerData[playerid][pc_GP]);
+        return Dialog_Show(playerid, DG_EXCHANGE_COIN, DIALOG_STYLE_MSGBOX, "Coin Exchange", string, "Dong Y", "Huy");
+    }
+    // Ammo Box
+    if(itemid == 41)
+    {
+        new string[560];
+        format(string, sizeof(string), "Slot\tVu khi\tSo dan\n");
+        for(new i = 0; i < 7; i++)
+        {
+            if(GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][i]))
+            {
+                if(CharacterInfo[playerid][1][cb_ItemID][i] == 8 || CharacterInfo[playerid][1][cb_ItemID][i] == 9)
+                    format(string, sizeof(string), "%s%d\tMay khai thac\t{FF0000}Khong the nap\n", string, i + 1);
+                else if(CharacterInfo[playerid][1][cb_ItemAmount][i] >= GetAmmoWeaponLimit(CharacterInfo[playerid][1][cb_ItemID][i]))
+                    format(string, sizeof(string), "%s%d\t%s\t{2D9410}Da day dan\n", string, i + 1, Inventory_ListItems[CharacterInfo[playerid][1][cb_ItemID][i] - 1]);
+                else
+                    format(string, sizeof(string), "%s%d\t%s\t%d/%d\n", string, i + 1, Inventory_ListItems[CharacterInfo[playerid][1][cb_ItemID][i] - 1], CharacterInfo[playerid][1][cb_ItemAmount][i], GetAmmoWeaponLimit(CharacterInfo[playerid][1][cb_ItemID][i]));
+            }
+            if(CharacterInfo[playerid][1][cb_ItemID][i] == INVALID_OBJECT_ID)
+                format(string, sizeof(string), "%s%d\t--\t--/--\n", string, i + 1);
+        }
+        return Dialog_Show(playerid, DIALOG_AMMOBOX_WPChoice, DIALOG_STYLE_TABLIST_HEADERS, "Nap dan vu khi", string, "Nap", "Huy");
+    }
+    // Combo GFC
+    if(itemid == 42)
+    {
+        PlayerData[playerid][pc_FoodBar] = 100;
+        PlayerData[playerid][pc_WaterBar] = 100;
+        Update_Hunger(playerid);
+        CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
+        if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
+            RemovePlayerItem(playerid, slot);
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da an Combo GFC. Thuc an va nuoc day.");
+        return Balo_ShowMain(playerid);
+    }
+    // Treasure Map
+    if(itemid == 43)
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban dang xem ban do kho bau...");
+        defer ShowBDKBTimer(playerid);
+        return 1;
+    }
+    // Jerry Can - show vehicle list
+    if(itemid == 21 || itemid == 22)
+    {
+        return Balo_ConsumeFuel(playerid, slot, itemid);
+    }
+    // Slot Card
+    if(itemid == 13)
+    {
+        // Find first locked slot and unlock it
+        for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+        {
+            if(CharacterInfo[playerid][0][cb_ItemLock][i] == 1)
+            {
+                CharacterInfo[playerid][0][cb_ItemLock][i] = 0;
+                CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
+                if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
+                    RemovePlayerItem(playerid, slot);
+                SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da mo khoa them 1 slot balo.");
+                return Balo_ShowMain(playerid);
+            }
+        }
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Khong con slot bi khoa nao.");
+        return Balo_ShowMain(playerid);
+    }
+    // Bonus Cards
+    if(itemid >= 14 && itemid <= 17)
+    {
+        CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
+        if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
+            RemovePlayerItem(playerid, slot);
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da su dung the bonus.");
+        return Balo_ShowMain(playerid);
+    }
+    // Default: can't use
+    SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Vat pham nay khong the su dung truc tiep.");
+    return Balo_ShowMain(playerid);
+}
+
+stock Balo_ConsumeFuel(playerid, slot, itemid)
+{
+    new fuel = (itemid == 21) ? 100 : 200;
+    new vehicleid = GetPlayerVehicleID(playerid);
+
+    if(vehicleid == 0)
+    {
+        // Not in vehicle - check for nearby mining machines
+        // Stub for now
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban can ngoi trong xe de do xang.");
+        return Balo_ShowMain(playerid);
+    }
+
+    new Float:currentFuel = VehicleFuel[vehicleid];
+    new Float:maxFuel = 100.0;
+    new Float:needed = maxFuel - currentFuel;
+
+    if(needed <= 0)
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Xe da day xang.");
+        return Balo_ShowMain(playerid);
+    }
+
+    new Float:toAdd = (fuel < needed) ? float(fuel) : needed;
+    VehicleFuel[vehicleid] = currentFuel + toAdd;
+
+    CharacterInfo[playerid][0][cb_ItemAmount][slot] -= floatround(toAdd);
+    if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
+        RemovePlayerItem(playerid, slot);
+
+    new str[128];
+    format(str, sizeof(str), "[{FFB561}BALO{FFFFFF}]: Ban da do %.0f lit xang vao xe.", toAdd);
+    SendClientMessageEx(playerid, COLOR_WHITE, str);
+
+    return Balo_ShowMain(playerid);
 }
 
 CMD:gtasa_givemyitem(playerid, params[])

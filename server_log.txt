@@ -20,3 +20,249 @@ v0.3.DL-R1, (C)2005-2018 SA-MP Team
 
 [16:44:13] Unable to exec file 'server.cfg'.
 [16:44:13] Error: Your password must be changed from the default password, please change it.
+
+----------
+Loaded log file: "server_log.txt".
+----------
+
+SA-MP Dedicated Server
+----------------------
+v0.3.DL-R1, (C)2005-2018 SA-MP Team
+
+[21:54:18] 
+[21:54:18] Server Plugins
+[21:54:18] --------------
+[21:54:18]  Loading plugin: crashdetect
+[21:54:18]   Failed.
+[21:54:18]  Loading plugin: mysql
+[21:54:18]  >> plugin.mysql: R41-3 successfully loaded.
+[21:54:18]   Loaded.
+[21:54:18]  Loading plugin: sscanf
+[21:54:18] 
+
+[21:54:18]  ===============================
+
+[21:54:18]       sscanf plugin loaded.     
+
+[21:54:18]          Version:  2.8.2        
+
+[21:54:18]    (c) 2012 Alex "Y_Less" Cole  
+
+[21:54:18]  ===============================
+
+[21:54:18]   Loaded.
+[21:54:18]  Loading plugin: gvar
+[21:54:18] 
+
+*** GVar Plugin v1.3 by Incognito loaded ***
+
+[21:54:18]   Loaded.
+[21:54:18]  Loading plugin: irc
+[21:54:18]   Failed.
+[21:54:18]  Loading plugin: streamer
+[21:54:18] 
+
+*** Streamer Plugin v2.9.4 by Incognito loaded ***
+
+[21:54:18]   Loaded.
+[21:54:18]  Loading plugin: Whirlpool
+[21:54:18]  
+[21:54:18]  ==================
+[21:54:18]  
+[21:54:18]   Whirlpool loaded
+[21:54:18]  
+[21:54:18]  ==================
+[21:54:18]  
+[21:54:18]   Loaded.
+[21:54:18]  Loading plugin: discord-connector
+[21:54:18]  >> plugin.dc-connector: 0.1 successfully loaded.
+[21:54:18]   Loaded.
+[21:54:18]  Loaded 6 plugins.
+
+[21:54:18] [artwork:crc] ./skincustom/gasman.dff CRC = 0x89DC4231
+[21:54:18] [artwork:crc] ./skincustom/gasman.txd CRC = 0xD24CD113
+[21:54:18] [artwork:crc] ./skincustom/CJeano.dff CRC = 0xBA6393FC
+[21:54:18] [artwork:crc] ./skincustom/CJeano.txd CRC = 0x5259CBBD
+[21:54:18] [artwork:crc] ./skincustom/0002.dff CRC = 0xD4B55432
+[21:54:18] [artwork:crc] ./skincustom/0002.txd CRC = 0x35036154
+[21:54:18] [artwork:crc] ./skincustom/GhostRiderMFF.dff CRC = 0xD5F8A4C
+[21:54:18] [artwork:crc] ./skincustom/GhostRiderMFF.txd CRC = 0xA030A578
+[21:54:18] [artwork:crc] ./skincustom/Leonrpd.dff CRC = 0x18215651
+[21:54:18] [artwork:crc] ./skincustom/Leonrpd.txd CRC = 0x70482AD4
+[21:54:18] [artwork:crc] ./skincustom/dwmolc2.dff CRC = 0x63751CB5
+[21:54:18] [artwork:crc] ./skincustom/dwmolc2.txd CRC = 0x8F740276
+[21:54:18] [artwork:crc] ./skincustom/ofyst.dff CRC = 0xC2F9FFD8
+[21:54:18] [artwork:crc] ./skincustom/ofyst.txd CRC = 0xF4310B60
+[21:54:18] [artwork:crc] ./skincustom/male01.dff CRC = 0x9FA8FFBD
+[21:54:18] [artwork:crc] ./skincustom/male01.txd CRC = 0xC52B4D7D
+[21:54:18] [artwork:crc] ./skincustom/swmyhp1.dff CRC = 0xC6278E96
+[21:54:18] [artwork:crc] ./skincustom/swmyhp1.txd CRC = 0xD43F5BAC
+[21:54:18] [artwork:crc] ./item/flamednormal.dff CRC = 0x466AB971
+[21:54:18] [artwork:crc] ./item/flamednormal.txd CRC = 0x48809F4
+[21:54:18] [artwork:crc] ./item/flamedvip.dff CRC = 0x28E9225E
+[21:54:18] [artwork:crc] ./item/flamedvip.txd CRC = 0xFD1EDE4D
+[21:54:18] [artwork:crc] ./item/TikiTreasure.dff CRC = 0x587ACAC4
+[21:54:18] [artwork:crc] ./item/TikiTreasure.txd CRC = 0xE5EDA39C
+[21:54:18] [artwork:crc] ./item/schiffer.dff CRC = 0x7337ED7E
+[21:54:18] [artwork:crc] ./item/schiffer.txd CRC = 0x73840807
+[21:54:18] [artwork:crc] ./item/alex-freeway.dff CRC = 0xFF8E19
+[21:54:18] [artwork:crc] ./item/alex-freeway.txd CRC = 0xBC3F8E78
+[21:54:18] [artwork:crc] ./item/alex-nrg500.dff CRC = 0x34C28B32
+[21:54:18] [artwork:crc] ./item/alex-nrg500.txd CRC = 0x74675283
+[21:54:18] [artwork:crc] ./item/alex-sanchez.dff CRC = 0xEFEB2E52
+[21:54:18] [artwork:crc] ./item/alex-sanchez.txd CRC = 0xFA172D30
+[21:54:18] [artwork:crc] ./textdraw/object.dff CRC = 0xDCFCC14C
+[21:54:18] [artwork:crc] ./textdraw/sa-mp_screen.txd CRC = 0xCC4CC972
+[21:54:18] [artwork:crc] ./textdraw/object.dff CRC = 0xDCFCC14C
+[21:54:18] [artwork:crc] ./textdraw/gtasa_guide.txd CRC = 0x33AC0610
+[21:54:18] [artwork:crc] ./textdraw/object.dff CRC = 0xDCFCC14C
+[21:54:18] [artwork:crc] ./textdraw/gtasa_character.txd CRC = 0x4FB8F0D4
+[21:54:18] [artwork:crc] ./textdraw/object.dff CRC = 0xDCFCC14C
+[21:54:18] [artwork:crc] ./textdraw/gtasa_shop.txd CRC = 0x7400D087
+[21:54:18] [artwork:crc] ./textdraw/object.dff CRC = 0xDCFCC14C
+[21:54:18] [artwork:crc] ./textdraw/task_farm-daily.txd CRC = 0xBF3D6FDA
+[21:54:18] [artwork:crc] ./textdraw/object.dff CRC = 0xDCFCC14C
+[21:54:18] [artwork:crc] ./textdraw/caribbean.txd CRC = 0x69970B6
+[21:54:18] [artwork:crc] ./textdraw/object.dff CRC = 0xDCFCC14C
+[21:54:18] [artwork:crc] ./textdraw/khobaumap.txd CRC = 0x17A7AE59
+[21:54:18] 
+[21:54:18] Filterscripts
+[21:54:18] ---------------
+[21:54:18]   Loading filterscript 'editor-emmet.amx'...
+[21:54:18] AMX (45606832) loaded
+[21:54:18]  
+[21:54:18]  
+[21:54:18]  
+[21:54:18]  ======================================= 
+[21:54:18]  |                                     | 
+[21:54:18]  |        YSI version 4.00.0001        | 
+[21:54:18]  |        By Alex "Y_Less" Cole        | 
+[21:54:18]  |                                     | 
+[21:54:18]  ======================================= 
+[21:54:18]  
+[21:54:18] 
+Progress Bar Editor loaded!
+[21:54:18] Use the /bar command to begin editing.
+
+[21:54:18]   Loading filterscript 'FurnitureSystem.amx'...
+[21:54:18] AMX (46067568) loaded
+[21:54:18]   Loading filterscript 'Gang.amx'...
+[21:54:18] AMX (45106992) loaded
+[21:54:18]  
+[21:54:18]  
+[21:54:18]  
+[21:54:18]  ======================================= 
+[21:54:18]  |                                     | 
+[21:54:18]  |        YSI version 4.00.0001        | 
+[21:54:18]  |        By Alex "Y_Less" Cole        | 
+[21:54:18]  |                                     | 
+[21:54:18]  ======================================= 
+[21:54:18]  
+[21:54:19]   Loading filterscript 'ls_apartments1.amx'...
+[21:54:19] AMX (49864800) loaded
+[21:54:19]  
+[21:54:19]  
+[21:54:19]  
+[21:54:19]  ======================================= 
+[21:54:19]  |                                     | 
+[21:54:19]  |        YSI version 4.00.0001        | 
+[21:54:19]  |        By Alex "Y_Less" Cole        | 
+[21:54:19]  |                                     | 
+[21:54:19]  ======================================= 
+[21:54:19]  
+[21:54:19] 
+
+[21:54:19]   |---------------------------------------------------
+[21:54:19]   |--- LS Apartments 1 Filterscript
+[21:54:19]   |--  Script v1.02
+[21:54:19]   |--  5th February 2015
+[21:54:19]   |---------------------------------------------------
+[21:54:19]   |--  LS Apartments 1 Building object created
+[21:54:19]   |--  LS Apartments 1 Car Park object created
+[21:54:19]   |--  LS Apartments 1 Elevator created
+[21:54:19]   |---------------------------------------------------
+[21:54:19]   Loading filterscript 'ls_beachside.amx'...
+[21:54:19] AMX (49868008) loaded
+[21:54:19]  
+[21:54:19]  
+[21:54:19]  
+[21:54:19]  ======================================= 
+[21:54:19]  |                                     | 
+[21:54:19]  |        YSI version 4.00.0001        | 
+[21:54:19]  |        By Alex "Y_Less" Cole        | 
+[21:54:19]  |                                     | 
+[21:54:19]  ======================================= 
+[21:54:19]  
+[21:54:19] 
+
+[21:54:19]   |---------------------------------------------------
+[21:54:19]   |--- LS BeachSide Filterscript
+[21:54:19]   |--  Script v1.03
+[21:54:19]   |--  19th April 2015
+[21:54:19]   |---------------------------------------------------
+[21:54:19]   |--  LS BeachSide Building Elevator created
+[21:54:19]   |---------------------------------------------------
+[21:54:19]   Loading filterscript 'PlayerExteriors.amx'...
+[21:54:19] *** Streamer Plugin: Include file version (0x293) does not match plugin version (0x294) (script might need to be recompiled with the correct include file).
+[21:54:19] AMX (49868120) loaded
+[21:54:19]  
+[21:54:19]  
+[21:54:19]  
+[21:54:19]  ======================================= 
+[21:54:19]  |                                     | 
+[21:54:19]  |        YSI version 4.00.0001        | 
+[21:54:19]  |        By Alex "Y_Less" Cole        | 
+[21:54:19]  |                                     | 
+[21:54:19]  ======================================= 
+[21:54:19]  
+[21:54:19]   Loading filterscript 'PlayerInteriors.amx'...
+[21:54:19] AMX (49868232) loaded
+[21:54:19]  
+[21:54:19]  
+[21:54:19]  
+[21:54:19]  ======================================= 
+[21:54:19]  |                                     | 
+[21:54:19]  |        YSI version 4.00.0001        | 
+[21:54:19]  |        By Alex "Y_Less" Cole        | 
+[21:54:19]  |                                     | 
+[21:54:19]  ======================================= 
+[21:54:19]  
+[21:54:26]   Loading filterscript 'Server.amx'...
+[21:54:26] AMX (49868344) loaded
+[21:54:26]  
+[21:54:26]  
+[21:54:26]  
+[21:54:26]  ======================================= 
+[21:54:26]  |                                     | 
+[21:54:26]  |        YSI version 4.00.0001        | 
+[21:54:26]  |        By Alex "Y_Less" Cole        | 
+[21:54:26]  |                                     | 
+[21:54:26]  ======================================= 
+[21:54:26]  
+[21:54:27]   Loading filterscript 'yom_buttons.amx'...
+[21:54:27] AMX (54062032) loaded
+[21:54:27]  
+[21:54:27]  
+[21:54:27]  
+[21:54:27]  ======================================= 
+[21:54:27]  |                                     | 
+[21:54:27]  |        YSI version 4.00.0001        | 
+[21:54:27]  |        By Alex "Y_Less" Cole        | 
+[21:54:27]  |                                     | 
+[21:54:27]  ======================================= 
+[21:54:27]  
+[21:54:27]   Loading filterscript 'sapd.amx'...
+[21:54:27] AMX (54062144) loaded
+[21:54:27] 
+--------------------------------------
+[21:54:27]  [MAP] Mapping PD dang duoc load...
+[21:54:27] --------------------------------------
+
+[21:54:27]   Loading filterscript 'sfa.amx'...
+[21:54:27] AMX (54062256) loaded
+[21:54:27]  [MAP] Mapping SFA dang load...
+[21:54:27]   Loaded 11 filterscripts.
+
+[21:54:28] AMX (45439928) loaded
+[21:54:28] Script[gamemodes/NGRP.amx]: Run time error 19: "File or function is not found"
+[21:54:28] Number of vehicle models: 0
