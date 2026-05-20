@@ -3,7 +3,7 @@
   "artwork": {
     "cdn": "",
     "enable": true,
-    "models_path": "models",
+    "models_path": ".",
     "port": 7777,
     "web_server_bind": ""
   },
