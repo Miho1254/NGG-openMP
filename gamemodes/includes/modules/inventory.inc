@@ -2257,7 +2257,7 @@ Dialog:DIALOG_INVMOBILE_CHOICE(playerid, response, listitem, inputtext[])
         }
         else if(strcmp(inputtext, "Tui do mobile (Dialog)", true) == 0)
         {
-            return callcmd::tuidomobile(playerid, "");
+            return callcmd::balomobile(playerid, "");
         }
         else if(strcmp(inputtext, "Danh sach vat pham so huu", true) == 0)
         {
@@ -3690,7 +3690,7 @@ Dialog:DIALOG_AGPITEM2(playerid, response, listitem, inputtext[])
     return 1;
 }
 
-CMD:tuido(playerid, params[])
+CMD:balo(playerid, params[])
 {
 	if(gPlayerLogged{playerid})
     {
@@ -3714,7 +3714,7 @@ CMD:tuido(playerid, params[])
             }
         }
         
-        if(IsPlayerUsingSampMobile(playerid)) return callcmd::tuidomobile(playerid, params);
+        if(IsPlayerUsingSampMobile(playerid)) return callcmd::balomobile(playerid, params);
         else return Inventory_Action(playerid, 0);
         /*new str[256];
         format(str, sizeof(str), "Tui do custom (PC - TextDraw)\nTui do mobile (Dialog)");
@@ -3723,7 +3723,7 @@ CMD:tuido(playerid, params[])
 	return 1;
 }
 
-CMD:tuidomobile(playerid, params[])
+CMD:balomobile(playerid, params[])
 {
     if(gPlayerLogged{playerid})
     {
@@ -4265,6 +4265,19 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
         format(str, sizeof(str), "[{FFB561}TUI DO{FFFFFF}]: Ban da nap them %d vien dan cho %s.", ammo_to_add, Inventory_ListItems[CharacterInfo[playerid][1][cb_ItemID][item_slot] - 1]);
         SendClientMessageEx(playerid, COLOR_WHITE, str);
     }
+
+    // Hotkey H (KEY_CTRL_BACK) to open balo
+    if(PRESSED(KEY_CTRL_BACK))
+    {
+        if(gPlayerLogged{playerid} && !GetPVarType(playerid, "PlayerCuffed") && GetPVarInt(playerid, "pBagged") < 1 && !GetPVarType(playerid, "Injured") && !GetPVarType(playerid, "IsFrozen"))
+        {
+            if(Inventory_Show[playerid] == 0)
+            {
+                callcmd::balo(playerid, "");
+            }
+        }
+    }
+
     return 1;
 }
 

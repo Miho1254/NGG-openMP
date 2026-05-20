@@ -546,7 +546,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
     {
         if(gPlayerLogged{playerid})
         {
-            if(IsPlayerUsingSampMobile(playerid)) return callcmd::tuidomobile(playerid, "");
+            if(IsPlayerUsingSampMobile(playerid)) return callcmd::balomobile(playerid, "");
             new i;
             if(GuideTimer[playerid] != 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban dang thao tac qua nhanh.");
             if(GetPVarInt(playerid, "EventToken"))
