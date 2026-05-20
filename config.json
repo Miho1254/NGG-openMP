@@ -3,8 +3,9 @@
   "artwork": {
     "cdn": "",
     "enable": true,
-    "models_path": "models",
-    "http_threads": 8
+    "models_path": ".",
+    "port": 7777,
+    "web_server_bind": ""
   },
   "banners": {
     "dark": "",
@@ -67,7 +68,7 @@
     "acks_limit": 3000,
     "aiming_sync_rate": 30,
     "allow_037_clients": true,
-    "bind": "127.0.0.1",
+    "bind": "",
     "cookie_reseed_time": 300000,
     "grace_period": 5000,
     "http_threads": 50,
@@ -83,7 +84,7 @@
     "player_marker_sync_rate": 2500,
     "player_timeout": 10000,
     "port": 7777,
-    "public_addr": "127.0.0.1",
+    "public_addr": "",
     "stream_radius": 180.0,
     "stream_rate": 1000,
     "time_sync_rate": 30000,
