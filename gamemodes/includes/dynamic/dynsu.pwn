@@ -421,15 +421,15 @@ CMD:addcrime(playerid, params[])
 {
 	if(PlayerInfo[playerid][pAdmin] < 4 && PlayerInfo[playerid][pASM] < 1 && !PlayerInfo[playerid][pFactionModerator]) return SendClientMessageEx(playerid, COLOR_WHITE, "SERVER: Ban khong duoc phep su dung lenh nay.");
 
-	new type, nation, name[32], jtime, fine;
-	if(sscanf(params, "dds[32]dd", type, nation, name, jtime, fine)) {
-		SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /addcrime [type] [nation] [name] [jailtime(min)] [fine]");
-		SendClientMessageEx(playerid, COLOR_GREY, "type: 1 = toi nhe, 2 = toi nang | nation: 1 = SA, 2 = NE");
+	new stars, nation, jtime, fine, name[32];
+	if(sscanf(params, "dddds[32]", stars, nation, jtime, fine, name)) {
+		SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /addcrime [stars] [nation] [jailtime(min)] [fine] [name]");
+		SendClientMessageEx(playerid, COLOR_GREY, "stars: 1-6 (wanted stars khi /su) | nation: 1 = SA, 2 = NE");
+		SendClientMessageEx(playerid, COLOR_GREY, "Vi du: /addcrime 5 1 10 50000 Cuop nha bank");
 		return 1;
 	}
-	if(type < 1 || type > 2) return SendClientMessageEx(playerid, COLOR_GREY, "Type phai la 1 (toi nhe) hoac 2 (toi nang).");
+	if(stars < 1 || stars > 6) return SendClientMessageEx(playerid, COLOR_GREY, "Stars phai tu 1 den 6.");
 	if(nation < 1 || nation > 2) return SendClientMessageEx(playerid, COLOR_GREY, "Nation phai la 1 (SA) hoac 2 (NE).");
-	if(strlen(name) > 32) return SendClientMessageEx(playerid, COLOR_GREY, "Ten toi khong qua 32 ky tu.");
 	if(jtime < 1) return SendClientMessageEx(playerid, COLOR_GREY, "Thoi gian tu phai lon hon 0.");
 	if(fine < 0) return SendClientMessageEx(playerid, COLOR_GREY, "Tien phat khong duoc am.");
 
@@ -442,8 +442,8 @@ CMD:addcrime(playerid, params[])
 	}
 	if(slot == -1) return SendClientMessageEx(playerid, COLOR_GREY, "Khong con slot trong de them toi.");
 
-	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "INSERT INTO `crimesdata` (`type`, `nation`, `name`, `jailtime`, `fine`, `bail`) VALUES ('%d', '%d', '%e', '%d', '%d', '0')", type, nation, name, jtime, fine);
-	mysql_tquery(MainPipeline, szMiscArray, "OnCrimeAdded", "dsddddd", playerid, name, slot, type, nation, jtime, fine);
+	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "INSERT INTO `crimesdata` (`type`, `nation`, `name`, `jailtime`, `fine`, `bail`) VALUES ('%d', '%d', '%e', '%d', '%d', '0')", stars, nation, name, jtime, fine);
+	mysql_tquery(MainPipeline, szMiscArray, "OnCrimeAdded", "dsddddd", playerid, name, slot, stars, nation, jtime, fine);
 	return 1;
 }
 
