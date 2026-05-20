@@ -2,7 +2,7 @@
   "announce": true,
   "artwork": {
     "enable": true,
-    "models_url": "http://160.187.229.19/models/"
+    "models_url": ""
   },
   "banners": {
     "dark": "",
@@ -99,13 +99,7 @@
   },
   "password": "",
   "pawn": {
-    "legacy_plugins": [
-      "mysql",
-      "sscanf",
-      "gvar",
-      "streamer",
-      "Whirlpool"
-    ],
+    "legacy_plugins": ["mysql", "sscanf", "gvar", "streamer", "Whirlpool"],
     "main_scripts": ["NGRP 1"],
     "side_scripts": [
       "filterscripts/editor-emmet",
