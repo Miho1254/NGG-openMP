@@ -2213,7 +2213,7 @@ Function: Inventory_GetData(playerid)
     else
     {
         new string[128];
-        mysql_format(MainPipeline, string, sizeof(string), "INSERT INTO `inventory` (`SQLId`) VALUES (%d)", GetPlayerSQLId(playerid));
+        mysql_format(MainPipeline, string, sizeof(string), "INSERT IGNORE INTO `inventory` (`SQLId`) VALUES (%d)", GetPlayerSQLId(playerid));
         mysql_tquery(MainPipeline, string);
 
         CharacterInfo[playerid][0][cb_Weight] = 60.0;
