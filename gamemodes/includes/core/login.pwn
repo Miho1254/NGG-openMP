@@ -234,7 +234,8 @@ stock ShowMainMenuGUI(playerid)
 	TextDrawShowForPlayer(playerid, MainMenuTxtdraw[10]);
 	TextDrawShowForPlayer(playerid, TD_LoginScreen);
 
-	//SetPVarInt(playerid, "LoginScreen", Random(1,9));
+	PlayAudioStreamForPlayer(playerid, "http://160.187.229.19/login_background_audio.mp3");
+
 	TogglePlayerSpectating(playerid, true);
 	//SetTimerEx("loginCamera", 1000, false, "i", playerid);
 }
