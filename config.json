@@ -2,7 +2,7 @@
   "announce": true,
   "artwork": {
     "cdn": "",
-    "enable": false,
+    "enable": true,
     "models_path": "models",
     "port": 7777,
     "web_server_bind": ""

@@ -1658,6 +1658,11 @@ native WP_Hash(buffer[], len, const str[]);
 
 
 
+// Inventory System (from Rgame2018)
+#define				MAX_PLAYER_TD_INVENTORY			62
+#define				MAX_PLAYER_TD_INVENTORYINFO		8
+#define				MAX_EVENT_SPAWN 				1
+#define Function:%0(%1) forward%0(%1); public%0(%1)
 #define 			INVENTORY_MENU 					22
 /* IRC/Slack */
 #define MAX_BOTS (1)

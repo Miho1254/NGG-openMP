@@ -2776,3 +2776,6 @@ new
 	//TrollReport[MAX_PLAYERS] = {0, ...},
 	//shotTime[MAX_PLAYERS] = {0, ...},
 	LastEnterVehicle[MAX_PLAYERS] = {INVALID_VEHICLE_ID, ...};
+
+new Inventory_Show[MAX_PLAYERS];
+new Guide_Show[MAX_PLAYERS];

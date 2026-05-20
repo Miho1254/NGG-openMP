@@ -109,6 +109,7 @@
 // #include <discord-connector>
 #include <geo_ip>
 #include <easyDialog>
+#include <progress2>
 #include <callbacks>
 #include <attachments>
  // #include <object-loader>
@@ -404,8 +405,28 @@ public Float:player_get_speed(playerid)
 //toglichsu
 #include "./includes/core/toglichsu.pwn"
 
-//balo
-#include "./includes/core/balo.pwn"
+//balo (old - replaced by inventory system)
+//#include "./includes/core/balo.pwn"
+
+// Inventory System Dependencies (Rgame2018 port)
+#include "./includes/modules/cac.inc"
+#include "./includes/modules/hunger-system.inc"
+#include "./includes/modules/adventure.inc"
+#include "./includes/modules/new_stats.inc"
+#include "./includes/modules/oocshop.inc"
+
+// Inventory System (Rgame2018 port) - MUST be before modules that use CharacterInfo/Inventory API
+#include "./includes/modules/inventory.inc"
+#include "./includes/modules/useitemgain.inc"
+
+// Inventory-dependent modules
+#include "./includes/modules/guide.inc"
+#include "./includes/modules/tradenewitem.inc"
+#include "./includes/modules/sellgunnew.inc"
+#include "./includes/modules/drop_pick_item.inc"
+#include "./includes/modules/craftweapon.inc"
+#include "./includes/modules/gs-utils.inc"
+#include "./includes/modules/famed-mission.inc"
 
 //truyduoi
 #include "./includes/core/truyduoi.pwn"
