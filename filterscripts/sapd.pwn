@@ -1817,6 +1817,19 @@ public OnFilterScriptInit()
     tmpobjid = CreateDynamicObject(2994, 1389.765869, 1533.091796, 1510.401611, 0.000000, 0.000000, 94.699996, -1, -1, -1, 300.00, 300.00);
 
 
+	
+    // VÁ LỖ HỔNG HỐ TỬ THẦN TẠI KHU VỰC (1380.7, 1527.3)
+    // ----------------------------------------------------
+    new fix_san_pd;
+
+    // Tấm lót 1 (Ngay tâm chỗ mày đứng)
+    fix_san_pd = CreateDynamicObject(1897, 1380.7472, 1527.3218, 1509.8500, 0.0, 0.0, 0.0, -1, -1, -1, 300.0, 300.0);
+    SetDynamicObjectMaterial(fix_san_pd, 0, 18646, "matcolours", "white", 0x00000000); // Tàng hình
+
+    // Tấm lót 2 (Kế bên, phòng hờ cái hố nó bự)
+    fix_san_pd = CreateDynamicObject(1897, 1382.7472, 1527.3218, 1509.8500, 0.0, 0.0, 0.0, -1, -1, -1, 300.0, 300.0);
+    SetDynamicObjectMaterial(fix_san_pd, 0, 18646, "matcolours", "white", 0x00000000); // Tàng hình
+
     return 1;
 }
 
