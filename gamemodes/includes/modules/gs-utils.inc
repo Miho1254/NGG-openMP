@@ -381,6 +381,23 @@ Dialog:DIALOG_REFUNDVIP_SKIN(playerid, response, listitem, inputtext[])
     return 1;
 }
 
+CMD:lawlocker(playerid, params[])
+{
+    if(!IsACop(playerid))
+        return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong phai canh sat / nhan vien chinh phu.");
+
+    new str[512];
+    format(str, sizeof(str), "Hop dan tich hop (1200 dan)\n");
+    format(str, sizeof(str), "%s{FF0000}M4 LAW\t{FFFFFF}(Khoa)\n", str);
+    format(str, sizeof(str), "%s{FF0000}AK LAW\t{FFFFFF}(Khoa)\n", str);
+    format(str, sizeof(str), "%sDeagle LAW\t(199 dan)\n", str);
+    format(str, sizeof(str), "%s9mm LAW\t(29 dan)\n", str);
+    format(str, sizeof(str), "%sMP5 LAW\t(120 dan)\n", str);
+
+    Dialog_Show(playerid, DIALOG_LAW_WEAPON, DIALOG_STYLE_LIST, "TU DO VU KHI LAW", str, "Lay", "Thoat");
+    return 1;
+}
+
 Dialog:DIALOG_LAW_WEAPON(playerid, response, listitem, inputtext[])
 {
     if(response)
