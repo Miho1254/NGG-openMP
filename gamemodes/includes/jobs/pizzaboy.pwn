@@ -71,15 +71,15 @@ CMD:getpizza(playerid, params[]) {
 			szMessage[86];
 
 		SetPVarInt(playerid, "tpPizzaTimer", iDist / 80);
-		SetPVarInt(playerid, "pizzaTotal", iDist / 10);
-		SetPVarInt(playerid, "pizzaTimer", iDist / 10);
+		SetPVarInt(playerid, "pizzaTotal", iDist * 3 / 20);
+		SetPVarInt(playerid, "pizzaTimer", iDist * 3 / 20);
 		SetPVarInt(playerid, "Pizza", rand);
 		SetPVarInt(playerid, "PizzaCoolDown", gettime()+60);
 
 		SetTimerEx("OtherTimerEx", 1000, false, "ii", playerid, TYPE_TPPIZZARUNTIMER);
 		SetTimerEx("OtherTimerEx", 1000, false, "ii", playerid, TYPE_PIZZATIMER);
 
-		format(szMessage, sizeof(szMessage), "You have picked up a pizza for %s. You have %d seconds to deliver it!", StripUnderscore(HouseInfo[rand][hOwnerName]), iDist / 10);
+		format(szMessage, sizeof(szMessage), "You have picked up a pizza for %s. You have %d seconds to deliver it!", StripUnderscore(HouseInfo[rand][hOwnerName]), iDist * 3 / 20);
 		SendClientMessageEx(playerid, COLOR_WHITE, szMessage);
 
 		SetPlayerCheckpoint(playerid, HouseInfo[rand][hExteriorX], HouseInfo[rand][hExteriorY], HouseInfo[rand][hExteriorZ], 5);
@@ -129,15 +129,15 @@ CMD:getpizza(playerid, params[]) {
 			szMessage[86];
 
 		SetPVarInt(playerid, "tpPizzaTimer", iDist / 80);
-		SetPVarInt(playerid, "pizzaTotal", iDist / 10);
-		SetPVarInt(playerid, "pizzaTimer", iDist / 10);
+		SetPVarInt(playerid, "pizzaTotal", iDist * 3 / 20);
+		SetPVarInt(playerid, "pizzaTimer", iDist * 3 / 20);
 		SetPVarInt(playerid, "Pizza", rand);
 		SetPVarInt(playerid, "PizzaCoolDown", gettime()+60);
 
 		SetTimerEx("OtherTimerEx", 1000, false, "ii", playerid, TYPE_TPPIZZARUNTIMER);
 		SetTimerEx("OtherTimerEx", 1000, false, "ii", playerid, TYPE_PIZZATIMER);
 
-		format(szMessage, sizeof(szMessage), "Ban da nhan don hang cua %s. Ban co %d giay de giao banh Pizza den dia diem.", StripUnderscore(HouseInfo[rand][hOwnerName]), iDist / 10);
+		format(szMessage, sizeof(szMessage), "Ban da nhan don hang cua %s. Ban co %d giay de giao banh Pizza den dia diem.", StripUnderscore(HouseInfo[rand][hOwnerName]), iDist * 3 / 20);
 		SendClientMessageEx(playerid, COLOR_WHITE, szMessage);
 
 		SetPlayerCheckpoint(playerid, HouseInfo[rand][hExteriorX], HouseInfo[rand][hExteriorY], HouseInfo[rand][hExteriorZ], 5);
@@ -157,15 +157,15 @@ CMD:getpizza(playerid, params[]) {
 			szMessage[86];
 
 		SetPVarInt(playerid, "tpPizzaTimer", iDist / 80);
-		SetPVarInt(playerid, "pizzaTotal", iDist / 10);
-		SetPVarInt(playerid, "pizzaTimer", iDist / 10);
+		SetPVarInt(playerid, "pizzaTotal", iDist * 3 / 20);
+		SetPVarInt(playerid, "pizzaTimer", iDist * 3 / 20);
 		SetPVarInt(playerid, "Pizza", rand);
 		SetPVarInt(playerid, "PizzaCoolDown", gettime()+60);
 
 		SetTimerEx("OtherTimerEx", 1000, false, "ii", playerid, TYPE_TPPIZZARUNTIMER);
 		SetTimerEx("OtherTimerEx", 1000, false, "ii", playerid, TYPE_PIZZATIMER);
 
-		format(szMessage, sizeof(szMessage), "Ban da nhan don hang cua %s. Ban co %d giay de giao banh Pizza den dia diem.", StripUnderscore(HouseInfo[rand][hOwnerName]), iDist / 10);
+		format(szMessage, sizeof(szMessage), "Ban da nhan don hang cua %s. Ban co %d giay de giao banh Pizza den dia diem.", StripUnderscore(HouseInfo[rand][hOwnerName]), iDist * 3 / 20);
 		SendClientMessageEx(playerid, COLOR_WHITE, szMessage);
 
 		SetPlayerCheckpoint(playerid, HouseInfo[rand][hExteriorX], HouseInfo[rand][hExteriorY], HouseInfo[rand][hExteriorZ], 5);
