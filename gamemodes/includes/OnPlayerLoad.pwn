@@ -1145,7 +1145,7 @@ public OnPlayerLoad(playerid)
 	if(PlayerInfo[playerid][pTut] == -1 && PlayerInfo[playerid][pNation] != 0 && PlayerInfo[playerid][pNation] != 1) return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_NATION, DIALOG_STYLE_LIST, "You currently do not have a nation. Please chose one.", "San Andreas\nNew Robada", "Select", "<<");
 
 	// Inventory System (Rgame2018 port) — load player data on login
-	GetPlayerConfigAccount(playerid);    // Load PlayerData from account2 table
+	// Note: GetPlayerConfigAccount is called by cac.inc BEFORE OnPlayerLoad
 	Inventory_CallData(playerid);        // Load inventory items from inventory table
 	Setup_Hunger(playerid);              // Show hunger progress bars
 	Setup_Adventures(playerid);          // Show adventure progress bar
