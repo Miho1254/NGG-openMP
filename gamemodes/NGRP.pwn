@@ -90,9 +90,12 @@
 #undef  MAX_PLAYERS
 #define MAX_PLAYERS (500)
 // Block crashdetect.inc from being included (open.mp has built-in debug)
-#define _crashdetect_included
+#define CRASHDETECT_INC
 stock PrintBacktrace() { return 0; }
 stock PrintAmxBacktrace() { return 0; }
+stock PrintNativeBacktrace() { return 0; }
+stock GetBacktrace(string[], size = sizeof(string)) { string[0] = 0; return 0; }
+stock GetNativeBacktrace(string[], size = sizeof(string)) { string[0] = 0; return 0; }
 #include <logger>
 #include <errors>
 #include <rAct>
