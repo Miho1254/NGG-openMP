@@ -1,4 +1,5 @@
 C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/events/event.pwn(664) : íåïðàâèëüíàÿ òàáóëÿöèÿ
-C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/inventory.inc(1136) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "exp"
+C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/group/groupcore.pwn(5838) : íåïðàâèëüíàÿ òàáóëÿöèÿ
+C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/inventory.inc(1163) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "exp"
 Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
 
