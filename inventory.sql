@@ -1,4 +1,6 @@
 CREATE TABLE IF NOT EXISTS `inventory` (
+    `Id` int(11) NOT NULL AUTO_INCREMENT,
+    `SQLId` int(11) NOT NULL DEFAULT 0,
     `Weight` FLOAT DEFAULT 0.0,
 
     -- ItemLock[84]
@@ -477,5 +479,7 @@ CREATE TABLE IF NOT EXISTS `inventory` (
     `Item2Amount3` INT DEFAULT 0,
     `Item2Amount4` INT DEFAULT 0,
     `Item2Amount5` INT DEFAULT 0,
-    `Item2Amount6` INT DEFAULT 0
-);
+    `Item2Amount6` INT DEFAULT 0,
+    PRIMARY KEY (`Id`),
+    UNIQUE KEY `SQLId` (`SQLId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
