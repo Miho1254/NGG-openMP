@@ -5126,20 +5126,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 						}
 					}
 					ResetPlayerWeaponsEx(suspect);
-					SetPlayerInterior(suspect, ArrestPoints[GetArrestPointID(playerid)][jailInt]);
-					//new rand = random(sizeof(LSPDJailSpawns));
-					//SetPlayerFacingAngle(suspect, LSPDJailSpawns[rand][3]);
-					//SetPlayerPos(suspect, LSPDJailSpawns[rand][0], LSPDJailSpawns[rand][1], LSPDJailSpawns[rand][2]);
-					switch(random(2)) {
-						case 0: {
-							SetPlayerPos(suspect, ArrestPoints[GetArrestPointID(playerid)][JailPos1][0], ArrestPoints[GetArrestPointID(playerid)][JailPos1][1], ArrestPoints[GetArrestPointID(playerid)][JailPos1][2]);
-							Player_StreamPrep(suspect, ArrestPoints[GetArrestPointID(playerid)][JailPos1][0], ArrestPoints[GetArrestPointID(playerid)][JailPos1][1], ArrestPoints[GetArrestPointID(playerid)][JailPos1][2], FREEZE_TIME);
-						}
-						case 1: {
-							SetPlayerPos(suspect, ArrestPoints[GetArrestPointID(playerid)][JailPos2][0], ArrestPoints[GetArrestPointID(playerid)][JailPos2][1], ArrestPoints[GetArrestPointID(playerid)][JailPos2][2]);
-							Player_StreamPrep(suspect, ArrestPoints[GetArrestPointID(playerid)][JailPos2][0], ArrestPoints[GetArrestPointID(playerid)][JailPos2][1], ArrestPoints[GetArrestPointID(playerid)][JailPos2][2], FREEZE_TIME);
-						}
-					}
+					SetPlayerInterior(suspect, 0);
+					SetPlayerPos(suspect, 561.4611, 1453.8538, 6000.4751);
+					SetPlayerFacingAngle(suspect, 82.9392);
+					Player_StreamPrep(suspect, 561.4611, 1453.8538, 6000.4751, FREEZE_TIME);
 					SetPVarInt(suspect, "ArrestPoint", (GetArrestPointID(playerid) + 1));
 					if(PlayerInfo[suspect][pDonateRank] >= 2)
 					{
