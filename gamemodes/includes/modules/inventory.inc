@@ -1360,7 +1360,7 @@ Function: TakeAmmoDeathPlayer(playerid)
                 if(CharacterInfo[playerid][0][cb_ItemID][k] == itemid)
                 {
                     CharacterInfo[playerid][0][cb_ItemAmount][k] = currentAmmo;
-                    CharacterInfo[playerid][0][cb_ItemWeight][k] = GetItemWeight(itemid) * currentAmmo;
+                    CharacterInfo[playerid][0][cb_ItemWeight][k] = GetItemWeight(itemid);
                     break;
                 }
             }
@@ -1618,7 +1618,8 @@ stock GivePlayerItem(playerid, id, amount)
         // Kiểm tra quá tải: Tổng trọng lượng (hiện tại + slot mới) > giới hạn
         if (Weight + new_weight > CharacterInfo[playerid][0][cb_Weight])
         {
-            return SendClientMessageEx(playerid, COLOR_LIGHTRED, "[*] Khong the them vat pham vi da qua gioi han can nang.");
+            SendClientMessageEx(playerid, COLOR_LIGHTRED, "[*] Khong the them vat pham vi da qua gioi han can nang.");
+            return 0;
         }
         
         // Tìm Slot trống trong túi đồ chính [0]
@@ -1626,7 +1627,8 @@ stock GivePlayerItem(playerid, id, amount)
 
         if (slot == -1) 
         {
-            return SendClientMessageEx(playerid, COLOR_LIGHTRED, "[*] Khong con slot trong de them vat pham.");
+            SendClientMessageEx(playerid, COLOR_LIGHTRED, "[*] Khong con slot trong de them vat pham.");
+            return 0;
         }
         
         // 3. --- THÊM VẬT PHẨM VÀO SLOT MỚI ---
@@ -2478,7 +2480,7 @@ Dialog:DIALOG_INVENTORY_AMB(playerid, response, listitem, inputtext[])
                                 CharacterInfo[playerid][0][cb_ItemID][GetPVarInt(playerid, "Inventory_SelectItem")] = INVALID_OBJECT_ID;
                                 CharacterInfo[playerid][0][cb_ItemWeight][GetPVarInt(playerid, "Inventory_SelectItem")] = 0.0;
                                 CharacterInfo[playerid][0][cb_ItemDurability][GetPVarInt(playerid, "Inventory_SelectItem")] = 0;
-                                CharacterInfo[playerid][0][cb_ItemAmount][i] = CharacterInfo[playerid][0][cb_ItemAmount][GetPVarInt(playerid, "Inventory_SelectItem")] = 0;
+                                CharacterInfo[playerid][0][cb_ItemAmount][GetPVarInt(playerid, "Inventory_SelectItem")] = 0;
 
                                 // Đã xóa PlayerTextDrawSetString
                                 // Đã xóa Inventory_SetPost
@@ -2870,7 +2872,7 @@ Dialog:DIALOG_INVENTORY_AMB(playerid, response, listitem, inputtext[])
             SetPVarInt(playerid, "AdminYourSelf", 1);
             for(i = 0 ; i < sizeof(Inventory_ListItems) ; i++)
             {
-                format(string, sizeof(string), "%s\n(%d) %s", str, i, Inventory_ListItems[i]);
+                format(string, sizeof(string), "%s\n(%d) %s", string, i, Inventory_ListItems[i]);
             }
             Dialog_Show(playerid, DG_INVENTORY_GIVE_ITEM, DIALOG_STYLE_LIST, "List of Items", string, "Chon", "Huy");
             return 1;
@@ -2941,7 +2943,7 @@ Dialog:DIALOG_INVENTORY_ACTION(playerid, response, listitem, inputtext[])
                                 CharacterInfo[playerid][0][cb_ItemID][GetPVarInt(playerid, "Inventory_SelectItem")] = INVALID_OBJECT_ID;
                                 CharacterInfo[playerid][0][cb_ItemWeight][GetPVarInt(playerid, "Inventory_SelectItem")] = 0.0;
                                 CharacterInfo[playerid][0][cb_ItemDurability][GetPVarInt(playerid, "Inventory_SelectItem")] = 0;
-                                CharacterInfo[playerid][0][cb_ItemAmount][i] = CharacterInfo[playerid][0][cb_ItemAmount][GetPVarInt(playerid, "Inventory_SelectItem")] = 0;
+                                CharacterInfo[playerid][0][cb_ItemAmount][GetPVarInt(playerid, "Inventory_SelectItem")] = 0;
 
                                 format(str, sizeof(str), "%s", GetItemMDL(CharacterInfo[playerid][1][cb_ItemID][i]));
                                 PlayerTextDrawSetString(playerid, GTASA_Inventory[playerid][0][i + 6], str);
@@ -3345,7 +3347,7 @@ Dialog:DIALOG_INVENTORY_ACTION(playerid, response, listitem, inputtext[])
             SetPVarInt(playerid, "AdminYourSelf", 1);
             for(i = 0 ; i < sizeof(Inventory_ListItems) ; i++)
             {
-                format(string, sizeof(string), "%s\n(%d) %s", str, i, Inventory_ListItems[i]);
+                format(string, sizeof(string), "%s\n(%d) %s", string, i, Inventory_ListItems[i]);
             }
             Dialog_Show(playerid, DG_INVENTORY_GIVE_ITEM, DIALOG_STYLE_LIST, "List of Items", string, "Chon", "Huy");
             return 1;
@@ -3860,7 +3862,7 @@ stock Balo_ShowMain(playerid)
     }
     if(equipCount > 0)
     {
-        SetPVarInt(playerid, "Balo_EquipOffset", showSlots + 2); // +2 for empty line + header
+        SetPVarInt(playerid, "Balo_EquipOffset", showSlots + 3); // +3 for empty line + header + header row in TABLIST_HEADERS
         format(szStr, sizeof(szStr), "%s\n{FFB561}--- VU KHI DANG TRANG BI ---\n", szStr);
         for(new i = 0; i < 7; i++)
         {
@@ -4207,11 +4209,11 @@ Dialog:DIALOG_BALO_SPLIT(playerid, response, listitem, inputtext[])
         {
             CharacterInfo[playerid][0][cb_ItemID][i] = itemid;
             CharacterInfo[playerid][0][cb_ItemAmount][i] = amount;
-            CharacterInfo[playerid][0][cb_ItemWeight][i] = GetItemWeight(itemid) * amount;
+            CharacterInfo[playerid][0][cb_ItemWeight][i] = GetItemWeight(itemid);
             CharacterInfo[playerid][0][cb_ItemDurability][i] = CharacterInfo[playerid][0][cb_ItemDurability][slot];
 
             CharacterInfo[playerid][0][cb_ItemAmount][slot] -= amount;
-            CharacterInfo[playerid][0][cb_ItemWeight][slot] = GetItemWeight(itemid) * CharacterInfo[playerid][0][cb_ItemAmount][slot];
+            CharacterInfo[playerid][0][cb_ItemWeight][slot] = GetItemWeight(itemid);
 
             new str[128];
             format(str, sizeof(str), "[{FFB561}BALO{FFFFFF}]: Da phan tach %d %s sang slot %d.", amount, Inventory_ListItems[itemid - 1], i + 1);
@@ -4297,7 +4299,7 @@ stock Balo_UnequipWeapon(playerid, itemid)
                 if(CharacterInfo[playerid][0][cb_ItemID][k] == itemid)
                 {
                     CharacterInfo[playerid][0][cb_ItemAmount][k] = currentAmmo;
-                    CharacterInfo[playerid][0][cb_ItemWeight][k] = GetItemWeight(itemid) * currentAmmo;
+                    CharacterInfo[playerid][0][cb_ItemWeight][k] = GetItemWeight(itemid);
                     break;
                 }
             }
@@ -4529,14 +4531,18 @@ Dialog:DIALOG_BALO_GIVE(playerid, response, listitem, inputtext[])
 
 stock Balo_ConsumeFuel(playerid, slot, itemid)
 {
-    new fuel = (itemid == 21) ? 100 : 200;
     new vehicleid = GetPlayerVehicleID(playerid);
 
     if(vehicleid == 0)
     {
-        // Not in vehicle - check for nearby mining machines
-        // Stub for now
         SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban can ngoi trong xe de do xang.");
+        return Balo_ShowMain(playerid);
+    }
+
+    new currentAmount = CharacterInfo[playerid][0][cb_ItemAmount][slot];
+    if(currentAmount <= 0)
+    {
+        SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Bin xang trong.");
         return Balo_ShowMain(playerid);
     }
 
@@ -4550,8 +4556,15 @@ stock Balo_ConsumeFuel(playerid, slot, itemid)
         return Balo_ShowMain(playerid);
     }
 
-    new Float:toAdd = (fuel < needed) ? float(fuel) : needed;
+    new Float:toAdd = (float(currentAmount) < needed) ? float(currentAmount) : needed;
     VehicleFuel[vehicleid] = currentFuel + toAdd;
+
+    if(VehicleFuel[vehicleid] > 100.0)
+    {
+        new Float:excess = VehicleFuel[vehicleid] - 100.0;
+        VehicleFuel[vehicleid] = 100.0;
+        toAdd -= excess;
+    }
 
     CharacterInfo[playerid][0][cb_ItemAmount][slot] -= floatround(toAdd);
     if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
@@ -5054,7 +5067,10 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
                 
                 if (CharacterInfo[playerid][0][cb_ItemAmount][z] <= 0)
                 {
-                    CharacterInfo[playerid][0][cb_ItemID][z] = 0;
+                    CharacterInfo[playerid][0][cb_ItemID][z] = INVALID_OBJECT_ID;
+                    CharacterInfo[playerid][0][cb_ItemWeight][z] = 0.0;
+                    CharacterInfo[playerid][0][cb_ItemDurability][z] = 0;
+                    CharacterInfo[playerid][0][cb_ItemAmount][z] = 0;
                 }
             }
         }
