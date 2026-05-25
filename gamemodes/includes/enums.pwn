@@ -2150,3 +2150,29 @@ enum eMoneyBagData {
 }
 new MoneyBagData[MAX_ROBBERS][eMoneyBagData];
 */
+
+#define MAX_VECHAI_POINTS 9
+
+new Float:VeChai_Locations[MAX_VECHAI_POINTS][3] = {
+    {-1566.9843, 469.1526, 7.1868}, // SAAS
+    {-2653.7520, 698.6767, 27.9185}, // BV SF
+    {-2073.8164, 8.3023, 35.3203}, // Nha bo hoang
+    {-1830.6876, -107.5092, 5.6484}, // Ben cang SF
+    {-1024.6283, -587.0613, 32.0078}, // Nha may SF
+    {-756.8199, -112.6511, 65.9816}, // Lam nghiep SF
+    {93.6625, -237.3292, 1.5781}, // Container Blueberry
+    {782.4303, -1389.3700, 13.6063}, // Sanew
+    {1861.1680, -1320.0677, 13.5435} // Xay dung LS
+};
+
+new VeChai_Names[MAX_VECHAI_POINTS][32] = {
+    "SAAS",
+    "BV SF",
+    "Nha bo hoang",
+    "Ben cang SF",
+    "Nha may SF",
+    "Lam nghiep SF",
+    "Container Blueberry",
+    "Sanew",
+    "Xay dung LS"
+};

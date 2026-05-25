@@ -76,8 +76,9 @@ public OnLoadJobPoints()
 
 	while(i < rows)
 	{
-		cache_get_value_name_int(i, "id", JobData[i][jId]);
+		cache_get_value_name_int(i, "id", sqlid);
 		if(i < MAX_JOBPOINTS) {
+			JobData[i][jId] = sqlid;
 			cache_get_value_name_int(i, "type", JobData[i][jType]);
 			cache_get_value_name_float(i, "posx", JobData[i][jPos][0]);
 			cache_get_value_name_float(i, "posy", JobData[i][jPos][1]);
@@ -94,41 +95,88 @@ public OnLoadJobPoints()
 		}
 		i++;
 	}
-	if(JobCount > 0) printf("[Dynamic Job Points] %d dynamic job points has been loaded.", i);
+	if(JobCount > 0) printf("[Dynamic Job Points] %d dynamic job points has been loaded.", JobCount);
 	else printf("[Dynamic Job Points] No dynamic job points has been loaded.");
 	return 1;
 }
 
-stock SaveJobPoint(i) {
-	new query[2048];
+forward OnJobPointInsert(i);
+public OnJobPointInsert(i)
+{
+	JobData[i][jId] = cache_insert_id();
+	printf("[Dynamic Jobs] Inserted new job point at index %d, assigned database ID: %d", i, JobData[i][jId]);
+	return 1;
+}
 
-	format(query, 2048, "UPDATE `jobs` SET ");
-	SaveInteger(query, "jobs", i+1, "type", JobData[i][jType]);
-	SaveFloat(query, "jobs", i+1, "posx", JobData[i][jPos][0]);
-	SaveFloat(query, "jobs", i+1, "posy", JobData[i][jPos][1]);
-	SaveFloat(query, "jobs", i+1, "posz", JobData[i][jPos][2]);
-	SaveInteger(query, "jobs", i+1, "vw", JobData[i][jVw]);
-	SaveInteger(query, "jobs", i+1, "int", JobData[i][jInt]);
-	SaveInteger(query, "jobs", i+1, "marker", JobData[i][jMarkerID]);
-	SaveInteger(query, "jobs", i+1, "level", JobData[i][jLevel]);
-	SQLUpdateFinish(query, "jobs", i+1);
+stock SaveJobPoint(i) {
+	if(JobData[i][jType] == 0 || JobData[i][jPos][0] == 0.0) {
+		if(JobData[i][jId] != -1) {
+			new query[128];
+			mysql_format(MainPipeline, query, sizeof(query), "DELETE FROM `jobs` WHERE `id` = %d", JobData[i][jId]);
+			mysql_tquery(MainPipeline, query, "OnQueryFinish", "i", SENDDATA_THREAD);
+			JobData[i][jId] = -1;
+		}
+		return 1;
+	}
+
+	if(JobData[i][jId] == -1) {
+		new query[512];
+		mysql_format(MainPipeline, query, sizeof(query), 
+			"INSERT INTO `jobs` (`type`, `posx`, `posy`, `posz`, `vw`, `int`, `marker`, `level`) VALUES (%d, %.4f, %.4f, %.4f, %d, %d, %d, %d)",
+			JobData[i][jType], JobData[i][jPos][0], JobData[i][jPos][1], JobData[i][jPos][2],
+			JobData[i][jVw], JobData[i][jInt], JobData[i][jMarkerID], JobData[i][jLevel]);
+		mysql_tquery(MainPipeline, query, "OnJobPointInsert", "i", i);
+	} else {
+		new query[2048];
+		format(query, 2048, "UPDATE `jobs` SET ");
+		SaveInteger(query, "jobs", JobData[i][jId], "type", JobData[i][jType]);
+		SaveFloat(query, "jobs", JobData[i][jId], "posx", JobData[i][jPos][0]);
+		SaveFloat(query, "jobs", JobData[i][jId], "posy", JobData[i][jPos][1]);
+		SaveFloat(query, "jobs", JobData[i][jId], "posz", JobData[i][jPos][2]);
+		SaveInteger(query, "jobs", JobData[i][jId], "vw", JobData[i][jVw]);
+		SaveInteger(query, "jobs", JobData[i][jId], "int", JobData[i][jInt]);
+		SaveInteger(query, "jobs", JobData[i][jId], "marker", JobData[i][jMarkerID]);
+		SaveInteger(query, "jobs", JobData[i][jId], "level", JobData[i][jLevel]);
+		SQLUpdateFinish(query, "jobs", JobData[i][jId]);
+	}
+	return 1;
 }
 
 stock SaveJobPointBlocking(i) {
-	new query[2048];
-	format(query, sizeof(query),
-		"UPDATE `jobs` SET `type`=%d, `posx`=%.4f, `posy`=%.4f, `posz`=%.4f, `vw`=%d, `int`=%d, `marker`=%d, `level`=%d WHERE `id`=%d",
-		JobData[i][jType],
-		JobData[i][jPos][0],
-		JobData[i][jPos][1],
-		JobData[i][jPos][2],
-		JobData[i][jVw],
-		JobData[i][jInt],
-		JobData[i][jMarkerID],
-		JobData[i][jLevel],
-		i+1
-	);
-	mysql_query(MainPipeline, query);
+	if(JobData[i][jType] == 0 || JobData[i][jPos][0] == 0.0) {
+		if(JobData[i][jId] != -1) {
+			new query[128];
+			mysql_format(MainPipeline, query, sizeof(query), "DELETE FROM `jobs` WHERE `id` = %d", JobData[i][jId]);
+			mysql_query(MainPipeline, query);
+			JobData[i][jId] = -1;
+		}
+		return 1;
+	}
+
+	new query[1024];
+	if(JobData[i][jId] == -1) {
+		mysql_format(MainPipeline, query, sizeof(query),
+			"INSERT INTO `jobs` (`type`, `posx`, `posy`, `posz`, `vw`, `int`, `marker`, `level`) VALUES (%d, %.4f, %.4f, %.4f, %d, %d, %d, %d)",
+			JobData[i][jType], JobData[i][jPos][0], JobData[i][jPos][1], JobData[i][jPos][2],
+			JobData[i][jVw], JobData[i][jInt], JobData[i][jMarkerID], JobData[i][jLevel]);
+		mysql_query(MainPipeline, query);
+		JobData[i][jId] = cache_insert_id();
+	} else {
+		mysql_format(MainPipeline, query, sizeof(query),
+			"UPDATE `jobs` SET `type`=%d, `posx`=%.4f, `posy`=%.4f, `posz`=%.4f, `vw`=%d, `int`=%d, `marker`=%d, `level`=%d WHERE `id`=%d",
+			JobData[i][jType],
+			JobData[i][jPos][0],
+			JobData[i][jPos][1],
+			JobData[i][jPos][2],
+			JobData[i][jVw],
+			JobData[i][jInt],
+			JobData[i][jMarkerID],
+			JobData[i][jLevel],
+			JobData[i][jId]
+		);
+		mysql_query(MainPipeline, query);
+	}
+	return 1;
 }
 
 forward UpdateJobPoint(id);

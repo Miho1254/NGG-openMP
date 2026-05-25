@@ -367,21 +367,10 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			if(index == -1) {
 				// Show Ve Chai sub-menu
 				new str[1024], zone[MAX_ZONE_NAME];
-				new Float:locations[9][3] = {
-					{-1566.9843, 469.1526, 7.1868}, // SAAS
-					{-2653.7520, 698.6767, 27.9185}, // BV SF
-					{-2073.8164, 8.3023, 35.3203}, // Nha bo hoang
-					{-1830.6876, -107.5092, 5.6484}, // Ben cang SF
-					{-1024.6283, -587.0613, 32.0078}, // Nha may SF
-					{-756.8199, -112.6511, 65.9816}, // Lam nghiep SF
-					{93.6625, -237.3292, 1.5781}, // Container Blueberry
-					{782.4303, -1389.3700, 13.6063}, // Sanew
-					{1861.1680, -1320.0677, 13.5435} // Xay dung LS
-				};
 				format(str, sizeof(str), "{00FF00}[Ban]{FFFFFF} Thuong Lai Ve Chai (Diem ban rac)\n");
-				for(new i = 0; i < 9; i++) {
-					Get3DZone(locations[i][0], locations[i][1], locations[i][2], zone, sizeof(zone));
-					format(str, sizeof(str), "%s{FFFF00}[Mua]{FFFFFF} Diem Ve Chai %d (%s)\n", str, i + 1, zone);
+				for(new i = 0; i < MAX_VECHAI_POINTS; i++) {
+					Get3DZone(VeChai_Locations[i][0], VeChai_Locations[i][1], VeChai_Locations[i][2], zone, sizeof(zone));
+					format(str, sizeof(str), "%s{FFFF00}[Mua]{FFFFFF} %s (%s)\n", str, VeChai_Names[i], zone);
 				}
 				return ShowPlayerDialogEx(playerid, DIALOG_GPS_VECHAI_SUB, DIALOG_STYLE_LIST, "Cong viec Ve Chai", str, "Xac nhan", "Tro ve");
 			}
@@ -431,22 +420,11 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				z = 11.0938;
 				format(location_name, sizeof(location_name), "Thuong Lai Ve Chai");
 			} else {
-				new Float:locations[9][3] = {
-					{-1566.9843, 469.1526, 7.1868}, // SAAS
-					{-2653.7520, 698.6767, 27.9185}, // BV SF
-					{-2073.8164, 8.3023, 35.3203}, // Nha bo hoang
-					{-1830.6876, -107.5092, 5.6484}, // Ben cang SF
-					{-1024.6283, -587.0613, 32.0078}, // Nha may SF
-					{-756.8199, -112.6511, 65.9816}, // Lam nghiep SF
-					{93.6625, -237.3292, 1.5781}, // Container Blueberry
-					{782.4303, -1389.3700, 13.6063}, // Sanew
-					{1861.1680, -1320.0677, 13.5435} // Xay dung LS
-				};
 				new p = listitem - 1;
-				x = locations[p][0];
-				y = locations[p][1];
-				z = locations[p][2];
-				format(location_name, sizeof(location_name), "Diem Ve Chai %d", listitem);
+				x = VeChai_Locations[p][0];
+				y = VeChai_Locations[p][1];
+				z = VeChai_Locations[p][2];
+				format(location_name, sizeof(location_name), VeChai_Names[p]);
 			}
 			DisablePlayerCheckpoint(playerid);
 			SetPlayerCheckpoint(playerid, x, y, z, 5.0);

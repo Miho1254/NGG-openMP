@@ -1,26 +1,26 @@
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/events/event.pwn(664) : íåïðàâèëüíàÿ òàáóëÿöèÿ
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/group/groupcore.pwn(5838) : íåïðàâèëüíàÿ òàáóëÿöèÿ
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/group/lea.pwn(1661) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/group/lea.pwn(1661) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/inventory.inc(1192) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "exp"
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/inventory.inc(4110) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "count"
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/inventory.inc(4202) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/inventory.inc(4202) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/inventory.inc(4826) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "itemid"
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/cannabis.inc(97) : ïðåäóïðåæäåíèå 213: íåñîâïàäåíèå òèïîâ
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/cannabis.inc(437) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/cannabis.inc(437) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/blackmarket.inc(29) : ïðåäóïðåæäåíèå 213: íåñîâïàäåíèå òèïîâ
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/blackmarket.inc(102) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/modules/blackmarket.inc(102) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\./includes/jobs/ngudan.pwn(57) : ïðåäóïðåæäåíèå 213: íåñîâïàäåíèå òèïîâ
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(30) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "BlackMarketLabel"
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(29) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "BlackMarketNPC"
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(97) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "CannabisNPC"
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(98) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "CannabisNPCLabel"
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(94) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "CannabisProcessLabel"
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(57) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "FishingNPC"
-c:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(58) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "FishingNPCLabel"
+gamemodes\./includes/events/event.pwn(664) : íåïðàâèëüíàÿ òàáóëÿöèÿ
+gamemodes\./includes/group/groupcore.pwn(5838) : íåïðàâèëüíàÿ òàáóëÿöèÿ
+gamemodes\./includes/group/lea.pwn(1661) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+gamemodes\./includes/group/lea.pwn(1661) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+gamemodes\./includes/modules/inventory.inc(1192) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "exp"
+gamemodes\./includes/modules/inventory.inc(4110) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "count"
+gamemodes\./includes/modules/inventory.inc(4202) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+gamemodes\./includes/modules/inventory.inc(4202) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+gamemodes\./includes/modules/inventory.inc(4826) : èäåíòèôèêàòîð íå èñïîëüçóåòñÿ: "itemid"
+gamemodes\./includes/modules/cannabis.inc(97) : ïðåäóïðåæäåíèå 213: íåñîâïàäåíèå òèïîâ
+gamemodes\./includes/modules/cannabis.inc(437) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+gamemodes\./includes/modules/cannabis.inc(437) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+gamemodes\./includes/modules/blackmarket.inc(29) : ïðåäóïðåæäåíèå 213: íåñîâïàäåíèå òèïîâ
+gamemodes\./includes/modules/blackmarket.inc(102) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+gamemodes\./includes/modules/blackmarket.inc(102) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+gamemodes\./includes/jobs/ngudan.pwn(57) : ïðåäóïðåæäåíèå 213: íåñîâïàäåíèå òèïîâ
+gamemodes\NGRP.pwn(30) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "BlackMarketLabel"
+gamemodes\NGRP.pwn(29) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "BlackMarketNPC"
+gamemodes\NGRP.pwn(97) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "CannabisNPC"
+gamemodes\NGRP.pwn(98) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "CannabisNPCLabel"
+gamemodes\NGRP.pwn(94) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "CannabisProcessLabel"
+gamemodes\NGRP.pwn(57) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "FishingNPC"
+gamemodes\NGRP.pwn(58) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "FishingNPCLabel"
 Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
 
 

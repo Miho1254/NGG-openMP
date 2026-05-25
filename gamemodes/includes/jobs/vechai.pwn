@@ -1,22 +1,23 @@
 #include <YSI\y_hooks>
 
-#define MAX_VECHAI_POINTS 9
 #define VECHAI_MAX_STOCK 500
-
-new Float:VeChai_Locations[MAX_VECHAI_POINTS][3] = {
-    {-1566.9843, 469.1526, 7.1868}, // SAAS
-    {-2653.7520, 698.6767, 27.9185}, // BV SF
-    {-2073.8164, 8.3023, 35.3203}, // Nha bo hoang
-    {-1830.6876, -107.5092, 5.6484}, // Ben cang SF
-    {-1024.6283, -587.0613, 32.0078}, // Nha may SF
-    {-756.8199, -112.6511, 65.9816}, // Lam nghiep SF
-    {93.6625, -237.3292, 1.5781}, // Container Blueberry
-    {782.4303, -1389.3700, 13.6063}, // Sanew
-    {1861.1680, -1320.0677, 13.5435} // Xay dung LS
-};
+#define VECHAI_CARRY_LIMIT 10
 
 new Float:VeChai_Angles[MAX_VECHAI_POINTS] = {
     59.0425, 1.5348, 5.4559, 180.7964, 6.3477, 136.5011, 348.4479, 177.6921, 90.9019
+};
+
+
+new const VeChai_BasePrice[MAX_VECHAI_POINTS] = {
+    35, // SAAS (Medium distance)
+    45, // BV SF (Very close)
+    40, // Nha bo hoang (Close)
+    38, // Ben cang SF (Close-medium)
+    30, // Nha may SF (Medium-far)
+    30, // Lam nghiep SF (Medium-far)
+    25, // Container Blueberry (Far)
+    20, // Sanew (Very far)
+    15  // Xay dung LS (Extremely far)
 };
 
 new VeChaiStock[MAX_VECHAI_POINTS];
@@ -24,10 +25,15 @@ new Text3D:VeChaiLabel[MAX_VECHAI_POINTS];
 
 new pVeChai[MAX_PLAYERS];
 new VehVeChai[MAX_VEHICLES];
+new VeChaiHotspotPoint = -1;
 
 stock UpdateVeChaiLabel(point) {
-    new str[128];
-    format(str, sizeof(str), "{FFFF00}Vat lieu ve chai\n{FFFFFF}Hien co: {00FF00}%d kg\n{FFFFFF}Su dung {FFFF00}/muavechai", VeChaiStock[point]);
+    new str[256];
+    if(point == VeChaiHotspotPoint) {
+        format(str, sizeof(str), "{FF0000}[HOTSPOT - GIAM 50%%]{FFFF00}\nVat lieu ve chai ({FFFFFF}%s{FFFF00})\nHien co: {00FF00}%d kg\n{FFFFFF}Su dung {FFFF00}/muavechai", VeChai_Names[point], VeChaiStock[point]);
+    } else {
+        format(str, sizeof(str), "{FFFF00}Vat lieu ve chai ({FFFFFF}%s{FFFF00})\nHien co: {00FF00}%d kg\n{FFFFFF}Su dung {FFFF00}/muavechai", VeChai_Names[point], VeChaiStock[point]);
+    }
     UpdateDynamic3DTextLabelText(VeChaiLabel[point], COLOR_YELLOW, str);
 }
 
@@ -35,8 +41,8 @@ hook OnGameModeInit() {
     for(new i = 0; i < MAX_VECHAI_POINTS; i++) {
         CreateDynamicActor(153, VeChai_Locations[i][0], VeChai_Locations[i][1], VeChai_Locations[i][2], VeChai_Angles[i], 1, 100.0, -1, -1, -1);
         VeChaiStock[i] = 100 + random(201); // 100 - 300
-        new str[128];
-        format(str, sizeof(str), "{FFFF00}Vat lieu ve chai\n{FFFFFF}Hien co: {00FF00}%d kg\n{FFFFFF}Su dung {FFFF00}/muavechai", VeChaiStock[i]);
+        new str[256];
+        format(str, sizeof(str), "{FFFF00}Vat lieu ve chai ({FFFFFF}%s{FFFF00})\nHien co: {00FF00}%d kg\n{FFFFFF}Su dung {FFFF00}/muavechai", VeChai_Names[i], VeChaiStock[i]);
         VeChaiLabel[i] = CreateDynamic3DTextLabel(str, COLOR_YELLOW, VeChai_Locations[i][0], VeChai_Locations[i][1], VeChai_Locations[i][2] + 1.0, 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, -1, -1, -1, 15.0);
     }
     
@@ -48,10 +54,28 @@ hook OnGameModeInit() {
 
 task VeChaiStock_Refill[3600000]() {
     for(new i = 0; i < MAX_VECHAI_POINTS; i++) {
+        if(i == VeChaiHotspotPoint) continue;
         VeChaiStock[i] += 100 + random(201);
         if(VeChaiStock[i] > VECHAI_MAX_STOCK) VeChaiStock[i] = VECHAI_MAX_STOCK;
         UpdateVeChaiLabel(i);
     }
+}
+
+task VeChai_UpdateHotspot[1800000]() {
+    new next_hotspot = random(MAX_VECHAI_POINTS);
+    if(next_hotspot == VeChaiHotspotPoint) next_hotspot = (next_hotspot + 1) % MAX_VECHAI_POINTS;
+    
+    new old_hotspot = VeChaiHotspotPoint;
+    VeChaiHotspotPoint = next_hotspot;
+    
+    if(old_hotspot != -1) UpdateVeChaiLabel(old_hotspot);
+    
+    VeChaiStock[VeChaiHotspotPoint] = VECHAI_MAX_STOCK;
+    UpdateVeChaiLabel(VeChaiHotspotPoint);
+    
+    new str[256];
+    format(str, sizeof(str), "{FFFF00}[Ve Chai] Diem thu mua '%s' dang co nguon hang thanh ly voi gia giam 50%%! Nhap /map de dinh vi.", VeChai_Names[VeChaiHotspotPoint]);
+    SendClientMessageToAllEx(COLOR_YELLOW, str);
 }
 
 hook OnPlayerConnect(playerid) {
@@ -72,7 +96,7 @@ hook OnVehicleDeath(vehicleid, killerid) {
 stock IsValidVeChaiTruck(vehicleid) {
     new model = GetVehicleModel(vehicleid);
     switch(model) {
-        case 478, 422, 605, 600: return 1; // Walton, Bobcat, Sadler, Picador
+        case 478, 422, 543, 605, 600, 554, 444, 556, 557: return 1; // Walton, Bobcat, Sadler (543), Sadler móp méo (605), Picador, Yosemite, Monster Trucks
     }
     return 0;
 }
@@ -98,16 +122,33 @@ CMD:muavechai(playerid, params[]) {
         return 1;
     }
     
-    pVeChai[playerid] = VeChaiStock[nearest_point];
-    VeChaiStock[nearest_point] = 0;
+    new base = VeChai_BasePrice[nearest_point];
+    new price_per_kg = base - 5 + random(11); // base price +/- $5
+    if(nearest_point == VeChaiHotspotPoint) {
+        price_per_kg /= 2; // 50% discount
+    }
+    
+    new amount = (VeChaiStock[nearest_point] >= VECHAI_CARRY_LIMIT) ? VECHAI_CARRY_LIMIT : VeChaiStock[nearest_point];
+    new total_cost = amount * price_per_kg;
+
+    if(GetPlayerCash(playerid) < total_cost) {
+        new string[128];
+        format(string, sizeof(string), "Nguoi thu gom [NPC]: Ban khong du tien! Can $%s de mua %d kg ve chai (gia $%d/kg).", number_format(total_cost), amount, price_per_kg);
+        SendClientMessageEx(playerid, COLOR_WHITE, string);
+        return 1;
+    }
+    
+    GivePlayerCash(playerid, -total_cost);
+    pVeChai[playerid] = amount;
+    VeChaiStock[nearest_point] -= amount;
     UpdateVeChaiLabel(nearest_point);
     
-    SetPlayerAttachedObject(playerid, 9, 1271, 1, 0.1, 0.3, 0.0, 0.0, 90.0, 0.0, 1.0, 1.0, 1.0);
+    SetPlayerAttachedObject(playerid, 9, 1271, 1, -0.071, 0.536, -0.026999, -2.19999, 87.1999, 0.699999, 0.8, 0.8, 0.8);
     ApplyAnimation(playerid, "CARRY", "crry_prtial", 4.1, 1, 1, 1, 1, 1, 1);
     SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY); // Force walk
     
     new string[128];
-    format(string, sizeof(string), "Ban da mua thanh cong %d kg ve chai. Hay di bo dem bo vao cop xe tai cua ban (/putvechai).", pVeChai[playerid]);
+    format(string, sizeof(string), "Ban da mua thanh cong %d kg ve chai voi gia $%s (gia $%d/kg). Hay di bo dem bo vao cop xe tai cua ban (/putvechai).", amount, number_format(total_cost), price_per_kg);
     SendClientMessageEx(playerid, COLOR_GREEN, string);
     return 1;
 }
@@ -128,7 +169,7 @@ CMD:putvechai(playerid, params[]) {
         }
     }
     
-    if(closestcar == -1) return SendClientMessageEx(playerid, COLOR_GREY, "Khong tim thay chiec xe tai 2 cho nao (Walton, Bobcat, Sadler, Picador) o gan day!");
+    if(closestcar == -1) return SendClientMessageEx(playerid, COLOR_GREY, "Khong tim thay chiec xe tai ban tai nao (Walton, Bobcat, Sadler, Picador, Yosemite...) o gan day!");
     
     new engine, lights, alarm, doors, bonnet, boot, objective;
     GetVehicleParamsEx(closestcar, engine, lights, alarm, doors, bonnet, boot, objective);
@@ -180,7 +221,8 @@ CMD:banvechai(playerid, params[]) {
     }
     
     new kg = VehVeChai[closestcar];
-    new mats_gain = kg * 10;
+    new mats_per_kg = 8 + random(5); // 8 - 12 mats per kg
+    new mats_gain = kg * mats_per_kg;
     new fee_total = floatround((float(kg) / 10.0) * FeePer10kg);
     
     if(GetPlayerCash(playerid) < fee_total) {
@@ -195,7 +237,7 @@ CMD:banvechai(playerid, params[]) {
     VehVeChai[closestcar] = 0;
     
     new string[128];
-    format(string, sizeof(string), "Ban da ton $%s chi phi gia cong de doi %d kg ve chai lay %s Vat lieu (Mats).", number_format(fee_total), kg, number_format(mats_gain));
+    format(string, sizeof(string), "Ban da ton $%s chi phi gia cong de doi %d kg ve chai lay %s Vat lieu (Mats) (Ty le: %d Mats/kg).", number_format(fee_total), kg, number_format(mats_gain), mats_per_kg);
     SendClientMessageEx(playerid, COLOR_GREEN, string);
     format(string, sizeof(string), "[Kinh Te] Tinh trang server: %s Mats -> Muc phi hien tai: $%d / 10kg.", number_format(totalMats), floatround(FeePer10kg));
     SendClientMessageEx(playerid, COLOR_YELLOW, string);
