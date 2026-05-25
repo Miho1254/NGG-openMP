@@ -1252,8 +1252,8 @@ stock AC_InitWeaponData() {
 	arrWeaponData[27][ac_WeaponDamage] = 4.95; // 27 - Spas
 	arrWeaponData[28][ac_WeaponDamage] = 6.6; // 28 - UZI
 	arrWeaponData[29][ac_WeaponDamage] = 8.5; // 29 - MP5
-	arrWeaponData[30][ac_WeaponDamage] = 9.9; // 30 - AK47
-	arrWeaponData[31][ac_WeaponDamage] = 11.9; // 31 - M4
+	arrWeaponData[30][ac_WeaponDamage] = 10.9; // 30 - AK47
+	arrWeaponData[31][ac_WeaponDamage] = 10.9; // 31 - M4
 	arrWeaponData[32][ac_WeaponDamage] = 6.6; // 32 - Tec9
 	arrWeaponData[33][ac_WeaponDamage] = 24.75; // 33 - Rifle
 	arrWeaponData[34][ac_WeaponDamage] = 60.0; // 34 - Sniper

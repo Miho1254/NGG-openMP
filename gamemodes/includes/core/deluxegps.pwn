@@ -105,10 +105,15 @@ new Float:gpsZones[][4] = {
  	{-1636.6312,1201.3365,7.2021,73.9180}, // Shop xe Downtown (SF) -- Dialog 5 End
  	{-1105.5685,-1657.4761,76.3672,278.8539}, // Khu che bien can sa
  	{-1333.2675,-2161.7058,22.8201,188.5887}, // Khu vuc can sa
- 	{-2204.5874,961.0796,80.0000,178.5543} // NPC thu mua can sa
+ 	{-2204.5874,961.0796,80.0000,178.5543}, // NPC thu mua can sa
+ 	{-2256.0278,1957.6537,-0.7859,0.0}, // Binh ca ca 1
+ 	{-2442.3542,1697.4408,-0.7506,0.0}, // Binh ca ca 2
+ 	{-1090.9705,601.9323,-0.5750,0.0},  // Binh ca ca 3
+ 	{-1060.4594,126.4771,-0.6570,0.0},  // Binh ca ca 4
+ 	{-1734.1169,1461.6493,7.1875,267.37} // NPC thu mua ca (Shark Hung)
 };
 
-new gpsZoneName[34][] = {
+new gpsZoneName[39][] = {
 	"SAPD (SF)",
 	"SAPD (LS)",
 	"FDSA (SF)",
@@ -142,7 +147,12 @@ new gpsZoneName[34][] = {
 	"Shop xe Downtown (SF)",
 	"Khu che bien can sa",
 	"Khu vuc can sa",
-	"NPC thu mua can sa"
+	"NPC thu mua can sa",
+	"Binh ca ca 1 (SF)",
+	"Binh ca ca 2 (SF)",
+	"Binh ca ca 3 (SF)",
+	"Binh ca ca 4 (SF)",
+	"NPC thu mua ca (Shark Hung)"
 };
 
 GetEntity3DZone(entityID, type, zone[], len, Float:x2 = 0.0, Float:y2 = 0.0, Float:z2 = 0.0) //Credits to Cueball, Betamaster, Mabako, and Simon.
@@ -396,7 +406,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 						}
 						case 4: 
 						{
-							ShowPlayerDialogEx(playerid, DIALOG_GPS_GEN, DIALOG_STYLE_LIST, "Dia diem khac","City Hall (SF)\nCity Hall (LS)\nDMV (Dillimore)\nChung cu Glen Park (LS)\nKhu cau ca 1 (LS)\nKhu cau ca 2 (LS)\nMarket (LS)\nVat lieu Doherty (SF)\nVat lieu Market (LS)\nVat lieu Ocean Docks (LS)\nShop xe Downtown (SF)\nKhu che bien can sa\nKhu vuc can sa\nNPC thu mua can sa", "Xac nhan", "Huy");
+							ShowPlayerDialogEx(playerid, DIALOG_GPS_GEN, DIALOG_STYLE_LIST, "Dia diem khac","City Hall (SF)\nCity Hall (LS)\nDMV (Dillimore)\nChung cu Glen Park (LS)\nKhu cau ca 1 (LS)\nKhu cau ca 2 (LS)\nMarket (LS)\nVat lieu Doherty (SF)\nVat lieu Market (LS)\nVat lieu Ocean Docks (LS)\nShop xe Downtown (SF)\nKhu che bien can sa\nKhu vuc can sa\nNPC thu mua can sa\nBinh ca ca 1 (SF)\nBinh ca ca 2 (SF)\nBinh ca ca 3 (SF)\nBinh ca ca 4 (SF)\nNPC thu mua ca (Shark Hung)", "Xac nhan", "Huy");
 						}
 					}
 				}
@@ -490,7 +500,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				case 2: gpsItemStart = 14;
 				case 3: gpsItemStart = 17;
 				case 4: gpsItemStart = 20;
-				case 5: gpsItemStart = 31;
+				case 5: gpsItemStart = 39;
 			}
 			GetEntity3DZone(0, 3, szMiscArray, sizeof(szMiscArray), gpsZones[gpsItemStart + listitem][0], gpsZones[gpsItemStart + listitem][1], gpsZones[gpsItemStart + listitem][2]);
 			DisablePlayerCheckpoint(playerid);

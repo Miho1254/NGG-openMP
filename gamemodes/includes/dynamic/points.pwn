@@ -767,6 +767,61 @@ stock SavePoint(point) {
 	mysql_tquery(MainPipeline, szQuery, "OnQueryFinish", "i", SENDDATA_THREAD);
 }
 
+stock SavePointBlocking(point) {
+	new szQuery[2048];
+	mysql_format(MainPipeline, szQuery, sizeof(szQuery), "UPDATE `dynpoints` SET \
+	`pointname` = '%e', \
+	`type` = %d, \
+	`posx` = %f, \
+	`posy` = %f, \
+	`posz` = %f, \
+	`pos2x` = %f, \
+	`pos2y` = %f, \
+	`pos2z` = %f, \
+	`vw` = %d, \
+	`int` = %d, \
+	`vw2` = %d, \
+	`int2` = %d, \
+	`boatonly` = %d, \
+	`capturename` = '%e', \
+	`capturegroup` = %d, \
+	`ready` = %d, \
+	`timer` = %d, \
+	`amounthour` = %d, \
+	`amount0` = %d, \
+	`amount1` = %d, \
+	`amount2` = %d, \
+	`amount3` = %d, \
+	`amount4` = %d, \
+	`locked` = %d WHERE `id` = %d",
+	DynPoints[point][poName],
+	DynPoints[point][poType],
+	DynPoints[point][poPos][0],
+	DynPoints[point][poPos][1],
+	DynPoints[point][poPos][2],
+	DynPoints[point][poPos2][0],
+	DynPoints[point][poPos2][1],
+	DynPoints[point][poPos2][2],
+	DynPoints[point][poVW],
+	DynPoints[point][poInt],
+	DynPoints[point][po2VW],
+	DynPoints[point][po2Int],
+	DynPoints[point][poBoat],
+	DynPoints[point][poCaptureName],
+	DynPoints[point][poCaptureGroup],
+	DynPoints[point][poCapturable],
+	DynPoints[point][poTimer],
+	DynPoints[point][poAmountHour],
+	DynPoints[point][poAmount][0],
+	DynPoints[point][poAmount][1],
+	DynPoints[point][poAmount][2],
+	DynPoints[point][poAmount][3],
+	DynPoints[point][poAmount][4],
+	DynPoints[point][poLocked],
+	point + 1);
+	mysql_query(MainPipeline, szQuery);
+}
+
 stock UpdatePoint(id)
 {
 	new string[256];

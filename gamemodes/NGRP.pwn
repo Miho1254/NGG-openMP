@@ -433,6 +433,7 @@ public Float:player_get_speed(playerid)
 #include "./includes/modules/gs-utils.inc"
 #include "./includes/modules/famed-mission.inc"
 #include "./includes/modules/cannabis.inc"
+#include "./includes/modules/blackmarket.inc"
 
 //truyduoi
 #include "./includes/core/truyduoi.pwn"
@@ -504,12 +505,12 @@ public OnGameModeExit()
 		}
 	}
 
-	// Save all dynamic systems
-	print("Saving dynamic systems...");
-	SaveDynamicDoors();
-	SaveGates();
-	for(new i = 0; i < MAX_JOBPOINTS; i++) SaveJobPoint(i);
-	for(new i = 0; i < MAX_POINTS; i++) SavePoint(i);
+	// Save all dynamic systems (blocking queries to ensure data is saved before MySQL closes)
+	print("Saving dynamic systems (blocking)...");
+	for(new i = 0; i < MAX_DDOORS; i++) SaveDynamicDoorBlocking(i);
+	for(new i = 0; i < MAX_GATES; i++) SaveGateBlocking(i);
+	for(new i = 0; i < MAX_JOBPOINTS; i++) SaveJobPointBlocking(i);
+	for(new i = 0; i < MAX_POINTS; i++) SavePointBlocking(i);
 	print("All data saved. Closing MySQL...");
 
     g_mysql_Exit();

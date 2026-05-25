@@ -48,8 +48,8 @@ hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
                     case 22: amount = 10.5;
                     case 24: amount = 52.0;
                     case 29: amount = 10.5;
-                    case 30: amount = 11.0;
-                    case 31: amount = 11.9;
+                    case 30: amount = 10.9;
+                    case 31: amount = 10.9;
                 }
             }
         }
@@ -78,8 +78,8 @@ hook OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)
                     case 22: amount = 10.5;
                     case 24: amount = 52.0;
                     case 29: amount = 10.5;
-                    case 30: amount = 11.0;
-                    case 31: amount = 11.9;
+                    case 30: amount = 10.9;
+                    case 31: amount = 10.9;
                 }
             }
         }

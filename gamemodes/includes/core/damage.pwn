@@ -321,8 +321,8 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 				case 22: amount = 10.5;  // 9mm LAW
 				case 24: amount = 52.0;  // Deagle LAW
 				case 29: amount = 10.5;  // MP5 LAW
-				case 30: amount = 11.0;  // AK LAW
-				case 31: amount = 11.9;  // M4 LAW
+				case 30: amount = 10.9;  // AK LAW
+				case 31: amount = 10.9;  // M4 LAW
 			}
 		}
 

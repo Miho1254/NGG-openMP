@@ -129,7 +129,9 @@ public PC_OnInit()
 	SafeRegAlias("frisk", "lucsoat");
 	SafeRegAlias("lucsoatbalo", "friskbalo");
 	SafeRegAlias("takebalo", "thugiu");
+	SafeRegAlias("banca_ngudan", "sellfishngudan");
 	SafeRegAlias("haican", "harvest");
+	SafeRegAlias("blackmarket", "chodendoi");
 	SafeRegAlias("chebiencansa", "processweed");
 	SafeRegAlias("bancansa", "sellweed");
     SafeRegAlias("blindfold", "bitmat");

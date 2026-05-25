@@ -10,10 +10,20 @@
 ./includes/modules/cannabis.inc(97) : ïðåäóïðåæäåíèå 213: íåñîâïàäåíèå òèïîâ
 ./includes/modules/cannabis.inc(437) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
 ./includes/modules/cannabis.inc(437) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+./includes/modules/blackmarket.inc(29) : ïðåäóïðåæäåíèå 213: íåñîâïàäåíèå òèïîâ
+./includes/modules/blackmarket.inc(102) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+./includes/modules/blackmarket.inc(102) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+./includes/jobs/ngudan.pwn(56) : ïðåäóïðåæäåíèå 213: íåñîâïàäåíèå òèïîâ
+./includes/jobs/ngudan.pwn(273) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "hour" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+./includes/jobs/ngudan.pwn(273) : ïðåäóïðåæäåíèå 219: ïåðåìåííàÿ "second" óæå îáúÿâëåíà â áîëåå ãëîáàëüíîé çîíå âèäèìîñòè
+C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(30) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "BlackMarketLabel"
+C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(29) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "BlackMarketNPC"
 C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(97) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "CannabisNPC"
 C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(98) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "CannabisNPCLabel"
 C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(94) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "CannabisProcessLabel"
+C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(56) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "FishingNPC"
+C:\Users\RimikoPC\Downloads\samp-code\NGG-zin-viethoa\gamemodes\NGRP.pwn(57) : èäåíòèôèêàòîðó ïðèñâîåíî çíà÷åíèå, íî îí íå èñïîëüçóåòñÿ: "FishingNPCLabel"
 Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
 
 
-Ïðåäóïðåæäåíèé:7.
+Ïðåäóïðåæäåíèé:13.

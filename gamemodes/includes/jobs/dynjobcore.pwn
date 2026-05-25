@@ -114,6 +114,23 @@ stock SaveJobPoint(i) {
 	SQLUpdateFinish(query, "jobs", i+1);
 }
 
+stock SaveJobPointBlocking(i) {
+	new query[2048];
+	format(query, sizeof(query),
+		"UPDATE `jobs` SET `type`=%d, `posx`=%.4f, `posy`=%.4f, `posz`=%.4f, `vw`=%d, `int`=%d, `marker`=%d, `level`=%d WHERE `id`=%d",
+		JobData[i][jType],
+		JobData[i][jPos][0],
+		JobData[i][jPos][1],
+		JobData[i][jPos][2],
+		JobData[i][jVw],
+		JobData[i][jInt],
+		JobData[i][jMarkerID],
+		JobData[i][jLevel],
+		i+1
+	);
+	mysql_query(MainPipeline, query);
+}
+
 forward UpdateJobPoint(id);
 public UpdateJobPoint(id)
 {

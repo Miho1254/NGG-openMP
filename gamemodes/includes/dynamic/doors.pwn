@@ -361,6 +361,90 @@ stock SaveDynamicDoors()
 	return 1;
 }
 
+stock SaveDynamicDoorBlocking(doorid)
+{
+	new string[1024];
+	mysql_format(MainPipeline, string, sizeof(string), "UPDATE `ddoors` SET \
+		`Description`='%e', \
+		`Owner`=%d, \
+		`OwnerName`='%e', \
+		`CustomInterior`=%d, \
+		`ExteriorVW`=%d, \
+		`ExteriorInt`=%d, \
+		`InteriorVW`=%d, \
+		`InteriorInt`=%d, \
+		`ExteriorX`=%f, \
+		`ExteriorY`=%f, \
+		`ExteriorZ`=%f, \
+		`ExteriorA`=%f, \
+		`InteriorX`=%f, \
+		`InteriorY`=%f, \
+		`InteriorZ`=%f, \
+		`InteriorA`=%f, \
+		`CustomExterior`=%d, \
+		`Type`=%d, \
+		`Rank`=%d, \
+		`VIP`=%d, \
+		`Famed`=%d, \
+		`DPC`=%d, \
+		`Allegiance`=%d, \
+		`GroupType`=%d, \
+		`Faction`=%d, \
+		`Admin`=%d, \
+		`Wanted`=%d, \
+		`VehicleAble`=%d, \
+		`Color`=%d, \
+		`PickupModel`=%d, \
+		`Pass`='%e', \
+		`Locked`=%d, \
+		`LastLogin`=%d, \
+		`Expire`=%d, \
+		`Inactive`=%d, \
+		`Ignore`=%d, \
+		`Counter`=%d \
+		WHERE `id`=%d",
+		DDoorsInfo[doorid][ddDescription],
+		DDoorsInfo[doorid][ddOwner],
+		DDoorsInfo[doorid][ddOwnerName],
+		DDoorsInfo[doorid][ddCustomInterior],
+		DDoorsInfo[doorid][ddExteriorVW],
+		DDoorsInfo[doorid][ddExteriorInt],
+		DDoorsInfo[doorid][ddInteriorVW],
+		DDoorsInfo[doorid][ddInteriorInt],
+		DDoorsInfo[doorid][ddExteriorX],
+		DDoorsInfo[doorid][ddExteriorY],
+		DDoorsInfo[doorid][ddExteriorZ],
+		DDoorsInfo[doorid][ddExteriorA],
+		DDoorsInfo[doorid][ddInteriorX],
+		DDoorsInfo[doorid][ddInteriorY],
+		DDoorsInfo[doorid][ddInteriorZ],
+		DDoorsInfo[doorid][ddInteriorA],
+		DDoorsInfo[doorid][ddCustomExterior],
+		DDoorsInfo[doorid][ddType],
+		DDoorsInfo[doorid][ddRank],
+		DDoorsInfo[doorid][ddVIP],
+		DDoorsInfo[doorid][ddFamed],
+		DDoorsInfo[doorid][ddDPC],
+		DDoorsInfo[doorid][ddAllegiance],
+		DDoorsInfo[doorid][ddGroupType],
+		DDoorsInfo[doorid][ddFaction],
+		DDoorsInfo[doorid][ddAdmin],
+		DDoorsInfo[doorid][ddWanted],
+		DDoorsInfo[doorid][ddVehicleAble],
+		DDoorsInfo[doorid][ddColor],
+		DDoorsInfo[doorid][ddPickupModel],
+		DDoorsInfo[doorid][ddPass],
+		DDoorsInfo[doorid][ddLocked],
+		DDoorsInfo[doorid][ddLastLogin],
+		DDoorsInfo[doorid][ddExpire],
+		DDoorsInfo[doorid][ddInactive],
+		DDoorsInfo[doorid][ddIgnore],
+		DDoorsInfo[doorid][ddCounter],
+		doorid+1
+	);
+	mysql_query(MainPipeline, string);
+}
+
 stock RehashDynamicDoor(doorid)
 {
 	DestroyDynamicPickup(DDoorsInfo[doorid][ddPickupID]);

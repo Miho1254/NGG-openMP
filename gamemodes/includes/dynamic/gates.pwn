@@ -1117,6 +1117,79 @@ stock SaveGates()
 	return 1;
 }
 
+stock SaveGateBlocking(id)
+{
+	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "UPDATE `gates` SET \
+		`HID`=%d, \
+		`Speed`=%f, \
+		`Range`=%f, \
+		`Model`=%d, \
+		`VW`=%d, \
+		`Int`=%d, \
+		`Pass`='%e', \
+		`PosX`=%f, \
+		`PosY`=%f, \
+		`PosZ`=%f, \
+		`RotX`=%f, \
+		`RotY`=%f, \
+		`RotZ`=%f, \
+		`PosXM`=%f, \
+		`PosYM`=%f, \
+		`PosZM`=%f, \
+		`RotXM`=%f, \
+		`RotYM`=%f, \
+		`RotZM`=%f, \
+		`Allegiance`=%d, \
+		`GroupType`=%d, \
+		`GroupID`=%d, \
+		`RenderHQ`=%d, \
+		`Timer`=%d, \
+		`Automate`=%d, \
+		`Locked`=%d, \
+		`TIndex`=%d, \
+		`TModel`=%d, \
+		`TTXD`='%e', \
+		`TTexture`='%e', \
+		`TColor`=%d, \
+		`Facility`=%d \
+		WHERE `ID` = %d",
+		GateInfo[id][gHID],
+		GateInfo[id][gSpeed],
+		GateInfo[id][gRange],
+		GateInfo[id][gModel],
+		GateInfo[id][gVW],
+		GateInfo[id][gInt],
+		GateInfo[id][gPass],
+		GateInfo[id][gPosX],
+		GateInfo[id][gPosY],
+		GateInfo[id][gPosZ],
+		GateInfo[id][gRotX],
+		GateInfo[id][gRotY],
+		GateInfo[id][gRotZ],
+		GateInfo[id][gPosXM],
+		GateInfo[id][gPosYM],
+		GateInfo[id][gPosZM],
+		GateInfo[id][gRotXM],
+		GateInfo[id][gRotYM],
+		GateInfo[id][gRotZM],
+		GateInfo[id][gAllegiance],
+		GateInfo[id][gGroupType],
+		GateInfo[id][gGroupID],
+		GateInfo[id][gRenderHQ],
+		GateInfo[id][gTimer],
+		GateInfo[id][gAutomate],
+		GateInfo[id][gLocked],
+		GateInfo[id][gTIndex],
+		GateInfo[id][gTModel],
+		GateInfo[id][gTTXD],
+		GateInfo[id][gTTexture],
+		GateInfo[id][gTColor],
+		GateInfo[id][gFacility],
+		id+1
+	);
+	mysql_query(MainPipeline, szMiscArray);
+}
+
 forward MoveTimerGate(gateid);
 public MoveTimerGate(gateid)
 {
