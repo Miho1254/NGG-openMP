@@ -103,6 +103,11 @@ PlayerFriskPlayer(playerid, giveplayerid)
 		format(szMiscArray, sizeof(szMiscArray), "(Tui do) %d vat lieu.", PlayerInfo[giveplayerid][pMats]);
 		SendClientMessageEx(playerid, COLOR_GREY, szMiscArray);
 	}
+	if(PlayerInfo[giveplayerid][pDirtyMoney] > 0)
+	{
+		format(szMiscArray, sizeof(szMiscArray), "(Tui do) $%s tien ban.", number_format(PlayerInfo[giveplayerid][pDirtyMoney]));
+		SendClientMessageEx(playerid, COLOR_GREY, szMiscArray);
+	}
 	if(PlayerInfo[giveplayerid][pSyringes] > 0)
 	{
 		format(szMiscArray, sizeof(szMiscArray), "(Tui do) %d kim tiem.", PlayerInfo[giveplayerid][pSyringes]);

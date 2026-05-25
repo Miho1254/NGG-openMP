@@ -1258,7 +1258,7 @@ CMD:take(playerid, params[])
 		if(sscanf(params, "s[32]u", choice, giveplayerid))
 		{
 			SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /take [tuy chon] [player]");
-			SendClientMessageEx(playerid, COLOR_GREY, "TUY CHON: Weapons, Pot, Crack, Meth, Ecstasy, Materials, Radio, Heroin, Rawopium, Syringes, PotSeeds, OpiumSeeds, DrugCrates");
+			SendClientMessageEx(playerid, COLOR_GREY, "TUY CHON: Weapons, Pot, Crack, Meth, Ecstasy, Materials, Radio, Heroin, Rawopium, Syringes, PotSeeds, OpiumSeeds, DrugCrates, DirtyMoney");
 			return 1;
 		}
 		if(giveplayerid == INVALID_PLAYER_ID) return SendClientMessage(playerid, -1, "Nguoi choi khong ton tai");
@@ -1635,6 +1635,43 @@ CMD:take(playerid, params[])
 					return 1;
 				}
 
+			}
+			else
+			{
+				SendClientMessageEx(playerid, COLOR_GREY, "Nguoi choi khong ton tai.");
+				return 1;
+			}
+		}
+		else if(strcmp(choice,"dirtymoney",true) == 0)
+		{
+			if(IsPlayerConnected(giveplayerid))
+			{
+				if (ProxDetectorS(8.0, playerid, giveplayerid))
+				{
+					if(PlayerInfo[giveplayerid][pDirtyMoney] == 0) return SendClientMessage(playerid, COLOR_GRAD2, "Nguoi nay khong co tien ban.");
+
+					new seizedAmount = PlayerInfo[giveplayerid][pDirtyMoney];
+					format(string, sizeof(string), "* Ban da thu giu $%s tien ban tu %s.", number_format(seizedAmount), GetPlayerNameEx(giveplayerid));
+					SendClientMessageEx(playerid, COLOR_LIGHTBLUE, string);
+					format(string, sizeof(string), "* Officer %s da thu giu $%s tien ban cua ban.", GetPlayerNameEx(playerid), number_format(seizedAmount));
+					SendClientMessageEx(giveplayerid, COLOR_LIGHTBLUE, string);
+					format(string, sizeof(string), "* Officer %s da thu giu tien ban tu %s.", GetPlayerNameEx(playerid), GetPlayerNameEx(giveplayerid));
+					ProxDetector(30.0, playerid, string, COLOR_PURPLE,COLOR_PURPLE,COLOR_PURPLE,COLOR_PURPLE,COLOR_PURPLE);
+
+					new logStr[256], year, month, day, hour, minute, second;
+					getdate(year, month, day);
+					gettime(hour, minute, second);
+					format(logStr, sizeof(logStr), "[%04d-%02d-%02d %02d:%02d:%02d] %s (LAW) da thu giu $%s tien ban tu %s",
+						year, month, day, hour, minute, second, GetPlayerNameEx(playerid), number_format(seizedAmount), GetPlayerNameEx(giveplayerid));
+					Log("logs/DirtyMoney.log", logStr);
+
+					PlayerInfo[giveplayerid][pDirtyMoney] = 0;
+				}
+				else
+				{
+					SendClientMessageEx(playerid, COLOR_GREY, "Nguoi nay khong dung gan ban.");
+					return 1;
+				}
 			}
 			else
 			{

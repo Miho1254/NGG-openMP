@@ -102,10 +102,13 @@ new Float:gpsZones[][4] = {
  	{-1830.8905,-176.5405,9.3984,269.6470} ,// Vat lieu Doherty (SF) 
  	{2407.9810,-2012.0629,13.5469,270.4795},// Vat lieu Market (LS)
  	{1421.3479,-1328.8800,13.5648,356.0145}, // Vat lieu Ocean Docks (LS) 
- 	{-1636.6312,1201.3365,7.2021,73.9180} // Shop xe Downtown (SF) -- Dialog 5 End -- (10)
+ 	{-1636.6312,1201.3365,7.2021,73.9180}, // Shop xe Downtown (SF) -- Dialog 5 End
+ 	{-1105.5685,-1657.4761,76.3672,278.8539}, // Khu che bien can sa
+ 	{-1333.2675,-2161.7058,22.8201,188.5887}, // Khu vuc can sa
+ 	{-2204.5874,961.0796,80.0000,178.5543} // NPC thu mua can sa
 };
 
-new gpsZoneName[31][] = {
+new gpsZoneName[34][] = {
 	"SAPD (SF)",
 	"SAPD (LS)",
 	"FDSA (SF)",
@@ -136,7 +139,10 @@ new gpsZoneName[31][] = {
 	"Vat lieu Doherty (SF)",
 	"Vat lieu Market (LS)",
 	"Vat lieu Ocean Docks (LS)",
-	"Shop xe Downtown (SF)"
+	"Shop xe Downtown (SF)",
+	"Khu che bien can sa",
+	"Khu vuc can sa",
+	"NPC thu mua can sa"
 };
 
 GetEntity3DZone(entityID, type, zone[], len, Float:x2 = 0.0, Float:y2 = 0.0, Float:z2 = 0.0) //Credits to Cueball, Betamaster, Mabako, and Simon.
@@ -390,7 +396,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 						}
 						case 4: 
 						{
-							ShowPlayerDialogEx(playerid, DIALOG_GPS_GEN, DIALOG_STYLE_LIST, "Dia diem khac","City Hall (SF)\nCity Hall (LS)\nDMV (Dillimore)\nChung cu Glen Park (LS)\nKhu cau ca 1 (LS)\nKhu cau ca 2 (LS)\nMarket (LS)\nVat lieu Doherty (SF)\nVat lieu Market (LS)\nVat lieu Ocean Docks (LS)\nShop xe Downtown (SF)", "Xac nhan", "Huy");
+							ShowPlayerDialogEx(playerid, DIALOG_GPS_GEN, DIALOG_STYLE_LIST, "Dia diem khac","City Hall (SF)\nCity Hall (LS)\nDMV (Dillimore)\nChung cu Glen Park (LS)\nKhu cau ca 1 (LS)\nKhu cau ca 2 (LS)\nMarket (LS)\nVat lieu Doherty (SF)\nVat lieu Market (LS)\nVat lieu Ocean Docks (LS)\nShop xe Downtown (SF)\nKhu che bien can sa\nKhu vuc can sa\nNPC thu mua can sa", "Xac nhan", "Huy");
 						}
 					}
 				}

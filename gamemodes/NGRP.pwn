@@ -490,7 +490,28 @@ public OnGameModeInit()
 
 public OnGameModeExit()
 {
-	print("Exiting the gamemode, please wait..."); // Added this for easier access to find logs about the gamemode exiting
+	print("Exiting the gamemode, please wait...");
+
+	// Save all online players
+	foreach(new i: Player)
+	{
+		if(gPlayerLogged{i} == 1)
+		{
+			OnPlayerStatsUpdate(i);
+			Inventory_SaveData(i);
+			g_mysql_AccountOnline(i, 0);
+			printf("  Saved player: %s (ID: %d)", GetPlayerNameExt(i), i);
+		}
+	}
+
+	// Save all dynamic systems
+	print("Saving dynamic systems...");
+	SaveDynamicDoors();
+	SaveGates();
+	for(new i = 0; i < MAX_JOBPOINTS; i++) SaveJobPoint(i);
+	for(new i = 0; i < MAX_POINTS; i++) SavePoint(i);
+	print("All data saved. Closing MySQL...");
+
     g_mysql_Exit();
 	return 1;
 }

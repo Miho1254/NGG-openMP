@@ -471,11 +471,13 @@ CMD:lockdoor(playerid, params[])
 				if(DDoorsInfo[i][ddLocked] == 0) {
 					
 					DDoorsInfo[i][ddLocked] = 1;
+					SaveDynamicDoor(i);
 					SendClientMessageEx(playerid, COLOR_WHITE, "Door nay da bi khoa.");
 				}
 				else if(DDoorsInfo[i][ddLocked] == 1)
 				{
 					DDoorsInfo[i][ddLocked] = 0;
+					SaveDynamicDoor(i);
 					SendClientMessageEx(playerid, COLOR_GREY, "Door nay da duoc mo khoa.");
 				}
 			}
@@ -484,11 +486,13 @@ CMD:lockdoor(playerid, params[])
 				if(DDoorsInfo[i][ddLocked] == 0)
 				{
 					DDoorsInfo[i][ddLocked] = 1;
+					SaveDynamicDoor(i);
 					SendClientMessageEx(playerid, COLOR_WHITE, "Door nay da bi khoa.");
 				}
 				else if(DDoorsInfo[i][ddLocked] == 1)
 				{
 					DDoorsInfo[i][ddLocked] = 0;
+					SaveDynamicDoor(i);
 					SendClientMessageEx(playerid, COLOR_GREY, "Door nay da duoc mo khoa.");
 				}
 			}

@@ -293,29 +293,40 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 			case 0 .. 3, 5 .. 8, 10 .. 15, 28, 32: if(amount > 20.0) amount = 20.0;
 			case 4: if(amount > 150.0) amount = 150.0;
 			case 9: if(amount > 30.0) amount = 30.0;
-			case 23: if(amount > 14.0) amount = 14.0;
-			case 24, 38: if(amount > 47.0) amount = 47.0;
-			case 25, 26: if(amount > 50.0) amount = 50.0;
-			case 27: if(amount > 40.0) amount = 40.0;
-			case 22, 29: if(amount > 9.0) amount = 9.0;
-			case 30, 31: if(amount > 10.0) amount = 10.0;
-			case 33: if(amount > 25.0) amount = 25.0;
-			case 34: if(amount > 42.0) amount = 42.0;
+			case 22: if(amount > 15.0) amount = 15.0;   // 9mm
+			case 23: if(amount > 15.0) amount = 15.0;   // Silenced 9mm
+			case 24: if(amount > 46.2) amount = 46.2;   // Desert Eagle
+			case 25: if(amount > 40.0) amount = 40.0;   // Shotgun
+			case 26: if(amount > 50.0) amount = 50.0;   // Sawn-off
+			case 27: if(amount > 40.0) amount = 40.0;   // SPAS-12
+			case 29: if(amount > 8.5) amount = 8.5;     // MP5
+			case 30: if(amount > 10.0) amount = 10.0;   // AK-47
+			case 31: if(amount > 10.5) amount = 10.5;   // M4
+			case 33: if(amount > 25.0) amount = 25.0;   // Rifle
+			case 34: if(amount > 60.0) amount = 60.0;   // Sniper Rifle
 			case 37, 42: if(amount > 3.0) amount = 3.0;
+			case 38: if(amount > 47.0) amount = 47.0;   // Minigun
 			case 41: amount = 0.0;
-			default: if(amount > 20.0) amount = 20.0; // If there is no gun defined fall onto this (Should stop hacks going out of the 32-bit range)
+			default: if(amount > 20.0) amount = 20.0;
 		}
 		if(GetPlayerCameraMode(playerid) == 55 && amount > 9.0) amount = 9.0;
 
-		// LAW weapon damage boost (10.9x) + tag
+		// LAW weapon damage - set specific damage per weapon type
 		new bool:isLAW = false;
 		if(Inventory_IsLAWWeapon(playerid, weaponid))
 		{
 			isLAW = true;
-			amount *= 10.9;
+			switch(weaponid)
+			{
+				case 22: amount = 10.5;  // 9mm LAW
+				case 24: amount = 52.0;  // Deagle LAW
+				case 29: amount = 10.5;  // MP5 LAW
+				case 30: amount = 11.0;  // AK LAW
+				case 31: amount = 11.9;  // M4 LAW
+			}
 		}
 
-		if(weaponid == WEAPON_COLT45 || weaponid == WEAPON_SILENCED || weaponid == WEAPON_AK47)
+		if(!isLAW && (weaponid == WEAPON_COLT45 || weaponid == WEAPON_SILENCED || weaponid == WEAPON_AK47))
 		{
 			amount *= 1.65;
 		}

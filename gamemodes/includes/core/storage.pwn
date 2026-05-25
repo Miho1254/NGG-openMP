@@ -1574,6 +1574,7 @@ stock ShowInventory(playerid,targetid)
 		format(header, sizeof(header), "%s's Tui do", GetPlayerNameEx(targetid));
 		format(resultline, sizeof(resultline),"{FFFFFF}Tong so tien: $%s\n\
 		Tien mat: $%s\n\
+		Tien ban: $%s\n\
 		Tien ngan hang: $%s\n\
 		{FFFF00}Vang{FFFFFF}: %s Cay\n\
 		So dien thoai: %s\n\
@@ -1592,6 +1593,7 @@ stock ShowInventory(playerid,targetid)
 		Xa beng: %d",
 		number_format(totalwealth),
 		number_format(GetPlayerCash(targetid)),
+		number_format(PlayerInfo[targetid][pDirtyMoney]),
 		number_format(PlayerInfo[targetid][pAccount]),
 		number_format(PlayerInfo[targetid][pVang]),
 		pnumber,

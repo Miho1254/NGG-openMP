@@ -36,13 +36,22 @@ hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
     {
         new infoString[128], weaponName[32];
         
-        // Weapon ID 0 là đấm tay không hoặc ngã, 54 là fall damage, không có tên súng
         if(weaponid == 0 || weaponid == 54) format(weaponName, sizeof(weaponName), "Tay Khong/Va Dap");
         else
         {
             GetWeaponName(weaponid, weaponName, sizeof(weaponName));
             if(Inventory_IsLAWWeapon(issuerid, weaponid))
+            {
                 format(weaponName, sizeof(weaponName), "%s [LAW]", weaponName);
+                switch(weaponid)
+                {
+                    case 22: amount = 10.5;
+                    case 24: amount = 52.0;
+                    case 29: amount = 10.5;
+                    case 30: amount = 11.0;
+                    case 31: amount = 11.9;
+                }
+            }
         }
 
         format(infoString, sizeof(infoString), "{FF4C4C}<< -%.1f HP {FFFFFF}| Tu: {00FFCC}%s {FFFFFF}| Vu khi: {FFCC00}%s", amount, GetPlayerNameEx(issuerid), weaponName);
@@ -62,7 +71,17 @@ hook OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)
         {
             GetWeaponName(weaponid, weaponName, sizeof(weaponName));
             if(Inventory_IsLAWWeapon(playerid, weaponid))
+            {
                 format(weaponName, sizeof(weaponName), "%s [LAW]", weaponName);
+                switch(weaponid)
+                {
+                    case 22: amount = 10.5;
+                    case 24: amount = 52.0;
+                    case 29: amount = 10.5;
+                    case 30: amount = 11.0;
+                    case 31: amount = 11.9;
+                }
+            }
         }
         
         format(string, sizeof(string), "{4EC25D}>> +%.1f DMG {FFFFFF}| Muc tieu: {00FFCC}%s {FFFFFF}| Vu khi: {FFCC00}%s", amount, GetPlayerNameEx(damagedid), weaponName);

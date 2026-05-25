@@ -1957,8 +1957,8 @@ stock GetItemMDL(item)
         case 48: string = "mdl-2002:item_mp5law";
         case 49: string = "mdl-2002:item_swordkatana";
         case 50: string = "mdl-2002:item_baseballbat";
-        case 51: string = "mdl-2002:item_weedraw";
-        case 52: string = "mdl-2002:item_weedzip";
+        case 51: string = "mdl-2002:item_kssilver"; // TODO: thay bang texture can sa thoi
+        case 52: string = "mdl-2002:item_medkit";   // TODO: thay bang texture tui zip
     }
     return string;
 }

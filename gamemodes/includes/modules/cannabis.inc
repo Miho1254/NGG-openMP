@@ -9,7 +9,7 @@
 // CONSTANTS
 // =============================================================================
 #define MAX_CANNABIS_PLANTS         25
-#define CANNABIS_RESPAWN_TIME       1800    // 30 phút (giây)
+#define CANNABIS_RESPAWN_TIME       300     // 5 phút (giây)
 #define CANNABIS_ITEM_RAW           51      // Cần sa nguyên chất
 #define CANNABIS_ITEM_ZIP           52      // Túi zip cần sa
 #define CANNABIS_SELL_PRICE         800     // $/túi zip
@@ -52,6 +52,7 @@ new Float:CannabisPlantPos[MAX_CANNABIS_PLANTS][3] = {
 // STATE ARRAYS
 // =============================================================================
 new CannabisPlantObj[MAX_CANNABIS_PLANTS];
+new Text3D:CannabisPlantLabel[MAX_CANNABIS_PLANTS];
 new bool:CannabisPlantAlive[MAX_CANNABIS_PLANTS];
 new CannabisPlantTimer[MAX_CANNABIS_PLANTS];
 
@@ -80,10 +81,11 @@ new Text3D:CannabisNPCLabel;
 // =============================================================================
 hook OnGameModeInit()
 {
-    // Spawn 25 cây cần sa
+    // Spawn 25 cây cần sa + 3D labels
     for(new i = 0; i < MAX_CANNABIS_PLANTS; i++)
     {
         CannabisPlantObj[i] = CreateDynamicObject(19473, CannabisPlantPos[i][0], CannabisPlantPos[i][1], CannabisPlantPos[i][2] - 1.0, 0.0, 0.0, 0.0);
+        CannabisPlantLabel[i] = CreateDynamic3DTextLabel("{00FF00}Cay can sa\n{FFFFFF}/haican", COLOR_YELLOW, CannabisPlantPos[i][0], CannabisPlantPos[i][1], CannabisPlantPos[i][2] + 0.5, 5.0);
         CannabisPlantAlive[i] = true;
         CannabisPlantTimer[i] = 0;
     }
@@ -93,7 +95,7 @@ hook OnGameModeInit()
 
     // NPC thu mua
     CannabisNPC = CreateActor(CANNABIS_NPC_SKIN, CANNABIS_NPC_X, CANNABIS_NPC_Y, CANNABIS_NPC_Z, CANNABIS_NPC_A);
-    CannabisNPCLabel = CreateDynamic3DTextLabel("{FF6347}Nguoi thu mua can sa\n{FFFFFF}/bancansa", COLOR_YELLOW, CANNABIS_NPC_X, CANNABIS_NPC_Y, CANNABIS_NPC_Z + 1.0, 10.0);
+    CannabisNPCLabel = CreateDynamic3DTextLabel("{FF6347}Kaii 9 ngon'\n{FFFFFF}/bancansa", COLOR_YELLOW, CANNABIS_NPC_X, CANNABIS_NPC_Y, CANNABIS_NPC_Z + 1.0, 10.0);
 
     printf("[Cannabis] Loaded %d plants, 1 processing point, 1 NPC buyer.", MAX_CANNABIS_PLANTS);
     return 1;
@@ -163,6 +165,7 @@ public Cannabis_RespawnPlant(plantid)
     if(plantid < 0 || plantid >= MAX_CANNABIS_PLANTS) return 0;
 
     CannabisPlantObj[plantid] = CreateDynamicObject(19473, CannabisPlantPos[plantid][0], CannabisPlantPos[plantid][1], CannabisPlantPos[plantid][2] - 1.0, 0.0, 0.0, 0.0);
+    CannabisPlantLabel[plantid] = CreateDynamic3DTextLabel("{00FF00}Cay can sa\n{FFFFFF}/haican", COLOR_YELLOW, CannabisPlantPos[plantid][0], CannabisPlantPos[plantid][1], CannabisPlantPos[plantid][2] + 0.5, 5.0);
     CannabisPlantAlive[plantid] = true;
     CannabisPlantTimer[plantid] = 0;
     return 1;
@@ -201,7 +204,7 @@ CMD:haican(playerid, params[])
     SetPVarInt(playerid, "Cannabis_Harvesting", 1);
     SetPVarInt(playerid, "Cannabis_PlantID", closestPlant);
     TogglePlayerControllable(playerid, 0);
-    ApplyAnimation(playerid, "BOMBER", "BOM_Plant", 4.0, 0, 0, 0, 0, 0, 1);
+    ApplyAnimation(playerid, "BOMBER", "BOM_Plant", 4.0, 1, 0, 0, 0, 0, 1);
     SendClientMessageEx(playerid, COLOR_YELLOW, "* Ban dang thu hoach can sa... Vui long cho.");
 
     SetTimerEx("Cannabis_HarvestDone", CANNABIS_HARVEST_TIME * 1000, false, "ii", playerid, closestPlant);
@@ -259,8 +262,9 @@ public Cannabis_HarvestDone(playerid, plantid)
         GivePlayerItem(playerid, CANNABIS_ITEM_RAW, amount);
     }
 
-    // Xóa cây, bắt đầu respawn
+    // Xóa cây + label, bắt đầu respawn
     DestroyDynamicObject(CannabisPlantObj[plantid]);
+    DestroyDynamic3DTextLabel(CannabisPlantLabel[plantid]);
     CannabisPlantAlive[plantid] = false;
     CannabisPlantTimer[plantid] = SetTimerEx("Cannabis_RespawnPlant", CANNABIS_RESPAWN_TIME * 1000, false, "i", plantid);
 
@@ -290,7 +294,7 @@ CMD:chebiencansa(playerid, params[])
     // Bắt đầu chế biến
     SetPVarInt(playerid, "Cannabis_Processing", 1);
     TogglePlayerControllable(playerid, 0);
-    ApplyAnimation(playerid, "BD_FIRE", "BD_FIRE1", 4.0, 1, 0, 0, 0, 0, 1);
+    ApplyAnimation(playerid, "BD_FIRE", "BD_FIRE1", 4.0, 1, 0, 0, 1, 0, 1);
     SendClientMessageEx(playerid, COLOR_YELLOW, "* Ban dang che bien can sa... Vui long cho.");
 
     SetTimerEx("Cannabis_ProcessDone", CANNABIS_PROCESS_TIME * 1000, false, "i", playerid);

@@ -1498,6 +1498,7 @@ CMD:shopbusiness(playerid, params[])
 		}
 		format(string, sizeof(string), "[SHOPBUSINESS] %s has edited BusinessID %d's CustomInterior.", GetPlayerNameEx(playerid), businessid);
 		Log("logs/shoplog.log", string);
+		SaveBusiness(businessid);
 		return 1;
 	}
 	else if(strcmp(choice, "customexterior", true) == 0)
@@ -1514,6 +1515,7 @@ CMD:shopbusiness(playerid, params[])
 		}
 		format(string, sizeof(string), "[SHOPBUSINESS] %s has edited BusinessID %d's CustomExterior.", GetPlayerNameEx(playerid), businessid);
 		Log("logs/shoplog.log", string);
+		SaveBusiness(businessid);
 		return 1;
 	}
 	else if(!strcmp(choice, "supplypoint", true))
@@ -2033,6 +2035,7 @@ CMD:bedit(playerid, params[])
 		}
 		format(string, sizeof(string), "%s has edited BusinessID %d's CustomInterior.", GetPlayerNameEx(playerid), businessid);
 		Log("logs/bedit.log", string);
+		SaveBusiness(businessid);
 		return 1;
 	}
 	else if(strcmp(choice, "customexterior", true) == 0)
@@ -2049,6 +2052,7 @@ CMD:bedit(playerid, params[])
 		}
 		format(string, sizeof(string), "%s has edited BusinessID %d's CustomExterior.", GetPlayerNameEx(playerid), businessid);
 		Log("logs/bedit.log", string);
+		SaveBusiness(businessid);
 		return 1;
 	}
 	else if(!strcmp(choice, "supplypoint", true))

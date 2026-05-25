@@ -226,12 +226,14 @@ CMD:lockgate(playerid, params[])
 					if(GateInfo[i][gLocked] == 0)
 					{
 						GateInfo[i][gLocked] = 1;
+						SaveGate(i);
 						format(string, sizeof(string), "* %s has locked their gate.", GetPlayerNameEx(playerid));
 						ProxDetector(GateInfo[i][gRange], playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
 					}
 					else
 					{
 						GateInfo[i][gLocked] = 0;
+						SaveGate(i);
 						format(string, sizeof(string), "* %s has unlocked their gate.", GetPlayerNameEx(playerid));
 						ProxDetector(GateInfo[i][gRange], playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
 					}
@@ -244,12 +246,14 @@ CMD:lockgate(playerid, params[])
 					if(GateInfo[i][gLocked] == 0)
 					{
 						GateInfo[i][gLocked] = 1;
+						SaveGate(i);
 						format(string, sizeof(string), "* %s has locked the gate.", GetPlayerNameEx(playerid));
 						ProxDetector(GateInfo[i][gRange], playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
 					}
 					else
 					{
 						GateInfo[i][gLocked] = 0;
+						SaveGate(i);
 						format(string, sizeof(string), "* %s has unlocked the gate.", GetPlayerNameEx(playerid));
 						ProxDetector(GateInfo[i][gRange], playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
 					}
@@ -262,6 +266,7 @@ CMD:lockgate(playerid, params[])
 					if(GateInfo[i][gLocked] == 0)
 					{
 						GateInfo[i][gLocked] = 1;
+						SaveGate(i);
 						format(string, sizeof(string), "* %s has locked the gate.", GetPlayerNameEx(playerid));
 						ProxDetector(GateInfo[i][gRange], playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
 						format(string, sizeof(string), "%s(%d) has locked gate ID %d.", GetPlayerNameEx(playerid), GetPlayerSQLId(playerid), i);
@@ -270,6 +275,7 @@ CMD:lockgate(playerid, params[])
 					else
 					{
 						GateInfo[i][gLocked] = 0;
+						SaveGate(i);
 						format(string, sizeof(string), "* %s has unlocked the gate.", GetPlayerNameEx(playerid));
 						ProxDetector(GateInfo[i][gRange], playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
 
