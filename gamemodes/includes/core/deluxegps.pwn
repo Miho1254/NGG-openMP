@@ -170,13 +170,15 @@ new Float:gpsIllegalZones[][3] = {
 	{-1105.5685,-1657.4761,76.3672}, // Khu che bien can sa
 	{-1333.2675,-2161.7058,22.8201}, // Khu vuc can sa
 	{-2204.5874,961.0796,80.0000}, // NPC thu mua can sa
-	{-1110.5009,-1685.7577,76.3739} // NPC BlackMarket
+	{-1110.5009,-1685.7577,76.3739}, // NPC BlackMarket
+	{-2107.4202,-2402.3198,31.3793} // Cho tieu thu xe trom
 };
 new gpsIllegalNames[][32] = {
 	"Khu che bien can sa",
 	"Khu vuc can sa",
 	"NPC thu mua can sa",
-	"NPC BlackMarket (Koon 8 ngon')"
+	"NPC BlackMarket (Koon 8 ngon')",
+	"Cho tieu thu xe trom"
 };
 
 stock ShowGPSCategoryDialog(playerid, category) {

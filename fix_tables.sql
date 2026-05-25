@@ -44,3 +44,8 @@ CREATE TABLE IF NOT EXISTS `account2` (
 -- Check and add SQLId column
 ALTER TABLE `inventory` ADD COLUMN `Id` int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`Id`);
 ALTER TABLE `inventory` ADD COLUMN `SQLId` int(11) NOT NULL DEFAULT 0 AFTER `Id`;
+
+-- Fix 3: Add missing vehicle columns
+ALTER TABLE `vehicles` ADD COLUMN `pvHealthcar` float NOT NULL DEFAULT 1000.0;
+ALTER TABLE `vehicles` ADD COLUMN `pvFull` int NOT NULL DEFAULT 0;
+ALTER TABLE `vehicles` ADD COLUMN `pvStolen` int NOT NULL DEFAULT 0;
