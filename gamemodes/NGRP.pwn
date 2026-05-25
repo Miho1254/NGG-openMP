@@ -381,6 +381,7 @@ public Float:player_get_speed(playerid)
 //#include "./includes/jobs/newshipment.pwn" - not supposed to be in yet! Don't forget to uncomment the reset, line 1975 in callbacks.pwn
 #include "./includes/core/drugcore.pwn"
 #include "./includes/jobs/giaobao.pwn"
+#include "./includes/jobs/vechai.pwn"
 //perk system includes
 #include "./includes/perks/boombox.pwn"
 #include "./includes/perks/backpack.pwn"
