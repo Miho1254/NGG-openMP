@@ -182,8 +182,8 @@ CMD:putvechai(playerid, params[]) {
     
     pVeChai[playerid] = 0;
     RemovePlayerAttachedObject(playerid, 9);
-    ClearAnimations(playerid);
     SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
+    ClearAnimations(playerid);
     return 1;
 }
 
@@ -212,16 +212,16 @@ CMD:banvechai(playerid, params[]) {
     
     new Float:FeePer10kg = 0.0;
     
-    if(totalMats > 100000) {
+    if(totalMats > 10000000) {
         FeePer10kg = 150.0;
-    } else if(totalMats < 20000) {
+    } else if(totalMats < 2000000) {
         FeePer10kg = 30.0;
     } else {
-        FeePer10kg = ((float(totalMats) - 20000.0) / 80000.0) * 120.0 + 30.0;
+        FeePer10kg = ((float(totalMats) - 2000000.0) / 8000000.0) * 120.0 + 30.0;
     }
     
     new kg = VehVeChai[closestcar];
-    new mats_per_kg = 8 + random(5); // 8 - 12 mats per kg
+    new mats_per_kg = 50 + random(21); // 50 - 70 mats per kg
     new mats_gain = kg * mats_per_kg;
     new fee_total = floatround((float(kg) / 10.0) * FeePer10kg);
     
@@ -251,8 +251,8 @@ hook OnPlayerStateChange(playerid, newstate, oldstate) {
             SendClientMessageEx(playerid, COLOR_RED, "Ban da danh roi so ve chai dang cam tren tay khi len xe!");
             pVeChai[playerid] = 0;
             RemovePlayerAttachedObject(playerid, 9);
-            ClearAnimations(playerid);
             SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
+            ClearAnimations(playerid);
         }
     }
     return 1;
