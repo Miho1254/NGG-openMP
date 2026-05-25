@@ -116,7 +116,8 @@ new Inventory_ListItems[][] =
     "The EXP Bonus 30%", "Hom trang phuc Event Vietnam Capsule mua 1", "Hom xe Event Vietnam Capsule mua 1", "Hom Toy Event Vietnam Capsule mua 1",
     "Jerry can (100 lit)", "Jerry can (200 lit)", "SD-Pistol", "Colt-9mm", "Deagle", "Shotgun", "Sawn-Off", "Spas-12", "Uzi", "Mp5", "AK", "M4",
     "Tec9", "Rifle", "Sniper", "Da tho", "Ca thu", "Ca ngu", "Ca noc", "Ruou & thuoc la", "Hop dan tich hop", "Combo GFC", "Ban do kho bau","M4 LAW",
-    "AK LAW", "Deagle LAW", "9mm LAW", "MP5 LAW", "Sword Katana", "Gay Bong Chay"
+    "AK LAW", "Deagle LAW", "9mm LAW", "MP5 LAW", "Sword Katana", "Gay Bong Chay",
+    "Can sa nguyen chat", "Tui zip can sa"
 };
 
 new PlayerText: GTASA_Inventory[MAX_PLAYERS][2][62];
@@ -209,6 +210,14 @@ stock Float:GetItemWeight(item)
         case 50:
         {
             return 2.1;
+        }
+        case 51: // Can sa nguyen chat
+        {
+            return 0.8;
+        }
+        case 52: // Tui zip can sa
+        {
+            return 0.4;
         }
     }
     return 0.0;
@@ -1815,6 +1824,8 @@ stock GetAmountItemLimit(item)
         case 41: return 1200;
         case 42: return 1;
         case 43: return 1;
+        case 51: return 50;  // Can sa nguyen chat
+        case 52: return 100; // Tui zip can sa
     }
     return 0;
 }
@@ -1946,6 +1957,8 @@ stock GetItemMDL(item)
         case 48: string = "mdl-2002:item_mp5law";
         case 49: string = "mdl-2002:item_swordkatana";
         case 50: string = "mdl-2002:item_baseballbat";
+        case 51: string = "mdl-2002:item_weedraw";
+        case 52: string = "mdl-2002:item_weedzip";
     }
     return string;
 }
@@ -2154,6 +2167,14 @@ stock GetItemName(item)
         case 50:
         {
             string = "Gay Bong Chay";
+        }
+        case 51:
+        {
+            string = "Can sa nguyen chat";
+        }
+        case 52:
+        {
+            string = "Tui zip can sa";
         }
     }
     return string;
@@ -3913,6 +3934,279 @@ stock Balo_IsUsable(itemid)
 CMD:balomobile(playerid, params[])
 {
     return callcmd::balo(playerid, params);
+}
+
+CMD:lucsoatbalo(playerid, params[])
+{
+    if(!IsACop(playerid)) return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong phai la Canh sat!");
+    if(GetPVarInt(playerid, "Injured") != 0 || PlayerCuffed[playerid] != 0 || PlayerTied[playerid] != 0 || PlayerInfo[playerid][pJailTime] > 0)
+        return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong the su dung lenh nay ngay bay gio!");
+
+    new giveplayerid;
+    if(sscanf(params, "u", giveplayerid))
+        return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /lucsoatbalo [player]");
+
+    if(!IsPlayerConnected(giveplayerid))
+        return SendClientMessageEx(playerid, COLOR_GREY, "Nguoi choi khong ton tai.");
+
+    if(giveplayerid == playerid)
+        return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong the luc soat balo cua chinh minh!");
+
+    if(!ProxDetectorS(8.0, playerid, giveplayerid))
+        return SendClientMessageEx(playerid, COLOR_GREY, "Nguoi nay khong dung gan ban.");
+
+    if(PlayerInfo[giveplayerid][pAdmin] >= 2 && !PlayerInfo[giveplayerid][pTogReports])
+        return SendClientMessageEx(playerid, COLOR_GREY, "Khong the luc soat nguoi nay.");
+
+    new szStr[4096], title[128], count;
+    new Float:totalWeight;
+
+    for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+    {
+        if(CharacterInfo[giveplayerid][0][cb_ItemID][i] != INVALID_OBJECT_ID)
+            totalWeight += CharacterInfo[giveplayerid][0][cb_ItemWeight][i];
+    }
+
+    format(title, sizeof(title), "BALO cua %s | %.1f/%.1f kg | Items: %d",
+        GetPlayerNameEx(giveplayerid), totalWeight, CharacterInfo[giveplayerid][0][cb_Weight], count);
+
+    format(szStr, sizeof(szStr), "#\tVat pham\tSL\tKG\tTrang bi\n");
+
+    new lastUsed = 12;
+    for(new i = MAX_PLAYER_CB_ITEM - 1; i >= 0; i--)
+    {
+        if(CharacterInfo[giveplayerid][0][cb_ItemID][i] != INVALID_OBJECT_ID || CharacterInfo[giveplayerid][0][cb_ItemLock][i] == 1)
+        {
+            lastUsed = i;
+            break;
+        }
+    }
+    new showSlots = (lastUsed + 3 > 12) ? lastUsed + 3 : 12;
+    if(showSlots >= MAX_PLAYER_CB_ITEM) showSlots = MAX_PLAYER_CB_ITEM - 1;
+
+    for(new i = 0; i <= showSlots; i++)
+    {
+        if(CharacterInfo[giveplayerid][0][cb_ItemLock][i] == 1)
+            format(szStr, sizeof(szStr), "%s{666666}%d\t{666666}--- Khoa ---\t\t\t\n", szStr, i + 1);
+        else if(CharacterInfo[giveplayerid][0][cb_ItemID][i] == INVALID_OBJECT_ID)
+            format(szStr, sizeof(szStr), "%s{444444}%d\t{444444}Trong\t\t\t\n", szStr, i + 1);
+        else
+        {
+            count++;
+            new itemid = CharacterInfo[giveplayerid][0][cb_ItemID][i];
+            new color[8], equipStr[24];
+
+            if(GetIDWeapon(itemid))
+            {
+                color = "FF6347";
+                if(Balo_IsItemEquipped(giveplayerid, itemid))
+                    equipStr = "{57FF57}Dang mang";
+                else
+                    equipStr = "{888888}---";
+            }
+            else
+            {
+                color = "FFFFFF";
+                equipStr = "{888888}---";
+            }
+
+            format(szStr, sizeof(szStr), "%s{F5CB42}%d\t{%s}%s\t{FFFFFF}%d\t{FFFFFF}%.1f\t%s\n",
+                szStr, i + 1, color,
+                Inventory_ListItems[itemid - 1],
+                CharacterInfo[giveplayerid][0][cb_ItemAmount][i],
+                CharacterInfo[giveplayerid][0][cb_ItemWeight][i],
+                equipStr);
+        }
+    }
+
+    if(count == 0)
+        format(szStr, sizeof(szStr), "%s\n{888888}Balo trong.", szStr);
+
+    new equipCount = 0;
+    for(new i = 0; i < 7; i++)
+    {
+        if(CharacterInfo[giveplayerid][1][cb_ItemID][i] != INVALID_OBJECT_ID)
+        {
+            equipCount++;
+            break;
+        }
+    }
+    if(equipCount > 0)
+    {
+        format(szStr, sizeof(szStr), "%s\n{FFB561}--- VU KHI DANG TRANG BI ---\n", szStr);
+        for(new i = 0; i < 7; i++)
+        {
+            if(CharacterInfo[giveplayerid][1][cb_ItemID][i] != INVALID_OBJECT_ID)
+            {
+                new eqItemid = CharacterInfo[giveplayerid][1][cb_ItemID][i];
+                format(szStr, sizeof(szStr), "%s{F5CB42}%d\t{FF6347}%s\t{FFFFFF}%d\t{FFFFFF}%.1f\t{57FF57}Dang mang\n",
+                    szStr, i + 1,
+                    Inventory_ListItems[eqItemid - 1],
+                    CharacterInfo[giveplayerid][1][cb_ItemAmount][i],
+                    CharacterInfo[giveplayerid][1][cb_ItemWeight][i]);
+            }
+            else
+            {
+                format(szStr, sizeof(szStr), "%s{F5CB42}%d\t{444444}Trong\t\t\t\n", szStr, i + 1);
+            }
+        }
+    }
+
+    format(title, sizeof(title), "BALO cua %s | %.1f/%.1f kg | Items: %d",
+        GetPlayerNameEx(giveplayerid), totalWeight, CharacterInfo[giveplayerid][0][cb_Weight], count);
+
+    format(szStr, sizeof(szStr), "%s\n\n{FF6347}* Chi xem, khong the thao tac.", szStr);
+
+    format(szMiscArray, sizeof(szMiscArray), "* %s dang luc soat balo cua %s.", GetPlayerNameEx(playerid), GetPlayerNameEx(giveplayerid));
+    ProxDetector(30.0, playerid, szMiscArray, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
+
+    Dialog_Show(playerid, DIALOG_LUCSOATBALO, DIALOG_STYLE_TABLIST_HEADERS, title, szStr, "Dong", "");
+    return 1;
+}
+
+Dialog:DIALOG_LUCSOATBALO(playerid, response, listitem, inputtext[])
+{
+    return 1;
+}
+
+stock IsIllegalItem(itemid)
+{
+    switch(itemid)
+    {
+        case 2: return 1;       // Minigun
+        case 23 .. 35: return 1; // SD-Pistol, Colt-9mm, Deagle, Shotgun, Sawn-Off, Spas-12, Uzi, Mp5, AK, M4, Tec9, Rifle, Sniper
+        case 41: return 1;       // Hop dan tich hop
+        case 44 .. 48: return 1; // M4 LAW, AK LAW, Deagle LAW, 9mm LAW, MP5 LAW
+        case 49: return 1;       // Sword Katana
+        case 50: return 1;       // Gay Bong Chay
+        case 51: return 1;       // Can sa nguyen chat
+        case 52: return 1;       // Tui zip can sa
+    }
+    return 0;
+}
+
+CMD:takebalo(playerid, params[])
+{
+    if(!IsACop(playerid)) return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong phai la Canh sat!");
+    if(GetPVarInt(playerid, "Injured") != 0 || PlayerCuffed[playerid] != 0 || PlayerTied[playerid] != 0 || PlayerInfo[playerid][pJailTime] > 0)
+        return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong the su dung lenh nay ngay bay gio!");
+
+    new giveplayerid;
+    if(sscanf(params, "u", giveplayerid))
+        return SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /takebalo [player]");
+
+    if(!IsPlayerConnected(giveplayerid))
+        return SendClientMessageEx(playerid, COLOR_GREY, "Nguoi choi khong ton tai.");
+
+    if(giveplayerid == playerid)
+        return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong the lay do tu balo cua chinh minh!");
+
+    if(!ProxDetectorS(8.0, playerid, giveplayerid))
+        return SendClientMessageEx(playerid, COLOR_GREY, "Nguoi nay khong dung gan ban.");
+
+    if(PlayerInfo[giveplayerid][pAdmin] >= 2 && !PlayerInfo[giveplayerid][pTogReports])
+        return SendClientMessageEx(playerid, COLOR_GREY, "Khong the lay do tu balo cua nguoi nay.");
+
+    new szStr[2048], title[128], count;
+    new illegalSlots[MAX_PLAYER_CB_ITEM], illegalCount;
+
+    for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+    {
+        if(CharacterInfo[giveplayerid][0][cb_ItemID][i] != INVALID_OBJECT_ID)
+        {
+            new itemid = CharacterInfo[giveplayerid][0][cb_ItemID][i];
+            if(IsIllegalItem(itemid))
+            {
+                illegalSlots[illegalCount] = i;
+                illegalCount++;
+            }
+        }
+    }
+
+    if(illegalCount == 0)
+        return SendClientMessageEx(playerid, COLOR_GREY, "Khong co vat pham bat hop phap nao trong balo cua nguoi nay.");
+
+    format(title, sizeof(title), "Take balo: %s | Vat pham bat hop phap", GetPlayerNameEx(giveplayerid));
+    format(szStr, sizeof(szStr), "#\tVat pham\tSL\tKG\n");
+
+    for(new i = 0; i < illegalCount; i++)
+    {
+        new slot = illegalSlots[i];
+        new itemid = CharacterInfo[giveplayerid][0][cb_ItemID][slot];
+        format(szStr, sizeof(szStr), "%s{F5CB42}%d\t{FF6347}%s\t{FFFFFF}%d\t{FFFFFF}%.1f\n",
+            szStr, i + 1,
+            Inventory_ListItems[itemid - 1],
+            CharacterInfo[giveplayerid][0][cb_ItemAmount][slot],
+            CharacterInfo[giveplayerid][0][cb_ItemWeight][slot]);
+    }
+
+    SetPVarInt(playerid, "TakeBalo_Target", giveplayerid);
+    SetPVarInt(playerid, "TakeBalo_Count", illegalCount);
+
+    for(new i = 0; i < illegalCount; i++)
+    {
+        new key[24];
+        format(key, sizeof(key), "TakeBalo_Slot%d", i);
+        SetPVarInt(playerid, key, illegalSlots[i]);
+    }
+
+    format(szMiscArray, sizeof(szMiscArray), "* %s dang kiem tra balo cua %s de tim vat pham bat hop phap.", GetPlayerNameEx(playerid), GetPlayerNameEx(giveplayerid));
+    ProxDetector(30.0, playerid, szMiscArray, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
+
+    Dialog_Show(playerid, DIALOG_TAKEBALO, DIALOG_STYLE_TABLIST_HEADERS, title, szStr, "Take", "Dong");
+    return 1;
+}
+
+Dialog:DIALOG_TAKEBALO(playerid, response, listitem, inputtext[])
+{
+    if(!response) return 1;
+
+    new giveplayerid = GetPVarInt(playerid, "TakeBalo_Target");
+    new illegalCount = GetPVarInt(playerid, "TakeBalo_Count");
+
+    if(!IsPlayerConnected(giveplayerid))
+    {
+        SendClientMessageEx(playerid, COLOR_GREY, "Nguoi choi da thoat.");
+        return 1;
+    }
+
+    if(listitem < 0 || listitem >= illegalCount)
+        return 1;
+
+    new key[24];
+    format(key, sizeof(key), "TakeBalo_Slot%d", listitem);
+    new slot = GetPVarInt(playerid, key);
+    new itemid = CharacterInfo[giveplayerid][0][cb_ItemID][slot];
+    new amount = CharacterInfo[giveplayerid][0][cb_ItemAmount][slot];
+
+    if(itemid == INVALID_OBJECT_ID)
+        return SendClientMessageEx(playerid, COLOR_GREY, "Vat pham nay khong con ton tai.");
+
+    new itemName[64];
+    format(itemName, sizeof(itemName), "%s", Inventory_ListItems[itemid - 1]);
+
+    CharacterInfo[giveplayerid][0][cb_ItemID][slot] = INVALID_OBJECT_ID;
+    CharacterInfo[giveplayerid][0][cb_ItemAmount][slot] = 0;
+    CharacterInfo[giveplayerid][0][cb_ItemWeight][slot] = 0.0;
+    CharacterInfo[giveplayerid][0][cb_ItemDurability][slot] = 0;
+
+    format(szMiscArray, sizeof(szMiscArray), "[{FFB561}BALO{FFFFFF}]: Ban da thu giu {FF6347}%s {FFFFFF}(x%d) tu balo cua %s.", itemName, amount, GetPlayerNameEx(giveplayerid));
+    SendClientMessageEx(playerid, COLOR_WHITE, szMiscArray);
+
+    format(szMiscArray, sizeof(szMiscArray), "[{FFB561}BALO{FFFFFF}]: Canh sat %s da thu giu %s (x%d) tu balo cua ban.", GetPlayerNameEx(playerid), itemName, amount);
+    SendClientMessageEx(giveplayerid, COLOR_WHITE, szMiscArray);
+
+    format(szMiscArray, sizeof(szMiscArray), "* %s da thu giu mot vat pham tu balo cua %s.", GetPlayerNameEx(playerid), GetPlayerNameEx(giveplayerid));
+    ProxDetector(30.0, playerid, szMiscArray, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
+
+    new logStr[256], year, month, day, hour, minute, second;
+    getdate(year, month, day);
+    gettime(hour, minute, second);
+    format(logStr, sizeof(logStr), "[%04d-%02d-%02d %02d:%02d:%02d] %s (LAW) da thu giu %s (x%d) tu balo cua %s",
+        year, month, day, hour, minute, second, GetPlayerNameEx(playerid), itemName, amount, GetPlayerNameEx(giveplayerid));
+    Log("logs/TakeBalo.log", logStr);
+
+    return 1;
 }
 
 CMD:closeinv(playerid, params[])

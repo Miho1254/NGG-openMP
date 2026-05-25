@@ -945,6 +945,7 @@ native WP_Hash(buffer[], len, const str[]);
 #define 		DISPLAY_STATS2				(5041)
 #define 		DISPLAY_INV					(5042)
 #define 		DISPLAY_INV2				(5043)
+#define 		DIALOG_CANNABIS_SELL		(5044)
 
 // Voucher System
 #define			DIALOG_VOUCHER				(5050)

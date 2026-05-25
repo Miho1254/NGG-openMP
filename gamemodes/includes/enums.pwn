@@ -939,6 +939,7 @@ enum pInfo
 	pBirthDate[11],
 	pOrigin,
 	pCash,
+	pDirtyMoney,
 	pSpectating,
 	pLastEnterCar,
 	pLastEnterCarTime,

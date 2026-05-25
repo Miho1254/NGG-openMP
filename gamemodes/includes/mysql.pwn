@@ -324,6 +324,7 @@ public OnQueryFinish(resultid, extraid, handleid)
 					cache_get_value_name_int(row,  "DonateRank", PlayerInfo[extraid][pDonateRank]);
 					cache_get_value_name_int(row,  "Respect", PlayerInfo[extraid][pExp]);
 					cache_get_value_name_int(row,  "Money", PlayerInfo[extraid][pCash]);
+					cache_get_value_name_int(row,  "DirtyMoney", PlayerInfo[extraid][pDirtyMoney]);
 					cache_get_value_name_int(row,  "Bank", PlayerInfo[extraid][pAccount]);
 					cache_get_value_name_float(row,  "pHealth", PlayerInfo[extraid][pHealth]);
 					cache_get_value_name_float(row,  "pArmor", PlayerInfo[extraid][pArmor]);
@@ -2189,6 +2190,7 @@ stock g_mysql_SaveAccount(playerid)
     SavePlayerInteger(query, GetPlayerSQLId(playerid), "DonateRank", PlayerInfo[playerid][pDonateRank]);
     SavePlayerInteger(query, GetPlayerSQLId(playerid), "Respect", PlayerInfo[playerid][pExp]);
     SavePlayerInteger(query, GetPlayerSQLId(playerid), "Money", GetPlayerCash(playerid));
+    SavePlayerInteger(query, GetPlayerSQLId(playerid), "DirtyMoney", PlayerInfo[playerid][pDirtyMoney]);
 
     SavePlayerInteger(query, GetPlayerSQLId(playerid), "Bank", PlayerInfo[playerid][pAccount]);
 	if(PlayerInfo[playerid][pHealth] > 150) PlayerInfo[playerid][pHealth] = 150;

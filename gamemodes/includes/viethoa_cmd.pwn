@@ -126,7 +126,12 @@ public PC_OnInit()
     SafeRegAlias("drop", "vut");
     SafeRegAlias("fix", "sua");
     SafeRegAlias("guard", "bangiap");
-    SafeRegAlias("frisk", "lucsoat");
+	SafeRegAlias("frisk", "lucsoat");
+	SafeRegAlias("lucsoatbalo", "friskbalo");
+	SafeRegAlias("takebalo", "thugiu");
+	SafeRegAlias("haican", "harvest");
+	SafeRegAlias("chebiencansa", "processweed");
+	SafeRegAlias("bancansa", "sellweed");
     SafeRegAlias("blindfold", "bitmat");
     SafeRegAlias("arrest", "batgiam");
     SafeRegAlias("wanted", "danhsachtruyna");

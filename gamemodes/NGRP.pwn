@@ -432,6 +432,7 @@ public Float:player_get_speed(playerid)
 #include "./includes/modules/craftweapon.inc"
 #include "./includes/modules/gs-utils.inc"
 #include "./includes/modules/famed-mission.inc"
+#include "./includes/modules/cannabis.inc"
 
 //truyduoi
 #include "./includes/core/truyduoi.pwn"

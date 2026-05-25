@@ -1253,7 +1253,7 @@ stock AC_InitWeaponData() {
 	arrWeaponData[28][ac_WeaponDamage] = 6.6; // 28 - UZI
 	arrWeaponData[29][ac_WeaponDamage] = 8.25; // 29 - MP5
 	arrWeaponData[30][ac_WeaponDamage] = 9.9; // 30 - AK47
-	arrWeaponData[31][ac_WeaponDamage] = 9.9; // 31 - M4
+	arrWeaponData[31][ac_WeaponDamage] = 11.9; // 31 - M4
 	arrWeaponData[32][ac_WeaponDamage] = 6.6; // 32 - Tec9
 	arrWeaponData[33][ac_WeaponDamage] = 24.75; // 33 - Cuntgun
 	arrWeaponData[34][ac_WeaponDamage] = 41.25; // 34 - Sniper
