@@ -185,7 +185,7 @@ hook OnGameModeInit()
     }
 
     CreateDynamic3DTextLabel("{FFFF00}Ben Xe Buyt\n{FFFFFF}Su dung {FFFF00}/busrun {FFFFFF}de bat dau tuyen duong", COLOR_YELLOW,
-        -1710.0544, 1332.0048, 7.0468 + 1.5,
+        -1667.2451, 1309.9764, 7.1875 + 1.5,
         30.0, .testlos = 1, .streamdistance = 30.0);
 
     return 1;

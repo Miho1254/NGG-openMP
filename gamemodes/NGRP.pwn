@@ -475,6 +475,7 @@ public Float:player_get_speed(playerid)
 #include "./includes/core/taixiu.pwn"
 #include "./includes/jobs/ngudan.pwn"
 #include "./includes/jobs/bussystem.pwn"
+#include "./includes/jobs/tromxe.pwn"
 #include "./includes/core/thatuchotui.pwn"
 #include "./includes/core/duatuixe.pwn"
 #include "./includes/core/duatuicredits.pwn"

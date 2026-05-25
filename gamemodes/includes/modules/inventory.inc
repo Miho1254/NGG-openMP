@@ -117,7 +117,7 @@ new Inventory_ListItems[][] =
     "Jerry can (100 lit)", "Jerry can (200 lit)", "SD-Pistol", "Colt-9mm", "Deagle", "Shotgun", "Sawn-Off", "Spas-12", "Uzi", "Mp5", "AK", "M4",
     "Tec9", "Rifle", "Sniper", "Da tho", "Ca thu", "Ca ngu", "Ca noc", "Ruou & thuoc la", "Hop dan tich hop", "Combo GFC", "Ban do kho bau","M4 LAW",
     "AK LAW", "Deagle LAW", "9mm LAW", "MP5 LAW", "Sword Katana", "Gay Bong Chay",
-    "Can sa nguyen chat", "Tui zip can sa"
+    "Can sa nguyen chat", "Tui zip can sa", "Picklock"
 };
 
 new PlayerText: GTASA_Inventory[MAX_PLAYERS][2][62];
@@ -218,6 +218,10 @@ stock Float:GetItemWeight(item)
         case 52: // Tui zip can sa
         {
             return 0.4;
+        }
+        case 53: // Picklock
+        {
+            return 0.5;
         }
     }
     return 0.0;
@@ -1826,6 +1830,7 @@ stock GetAmountItemLimit(item)
         case 43: return 1;
         case 51: return 50;  // Can sa nguyen chat
         case 52: return 100; // Tui zip can sa
+        case 53: return 5;   // Picklock
     }
     return 0;
 }

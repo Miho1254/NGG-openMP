@@ -2555,6 +2555,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 		else if(PlayerVehicleInfo[playerid][listitem][pvImpounded]) {
 			SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong the lay phuong tien nay ra. Neu ban muon lay no ra, hay den DMV Dillimore de chuoc lai.");
 		}
+		else if(PlayerVehicleInfo[playerid][listitem][pvStolen]) {
+			SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong the lay phuong tien nay ra. Phuong tien cua ban da bi trom mat! Hay den NPC Six Que de chuoc lai.");
+		}
 		else if(PlayerVehicleInfo[playerid][listitem][pvDisabled]) {
 			SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong the cat phuong tien nay vao. No bi vo hieu hoa do VIP Level cua ban.");
 		}

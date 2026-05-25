@@ -998,6 +998,8 @@ native WP_Hash(buffer[], len, const str[]);
 #define			DIALOG_BMEDKIT				(5094)
 #define			DIALOG_BDROP				(5095)
 #define			DIALOG_ENERGYBARS			(5096)
+#define			DIALOG_VEHICLE_RANSOM		(5097)
+#define			DIALOG_LOCKPICK_GAME		(5098)
 
 #define			DIALOG_DOC_ELEVATOR			(5500)
 #define			DIALOG_DOC_CP				(5550)

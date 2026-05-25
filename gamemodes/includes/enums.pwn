@@ -1354,6 +1354,7 @@ enum pvInfo
 	pvBeingPickLockedBy,
 	pvLastLockPickedBy[MAX_PLAYER_NAME],
 	pvLocksLeft,
+	pvStolen,
 	pvDrugs[sizeof(Drugs)]
 };
 

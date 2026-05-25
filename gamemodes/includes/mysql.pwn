@@ -141,7 +141,10 @@ stock g_mysql_Init()
 		printf("[MySQL] Error number: %d", mysql_errno(MainPipeline));
 		SendRconCommand("exit");
 	}
-	else print("[MySQL] (MainPipeline) Connection successful toward MySQL Database Server!");
+	else
+	{
+		print("[MySQL] (MainPipeline) Connection successful toward MySQL Database Server!");
+	}
 
 	if(ShopToggle == 1)
 	{
@@ -1005,6 +1008,7 @@ public OnQueryFinish(resultid, extraid, handleid)
 						cache_get_value_name_int(i,  "pvAlarm", PlayerVehicleInfo[extraid][i][pvAlarm]);
 						cache_get_value_name(i,  "pvLastLockPickedBy", PlayerVehicleInfo[extraid][i][pvLastLockPickedBy]);
 						cache_get_value_name_int(i,  "pvLocksLeft", PlayerVehicleInfo[extraid][i][pvLocksLeft]);
+						cache_get_value_name_int(i,  "pvStolen", PlayerVehicleInfo[extraid][i][pvStolen]);
 						cache_get_value_name_float(i, "pvHealth", PlayerVehicleInfo[extraid][i][pvHealth]);
 
 						format(szMiscArray, sizeof(szMiscArray), "[VEHICLELOAD] [User: %s(%i)] [Model: %d] [Vehicle ID: %d]", GetPlayerNameEx(extraid), PlayerInfo[extraid][pId], PlayerVehicleInfo[extraid][i][pvModelId], PlayerVehicleInfo[extraid][i][pvSlotId]);

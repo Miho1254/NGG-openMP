@@ -41,6 +41,7 @@ stock g_mysql_SaveVehicle(playerid, slotid)
 	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "%s `pvAlarm` = %d,", szMiscArray, PlayerVehicleInfo[playerid][slotid][pvAlarm]);
 	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "%s `pvLastLockPickedBy` = '%e',", szMiscArray, PlayerVehicleInfo[playerid][slotid][pvLastLockPickedBy]);
 	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "%s `pvLocksLeft` = %d,", szMiscArray, PlayerVehicleInfo[playerid][slotid][pvLocksLeft]);
+	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "%s `pvStolen` = %d,", szMiscArray, PlayerVehicleInfo[playerid][slotid][pvStolen]);
 	new zyear, zmonth, zday;
 	getdate(zyear, zmonth, zday);
 	if(zombieevent || (zmonth == 10 && zday == 31) || (zmonth == 11 && zday == 1)) format(szMiscArray, sizeof(szMiscArray), "%s `pvHealth` = %0.5f,", szMiscArray, PlayerVehicleInfo[playerid][slotid][pvHealth]);

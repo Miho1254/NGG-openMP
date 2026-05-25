@@ -2148,6 +2148,9 @@ CMD:vstorage(playerid, params[])
 				if(PlayerVehicleInfo[playerid][i][pvImpounded]) {
 					format(vstring, sizeof(vstring), "%s%s\tBi giam\tDillimore DMV\t$%s\n", vstring, VehicleName[iModelID], number_format(PlayerVehicleInfo[playerid][i][pvTicket]));
 				}
+				else if(PlayerVehicleInfo[playerid][i][pvStolen]) {
+					format(vstring, sizeof(vstring), "%s%s\tBi trom\tNPC Six Que\t--\n", vstring, VehicleName[iModelID]);
+				}
 				else if(PlayerVehicleInfo[playerid][i][pvDisabled]) {
 					format(vstring, sizeof(vstring), "%s%s\tVo hieu hoa\t--\t$%s\n", vstring, VehicleName[iModelID], number_format(PlayerVehicleInfo[playerid][i][pvTicket]));
 				}

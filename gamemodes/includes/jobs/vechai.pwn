@@ -144,7 +144,6 @@ CMD:muavechai(playerid, params[]) {
     UpdateVeChaiLabel(nearest_point);
     
     SetPlayerAttachedObject(playerid, 9, 1271, 1, -0.071, 0.536, -0.026999, -2.19999, 87.1999, 0.699999, 0.8, 0.8, 0.8);
-    ApplyAnimation(playerid, "CARRY", "crry_prtial", 4.1, 1, 1, 1, 1, 1, 1);
     SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY); // Force walk
     
     new string[128];
