@@ -49,7 +49,124 @@ stock ShowGroupWeapons(playerid, group) {
 	if(!ValidGroup(group)) return 1;
 	new title[54];
 	format(title, sizeof(title), "Weapon Safe - Mats: %s", number_format(arrGroupData[group][g_iLockerStock]));
-	Dialog_Show(playerid, wep_option, DIALOG_STYLE_LIST, title, "Withdraw Weapon\nDeposit Weapon", "Select", "Go Back");
+
+	new str[512];
+	format(str, sizeof(str), "Vu khi / Vat pham\tChi phi\n");
+	format(str, sizeof(str), "%sM4\t1,400 Mats\n", str);
+	format(str, sizeof(str), "%sMP5\t800 Mats\n", str);
+	format(str, sizeof(str), "%sDeagle\t1,000 Mats\n", str);
+	format(str, sizeof(str), "%sSniper Rifle\t5,000 Mats\n", str);
+	format(str, sizeof(str), "%sHop dan tich hop (1200 dan)\t500 Mats\n", str);
+	format(str, sizeof(str), "%sNap vat lieu vao Locker\t--\n", str);
+
+	Dialog_Show(playerid, DIALOG_GANG_WEAPONS, DIALOG_STYLE_TABLIST_HEADERS, title, str, "Chon", "Thoat");
+	return 1;
+}
+
+Dialog:DIALOG_GANG_WEAPONS(playerid, response, listitem, inputtext[]) {
+	if(!response) return 1;
+	new group = PlayerInfo[playerid][pMember];
+	if(!ValidGroup(group)) return 1;
+
+	if(PlayerInfo[playerid][pAccountRestricted] != 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Your account is restricted!");
+	if(IsPlayerWeaponRestricted(playerid)) return SendClientMessageEx(playerid, COLOR_GRAD1, "You can't take weapons out as you're currently weapon restricted!");
+
+	new itemid = 0;
+	new cost = 0;
+	new amount = 0;
+	new name[32];
+
+	switch(listitem) {
+		case 0: { // M4
+			itemid = 32;
+			cost = 1400;
+			amount = 199;
+			strcpy(name, "M4");
+		}
+		case 1: { // MP5
+			itemid = 30;
+			cost = 800;
+			amount = 120;
+			strcpy(name, "MP5");
+		}
+		case 2: { // Deagle
+			itemid = 25;
+			cost = 1000;
+			amount = 29;
+			strcpy(name, "Deagle");
+		}
+		case 3: { // Sniper Rifle
+			itemid = 35;
+			cost = 5000;
+			amount = 60;
+			strcpy(name, "Sniper");
+		}
+		case 4: { // Hop dan tich hop
+			itemid = 41;
+			cost = 500;
+			amount = 1200;
+			strcpy(name, "Hop dan tich hop");
+		}
+		case 5: { // Nap vat lieu
+			Dialog_Show(playerid, DIALOG_GANG_DEPOSIT_MATS, DIALOG_STYLE_INPUT, "Nap vat lieu vao Locker", "Hay nhap so luong vat lieu (Mats) ban muon nap tu tui do ca nhan vao Locker sung cua Gang:", "Nap", "Huy");
+			return 1;
+		}
+		default: return 1;
+	}
+
+	if(arrGroupData[group][g_iLockerStock] < cost) {
+		return SendClientMessageEx(playerid, COLOR_RED, "To chuc khong du vat lieu de cung cap %s (Yeu cau %d Mats).", name, cost);
+	}
+
+	new success = -1;
+	SetPlayerItem(playerid, itemid, amount, success);
+
+	if(success == 1) {
+		arrGroupData[group][g_iLockerStock] -= cost;
+		new str[256];
+		format(str, sizeof(str), "[{FFB561}TUI DO{FFFFFF}] Ban da lay %s (SL: %d) ra khoi tu do (Tieu ton %d Mats).", name, amount, cost);
+		SendClientMessageEx(playerid, COLOR_WHITE, str);
+
+		format(str, sizeof(str), "%s da lay 1 %s tu trong tu do (Tieu ton: %d Mats)", GetPlayerNameEx(playerid), name, cost);
+		GroupLog(group, str);
+		SaveGroup(group);
+	} else {
+		SendClientMessageEx(playerid, COLOR_GRAD3, "** Co loi xay ra, balo khong du cho trong hoac qua nang.");
+	}
+
+	// Show menu again
+	ShowGroupWeapons(playerid, group);
+	return 1;
+}
+
+Dialog:DIALOG_GANG_DEPOSIT_MATS(playerid, response, listitem, inputtext[]) {
+	if(!response) return ShowGroupWeapons(playerid, PlayerInfo[playerid][pMember]);
+	new group = PlayerInfo[playerid][pMember];
+	if(!ValidGroup(group)) return 1;
+
+	new amount = strval(inputtext);
+	if(amount <= 0) {
+		SendClientMessageEx(playerid, COLOR_RED, "So luong nap phai lon hon 0.");
+		return Dialog_Show(playerid, DIALOG_GANG_DEPOSIT_MATS, DIALOG_STYLE_INPUT, "Nap vat lieu vao Locker", "Hay nhap so luong vat lieu (Mats) ban muon nap tu tui do ca nhan vao Locker sung cua Gang:", "Nap", "Huy");
+	}
+
+	if(amount > PlayerInfo[playerid][pMats]) {
+		SendClientMessageEx(playerid, COLOR_RED, "Ban khong co du %d vat lieu trong tui do ca nhan (Hien co: %d Mats).", amount, PlayerInfo[playerid][pMats]);
+		return Dialog_Show(playerid, DIALOG_GANG_DEPOSIT_MATS, DIALOG_STYLE_INPUT, "Nap vat lieu vao Locker", "Hay nhap so luong vat lieu (Mats) ban muon nap tu tui do ca nhan vao Locker sung cua Gang:", "Nap", "Huy");
+	}
+
+	PlayerInfo[playerid][pMats] -= amount;
+	arrGroupData[group][g_iLockerStock] += amount;
+
+	new str[256];
+	format(str, sizeof(str), "[{FFB561}LOCKER{FFFFFF}] Ban da nap %d vat lieu ca nhan vao tu do Gang (Tu do sung: %d Mats).", amount, arrGroupData[group][g_iLockerStock]);
+	SendClientMessageEx(playerid, COLOR_WHITE, str);
+
+	format(str, sizeof(str), "%s da nap %d vat lieu tu tui do ca nhan vao Locker sung.", GetPlayerNameEx(playerid), amount);
+	GroupLog(group, str);
+	SaveGroup(group);
+
+	ShowGroupWeapons(playerid, group);
 	return 1;
 }
 

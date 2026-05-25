@@ -900,9 +900,41 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				}
 			}
 
-			if (strcmp("Weapons", inputtext) == 0) {
+			if (strcmp("Weapons", inputtext) == 0 || strcmp("Weapons & Ammo", inputtext) == 0) {
 				//if(IsACriminal(playerid) || IsARacer(playerid)) return ShowGroupWeapons(playerid, iGroupID);
 				return ShowGroupWeapons(playerid, iGroupID);
+			}
+
+			if (strcmp("Kevlar Armor", inputtext) == 0) {
+				GetArmour(playerid, parmor);
+				if(parmor >= 100.0) {
+					return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban da day giap nen khong the nap them.");
+				}
+				if(arrGroupData[iGroupID][g_iLockerStock] < 200) {
+					return SendClientMessageEx(playerid, COLOR_RED, "To chuc khong du vat lieu de cung cap giap (Yeu cau 200 vat lieu).");
+				}
+				SetArmour(playerid, 100);
+				arrGroupData[iGroupID][g_iLockerStock] -= 200;
+				format(string, sizeof(string), "* %s da lay giap tu trong tu do.", GetPlayerNameEx(playerid));
+				ProxChatBubble(playerid, string);
+				SendClientMessageEx(playerid, COLOR_LIGHTBLUE, "Ban da lay giap ra khoi tu do (Tieu ton 200 vat lieu).");
+				new str[128];
+				format(str, sizeof(str), "%s took Kevlar Armor out of the %s locker at a cost of 200 Materials.", GetPlayerNameEx(playerid), arrGroupData[iGroupID][g_szGroupName]);
+				GroupPayLog(iGroupID, str);
+				return 1;
+			}
+
+			if (strcmp("First Aid (Free)", inputtext) == 0) {
+				new Float:phealth;
+				GetHealth(playerid, phealth);
+				if(phealth >= 100.0) {
+					return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban da day mau nen khong the nap them.");
+				}
+				SetHealth(playerid, 100.0);
+				format(string, sizeof(string), "* %s da lay hop so cuu tu trong tu do de bom mau.", GetPlayerNameEx(playerid));
+				ProxChatBubble(playerid, string);
+				SendClientMessageEx(playerid, COLOR_LIGHTBLUE, "Ban da lay hop so cuu (Mien phi) tu trong tu do.");
+				return 1;
 			}
 			if (strcmp("LAW Weapons", inputtext) == 0) {
 				if(!IsACop(playerid))
@@ -5811,7 +5843,7 @@ CMD:locker(playerid, params[]) {
 					    }
 					    if(arrGroupData[iGroupID][g_iGroupType] == GROUP_TYPE_CRIMINAL /*|| arrGroupData[iGroupID][g_iGroupType] == GROUP_CRIMINAL_TYPE_RACE*/)
 					    {
-					    	format(szDialog, sizeof(szDialog), "Clothes\nWeapons\nCrate Transfer\nDrugs\nMaterials (%i)\nVault ($%s)",
+					    	format(szDialog, sizeof(szDialog), "Clothes\nWeapons & Ammo\nKevlar Armor\nFirst Aid (Free)\nCrate Transfer\nDrugs\nMaterials (%i)\nVault ($%s)",
 					    		arrGroupData[iGroupID][g_iMaterials],
 					    		number_format(arrGroupData[iGroupID][g_iBudget])
 					    	);

@@ -6,7 +6,7 @@ new LockPickTargetSlot[MAX_PLAYERS] = {-1, ...};
 new LockPickVehicle[MAX_PLAYERS] = {INVALID_VEHICLE_ID, ...};
 new LockPickPinCode[MAX_PLAYERS];
 new LockPickAttempts[MAX_PLAYERS];
-new LockPickPrevGuesses[MAX_PLAYERS][6];
+new LockPickPrevGuesses[MAX_PLAYERS][8];
 new LockPickGuessCount[MAX_PLAYERS];
 
 // Thief current session stolen vehicle tracking
