@@ -194,8 +194,8 @@ CMD:tromxe(playerid, params[])
     LockPickTargetOwner[playerid] = target_owner;
     LockPickTargetSlot[playerid] = target_slot;
     LockPickVehicle[playerid] = closestveh;
-    LockPickAttempts[playerid] = 6;
-    LockPickPinCode[playerid] = 100 + random(900); // Random 100 to 999
+    LockPickAttempts[playerid] = 7;
+    LockPickPinCode[playerid] = 100 + random(251); // Random 100 to 350
     LockPickGuessCount[playerid] = 0;
 
     // Send law alert
@@ -211,7 +211,7 @@ CMD:tromxe(playerid, params[])
     new dialog_msg[512];
     format(dialog_msg, sizeof(dialog_msg),
         "{FFFFFF}[KHOA XE] Ma PIN bao mat cua phuong tien dang duoc ma hoa.\n\
-        Hay do mat ma co gia tri trong khoang {FFFF00}100 den 999{FFFFFF}.\n\n\
+        Hay do mat ma co gia tri trong khoang {FFFF00}100 den 350{FFFFFF}.\n\n\
         So luot do con lai: {FF0000}%d{FFFFFF}\n\n\
         Nhap mat ma du doan:",
         LockPickAttempts[playerid]);
@@ -249,11 +249,11 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             return 1;
         }
 
-        if(!IsNumeric(inputtext) || strval(inputtext) < 100 || strval(inputtext) > 999)
+        if(!IsNumeric(inputtext) || strval(inputtext) < 100 || strval(inputtext) > 350)
         {
             new dialog_msg[512];
             format(dialog_msg, sizeof(dialog_msg),
-                "{FF0000}LOI: Ma PIN phai la so nguyen tu 100 den 999!{FFFFFF}\n\n\
+                "{FF0000}LOI: Ma PIN phai la so nguyen tu 100 den 350!{FFFFFF}\n\n\
                 So luot do con lai: {FF0000}%d{FFFFFF}\n\n\
                 Nhap lai mat ma du doan:",
                 LockPickAttempts[playerid]);

@@ -143,7 +143,8 @@ new Float:gpsMerchantZones[][3] = {
 	{1481.6110,-1737.8517,13.5469}, // City Hall (LS)
 	{2022.5978,-1266.4010,23.9779}, // Chung cu Glen Park
 	{1128.9141,-1411.1869,13.6130}, // Market
-	{-1636.6312,1201.3365,7.2021} // Shop xe Downtown (SF)
+	{-1636.6312,1201.3365,7.2021}, // Shop xe Downtown (SF)
+	{-2211.9250,611.0851,35.1641} // NPC Six Que (Chuoc xe)
 };
 new gpsMerchantNames[][32] = {
 	"Khu cau ca 1 (LS)",
@@ -161,7 +162,8 @@ new gpsMerchantNames[][32] = {
 	"City Hall (LS)",
 	"Chung cu Glen Park (LS)",
 	"Market (LS)",
-	"Shop xe Downtown (SF)"
+	"Shop xe Downtown (SF)",
+	"NPC Six Que (Chuoc xe)"
 };
 
 new Float:gpsIllegalZones[][3] = {
