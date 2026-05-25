@@ -27,6 +27,7 @@
 #define FISH_BIG_NOC            3       // kg
 
 #define DIALOG_NGUDAN_SELL      8038
+#define DIALOG_NGUDAN_SELL_AMOUNT 8039
 
 // =============================================================================
 // VÙNG ĐÁNH CÁ (4 bãi cá trên biển SF)
@@ -111,6 +112,7 @@ stock NguDan_ResetState(playerid)
     DeletePVar(playerid, "NguDan_AtZone");
     DeletePVar(playerid, "NguDan_Caught");
     DeletePVar(playerid, "NguDan_Countdown");
+    DeletePVar(playerid, "NguDan_SellItem");
     DisablePlayerCheckpoint(playerid);
 }
 
@@ -135,6 +137,17 @@ stock NguDan_GetFishPrice(itemid)
         case FISH_ITEM_NOC: return FISH_PRICE_NOC;
     }
     return 0;
+}
+
+stock NguDan_GetPlayerFishAmount(playerid, itemid)
+{
+    new amount = 0;
+    for(new slot = 0; slot < MAX_PLAYER_CB_ITEM; slot++)
+    {
+        if(CharacterInfo[playerid][0][cb_ItemID][slot] == itemid)
+            amount += CharacterInfo[playerid][0][cb_ItemAmount][slot];
+    }
+    return amount;
 }
 
 // =============================================================================
@@ -204,10 +217,54 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
     if(dialogid == DIALOG_NGUDAN_SELL)
     {
-        if(!response) return 1;
+        if(!response)
+        {
+            DeletePVar(playerid, "NguDan_SellItem");
+            return 1;
+        }
+
+        new fishItem = 0;
+        new row = 0;
+
+        if(NguDan_GetPlayerFishAmount(playerid, FISH_ITEM_THU) > 0)
+        {
+            if(listitem == row) fishItem = FISH_ITEM_THU;
+            row++;
+        }
+        if(NguDan_GetPlayerFishAmount(playerid, FISH_ITEM_NGU) > 0)
+        {
+            if(listitem == row) fishItem = FISH_ITEM_NGU;
+            row++;
+        }
+        if(NguDan_GetPlayerFishAmount(playerid, FISH_ITEM_NOC) > 0)
+        {
+            if(listitem == row) fishItem = FISH_ITEM_NOC;
+            row++;
+        }
+
+        if(fishItem == 0) return SendClientMessageEx(playerid, COLOR_GREY, "Lua chon khong hop le!");
+        if(!IsPlayerInRangeOfPoint(playerid, 8.0, FISH_NPC_X, FISH_NPC_Y, FISH_NPC_Z))
+            return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong o gan NPC thu mua ca!");
+
+        SetPVarInt(playerid, "NguDan_SellItem", fishItem);
+
+        new amountMsg[144];
+        format(amountMsg, sizeof(amountMsg), "{FFFFFF}Ban dang co %d kg %s.\nNhap so kg muon ban:",
+            NguDan_GetPlayerFishAmount(playerid, fishItem), NguDan_GetFishName(fishItem));
+        ShowPlayerDialog(playerid, DIALOG_NGUDAN_SELL_AMOUNT, DIALOG_STYLE_INPUT, "Shark Hung - So kg can ban", amountMsg, "Ban", "Huy");
+        return 1;
+    }
+
+    if(dialogid == DIALOG_NGUDAN_SELL_AMOUNT)
+    {
+        if(!response)
+        {
+            DeletePVar(playerid, "NguDan_SellItem");
+            return 1;
+        }
 
         new fishItem = GetPVarInt(playerid, "NguDan_SellItem");
-        if(fishItem == 0) return 1;
+        if(fishItem == 0) return SendClientMessageEx(playerid, COLOR_GREY, "Ban chua chon loai ca can ban!");
 
         new amount = strval(inputtext);
         if(amount < 1)
@@ -216,12 +273,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             return 1;
         }
 
-        new itemCount = 0;
-        for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
-        {
-            if(CharacterInfo[playerid][0][cb_ItemID][i] == fishItem)
-                itemCount += CharacterInfo[playerid][0][cb_ItemAmount][i];
-        }
+        new itemCount = NguDan_GetPlayerFishAmount(playerid, fishItem);
 
         if(amount > itemCount)
         {
@@ -229,39 +281,41 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             return 1;
         }
 
+        new pricePerKg = NguDan_GetFishPrice(fishItem);
+        if(pricePerKg <= 0) return SendClientMessageEx(playerid, COLOR_GREY, "Loai ca khong hop le!");
+
         if(!IsPlayerInRangeOfPoint(playerid, 8.0, FISH_NPC_X, FISH_NPC_Y, FISH_NPC_Z))
             return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong o gan NPC thu mua ca!");
 
         // Xóa cá khỏi balo
         new remaining = amount;
-        for(new i = 0; i < MAX_PLAYER_CB_ITEM && remaining > 0; i++)
+        for(new slot = 0; slot < MAX_PLAYER_CB_ITEM && remaining > 0; slot++)
         {
-            if(CharacterInfo[playerid][0][cb_ItemID][i] == fishItem)
+            if(CharacterInfo[playerid][0][cb_ItemID][slot] == fishItem)
             {
-                if(CharacterInfo[playerid][0][cb_ItemAmount][i] >= remaining)
+                if(CharacterInfo[playerid][0][cb_ItemAmount][slot] >= remaining)
                 {
-                    CharacterInfo[playerid][0][cb_ItemAmount][i] -= remaining;
-                    if(CharacterInfo[playerid][0][cb_ItemAmount][i] == 0)
+                    CharacterInfo[playerid][0][cb_ItemAmount][slot] -= remaining;
+                    if(CharacterInfo[playerid][0][cb_ItemAmount][slot] == 0)
                     {
-                        CharacterInfo[playerid][0][cb_ItemID][i] = INVALID_OBJECT_ID;
-                        CharacterInfo[playerid][0][cb_ItemWeight][i] = 0.0;
-                        CharacterInfo[playerid][0][cb_ItemDurability][i] = 0;
+                        CharacterInfo[playerid][0][cb_ItemID][slot] = INVALID_OBJECT_ID;
+                        CharacterInfo[playerid][0][cb_ItemWeight][slot] = 0.0;
+                        CharacterInfo[playerid][0][cb_ItemDurability][slot] = 0;
                     }
                     remaining = 0;
                 }
                 else
                 {
-                    remaining -= CharacterInfo[playerid][0][cb_ItemAmount][i];
-                    CharacterInfo[playerid][0][cb_ItemID][i] = INVALID_OBJECT_ID;
-                    CharacterInfo[playerid][0][cb_ItemAmount][i] = 0;
-                    CharacterInfo[playerid][0][cb_ItemWeight][i] = 0.0;
-                    CharacterInfo[playerid][0][cb_ItemDurability][i] = 0;
+                    remaining -= CharacterInfo[playerid][0][cb_ItemAmount][slot];
+                    CharacterInfo[playerid][0][cb_ItemID][slot] = INVALID_OBJECT_ID;
+                    CharacterInfo[playerid][0][cb_ItemAmount][slot] = 0;
+                    CharacterInfo[playerid][0][cb_ItemWeight][slot] = 0.0;
+                    CharacterInfo[playerid][0][cb_ItemDurability][slot] = 0;
                 }
             }
         }
 
         // Tính tiền
-        new pricePerKg = NguDan_GetFishPrice(fishItem);
         new totalMoney = amount * pricePerKg;
         GivePlayerCash(playerid, totalMoney);
 
@@ -270,11 +324,11 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
         SendClientMessageEx(playerid, COLOR_WHITE, szMsg);
 
         // Log
-        new logStr[256], year, month, day, hour, minute, second;
+        new logStr[256], year, month, day, logHour, minute, logSecond;
         getdate(year, month, day);
-        gettime(hour, minute, second);
+        gettime(logHour, minute, logSecond);
         format(logStr, sizeof(logStr), "[%04d-%02d-%02d %02d:%02d:%02d] %s da ban %d kg %s, nhan $%s",
-            year, month, day, hour, minute, second, GetPlayerNameEx(playerid), amount, NguDan_GetFishName(fishItem), number_format(totalMoney));
+            year, month, day, logHour, minute, logSecond, GetPlayerNameEx(playerid), amount, NguDan_GetFishName(fishItem), number_format(totalMoney));
         Log("logs/Fishing.log", logStr);
 
         DeletePVar(playerid, "NguDan_SellItem");
@@ -411,12 +465,12 @@ CMD:banca_ngudan(playerid, params[])
 
     // Kiểm tra có cá trong balo không
     new hasThu, hasNgu, hasNoc;
-    for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+    for(new slot = 0; slot < MAX_PLAYER_CB_ITEM; slot++)
     {
-        new itemid = CharacterInfo[playerid][0][cb_ItemID][i];
-        if(itemid == FISH_ITEM_THU) hasThu += CharacterInfo[playerid][0][cb_ItemAmount][i];
-        if(itemid == FISH_ITEM_NGU) hasNgu += CharacterInfo[playerid][0][cb_ItemAmount][i];
-        if(itemid == FISH_ITEM_NOC) hasNoc += CharacterInfo[playerid][0][cb_ItemAmount][i];
+        new itemid = CharacterInfo[playerid][0][cb_ItemID][slot];
+        if(itemid == FISH_ITEM_THU) hasThu += CharacterInfo[playerid][0][cb_ItemAmount][slot];
+        if(itemid == FISH_ITEM_NGU) hasNgu += CharacterInfo[playerid][0][cb_ItemAmount][slot];
+        if(itemid == FISH_ITEM_NOC) hasNoc += CharacterInfo[playerid][0][cb_ItemAmount][slot];
     }
 
     if(hasThu == 0 && hasNgu == 0 && hasNoc == 0)
