@@ -1556,6 +1556,7 @@ public OnPlayerConnect(playerid)
 	PlayerTied[playerid]=0;
 	MedicsCallTime[playerid]=0;
 	BusCallTime[playerid]=0;
+	Bus_ResetJob(playerid);
 	TaxiCallTime[playerid]=0;
 	EMSCallTime[playerid]=0;
 	MedicCallTime[playerid]=0;
@@ -4895,7 +4896,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 		}
 		else if(IsAnTaxi(vehicleid) || IsAnBus(vehicleid))
 		{
-		    if(PlayerInfo[playerid][pJob] == 17 || PlayerInfo[playerid][pJob2] == 17 || PlayerInfo[playerid][pJob3] == 17 || IsATaxiDriver(playerid) || PlayerInfo[playerid][pTaxiLicense] == 1)
+		    if(PlayerInfo[playerid][pJob] == 17 || PlayerInfo[playerid][pJob2] == 17 || PlayerInfo[playerid][pJob3] == 17 || IsATaxiDriver(playerid) || PlayerInfo[playerid][pTaxiLicense] == 1 || PlayerInfo[playerid][pJob] == 26 || PlayerInfo[playerid][pJob2] == 26 || PlayerInfo[playerid][pJob3] == 26)
 			{
 			}
 			else

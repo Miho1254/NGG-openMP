@@ -172,6 +172,15 @@ stock GetJobLevel(playerid, job)
 			else if(skilllevel >= 300 && skilllevel < 500) jlevel = 4;
 			else if(skilllevel >= 500) jlevel = 5;
 		}
+		case 26:
+		{
+			new skilllevel = PlayerInfo[playerid][pBusSkill];
+			if(skilllevel >= 0 && skilllevel < 50) jlevel = 1;
+			else if(skilllevel >= 50 && skilllevel < 150) jlevel = 2;
+			else if(skilllevel >= 150 && skilllevel < 300) jlevel = 3;
+			else if(skilllevel >= 300 && skilllevel < 500) jlevel = 4;
+			else if(skilllevel >= 500) jlevel = 5;
+		}
 	}
 	return jlevel;
 }
@@ -242,6 +251,10 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					case 13: //Garbage Man
 					{
 						ShowPlayerDialogEx(playerid, JOBHELPMENU+1, DIALOG_STYLE_MSGBOX, "Nhan vien don rac","Thong tin:\nCong viec nay ban se tai xe don rac di thu thap rac quanh thanh pho.\nBan se duoc tra tien sau moi chuyen di hoan thanh.\n\nLenh:\n/garbagerun\n\nLuu y: Ngoi tren xe don rac va su dung lenh.", "Ok", "Huy");
+					}
+					case 14: //Bus Driver
+					{
+						ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "Tai Xe Bus","Thong tin:\nCong viec nay ban se lai xe bus cho khach quanh thanh pho San Fierro.\nBan se duoc tra tien sau moi vong tuyen duong.\n\nLenh:\n/busrun - Bat dau chuyen\n/huybus - Huy chuyen\n\nLuu y: Ngoi tren xe bus va su dung lenh.", "Ok", "");
 					}
 				}
 			}
@@ -792,8 +805,19 @@ CMD:skill(playerid, params[])
 	return 1;
 }
 
+stock Bus_ShowSkill(playerid)
+{
+	new level = PlayerInfo[playerid][pBusSkill], string[64];
+	if(level >= 0 && level < 50) { SendClientMessageEx(playerid, COLOR_YELLOW, "Tai xe bus cap do: 1."); format(string, sizeof(string), "Ban can phai hoan thanh %d chuyen nua de len cap.", 50 - level); SendClientMessageEx(playerid, COLOR_YELLOW, string); }
+	else if(level >= 50 && level < 150) { SendClientMessageEx(playerid, COLOR_YELLOW, "Tai xe bus cap do: 2."); format(string, sizeof(string), "Ban can phai hoan thanh %d chuyen nua de len cap.", 150 - level); SendClientMessageEx(playerid, COLOR_YELLOW, string); }
+	else if(level >= 150 && level < 300) { SendClientMessageEx(playerid, COLOR_YELLOW, "Tai xe bus cap do: 3."); format(string, sizeof(string), "Ban can phai hoan thanh %d chuyen nua de len cap.", 300 - level); SendClientMessageEx(playerid, COLOR_YELLOW, string); }
+	else if(level >= 300 && level < 500) { SendClientMessageEx(playerid, COLOR_YELLOW, "Tai xe bus cap do: 4."); format(string, sizeof(string), "Ban can phai hoan thanh %d chuyen nua de len cap.", 500 - level); SendClientMessageEx(playerid, COLOR_YELLOW, string); }
+	else if(level >= 500) { SendClientMessageEx(playerid, COLOR_YELLOW, "Tai xe bus cap do: 5."); }
+	return 1;
+}
+
 CMD:jobhelp(playerid, params[]) {
-    return ShowPlayerDialogEx(playerid, JOBHELPMENU, DIALOG_STYLE_LIST, "Ban giup do cong viec nao?","Tham tu\nLuat su\nGai diem\nBan thuoc phien\nTho sua xe\nVe si\nBan vu khi\nTaxi Driver\nVan chuyen thuoc phien\nTho thu cong\nBartender\nTrucker\nPizza Boy\nNhan vien don rac", "Chon", "Huy");
+    return ShowPlayerDialogEx(playerid, JOBHELPMENU, DIALOG_STYLE_LIST, "Ban giup do cong viec nao?","Tham tu\nLuat su\nGai diem\nBan thuoc phien\nTho sua xe\nVe si\nBan vu khi\nTaxi Driver\nVan chuyen thuoc phien\nTho thu cong\nBartender\nTrucker\nPizza Boy\nNhan vien don rac\nTai Xe Bus", "Chon", "Huy");
 }
 
 CMD:quitjob(playerid, params[])

@@ -1289,6 +1289,7 @@ enum pInfo
 	pFishWeight,
 	pFishingSkill,
 	pGarbageSkill,
+	pBusSkill,
 	pLastPoll,
 	pSmugSkill,
 	pProAimFlags,

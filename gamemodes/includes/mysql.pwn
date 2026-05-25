@@ -631,6 +631,7 @@ public OnQueryFinish(resultid, extraid, handleid)
 					cache_get_value_name_int(row,  "FishingSkill", PlayerInfo[extraid][pFishingSkill]);
 					cache_get_value_name_int(row,  "FishWeight", PlayerInfo[extraid][pFishWeight]);
 					cache_get_value_name_int(row,  "GarbageSkill", PlayerInfo[extraid][pGarbageSkill]);
+					cache_get_value_name_int(row,  "BusSkill", PlayerInfo[extraid][pBusSkill]);
 					for(new i = 0; i < 12; i++)	{
 
 						format(szField, sizeof(szField), "BItem%d", i);
@@ -2479,6 +2480,7 @@ stock g_mysql_SaveAccount(playerid)
 	SavePlayerInteger(query, GetPlayerSQLId(playerid), "FishWeight", PlayerInfo[playerid][pFishWeight]);
 
 	SavePlayerInteger(query, GetPlayerSQLId(playerid), "GarbageSkill", PlayerInfo[playerid][pGarbageSkill]);
+	SavePlayerInteger(query, GetPlayerSQLId(playerid), "BusSkill", PlayerInfo[playerid][pBusSkill]);
 	SavePlayerInteger(query, GetPlayerSQLId(playerid), "Pot", PlayerInfo[playerid][pDrugs][0]);
 	SavePlayerInteger(query, GetPlayerSQLId(playerid), "Crack", PlayerInfo[playerid][pDrugs][1]);
 	SavePlayerInteger(query, GetPlayerSQLId(playerid), "Meth", PlayerInfo[playerid][pDrugs][2]);
