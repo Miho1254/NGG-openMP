@@ -40,64 +40,61 @@ stock UpdateVehicleHUDForPlayer(p, fuel, speed)
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 
-	// Update speed text: speed_TD[p][28]
+	// Update speed text: Speedometr_PTD[p][10]
 	format(str, sizeof(str), "%d", speed);
-	PlayerTextDrawSetString(p, speed_TD[p][28], str);
+	PlayerTextDrawSetString(p, Speedometr_PTD[p][10], str);
+	PlayerTextDrawShow(p, Speedometr_PTD[p][10]);
 
-	// Update fuel bar: speed_TD[p][19] (width goes from 0.0 to 57.0)
-	new Float:width = (float(fuel) / 100.0) * 57.0;
-	PlayerTextDrawTextSize(p, speed_TD[p][19], width, 3.0000);
-	PlayerTextDrawShow(p, speed_TD[p][19]); // Re-show to update size
+	// Update fuel text: Speedometr_PTD[p][18]
+	format(str, sizeof(str), "FUEL: %d L", fuel);
+	PlayerTextDrawSetString(p, Speedometr_PTD[p][18], str);
+	PlayerTextDrawShow(p, Speedometr_PTD[p][18]);
 
-	// Update fuel text: speed_TD[p][20]
-	format(str, sizeof(str), "FILL_%d", fuel);
-	PlayerTextDrawSetString(p, speed_TD[p][20], str);
+	// Update vehicle name: Speedometr_PTD[p][1]
+	PlayerTextDrawSetString(p, Speedometr_PTD[p][1], GetVehicleName(vehicleid));
+	PlayerTextDrawShow(p, Speedometr_PTD[p][1]);
 
-	// Update engine status: speed_TD[p][22]
+	// Update engine status: Speedometr_PTD[p][13] (default color: 0x949498FF)
 	if (engine == VEHICLE_PARAMS_ON) {
-		PlayerTextDrawColor(p, speed_TD[p][22], 0x42f56bFF); // Green
+		PlayerTextDrawColor(p, Speedometr_PTD[p][13], 0x42f56bFF); // Green
 	} else {
-		PlayerTextDrawColor(p, speed_TD[p][22], 0x888888FF); // Gray
+		PlayerTextDrawColor(p, Speedometr_PTD[p][13], 0x949498FF); // Gray
 	}
-	PlayerTextDrawShow(p, speed_TD[p][22]);
+	PlayerTextDrawShow(p, Speedometr_PTD[p][13]);
 
-	// Update lock status: speed_TD[p][21]
+	// Update lock status: Speedometr_PTD[p][14] (default color: 0xFF4228FF)
 	if (doors == VEHICLE_PARAMS_ON) {
-		PlayerTextDrawColor(p, speed_TD[p][21], 0xf54242FF); // Red (Locked)
+		PlayerTextDrawColor(p, Speedometr_PTD[p][14], 0xFF4228FF); // Red (Locked)
 	} else {
-		PlayerTextDrawColor(p, speed_TD[p][21], 0x42f56bFF); // Green (Unlocked)
+		PlayerTextDrawColor(p, Speedometr_PTD[p][14], 0x42f56bFF); // Green (Unlocked)
 	}
-	PlayerTextDrawShow(p, speed_TD[p][21]);
+	PlayerTextDrawShow(p, Speedometr_PTD[p][14]);
 
-	// Update light status: speed_TD[p][23]
+	// Update light status: Speedometr_PTD[p][12] (default color: 0x949498FF)
 	if (lights == VEHICLE_PARAMS_ON) {
-		PlayerTextDrawColor(p, speed_TD[p][23], 0xf5ee42FF); // Yellow
+		PlayerTextDrawColor(p, Speedometr_PTD[p][12], 0xf5ee42FF); // Yellow
 	} else {
-		PlayerTextDrawColor(p, speed_TD[p][23], 0x888888FF); // Gray
+		PlayerTextDrawColor(p, Speedometr_PTD[p][12], 0x949498FF); // Gray
 	}
-	PlayerTextDrawShow(p, speed_TD[p][23]);
+	PlayerTextDrawShow(p, Speedometr_PTD[p][12]);
 }
 
 stock ShowVehicleHUDForPlayer(playerid)
 {
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid != INVALID_VEHICLE_ID) {
-		new model = GetVehicleModel(vehicleid);
-		PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][1], model);
-		PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][3], model);
-		PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][12], model);
-		PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][16], model);
+		PlayerTextDrawSetString(playerid, Speedometr_PTD[playerid][1], GetVehicleName(vehicleid));
 	}
-	for(new i = 0; i < 29; i++) {
-		PlayerTextDrawShow(playerid, speed_TD[playerid][i]);
+	for(new i = 0; i < 24; i++) {
+		PlayerTextDrawShow(playerid, Speedometr_PTD[playerid][i]);
 	}
 	_vhudVisible[playerid] = 1;
 }
 
 stock HideVehicleHUDForPlayer(playerid)
 {
-	for(new i = 0; i < 29; i++) {
-		PlayerTextDrawHide(playerid, speed_TD[playerid][i]);
+	for(new i = 0; i < 24; i++) {
+		PlayerTextDrawHide(playerid, Speedometr_PTD[playerid][i]);
 	}
 	_vhudVisible[playerid] = 0;
 }
@@ -123,104 +120,7 @@ stock HideVehicleHUDForPlayer(playerid)
 	}
 	return 1;
 } // old speedometer */
-
-CMD:speedopos(playerid, params[])
-{
-	if (GetPlayerState(playerid) != PLAYER_STATE_DRIVER && GetPlayerState(playerid) != PLAYER_STATE_PASSENGER )
-	{
-		return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong dieu khien chiec xe nao ca.");
-	}
-	if (PlayerInfo[playerid][pSpeedo])
-	{
-		new Float: TPosX[2], Float:TPosY[2];
-		if(!sscanf(params, "ff", TPosX[0], TPosY[0]))
-		{
-			if(TPosX[0] < 0 || TPosX[0] > 640)
-			{
-				SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /speedopos (optional) [X] [Y]");
-				return SendClientMessageEx(playerid, COLOR_GREY, "X must be above 0 and below 640");
-			}
-			if(TPosY[0] < 0 || TPosY[0] > 640)
-			{
-				SendClientMessageEx(playerid, COLOR_GREY, "SU DUNG: /speedopos (optional) [X] [Y]");
-				return SendClientMessageEx(playerid, COLOR_GREY, "Y must be above 0 and below 480");
-			}
-			TPosX[1] = TPosX[0] + 60.0;
-			TPosY[1] = TPosY[0] + 17.0;
-		}
-		else
-		{
-			switch(GetPVarInt(playerid, "SpeedoPos"))
-			{
-				case 0:
-				{
-					TPosX[0] = 495.0;
-					TPosY[0] = 20.0;
-					TPosX[1] = 555.0;
-					TPosY[1] = 37.0;
-					SetPVarInt(playerid, "SpeedoPos", 1);
-				}
-				case 1:
-				{
-					TPosX[0] = 495.0;
-					TPosY[0] = 367.0;
-					TPosX[1] = 555.0;
-					TPosY[1] = 384.0;
-					SetPVarInt(playerid, "SpeedoPos", 2);
-				}
-				case 2:
-				{
-					TPosX[0] = 495.0;
-					TPosY[0] = 133.0;
-					TPosX[1] = 555.0;
-					TPosY[1] = 150.0;
-					SetPVarInt(playerid, "SpeedoPos", 0);
-				}
-			}
-		}
-
-		PlayerTextDrawDestroy(playerid, _vhudTextFuel[playerid]);
-		_vhudTextFuel[playerid] = CreatePlayerTextDraw(playerid, TPosX[0], TPosY[0], "~b~Xang: N/A");
-		PlayerTextDrawBackgroundColor(playerid, _vhudTextFuel[playerid], 255);
-		PlayerTextDrawFont(playerid, _vhudTextFuel[playerid], 1);
-		PlayerTextDrawLetterSize(playerid, _vhudTextFuel[playerid], 0.270000, 2.000000);
-		PlayerTextDrawColor(playerid, _vhudTextFuel[playerid], -1);
-		PlayerTextDrawSetOutline(playerid, _vhudTextFuel[playerid], 1);
-		PlayerTextDrawSetProportional(playerid, _vhudTextFuel[playerid], 1);
-
-		PlayerTextDrawDestroy(playerid, _vhudTextSpeed[playerid]);
-		_vhudTextSpeed[playerid] = CreatePlayerTextDraw(playerid, TPosX[1], TPosY[0], "~b~Toc do: N/A");
-		PlayerTextDrawBackgroundColor(playerid, _vhudTextSpeed[playerid], 255);
-		PlayerTextDrawFont(playerid, _vhudTextSpeed[playerid], 1);
-		PlayerTextDrawLetterSize(playerid, _vhudTextSpeed[playerid], 0.270000, 2.000000);
-		PlayerTextDrawColor(playerid, _vhudTextSpeed[playerid], -1);
-		PlayerTextDrawSetOutline(playerid, _vhudTextSpeed[playerid], 1);
-		PlayerTextDrawSetProportional(playerid, _vhudTextSpeed[playerid], 1);
-
-		PlayerTextDrawDestroy(playerid, _vhudSeatBelt[playerid]);
-		_vhudSeatBelt[playerid] = CreatePlayerTextDraw(playerid, TPosX[1], TPosY[1], "~b~SB: ~r~OFF");
-		PlayerTextDrawBackgroundColor(playerid, _vhudSeatBelt[playerid], 255);
-		PlayerTextDrawFont(playerid, _vhudSeatBelt[playerid], 1);
-		PlayerTextDrawLetterSize(playerid, _vhudSeatBelt[playerid], 0.270000, 2.000000);
-		PlayerTextDrawColor(playerid, _vhudSeatBelt[playerid], -1);
-		PlayerTextDrawSetOutline(playerid, _vhudSeatBelt[playerid], 1);
-		PlayerTextDrawSetProportional(playerid, _vhudSeatBelt[playerid], 1);
-
-		PlayerTextDrawDestroy(playerid, _vhudLights[playerid]);
-		_vhudLights[playerid] = CreatePlayerTextDraw(playerid, TPosX[0], TPosY[1], "~b~Den xe: ~r~OFF");
-		PlayerTextDrawBackgroundColor(playerid, _vhudLights[playerid], 255);
-		PlayerTextDrawFont(playerid, _vhudLights[playerid], 1);
-		PlayerTextDrawLetterSize(playerid, _vhudLights[playerid], 0.270000, 2.000000);
-		PlayerTextDrawColor(playerid, _vhudLights[playerid], -1);
-		PlayerTextDrawSetOutline(playerid, _vhudLights[playerid], 1);
-		PlayerTextDrawSetProportional(playerid, _vhudLights[playerid], 1);
-
-		ShowVehicleHUDForPlayer(playerid);
-		SendClientMessageEx(playerid, COLOR_WHITE, "Ban da dieu chinh vi tri hien thi cua speedo.");
-
-	}
-	return 1;
-}
+// CMD:speedopos removed since custom PTD layout is static.
 
 CMD:speedo(playerid, params[])
 {

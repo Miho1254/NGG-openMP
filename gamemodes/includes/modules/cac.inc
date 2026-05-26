@@ -141,32 +141,35 @@ Function: CheckPlayerConfigAccount(playerid)
 
 Function: SavePlayerAccountic(playerid)
 {
-    SAC_Integer(GetPlayerSQLId(playerid), "GP", PlayerData[playerid][pc_GP]);
-    SAC_Integer(GetPlayerSQLId(playerid), "Coin", PlayerData[playerid][pc_Coin]);
-    SAC_Integer(GetPlayerSQLId(playerid), "EA", PlayerData[playerid][pc_EA]);
-    SAC_Integer(GetPlayerSQLId(playerid), "FoodBar", PlayerData[playerid][pc_FoodBar]);
-    SAC_Integer(GetPlayerSQLId(playerid), "WaterBar", PlayerData[playerid][pc_WaterBar]);
-    SAC_Integer(GetPlayerSQLId(playerid), "Job", PlayerData[playerid][pc_Job]);
-    SAC_Integer(GetPlayerSQLId(playerid), "Job2", PlayerData[playerid][pc_Job2]);
-    SAC_Integer(GetPlayerSQLId(playerid), "Job3", PlayerData[playerid][pc_Job3]);
-    SAC_Integer(GetPlayerSQLId(playerid), "FishmanSkill", PlayerData[playerid][pc_FishmanSkill]);
-    SAC_Integer(GetPlayerSQLId(playerid), "AlcoholSkill", PlayerData[playerid][pc_AlcoholSkill]);
-    SAC_Integer(GetPlayerSQLId(playerid), "PizzaBoySkill", PlayerData[playerid][pc_PizzaBoySkill]);
-    SAC_Integer(GetPlayerSQLId(playerid), "SweeperSkill", PlayerData[playerid][pc_SweeperSkill]);
-    SAC_Integer(GetPlayerSQLId(playerid), "TruckerSkill", PlayerData[playerid][pc_TruckerSkill]);
-    SAC_Integer(GetPlayerSQLId(playerid), "AlcoholLimit", PlayerData[playerid][pc_AlcoholLimit]);
-    SAC_Integer(GetPlayerSQLId(playerid), "SweeperLimit", PlayerData[playerid][pc_SweeperLimit]);
-    SAC_Integer(GetPlayerSQLId(playerid), "AlcoholTimer", PlayerData[playerid][pc_AlcoholTimer]);
-    SAC_Integer(GetPlayerSQLId(playerid), "SweeperTimer", PlayerData[playerid][pc_SweeperTimer]);
-    SAC_Integer(GetPlayerSQLId(playerid), "CaribbeanTeam", PlayerData[playerid][pc_CaribbeanTeam]);
-    SAC_Integer(GetPlayerSQLId(playerid), "CaribbeanEvent", PlayerData[playerid][pc_CaribbeanEvent]);
-    SAC_Integer(GetPlayerSQLId(playerid), "FamedPoint", PlayerData[playerid][pc_FamedPoint]);
-    SAC_Integer(GetPlayerSQLId(playerid), "LimitEventReward", PlayerData[playerid][pc_LimitEventReward]);
-    SAC_Integer(GetPlayerSQLId(playerid), "ClaimRoseWinter", PlayerData[playerid][pc_ClaimRoseWinter]);
-    SAC_Integer(GetPlayerSQLId(playerid), "CargoTimeOnline", PlayerData[playerid][pc_CargoTimeOnline]);
-    SAC_Integer(GetPlayerSQLId(playerid), "CargoTimeSeconds", PlayerData[playerid][pc_CargoTimeSeconds]);
-    SAC_Integer(GetPlayerSQLId(playerid), "ItemTradeNeftMiner", PlayerData[playerid][pc_ItemTradeNeft_Miner]);
-    SAC_Integer(GetPlayerSQLId(playerid), "ItemTradeNeftExpireMiner", PlayerData[playerid][pc_ItemTradeNeftExpire_Miner]);
+    new sqlid = PlayerInfo[playerid][pId];
+    if(sqlid <= 0) return 0;
+
+    SAC_Integer(sqlid, "GP", PlayerData[playerid][pc_GP]);
+    SAC_Integer(sqlid, "Coin", PlayerData[playerid][pc_Coin]);
+    SAC_Integer(sqlid, "EA", PlayerData[playerid][pc_EA]);
+    SAC_Integer(sqlid, "FoodBar", PlayerData[playerid][pc_FoodBar]);
+    SAC_Integer(sqlid, "WaterBar", PlayerData[playerid][pc_WaterBar]);
+    SAC_Integer(sqlid, "Job", PlayerData[playerid][pc_Job]);
+    SAC_Integer(sqlid, "Job2", PlayerData[playerid][pc_Job2]);
+    SAC_Integer(sqlid, "Job3", PlayerData[playerid][pc_Job3]);
+    SAC_Integer(sqlid, "FishmanSkill", PlayerData[playerid][pc_FishmanSkill]);
+    SAC_Integer(sqlid, "AlcoholSkill", PlayerData[playerid][pc_AlcoholSkill]);
+    SAC_Integer(sqlid, "PizzaBoySkill", PlayerData[playerid][pc_PizzaBoySkill]);
+    SAC_Integer(sqlid, "SweeperSkill", PlayerData[playerid][pc_SweeperSkill]);
+    SAC_Integer(sqlid, "TruckerSkill", PlayerData[playerid][pc_TruckerSkill]);
+    SAC_Integer(sqlid, "AlcoholLimit", PlayerData[playerid][pc_AlcoholLimit]);
+    SAC_Integer(sqlid, "SweeperLimit", PlayerData[playerid][pc_SweeperLimit]);
+    SAC_Integer(sqlid, "AlcoholTimer", PlayerData[playerid][pc_AlcoholTimer]);
+    SAC_Integer(sqlid, "SweeperTimer", PlayerData[playerid][pc_SweeperTimer]);
+    SAC_Integer(sqlid, "CaribbeanTeam", PlayerData[playerid][pc_CaribbeanTeam]);
+    SAC_Integer(sqlid, "CaribbeanEvent", PlayerData[playerid][pc_CaribbeanEvent]);
+    SAC_Integer(sqlid, "FamedPoint", PlayerData[playerid][pc_FamedPoint]);
+    SAC_Integer(sqlid, "LimitEventReward", PlayerData[playerid][pc_LimitEventReward]);
+    SAC_Integer(sqlid, "ClaimRoseWinter", PlayerData[playerid][pc_ClaimRoseWinter]);
+    SAC_Integer(sqlid, "CargoTimeOnline", PlayerData[playerid][pc_CargoTimeOnline]);
+    SAC_Integer(sqlid, "CargoTimeSeconds", PlayerData[playerid][pc_CargoTimeSeconds]);
+    SAC_Integer(sqlid, "ItemTradeNeftMiner", PlayerData[playerid][pc_ItemTradeNeft_Miner]);
+    SAC_Integer(sqlid, "ItemTradeNeftExpireMiner", PlayerData[playerid][pc_ItemTradeNeftExpire_Miner]);
     return 1;
 }
 
@@ -395,7 +398,7 @@ hook OnPlayerConnect(playerid)
 
 hook OnPlayerDisconnect(playerid, reason)
 {
-    if(gPlayerLogged{playerid})
+    if(gPlayerLogged{playerid} || PlayerInfo[playerid][pId] > 0)
     {
         SavePlayerAccountic(playerid);
     }

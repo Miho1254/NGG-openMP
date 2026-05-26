@@ -2428,38 +2428,6 @@ stock CreatePlayerTextDraws(playerid)
     PlayerTextDrawSetProportional(playerid, _vhudFlash[playerid], 1);
     PlayerTextDrawSetShadow(playerid, _vhudFlash[playerid], 1);
 
-    _vhudTextFuel[playerid] = CreatePlayerTextDraw(playerid, 495.000000, 133.000000, "~b~Fuel: N/A");
-    PlayerTextDrawBackgroundColor(playerid, _vhudTextFuel[playerid], 255);
-    PlayerTextDrawFont(playerid, _vhudTextFuel[playerid], 1);
-    PlayerTextDrawLetterSize(playerid, _vhudTextFuel[playerid], 0.270000, 2.000000);
-    PlayerTextDrawColor(playerid, _vhudTextFuel[playerid], -1);
-    PlayerTextDrawSetOutline(playerid, _vhudTextFuel[playerid], 1);
-    PlayerTextDrawSetProportional(playerid, _vhudTextFuel[playerid], 1);
-
-    _vhudTextSpeed[playerid] = CreatePlayerTextDraw(playerid, 555.000000, 133.000000, "~b~MPH: N/A");
-    PlayerTextDrawBackgroundColor(playerid, _vhudTextSpeed[playerid], 255);
-    PlayerTextDrawFont(playerid, _vhudTextSpeed[playerid], 1);
-    PlayerTextDrawLetterSize(playerid, _vhudTextSpeed[playerid], 0.270000, 2.000000);
-    PlayerTextDrawColor(playerid, _vhudTextSpeed[playerid], -1);
-    PlayerTextDrawSetOutline(playerid, _vhudTextSpeed[playerid], 1);
-    PlayerTextDrawSetProportional(playerid, _vhudTextSpeed[playerid], 1);
-
-    _vhudSeatBelt[playerid] = CreatePlayerTextDraw(playerid, 555.000000, 150.000000, "~b~SB: ~r~OFF");
-    PlayerTextDrawBackgroundColor(playerid, _vhudSeatBelt[playerid], 255);
-    PlayerTextDrawFont(playerid, _vhudSeatBelt[playerid], 1);
-    PlayerTextDrawLetterSize(playerid, _vhudSeatBelt[playerid], 0.270000, 2.000000);
-    PlayerTextDrawColor(playerid, _vhudSeatBelt[playerid], -1);
-    PlayerTextDrawSetOutline(playerid, _vhudSeatBelt[playerid], 1);
-    PlayerTextDrawSetProportional(playerid, _vhudSeatBelt[playerid], 1);
-
-    _vhudLights[playerid] = CreatePlayerTextDraw(playerid, 495.000000, 150.000000, "~b~Lights: ~r~OFF");
-    PlayerTextDrawBackgroundColor(playerid, _vhudLights[playerid], 255);
-    PlayerTextDrawFont(playerid, _vhudLights[playerid], 1);
-    PlayerTextDrawLetterSize(playerid, _vhudLights[playerid], 0.270000, 2.000000);
-    PlayerTextDrawColor(playerid, _vhudLights[playerid], -1);
-    PlayerTextDrawSetOutline(playerid, _vhudLights[playerid], 1);
-    PlayerTextDrawSetProportional(playerid, _vhudLights[playerid], 1);
-
     _crTextTarget[playerid] = CreatePlayerTextDraw(playerid, 320.000000, 388.000000, "Target Vehicle: ~r~N/A");
     PlayerTextDrawAlignment(playerid, _crTextTarget[playerid], 2);
     PlayerTextDrawBackgroundColor(playerid, _crTextTarget[playerid], 255);
@@ -2499,274 +2467,341 @@ stock CreatePlayerTextDraws(playerid)
     PlayerTextDrawSetShadow(playerid, HospTime[playerid], 1);
     PlayerTextDrawSetSelectable(playerid, HospTime[playerid], 0);
 
-    speed_TD[playerid][0] = CreatePlayerTextDraw(playerid, 520.1669, 371.6667, "particle:lamp_shad_64"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][0], 76.0000, 33.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][0], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][0], 673720351);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][0], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][0], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][0], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][0], 0);
+    Speedometr_PTD[playerid][23] = CreatePlayerTextDraw(playerid, 495.500000, 385.562500, "LD_SPAC:WHITE");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][23], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][23], 119.000000, 46.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][23], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][23], 0x24282DFF);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][23], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][23], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][23], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][23], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][23], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][23], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][23], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][23], 0);
 
-    speed_TD[playerid][1] = CreatePlayerTextDraw(playerid, 578.8068, 349.2500, ""); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][1], 69.0000, 51.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][1], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][1], -40817153);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][1], 5);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][1], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][1], 0);
-    PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][1], 2153);
-    PlayerTextDrawSetPreviewRot(playerid, speed_TD[playerid][1], 0.0000, -15.0000, 90.0000, 1.0000);
+    Speedometr_PTD[playerid][22] = CreatePlayerTextDraw(playerid, 517.500000, 396.937500, "particle:lamp_shad_64");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][22], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][22], 102.000000, -10.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][22], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][22], 0xFFFFFF19);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][22], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][22], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][22], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][22], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][22], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][22], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][22], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][22], 0);
 
-    speed_TD[playerid][2] = CreatePlayerTextDraw(playerid, 598.5870, 386.5832, "ld_beat:chit"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][2], 20.0000, 20.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][2], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][2], -40817153);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][2], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][2], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][2], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][2], 0);
+    Speedometr_PTD[playerid][21] = CreatePlayerTextDraw(playerid, 497.500000, 386.875000, "LD_SPAC:WHITE");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][21], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][21], 28.000000, 11.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][21], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][21], 0xA52A2AFF);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][21], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][21], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][21], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][21], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][21], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][21], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][21], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][21], 0);
 
-    speed_TD[playerid][3] = CreatePlayerTextDraw(playerid, 560.0659, 345.7499, ""); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][3], 67.0000, 55.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][3], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][3], -40817153);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][3], 5);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][3], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][3], 0);
-    PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][3], 2153);
-    PlayerTextDrawSetPreviewRot(playerid, speed_TD[playerid][3], 0.0000, -15.0000, 90.0000, 1.0000);
+    Speedometr_PTD[playerid][20] = CreatePlayerTextDraw(playerid, 495.000000, 396.937500, "particle:lamp_shad_64");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][20], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][20], 32.000000, -10.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][20], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][20], 0xFF0000D7);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][20], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][20], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][20], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][20], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][20], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][20], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][20], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][20], 0);
 
-    speed_TD[playerid][4] = CreatePlayerTextDraw(playerid, 584.4331, 392.4166, "LD_SPAC:white"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][4], 24.0000, 11.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][4], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][4], -40817153);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][4], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][4], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][4], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][4], 0);
+    Speedometr_PTD[playerid][19] = CreatePlayerTextDraw(playerid, 511.000000, 387.750000, "particle:lamp_shad_64");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][19], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][19], 105.000000, 10.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][19], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][19], 0xFFFFFF17);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][19], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][19], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][19], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][19], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][19], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][19], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][19], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][19], 0);
 
-    speed_TD[playerid][5] = CreatePlayerTextDraw(playerid, 576.0000, 387.0000, "ld_beat:chit"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][5], 20.0000, 20.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][5], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][5], -40817153);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][5], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][5], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][5], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][5], 0);
+    Speedometr_PTD[playerid][18] = CreatePlayerTextDraw(playerid, 570.000000, 389.062500, "FUEL: 49 L");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][18], 0.187500, 0.676800);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][18], 0.000000, 79.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][18], 2);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][18], 0xFFFFFFFF);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][18], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][18], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][18], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][18], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][18], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][18], 1);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][18], 1);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][18], 0);
 
-    speed_TD[playerid][6] = CreatePlayerTextDraw(playerid, 600.3627, 346.3332, "LD_SPAC:white"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][6], 24.0000, 11.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][6], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][6], -40817153);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][6], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][6], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][6], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][6], 0);
+    Speedometr_PTD[playerid][17] = CreatePlayerTextDraw(playerid, 502.000000, 428.437500, "particle:lamp_shad_64");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][17], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][17], 103.000000, -29.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][17], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][17], 0xFFFFFF0A);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][17], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][17], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][17], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][17], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][17], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][17], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][17], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][17], 0);
 
-    speed_TD[playerid][7] = CreatePlayerTextDraw(playerid, 590.6226, 342.8333, "ld_beat:chit"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][7], 20.0000, 20.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][7], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][7], -40817153);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][7], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][7], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][7], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][7], 0);
+    Speedometr_PTD[playerid][16] = CreatePlayerTextDraw(playerid, 497.500000, 399.125000, "LD_SPAC:WHITE");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][16], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][16], 28.000000, 30.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][16], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][16], 0xA52A2AFF);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][16], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][16], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][16], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][16], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][16], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][16], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][16], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][16], 0);
 
-    speed_TD[playerid][8] = CreatePlayerTextDraw(playerid, 597.5516, 353.3333, "LD_SPAC:white"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][8], 17.0000, 44.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][8], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][8], -40817153);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][8], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][8], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][8], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][8], 0);
+    Speedometr_PTD[playerid][15] = CreatePlayerTextDraw(playerid, 498.500000, 399.125000, "LD_SPAC:WHITE");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][15], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][15], 26.000000, 29.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][15], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][15], 0x24282DFF);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][15], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][15], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][15], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][15], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][15], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][15], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][15], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][15], 0);
 
-    speed_TD[playerid][9] = CreatePlayerTextDraw(playerid, 614.5171, 342.8333, "ld_beat:chit"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][9], 20.0000, 20.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][9], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][9], -40817153);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][9], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][9], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][9], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][9], 0);
+    Speedometr_PTD[playerid][14] = CreatePlayerTextDraw(playerid, 511.000000, 402.625000, "LOCK");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][14], 0.151500, 0.545600);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][14], 1280.000000, 1280.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][14], 2);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][14], 0xFF4228FF);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][14], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][14], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][14], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][14], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][14], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][14], 1);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][14], 1);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][14], 0);
 
-    speed_TD[playerid][10] = CreatePlayerTextDraw(playerid, 625.1155, 413.0834, "particle:lamp_shad_64"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][10], -131.0000, -67.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][10], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][10], 673720436);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][10], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][10], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][10], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][10], 0);
+    Speedometr_PTD[playerid][13] = CreatePlayerTextDraw(playerid, 510.500000, 411.375000, "ENGINE");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][13], 0.151500, 0.545600);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][13], 1280.000000, 1280.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][13], 2);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][13], 0x949498FF);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][13], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][13], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][13], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][13], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][13], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][13], 1);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][13], 1);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][13], 0);
 
-    speed_TD[playerid][11] = CreatePlayerTextDraw(playerid, 570.0070, 366.1667, "ld_beat:chit"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][11], 15.0000, 15.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][11], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][11], 336860415);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][11], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][11], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][11], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][11], 0);
+    Speedometr_PTD[playerid][12] = CreatePlayerTextDraw(playerid, 511.000000, 419.687500, "LIGHT");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][12], 0.151500, 0.545600);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][12], -0.029900, 1.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][12], 2);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][12], 0x949498FF);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][12], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][12], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][12], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][12], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][12], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][12], 1);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][12], 1);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][12], 0);
 
-    speed_TD[playerid][12] = CreatePlayerTextDraw(playerid, 575.0589, 374.3332, ""); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][12], 10.0000, 9.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][12], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][12], 336860415);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][12], 336860160);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][12], 5);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][12], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][12], 0);
-    PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][12], 2153);
-    PlayerTextDrawSetPreviewRot(playerid, speed_TD[playerid][12], 0.0000, -15.0000, 90.0000, 1.0000);
+    Speedometr_PTD[playerid][11] = CreatePlayerTextDraw(playerid, 496.000000, 425.375000, "particle:lamp_shad_64");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][11], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][11], 30.000000, -26.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][11], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][11], 0xFFFFFF0F);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][11], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][11], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][11], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][11], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][11], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][11], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][11], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][11], 0);
 
-    speed_TD[playerid][13] = CreatePlayerTextDraw(playerid, 568.1330, 373.1668, "ld_beat:chit"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][13], 15.0000, 15.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][13], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][13], 336860415);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][13], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][13], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][13], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][13], 0);
+    Speedometr_PTD[playerid][10] = CreatePlayerTextDraw(playerid, 569.500000, 402.625000, "0");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][10], 0.433400, 1.735600);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][10], 0.000000, 50.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][10], 2);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][10], 0xFFFFFFFF);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][10], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][10], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][10], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][10], 1);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][10], 0x00000027);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][10], 3);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][10], 1);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][10], 0);
 
-    speed_TD[playerid][14] = CreatePlayerTextDraw(playerid, 517.4339, 368.5000, "LD_SPAC:white"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][14], 59.0000, 17.5000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][14], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][14], 336860415);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][14], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][14], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][14], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][14], 0);
+    Speedometr_PTD[playerid][9] = CreatePlayerTextDraw(playerid, 537.000000, 408.750000, "ld_beat:CHIT");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][9], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][9], 2.000000, 2.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][9], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][9], 0xFFFFFF11);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][9], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][9], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][9], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][9], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][9], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][9], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][9], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][9], 0);
 
-    speed_TD[playerid][15] = CreatePlayerTextDraw(playerid, 511.4421, 366.1667, "ld_beat:chit"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][15], 15.0000, 15.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][15], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][15], 336860415);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][15], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][15], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][15], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][15], 0);
+    Speedometr_PTD[playerid][8] = CreatePlayerTextDraw(playerid, 550.500000, 420.125000, "ld_beat:CHIT");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][8], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][8], 2.000000, 2.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][8], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][8], 0xFFFFFF11);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][8], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][8], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][8], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][8], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][8], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][8], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][8], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][8], 0);
 
-    speed_TD[playerid][16] = CreatePlayerTextDraw(playerid, 519.3051, 380.1664, ""); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][16], -10.0000, -9.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][16], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][16], 336860415);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][16], 336860160);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][16], 5);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][16], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][16], 0);
-    PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][16], 2153);
-    PlayerTextDrawSetPreviewRot(playerid, speed_TD[playerid][16], 0.0000, -15.0000, 90.0000, 1.0000);
+    Speedometr_PTD[playerid][7] = CreatePlayerTextDraw(playerid, 597.500000, 402.625000, "ld_beat:CHIT");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][7], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][7], 2.000000, 2.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][7], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][7], 0xFFFFFF11);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][7], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][7], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][7], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][7], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][7], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][7], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][7], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][7], 0);
 
-    speed_TD[playerid][17] = CreatePlayerTextDraw(playerid, 509.0996, 373.1667, "ld_beat:chit"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][17], 15.0000, 15.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][17], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][17], 336860415);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][17], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][17], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][17], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][17], 0);
+    Speedometr_PTD[playerid][6] = CreatePlayerTextDraw(playerid, 596.500000, 420.562500, "ld_beat:CHIT");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][6], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][6], 4.000000, 4.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][6], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][6], 0xFFFFFF11);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][6], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][6], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][6], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][6], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][6], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][6], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][6], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][6], 0);
 
-    speed_TD[playerid][18] = CreatePlayerTextDraw(playerid, 518.0017, 379.0000, "LD_SPAC:white"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][18], 57.0000, 3.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][18], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][18], -1166921985);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][18], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][18], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][18], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][18], 0);
+    Speedometr_PTD[playerid][5] = CreatePlayerTextDraw(playerid, 555.000000, 402.187500, "ld_beat:CHIT");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][5], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][5], 4.000000, 4.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][5], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][5], 0xFFFFFF05);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][5], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][5], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][5], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][5], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][5], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][5], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][5], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][5], 0);
 
-    speed_TD[playerid][19] = CreatePlayerTextDraw(playerid, 518.0017, 379.0000, "LD_SPAC:white"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][19], 31.0000, 3.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][19], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][19], -124373249);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][19], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][19], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][19], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][19], 0);
+    Speedometr_PTD[playerid][4] = CreatePlayerTextDraw(playerid, 528.000000, 424.500000, "ld_beat:CHIT");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][4], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][4], 4.000000, 4.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][4], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][4], 0xFFFFFF05);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][4], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][4], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][4], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][4], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][4], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][4], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][4], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][4], 0);
 
-    speed_TD[playerid][20] = CreatePlayerTextDraw(playerid, 535.9739, 367.9167, "FILL_146"); // ïóñòî
-    PlayerTextDrawLetterSize(playerid, speed_TD[playerid][20], 0.1151, 1.0808);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][20], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][20], -1);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][20], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][20], 2);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][20], 1);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][20], 0);
+    Speedometr_PTD[playerid][3] = CreatePlayerTextDraw(playerid, 520.000000, 400.875000, "particle:lamp_shad_64");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][3], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][3], 95.000000, -2.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][3], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][3], 0x00000025);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][3], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][3], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][3], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][3], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][3], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][3], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][3], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][3], 0);
 
-    speed_TD[playerid][21] = CreatePlayerTextDraw(playerid, 516.0000, 351.0000, "LOCK"); // ïóñòî
-    PlayerTextDrawLetterSize(playerid, speed_TD[playerid][21], 0.1802, 1.1916);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][21], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][21], -459199745);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][21], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][21], 1);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][21], 1);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][21], 0);
+    Speedometr_PTD[playerid][2] = CreatePlayerTextDraw(playerid, 516.000000, 417.500000, "particle:lamp_shad_64");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][2], 0.480000, 1.120000);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][2], 63.000000, 14.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][2], 1);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][2], 0xFFFFFF07);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][2], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][2], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][2], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][2], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][2], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][2], 4);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][2], 0);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][2], 0);
 
-    speed_TD[playerid][22] = CreatePlayerTextDraw(playerid, 538.0000, 351.0000, "ENGINE"); // ïóñòî
-    PlayerTextDrawLetterSize(playerid, speed_TD[playerid][22], 0.1802, 1.1916);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][22], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][22], -1);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][22], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][22], 1);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][22], 1);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][22], 0);
+    Speedometr_PTD[playerid][1] = CreatePlayerTextDraw(playerid, 510.000000, 389.500000, "CAR");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][1], 0.187500, 0.676800);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][1], 1280.000000, 1280.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][1], 2);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][1], 0xFFFFFFFF);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][1], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][1], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][1], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][1], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][1], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][1], 1);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][1], 1);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][1], 0);
 
-    speed_TD[playerid][23] = CreatePlayerTextDraw(playerid, 566.0000, 351.0000, "LIGHT"); // ïóñòî
-    PlayerTextDrawLetterSize(playerid, speed_TD[playerid][23], 0.1802, 1.1916);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][23], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][23], -1);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][23], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][23], 1);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][23], 1);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][23], 0);
-
-    speed_TD[playerid][24] = CreatePlayerTextDraw(playerid, 576.0000, 386.5000, "ld_beat:chit"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][24], 20.0000, 20.5000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][24], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][24], 336860415);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][24], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][24], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][24], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][24], 0);
-
-    speed_TD[playerid][25] = CreatePlayerTextDraw(playerid, 589.0000, 391.0000, "KM/H"); // ïóñòî
-    PlayerTextDrawLetterSize(playerid, speed_TD[playerid][25], 0.1287, 1.1566);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][25], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][25], -1);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][25], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][25], 2);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][25], 1);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][25], 0);
-
-    speed_TD[playerid][26] = CreatePlayerTextDraw(playerid, 598.5870, 386.5832, "ld_beat:chit"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][26], 20.0000, 20.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][26], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][26], 336860415);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][26], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][26], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][26], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][26], 0);
-
-    speed_TD[playerid][27] = CreatePlayerTextDraw(playerid, 585.4685, 390.0833, "ld_spac:white"); // ïóñòî
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][27], 23.0000, 13.5000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][27], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][27], 336860415);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][27], 255);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][27], 4);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][27], 0);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][27], 0);
-
-    speed_TD[playerid][28] = CreatePlayerTextDraw(playerid, 597.0000, 364.0000, "255"); // ïóñòî
-    PlayerTextDrawLetterSize(playerid, speed_TD[playerid][28], 0.2734, 1.5008);
-    PlayerTextDrawTextSize(playerid, speed_TD[playerid][28], -22.0000, 0.0000);
-    PlayerTextDrawAlignment(playerid, speed_TD[playerid][28], 1);
-    PlayerTextDrawColor(playerid, speed_TD[playerid][28], -1);
-    PlayerTextDrawSetOutline(playerid, speed_TD[playerid][28], 1);
-    PlayerTextDrawBackgroundColor(playerid, speed_TD[playerid][28], 134);
-    PlayerTextDrawFont(playerid, speed_TD[playerid][28], 3);
-    PlayerTextDrawSetProportional(playerid, speed_TD[playerid][28], 1);
-    PlayerTextDrawSetShadow(playerid, speed_TD[playerid][28], 0);
+    Speedometr_PTD[playerid][0] = CreatePlayerTextDraw(playerid, 568.500000, 418.375000, "KM/H");
+    PlayerTextDrawLetterSize(playerid, Speedometr_PTD[playerid][0], 0.171000, 0.576200);
+    PlayerTextDrawTextSize(playerid, Speedometr_PTD[playerid][0], 0.000000, 73.000000);
+    PlayerTextDrawAlignment(playerid, Speedometr_PTD[playerid][0], 2);
+    PlayerTextDrawColor(playerid, Speedometr_PTD[playerid][0], 0xFFFFFF2A);
+    PlayerTextDrawUseBox(playerid, Speedometr_PTD[playerid][0], 0);
+    PlayerTextDrawBoxColor(playerid, Speedometr_PTD[playerid][0], 0x80808080);
+    PlayerTextDrawSetShadow(playerid, Speedometr_PTD[playerid][0], 0);
+    PlayerTextDrawSetOutline(playerid, Speedometr_PTD[playerid][0], 0);
+    PlayerTextDrawBackgroundColor(playerid, Speedometr_PTD[playerid][0], 0x000000FF);
+    PlayerTextDrawFont(playerid, Speedometr_PTD[playerid][0], 1);
+    PlayerTextDrawSetProportional(playerid, Speedometr_PTD[playerid][0], 1);
+    PlayerTextDrawSetSelectable(playerid, Speedometr_PTD[playerid][0], 0);
 
     return 1;
 }

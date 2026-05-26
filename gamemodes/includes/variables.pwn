@@ -330,12 +330,8 @@ new sobeitCheckIsDone[MAX_PLAYERS];
 new IsPlayerFrozen[MAX_PLAYERS];
 
 // Vehicle HUD Text
-new PlayerText:_vhudTextFuel[MAX_PLAYERS];
-new PlayerText:_vhudTextSpeed[MAX_PLAYERS];
-new PlayerText:_vhudSeatBelt[MAX_PLAYERS];
-new PlayerText:_vhudLights[MAX_PLAYERS];
 new PlayerText:_vhudFlash[MAX_PLAYERS];
-new PlayerText:speed_TD[MAX_PLAYERS][29];
+new PlayerText:Speedometr_PTD[MAX_PLAYERS][24];
 new PlayerText:_crTextTarget[MAX_PLAYERS];
 new PlayerText:_crTextSpeed[MAX_PLAYERS];
 new PlayerText:_crTickets[MAX_PLAYERS];

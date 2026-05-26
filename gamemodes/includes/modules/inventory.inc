@@ -2212,8 +2212,11 @@ stock Inventory_SaveData(playerid)
 {
     new i, z;
     new str[30];
-    Inventory_SavePlayerFloat(GetPlayerSQLId(playerid), "Weight", CharacterInfo[playerid][0][cb_Weight]);
-    Inventory_SavePlayerFloat(GetPlayerSQLId(playerid), "Weight2", CharacterInfo[playerid][1][cb_Weight]);
+    new sqlid = PlayerInfo[playerid][pId];
+    if(sqlid <= 0) return 0;
+
+    Inventory_SavePlayerFloat(sqlid, "Weight", CharacterInfo[playerid][0][cb_Weight]);
+    Inventory_SavePlayerFloat(sqlid, "Weight2", CharacterInfo[playerid][1][cb_Weight]);
     for(i = 0 ; i < MAX_INTERFACE ; i++)
     {
         for(z = 0 ; z < MAX_PLAYER_CB_ITEM ; z++)
@@ -2221,29 +2224,29 @@ stock Inventory_SaveData(playerid)
             if(i == 0)
             {
                 format(str, sizeof(str), "ItemLock%d", z);
-                Inventory_SavePlayerInt(GetPlayerSQLId(playerid), str, CharacterInfo[playerid][i][cb_ItemLock][z]);
+                Inventory_SavePlayerInt(sqlid, str, CharacterInfo[playerid][i][cb_ItemLock][z]);
                 format(str, sizeof(str), "ItemID%d", z);
-                Inventory_SavePlayerInt(GetPlayerSQLId(playerid), str, CharacterInfo[playerid][i][cb_ItemID][z]);
+                Inventory_SavePlayerInt(sqlid, str, CharacterInfo[playerid][i][cb_ItemID][z]);
                 format(str, sizeof(str), "ItemWeight%d", z);
-                Inventory_SavePlayerFloat(GetPlayerSQLId(playerid), str, CharacterInfo[playerid][i][cb_ItemWeight][z]);
+                Inventory_SavePlayerFloat(sqlid, str, CharacterInfo[playerid][i][cb_ItemWeight][z]);
                 format(str, sizeof(str), "ItemDurability%d", z);
-                Inventory_SavePlayerInt(GetPlayerSQLId(playerid), str, CharacterInfo[playerid][i][cb_ItemDurability][z]);
+                Inventory_SavePlayerInt(sqlid, str, CharacterInfo[playerid][i][cb_ItemDurability][z]);
                 format(str, sizeof(str), "ItemAmount%d", z);
-                Inventory_SavePlayerInt(GetPlayerSQLId(playerid), str, CharacterInfo[playerid][i][cb_ItemAmount][z]);
+                Inventory_SavePlayerInt(sqlid, str, CharacterInfo[playerid][i][cb_ItemAmount][z]);
             }
             else
             {
                 if(z > 6) break;
                 format(str, sizeof(str), "Item2Lock%d", z);
-                Inventory_SavePlayerInt(GetPlayerSQLId(playerid), str, CharacterInfo[playerid][i][cb_ItemLock][z]);
+                Inventory_SavePlayerInt(sqlid, str, CharacterInfo[playerid][i][cb_ItemLock][z]);
                 format(str, sizeof(str), "Item2ID%d", z);
-                Inventory_SavePlayerInt(GetPlayerSQLId(playerid), str, CharacterInfo[playerid][i][cb_ItemID][z]);
+                Inventory_SavePlayerInt(sqlid, str, CharacterInfo[playerid][i][cb_ItemID][z]);
                 format(str, sizeof(str), "Item2Weight%d", z);
-                Inventory_SavePlayerFloat(GetPlayerSQLId(playerid), str, CharacterInfo[playerid][i][cb_ItemWeight][z]);
+                Inventory_SavePlayerFloat(sqlid, str, CharacterInfo[playerid][i][cb_ItemWeight][z]);
                 format(str, sizeof(str), "Item2Durability%d", z);
-                Inventory_SavePlayerInt(GetPlayerSQLId(playerid), str, CharacterInfo[playerid][i][cb_ItemDurability][z]);
+                Inventory_SavePlayerInt(sqlid, str, CharacterInfo[playerid][i][cb_ItemDurability][z]);
                 format(str, sizeof(str), "Item2Amount%d", z);
-                Inventory_SavePlayerInt(GetPlayerSQLId(playerid), str, CharacterInfo[playerid][i][cb_ItemAmount][z]);
+                Inventory_SavePlayerInt(sqlid, str, CharacterInfo[playerid][i][cb_ItemAmount][z]);
             }
         }
     }
@@ -5304,7 +5307,7 @@ hook OnPlayerDisconnect(playerid, reason)
         Inventory_Character[playerid] = 0;
         Inventory_Show[playerid] = 0;
     }
-    if(gPlayerLogged{playerid})
+    if(gPlayerLogged{playerid} || PlayerInfo[playerid][pId] > 0)
     {
         Inventory_SaveData(playerid);
     }
