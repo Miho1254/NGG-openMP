@@ -91,6 +91,13 @@
 #define MAX_PLAYERS (500)
 // Block crashdetect.inc from being included (open.mp has built-in debug)
 #define CRASHDETECT_INC
+#pragma tabsize 0
+#pragma warning disable 203
+#pragma warning disable 204
+#pragma warning disable 213
+#pragma warning disable 217
+#pragma warning disable 218
+#pragma warning disable 219
 stock PrintBacktrace() { return 0; }
 stock PrintAmxBacktrace() { return 0; }
 stock PrintNativeBacktrace() { return 0; }

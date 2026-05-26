@@ -1387,6 +1387,29 @@ Function: TakeAmmoDeathPlayer(playerid)
     return 1;
 }
 
+stock ClearEquippedWeaponsOnDeath(playerid)
+{
+    if(GetPVarType(playerid, "IsInArena") || GetPVarInt(playerid, "EventToken") >= 1 || HungerPlayerInfo[playerid][hgInEvent] == 1)
+    {
+        return 1;
+    }
+    for(new i = 0; i < 7; i++)
+    {
+        new itemid = CharacterInfo[playerid][1][cb_ItemID][i];
+        if(itemid != INVALID_OBJECT_ID)
+        {
+            if((itemid >= 23 && itemid <= 35) || (itemid >= 44 && itemid <= 48))
+            {
+                CharacterInfo[playerid][1][cb_ItemID][i] = INVALID_OBJECT_ID;
+                CharacterInfo[playerid][1][cb_ItemWeight][i] = 0.0;
+                CharacterInfo[playerid][1][cb_ItemDurability][i] = 0;
+                CharacterInfo[playerid][1][cb_ItemAmount][i] = 0;
+            }
+        }
+    }
+    return 1;
+}
+
 Function: Inventory_SetPlayerWeapons(playerid)
 {
 	if(HungerPlayerInfo[playerid][hgInEvent] == 1) { return 1;}

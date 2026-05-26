@@ -775,6 +775,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	if(IsPlayerNPC(playerid)) return 1;
 	// if(GetPVarType(playerid, "pTut")) return 1;
 	if(PlayerIsDead[playerid]) return 1;
+	ClearEquippedWeaponsOnDeath(playerid);
 	PlayerIsDead[playerid] = true;
 	IsSpawned[playerid] = 0;
 	SpawnKick[playerid] = 0;

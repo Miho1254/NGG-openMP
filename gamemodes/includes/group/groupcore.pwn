@@ -280,6 +280,29 @@ stock SendGroupMessage(iGroupType, color, string[], allegiance = 0)
 	}
 }
 
+stock SendFamilyLockerMessage(iGroupID, string[])
+{
+	if(iGroupID == INVALID_GROUP_ID || !(0 <= iGroupID < MAX_GROUPS)) return 0;
+	foreach(new i : Player)
+	{
+		if(PlayerInfo[i][pMember] == iGroupID)
+		{
+			SendClientMessageEx(i, arrGroupData[iGroupID][g_hRadioColour] * 256 + 255, string);
+		}
+	}
+	return 1;
+}
+
+stock DeductLockerStock(playerid, groupid, cost, itemname[])
+{
+	if(groupid == INVALID_GROUP_ID || !(0 <= groupid < MAX_GROUPS)) return 0;
+	arrGroupData[groupid][g_iLockerStock] -= cost;
+	new str[256];
+	format(str, sizeof(str), "** [LOCKER] %s da lay %s tu trong tu do (Tieu ton %d Vat lieu tu Locker).", GetPlayerNameEx(playerid), itemname, cost);
+	SendFamilyLockerMessage(groupid, str);
+	return 1;
+}
+
 stock SendMedicMessage(color, string[])
 {
 	foreach(new i: Player)
@@ -853,8 +876,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 
 					if(arrGroupData[iGroupID][g_iLockerStock] > 1 && arrGroupData[iGroupID][g_iLockerCostType] == 0) {
 
-						SetArmour(playerid, 150);
-						arrGroupData[iGroupID][g_iLockerStock] -= 1;
+						DeductLockerStock(playerid, iGroupID, 1, "Duty Vest");
 						new str[128];
 						format(str, sizeof(str), "%s took a vest out of the %s locker at a cost of 1 HG Material.", GetPlayerNameEx(playerid), arrGroupData[iGroupID][g_szGroupName]);
 						GroupPayLog(iGroupID, str);
@@ -914,7 +936,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					return SendClientMessageEx(playerid, COLOR_RED, "To chuc khong du vat lieu de cung cap giap (Yeu cau 200 vat lieu).");
 				}
 				SetArmour(playerid, 100);
-				arrGroupData[iGroupID][g_iLockerStock] -= 200;
+				DeductLockerStock(playerid, iGroupID, 200, "Kevlar Armor");
 				format(string, sizeof(string), "* %s da lay giap tu trong tu do.", GetPlayerNameEx(playerid));
 				ProxChatBubble(playerid, string);
 				SendClientMessageEx(playerid, COLOR_LIGHTBLUE, "Ban da lay giap ra khoi tu do (Tieu ton 200 vat lieu).");
@@ -997,7 +1019,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				if(arrGroupData[iGroupID][g_iLockerStock] > 1 && arrGroupData[iGroupID][g_iLockerCostType] == 0) {
 					SendClientMessageEx(playerid, COLOR_GRAD1, "Ban dang mang theo mot bo dung cu. /placekit de dat vao cop xe phuong tien hoac balo.");
 					SetPVarInt(playerid, "MedVestKit", 1);
-					arrGroupData[iGroupID][g_iLockerStock] -= 1;
+					DeductLockerStock(playerid, iGroupID, 1, "Portable Medkit & Vest Kit");
 					new str[128];
 					format(str, sizeof(str), "%s took a med kit & vest out of the %s locker at a cost of 1 HG Material.", GetPlayerNameEx(playerid), arrGroupData[iGroupID][g_szGroupName]);
 					GroupPayLog(iGroupID, str);
@@ -1040,7 +1062,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					GetArmour(playerid, parmor);
 					if(parmor < 150) SetArmour(playerid, 150);
 					SetHealth(playerid, 100.0);
-					arrGroupData[iGroupID][g_iLockerStock] -= 1;
+					DeductLockerStock(playerid, iGroupID, 1, "First Aid & Kevlar");
 					new str[128];
 					format(str, sizeof(str), "%s took a vest out of the %s locker at a cost of 1 HG Material.", GetPlayerNameEx(playerid), arrGroupData[iGroupID][g_szGroupName]);
 					GroupPayLog(iGroupID, str);
@@ -1141,7 +1163,9 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				{
 					if(arrGroupData[iGroupID][g_iLockerStock] >= arrGroupData[iGroupID][g_iLockerCost][listitem])
 					{
-						arrGroupData[iGroupID][g_iLockerStock] -= arrGroupData[iGroupID][g_iLockerCost][listitem];
+						new szWepName[32];
+						format(szWepName, sizeof(szWepName), "%s", GetWeaponNameEx(iGunID));
+						DeductLockerStock(playerid, iGroupID, arrGroupData[iGroupID][g_iLockerCost][listitem], szWepName);
 						new str[128];
 						format(str, sizeof(str), "%s took a %s out of the %s locker at a cost of %d HG Materials.", GetPlayerNameEx(playerid), GetWeaponNameEx(iGunID), arrGroupData[iGroupID][g_szGroupName], arrGroupData[iGroupID][g_iLockerCost][listitem]);
 						GroupPayLog(iGroupID, str);

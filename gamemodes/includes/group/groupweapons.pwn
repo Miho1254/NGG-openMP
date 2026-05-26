@@ -120,9 +120,8 @@ Dialog:DIALOG_GANG_WEAPONS(playerid, response, listitem, inputtext[]) {
 
 	new success = -1;
 	SetPlayerItem(playerid, itemid, amount, success);
-
 	if(success == 1) {
-		arrGroupData[group][g_iLockerStock] -= cost;
+		DeductLockerStock(playerid, group, cost, name);
 		new str[256];
 		format(str, sizeof(str), "[{FFB561}TUI DO{FFFFFF}] Ban da lay %s (SL: %d) ra khoi tu do (Tieu ton %d Mats).", name, amount, cost);
 		SendClientMessageEx(playerid, COLOR_WHITE, str);
@@ -246,9 +245,10 @@ Dialog:weapon_withdraw(playerid, response, listitem, inputtext[]) {
 			}
 			return 1;
 		}
-		if(arrGroupData[group][g_iLockerStock] < arrGroupData[group][g_iLockerCost][listitem]) return SendClientMessageEx(playerid, COLOR_RED, "To chuc khong du vat lieu de cung cap vu khi %s cho ban.", Weapon_ReturnName(GunID));
 		if(PlayerInfo[playerid][pGuns][GetWeaponSlot(GunID)] != GunID) {
-			arrGroupData[group][g_iLockerStock] -= arrGroupData[group][g_iLockerCost][listitem];
+			new szWepName[32];
+			format(szWepName, sizeof(szWepName), "%s", Weapon_ReturnName(GunID));
+			DeductLockerStock(playerid, group, arrGroupData[group][g_iLockerCost][listitem], szWepName);
 			GivePlayerValidWeapon(playerid, GunID);
 			SendClientMessageEx(playerid, COLOR_LIGHTBLUE, "Ban da lay vu khi %s ra khoi tu do.", Weapon_ReturnName(GunID));
 			format(szMiscArray, sizeof(szMiscArray), "%s da rut ra mot %s tu trong tu do (Cost: %d)", GetPlayerNameEx(playerid), Weapon_ReturnName(GunID), arrGroupData[group][g_iLockerCost][listitem]);
@@ -470,7 +470,9 @@ Dialog:crate_tran_amount(playerid, response, listitem, inputtext[]) {
 		}
 		CrateBox[CarryCrate[playerid]][cbWep][GetPVarInt(playerid, "GunCrateSlot")] = GetPVarInt(playerid, "GunCrateID");
 		CrateBox[CarryCrate[playerid]][cbWepAmount][GetPVarInt(playerid, "GunCrateSlot")] += amount;
-		arrGroupData[PlayerInfo[playerid][pMember]][g_iLockerStock] -= total;
+		new szWepName[64];
+		format(szWepName, sizeof(szWepName), "%d %s(s) to Crate", amount, Weapon_ReturnName(GetPVarInt(playerid, "GunCrateID")));
+		DeductLockerStock(playerid, PlayerInfo[playerid][pMember], total, szWepName);
 		SendClientMessageEx(playerid, COLOR_WHITE, "You transferred %s %s(s) to the crate.", number_format(amount), Weapon_ReturnName(GetPVarInt(playerid, "GunCrateID")));
 		SaveGroup(PlayerInfo[playerid][pMember]);
 		SaveCrate(CarryCrate[playerid]);
@@ -670,9 +672,10 @@ CMD:allow(playerid, params[]) {
 		}
 	}
 	if(locker == -1) return SendClientMessageEx(playerid, COLOR_GRAD2, "%s is no longer at a locker!", GetPlayerNameEx(target)), SendClientMessageEx(target, COLOR_GRAD2, "Your weapon request failed - Your not near any lockers!");
-	if(arrGroupData[PlayerInfo[target][pMember]][g_iLockerStock] < arrGroupData[PlayerInfo[target][pMember]][g_iLockerCost][LockerReq[target][1]]) return SendClientMessageEx(playerid, COLOR_RED, "Your locker doesn't have the materials to craft a %s.", Weapon_ReturnName(LockerReq[target][0]));
 	if(PlayerInfo[target][pGuns][GetWeaponSlot(LockerReq[target][0])] != LockerReq[target][0]) {
-		arrGroupData[PlayerInfo[target][pMember]][g_iLockerStock] -= arrGroupData[PlayerInfo[target][pMember]][g_iLockerCost][LockerReq[target][1]];
+		new szWepName[64];
+		format(szWepName, sizeof(szWepName), "%s (Authorized by %s)", Weapon_ReturnName(LockerReq[target][0]), GetPlayerNameEx(playerid));
+		DeductLockerStock(target, PlayerInfo[target][pMember], arrGroupData[PlayerInfo[target][pMember]][g_iLockerCost][LockerReq[target][1]], szWepName);
 		GivePlayerValidWeapon(target, LockerReq[target][0]);
 		SendClientMessageEx(target, COLOR_WHITE, "You withdraw a %s from the locker - authorized by %s.", Weapon_ReturnName(LockerReq[target][0]), GetPlayerNameEx(playerid));
 		SendClientMessageEx(playerid, COLOR_WHITE, "You have authorized %s to withdraw a %s from the locker.", GetPlayerNameEx(target), Weapon_ReturnName(LockerReq[target][0]));
