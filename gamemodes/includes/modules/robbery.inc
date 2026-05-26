@@ -25,6 +25,8 @@
 /* ── Constants ────────────────────────────────────────────── */
 #define ROB_CRACK_TIME          10          // giay pha khoa
 #define ROB_COLLECT_TIME        180         // 3 phut gom tien (giay)
+#define ROB_RANGE_CHECK_TIME    5           // giay kiem tra khoang cach
+#define ROB_KEEP_RANGE          8.0         // khoang cach toi da khi gom tien
 #define ROB_PLAYER_COOLDOWN     900         // 15 phut cooldown ca nhan
 #define ROB_TARGET_COOLDOWN     1800        // 30 phut cooldown muc tieu
 #define ROB_MIN_COPS            2           // so cop toi thieu online
@@ -54,7 +56,10 @@ enum eRobState {
     rob_iType,          // ROB_TYPE_ATM / ROB_TYPE_BIZ
     rob_iTargetID,      // ATMPoint index hoac Businesses[] index
     rob_iTimer,         // timer ID cho crack/collect
+    rob_iRangeTimer,    // timer kiem tra player con dung gan target khong
     rob_iPlayerCD,      // timestamp het cooldown ca nhan
+    rob_iInt,           // interior luc bat dau cuop
+    rob_iVW,            // virtual world luc bat dau cuop
 }
 new arrRobState[MAX_PLAYERS][eRobState];
 
@@ -62,10 +67,25 @@ new arrRobState[MAX_PLAYERS][eRobState];
 // ATM co 43 slot, Biz co MAX_BUSINESSES slot
 new g_iATMCooldown[43];     // unix timestamp het CD
 new g_iBizCooldown[MAX_BUSINESSES];
+new g_iATMRobber[43];       // player dang cuop target, INVALID_PLAYER_ID neu trong
+new g_iBizRobber[MAX_BUSINESSES];
 
 /* ── Forwards ─────────────────────────────────────────────── */
 forward Rob_OnCrackDone(playerid);
 forward Rob_OnCollectDone(playerid);
+forward Rob_OnRangeCheck(playerid);
+
+new bool:g_bRobberyInit;
+
+static Rob_Init()
+{
+    if (g_bRobberyInit) return 1;
+
+    for (new i = 0; i < sizeof(ATMPoint); i++) g_iATMRobber[i] = INVALID_PLAYER_ID;
+    for (new i = 0; i < MAX_BUSINESSES; i++) g_iBizRobber[i] = INVALID_PLAYER_ID;
+    g_bRobberyInit = true;
+    return 1;
+}
 
 /* ── Helper: dem so cop online ────────────────────────────── */
 stock Rob_CountCops() {
@@ -112,6 +132,10 @@ stock Rob_GetATMPos(atmid, &Float:x, &Float:y, &Float:z) {
     Streamer_GetFloatData(STREAMER_TYPE_AREA, ATMPoint[atmid], E_STREAMER_Z, z);
 }
 
+stock Rob_IsValidATM(atmid) {
+    return (0 <= atmid < sizeof(ATMPoint) && IsValidDynamicArea(STREAMER_TAG_AREA:ATMPoint[atmid]));
+}
+
 /* ── Helper: tim ATM gan nhat voi player ─────────────────── */
 stock Rob_FindNearestATM(playerid) {
     new Float:px, Float:py, Float:pz;
@@ -119,6 +143,7 @@ stock Rob_FindNearestATM(playerid) {
     new best = -1;
     new Float:bestDist = 999999.0;
     for (new i = 0; i < sizeof(ATMPoint); i++) {
+        if (!Rob_IsValidATM(i)) continue;
         new Float:ax, Float:ay, Float:az;
         Rob_GetATMPos(i, ax, ay, az);
         new Float:d = floatsqroot((px-ax)*(px-ax)+(py-ay)*(py-ay)+(pz-az)*(pz-az));
@@ -136,6 +161,7 @@ stock Rob_FindNearestBiz247(playerid) {
     new Float:bestDist = 999999.0;
     for (new i = 0; i < MAX_BUSINESSES; i++) {
         if (Businesses[i][bType] != BUSINESS_TYPE_STORE) continue;
+        if (Businesses[i][bExtPos][0] == 0.0 && Businesses[i][bExtPos][1] == 0.0 && Businesses[i][bExtPos][2] == 0.0) continue;
         new Float:d = GetPlayerDistanceFromPoint(playerid,
             Businesses[i][bExtPos][0],
             Businesses[i][bExtPos][1],
@@ -174,22 +200,83 @@ static Rob_AddWanted(playerid, amount) {
     SetPlayerWantedLevel(playerid, PlayerInfo[playerid][pWantedLevel]);
 }
 
+static Rob_IsTargetBusy(iType, iTargetID) {
+    if (iType == ROB_TYPE_ATM) {
+        if (!Rob_IsValidATM(iTargetID)) return 1;
+        return (g_iATMRobber[iTargetID] != INVALID_PLAYER_ID);
+    }
+
+    if (iTargetID < 0 || iTargetID >= MAX_BUSINESSES || Businesses[iTargetID][bType] != BUSINESS_TYPE_STORE) return 1;
+    return (g_iBizRobber[iTargetID] != INVALID_PLAYER_ID);
+}
+
+static Rob_SetTargetRobber(iType, iTargetID, playerid) {
+    if (iType == ROB_TYPE_ATM && Rob_IsValidATM(iTargetID)) g_iATMRobber[iTargetID] = playerid;
+    else if (iType == ROB_TYPE_BIZ && 0 <= iTargetID < MAX_BUSINESSES) g_iBizRobber[iTargetID] = playerid;
+}
+
+static Rob_ClearTargetRobber(playerid) {
+    new iType = arrRobState[playerid][rob_iType],
+        iTargetID = arrRobState[playerid][rob_iTargetID];
+
+    if (iType == ROB_TYPE_ATM && Rob_IsValidATM(iTargetID) && g_iATMRobber[iTargetID] == playerid) {
+        g_iATMRobber[iTargetID] = INVALID_PLAYER_ID;
+    }
+    else if (iType == ROB_TYPE_BIZ && 0 <= iTargetID < MAX_BUSINESSES && g_iBizRobber[iTargetID] == playerid) {
+        g_iBizRobber[iTargetID] = INVALID_PLAYER_ID;
+    }
+}
+
+static Rob_IsPlayerNearTarget(playerid) {
+    if (GetPlayerInterior(playerid) != arrRobState[playerid][rob_iInt]) return 0;
+    if (GetPlayerVirtualWorld(playerid) != arrRobState[playerid][rob_iVW]) return 0;
+
+    new iTargetID = arrRobState[playerid][rob_iTargetID];
+    if (arrRobState[playerid][rob_iType] == ROB_TYPE_ATM) {
+        if (!Rob_IsValidATM(iTargetID)) return 0;
+
+        new Float:x, Float:y, Float:z;
+        Rob_GetATMPos(iTargetID, x, y, z);
+        return IsPlayerInRangeOfPoint(playerid, ROB_KEEP_RANGE, x, y, z);
+    }
+
+    if (iTargetID < 0 || iTargetID >= MAX_BUSINESSES || Businesses[iTargetID][bType] != BUSINESS_TYPE_STORE) return 0;
+    return IsPlayerInRangeOfPoint(playerid, ROB_KEEP_RANGE,
+        Businesses[iTargetID][bExtPos][0],
+        Businesses[iTargetID][bExtPos][1],
+        Businesses[iTargetID][bExtPos][2]);
+}
+
 /* ── Helper: reset state player ──────────────────────────── */
 static Rob_ResetState(playerid) {
     if (arrRobState[playerid][rob_iTimer] > 0) {
         KillTimer(arrRobState[playerid][rob_iTimer]);
         arrRobState[playerid][rob_iTimer] = 0;
     }
+    if (arrRobState[playerid][rob_iRangeTimer] > 0) {
+        KillTimer(arrRobState[playerid][rob_iRangeTimer]);
+        arrRobState[playerid][rob_iRangeTimer] = 0;
+    }
+    Rob_ClearTargetRobber(playerid);
     TogglePlayerControllable(playerid, 1);
     arrRobState[playerid][rob_iState]    = ROB_STATE_NONE;
     arrRobState[playerid][rob_iType]     = 0;
     arrRobState[playerid][rob_iTargetID] = -1;
+    arrRobState[playerid][rob_iInt]      = 0;
+    arrRobState[playerid][rob_iVW]       = 0;
 }
 
 /* ── Callbacks ────────────────────────────────────────────── */
 public Rob_OnCrackDone(playerid) {
     if (!IsPlayerConnected(playerid)) return 1;
     if (arrRobState[playerid][rob_iState] != ROB_STATE_CRACKING) return 1;
+
+    if (!Rob_IsPlayerNearTarget(playerid)) {
+        SendClientMessageEx(playerid, COLOR_RED,
+            "{FF0000}[CUOP]{FFFFFF}: Ban da roi khoi muc tieu. Hanh dong cuop bi huy.");
+        Rob_ResetState(playerid);
+        return 1;
+    }
 
     arrRobState[playerid][rob_iTimer] = 0;
 
@@ -214,7 +301,21 @@ public Rob_OnCrackDone(playerid) {
     // Bat dau timer 3 phut gom tien (player van di lai duoc)
     arrRobState[playerid][rob_iTimer] = SetTimerEx("Rob_OnCollectDone",
         ROB_COLLECT_TIME * 1000, false, "i", playerid);
+    arrRobState[playerid][rob_iRangeTimer] = SetTimerEx("Rob_OnRangeCheck",
+        ROB_RANGE_CHECK_TIME * 1000, true, "i", playerid);
 
+    return 1;
+}
+
+public Rob_OnRangeCheck(playerid) {
+    if (!IsPlayerConnected(playerid)) return 1;
+    if (arrRobState[playerid][rob_iState] == ROB_STATE_NONE) return 1;
+
+    if (!Rob_IsPlayerNearTarget(playerid)) {
+        SendClientMessageEx(playerid, COLOR_RED,
+            "{FF0000}[CUOP]{FFFFFF}: Ban da di qua xa muc tieu. Hanh dong cuop bi huy.");
+        Rob_ResetState(playerid);
+    }
     return 1;
 }
 
@@ -222,7 +323,18 @@ public Rob_OnCollectDone(playerid) {
     if (!IsPlayerConnected(playerid)) return 1;
     if (arrRobState[playerid][rob_iState] != ROB_STATE_COLLECTING) return 1;
 
+    if (!Rob_IsPlayerNearTarget(playerid)) {
+        SendClientMessageEx(playerid, COLOR_RED,
+            "{FF0000}[CUOP]{FFFFFF}: Ban da roi khoi muc tieu. Hanh dong cuop bi huy.");
+        Rob_ResetState(playerid);
+        return 1;
+    }
+
     arrRobState[playerid][rob_iTimer] = 0;
+    if (arrRobState[playerid][rob_iRangeTimer] > 0) {
+        KillTimer(arrRobState[playerid][rob_iRangeTimer]);
+        arrRobState[playerid][rob_iRangeTimer] = 0;
+    }
 
     // Tinh toan phan thuong
     new iMin, iMax;
@@ -287,10 +399,14 @@ hook OnPlayerDeath(playerid, killerid, reason) {
 
 /* ── CMD: /robatm ─────────────────────────────────────────── */
 CMD:robatm(playerid, params[]) {
+    Rob_Init();
 
     // Kiem tra dang hoat dong gi khac
     if (arrRobState[playerid][rob_iState] != ROB_STATE_NONE)
         return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Ban dang trong qua trinh cuop roi.");
+
+    if (IsACop(playerid))
+        return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Canh sat khong the thuc hien cuop.");
 
     // Kiem tra cop
     if (Rob_CountCops() < ROB_MIN_COPS)
@@ -309,6 +425,9 @@ CMD:robatm(playerid, params[]) {
     new iATM = Rob_FindNearestATM(playerid);
     if (iATM == -1)
         return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Ban khong dung gan ATM nao (trong vong 5m).");
+
+    if (Rob_IsTargetBusy(ROB_TYPE_ATM, iATM))
+        return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: ATM nay dang bi nguoi khac cuop.");
 
     // Kiem tra cooldown ATM
     if (gettime() < g_iATMCooldown[iATM]) {
@@ -330,6 +449,9 @@ CMD:robatm(playerid, params[]) {
     arrRobState[playerid][rob_iState]    = ROB_STATE_CRACKING;
     arrRobState[playerid][rob_iType]     = ROB_TYPE_ATM;
     arrRobState[playerid][rob_iTargetID] = iATM;
+    arrRobState[playerid][rob_iInt]      = GetPlayerInterior(playerid);
+    arrRobState[playerid][rob_iVW]       = GetPlayerVirtualWorld(playerid);
+    Rob_SetTargetRobber(ROB_TYPE_ATM, iATM, playerid);
 
     TogglePlayerControllable(playerid, 0); // dong bang player
     ApplyAnimation(playerid, "BOMBER", "BOM_Plant", 4.0, 1, 0, 0, 1, 10000, 1); // animation cui xuong pha khoa
@@ -345,9 +467,13 @@ CMD:robatm(playerid, params[]) {
 
 /* ── CMD: /robbiz ──────────────────────────────────────────── */
 CMD:robbiz(playerid, params[]) {
+    Rob_Init();
 
     if (arrRobState[playerid][rob_iState] != ROB_STATE_NONE)
         return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Ban dang trong qua trinh cuop roi.");
+
+    if (IsACop(playerid))
+        return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Canh sat khong the thuc hien cuop.");
 
     if (Rob_CountCops() < ROB_MIN_COPS)
         return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Can co it nhat 2 canh sat online.");
@@ -366,6 +492,9 @@ CMD:robbiz(playerid, params[]) {
         return SendClientMessageEx(playerid, COLOR_RED,
             "{FF0000}[CUOP]{FFFFFF}: Ban khong dung gan cua hang 24/7 nao (trong vong 5m).");
 
+    if (Rob_IsTargetBusy(ROB_TYPE_BIZ, iBiz))
+        return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Cua hang nay dang bi nguoi khac cuop.");
+
     if (gettime() < g_iBizCooldown[iBiz]) {
         new iLeft = g_iBizCooldown[iBiz] - gettime();
         new szMsg[128];
@@ -378,6 +507,9 @@ CMD:robbiz(playerid, params[]) {
     arrRobState[playerid][rob_iState]    = ROB_STATE_CRACKING;
     arrRobState[playerid][rob_iType]     = ROB_TYPE_BIZ;
     arrRobState[playerid][rob_iTargetID] = iBiz;
+    arrRobState[playerid][rob_iInt]      = GetPlayerInterior(playerid);
+    arrRobState[playerid][rob_iVW]       = GetPlayerVirtualWorld(playerid);
+    Rob_SetTargetRobber(ROB_TYPE_BIZ, iBiz, playerid);
 
     TogglePlayerControllable(playerid, 0);
 
@@ -406,6 +538,8 @@ CMD:cancelrob(playerid, params[]) {
 
 /* ── CMD: /gpsatm – police dung de tim ATM bi cuop ────────── */
 CMD:gpsatm(playerid, params[]) {
+    Rob_Init();
+
     if (!IsACop(playerid))
         return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong phai canh sat.");
 
@@ -437,6 +571,8 @@ CMD:gpsatm(playerid, params[]) {
 
 /* ── CMD: /gpsbiz [bizid] – police tim biz dang bi cuop ────── */
 CMD:gpsbiz(playerid, params[]) {
+    Rob_Init();
+
     if (!IsACop(playerid))
         return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong phai canh sat.");
 

@@ -194,7 +194,7 @@ stock SendCallToQueue(callfrom, description[], area[], mainzone[], type, vehicle
 		Calls[newid][CallVehicleId] = vehicleid;
 		Calls[newid][CallExpireTimer] = SetTimerEx("CallTimer", 60000, 0, "d", newid);
 		new query[512];
-		mysql_format(MainPipeline, query, sizeof(query), "INSERT INTO `911Calls` (Caller, Phone, Area, MainZone, Description, Type, Time) VALUES ('%s', %d, '%e', '%s', '%e', %d, UNIX_TIMESTAMP())", GetPlayerNameEx(callfrom), PlayerInfo[callfrom][pPnumber], area, mainzone, description, type);
+		mysql_format(MainPipeline, query, sizeof(query), "INSERT INTO `911Calls` (Caller, Phone, Area, MainZone, Description, Type, Time) VALUES ('%e', %d, '%e', '%e', '%e', %d, UNIX_TIMESTAMP())", GetPlayerNameEx(callfrom), PlayerInfo[callfrom][pPnumber], area, mainzone, description, type);
 		mysql_tquery(MainPipeline, query, "OnQueryFinish", "i", SENDDATA_THREAD);
     }
     else

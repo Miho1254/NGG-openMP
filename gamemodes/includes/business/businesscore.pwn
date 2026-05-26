@@ -2234,7 +2234,7 @@ CMD:bnext(playerid, params[])
 		SendClientMessageEx(playerid, COLOR_RED, "* Listing next available business...");
 		for(new i; i<MAX_BUSINESSES;i++)
 		{
-		    if(Businesses[i][bExtPos] == 0.0)
+		    if(Businesses[i][bExtPos][0] == 0.0 && Businesses[i][bExtPos][1] == 0.0 && Businesses[i][bExtPos][2] == 0.0)
 		    {
 		        new string[128];
 		        format(string, sizeof(string), "%d is available to use.", i);

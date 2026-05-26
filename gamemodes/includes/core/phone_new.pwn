@@ -266,8 +266,11 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			return 1;
 		}
 		case DIALOG_PHONE_PAYPHONES: {
-			if (ListItemTrackId[playerid][listitem] < 0 || ListItemTrackId[playerid][listitem] > MAX_PAYPHONES) return SendClientMessage(playerid, -1, "So dien thoai khong hop le");
-			callcmd::call(playerid, arrPayPhoneData[ListItemTrackId[playerid][listitem]][pp_iNumber]);
+			if(!response) return 1;
+
+			new payphoneid = ListItemTrackId[playerid][listitem];
+			if(payphoneid < 0 || payphoneid >= MAX_PAYPHONES || !IsValidDynamicArea(arrPayPhoneData[payphoneid][pp_iAreaID])) return SendClientMessage(playerid, -1, "So dien thoai khong hop le");
+			callcmd::call(playerid, arrPayPhoneData[payphoneid][pp_iNumber]);
 			return 1;
 		}
 		case DIALOG_PHONE_CONTACTS:
@@ -301,7 +304,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 							szZone[0] = 0;
 							GetPhoneZone(i, szZone, sizeof(szZone));
 							format(szMiscArray, sizeof(szMiscArray), "%sArea: %d\tNumber: %d\tZone: %s\n", szMiscArray, GetPhoneAreaCode(i), arrPayPhoneData[i][pp_iNumber], szZone);
-							ListItemTrackId[playerid][x] = arrPayPhoneData[i][pp_iNumber];
+							ListItemTrackId[playerid][x] = i;
 							x++;
 						}
 					}

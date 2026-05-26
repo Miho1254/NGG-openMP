@@ -62,6 +62,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 		GetPlayerDynamicAreas(playerid, areaid); //Assign nearest areaid.
 		// new i = Streamer_GetIntData(STREAMER_TYPE_AREA, areaid[0], E_STREAMER_EXTRA_ID);
 		for(new i; i < sizeof(ATMPoint); ++i) {
+			if(!IsValidDynamicArea(STREAMER_TAG_AREA:ATMPoint[i])) continue;
 
 			if(areaid[0] == ATMPoint[i]) {
 				

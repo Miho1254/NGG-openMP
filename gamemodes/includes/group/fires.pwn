@@ -87,9 +87,13 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 	switch(dialogid) {
 
 		case DIALOG_FIRES: {
+			if(!response) return 1;
 
-			SetPlayerPos(playerid, arrFires[ListItemTrackId[playerid][listitem]][fire_fPos][0],
-				arrFires[ListItemTrackId[playerid][listitem]][fire_fPos][1], arrFires[ListItemTrackId[playerid][listitem]][fire_fPos][2]);
+			new fireid = ListItemTrackId[playerid][listitem];
+			if(fireid < 0 || fireid >= iServerFires || !IsValidDynamicObject(arrFires[fireid][fire_iObjectID])) return 1;
+
+			SetPlayerPos(playerid, arrFires[fireid][fire_fPos][0],
+				arrFires[fireid][fire_fPos][1], arrFires[fireid][fire_fPos][2]);
 		}
 	}
 	return 0;

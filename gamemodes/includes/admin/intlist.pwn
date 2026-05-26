@@ -165,10 +165,11 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 	{
 		new stpos = strfind(inputtext, "(");
 	    new fpos = strfind(inputtext, ")");
+		if(stpos == -1 || fpos == -1 || fpos <= stpos + 1) return 1;
 	    new idstr[4], id;
 	    strmid(idstr, inputtext, stpos+1, fpos);
 	    id = strval(idstr) - 1;
-		if(id < 0) id = 0;
+		if(id < 0 || id >= sizeof(InteriorsList)) return 1;
 	    SetPlayerInterior(playerid, floatround(InteriorsList[id][3]));
 	    SetPlayerPos(playerid, InteriorsList[id][0], InteriorsList[id][1], InteriorsList[id][2]);
 	}
