@@ -82,7 +82,7 @@
 /*  ---------------- SCRIPT REVISION ----------------- */
 
 // Do not forget to change this everytime you commit - it's mandatory!
-#define SERVER_GM_TEXT "GTN:VN v1.4"
+#define SERVER_GM_TEXT "SAW:VN v1.4"
 
 //#define AREA_DEBUG
 //#define TEXTLABEL_DEBUG
@@ -442,6 +442,7 @@ public Float:player_get_speed(playerid)
 #include "./includes/modules/famed-mission.inc"
 #include "./includes/modules/cannabis.inc"
 #include "./includes/modules/blackmarket.inc"
+#include "./includes/modules/robbery.inc"
 
 //truyduoi
 #include "./includes/core/truyduoi.pwn"
