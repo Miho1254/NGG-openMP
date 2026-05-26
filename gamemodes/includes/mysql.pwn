@@ -778,7 +778,7 @@ public OnQueryFinish(resultid, extraid, handleid)
 					SetPVarInt(extraid, "pSQLID", PlayerInfo[extraid][pId]);
 
 					//g_mysql_LoadPVehiclePositions(extraid);
-					OnPlayerLoad(extraid);
+					GetPlayerConfigAccount(extraid);
                 	break;
 				}
 			}
