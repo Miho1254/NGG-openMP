@@ -496,7 +496,7 @@ Dialog:DIALOG_NPC_VIPSHOP(playerid, response, listitem, inputtext[])
                 {
                     if(GetPlayerCash(playerid) < 150000) return SendClientMessageEx(playerid, COLOR_GRAD3, "Ban khong du tien de mua vat pham nay!");
                     new success = -1;
-                    SetPlayerItem(playerid, 8, 100, success);
+                    SetPlayerItem(playerid, 8, 1, success);
                     if(success == 1)
                     {
                         GivePlayerCash(playerid, -150000);
@@ -527,7 +527,7 @@ Dialog:DIALOG_NPC_VIPSHOP(playerid, response, listitem, inputtext[])
                 {
                     if(PlayerData[playerid][pc_GP] < 65000) return SendClientMessageEx(playerid, COLOR_GRAD3, "Ban khong du GP de mua vat pham nay.");
                     new success = -1;
-                    SetPlayerItem(playerid, 9, 100, success);
+                    SetPlayerItem(playerid, 9, 1, success);
                     if(success == 1)
                     {
                         PlayerData[playerid][pc_GP] -= 65000;

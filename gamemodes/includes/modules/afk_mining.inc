@@ -22,9 +22,9 @@
 
 #define MACHINE_VIP_MAX_DURABILITY 10
 
-#define ROCK_MODEL_ID 3931          // Model ID cục đá khoáng sản (to hơn)
-#define MACHINE_NORMAL_MODEL_ID 943  // Model ID máy đào thường (Generator di động)
-#define MACHINE_VIP_MODEL_ID 929     // Model ID máy đào VIP (Generator công nghiệp lớn)
+#define ROCK_MODEL_ID 1305          // Model ID cục đá khoáng sản (dyn_quarryrock01 - to hơn nhiều)
+#define MACHINE_NORMAL_MODEL_ID 19921 // Model ID máy đào thường (CutsceneToolBox1 - hòm dụng cụ nhỏ gọn)
+#define MACHINE_VIP_MODEL_ID 943     // Model ID máy đào VIP (Generator di động nhỏ)
 
 // Enum và Biến
 enum e_MiningNode {
@@ -192,7 +192,7 @@ hook OnGameModeInit()
         MiningNodes[i][mn_RespawnTime] = 0;
         MiningNodes[i][mn_MachineOwner] = -1;
 
-        MiningNodes[i][mn_ObjectID] = CreateDynamicObject(ROCK_MODEL_ID, MiningNodes[i][mn_PosX], MiningNodes[i][mn_PosY], MiningNodes[i][mn_PosZ] - 0.5, 0.0, 0.0, MiningNodes[i][mn_Rot], -1, -1, -1, 150.0, 150.0);
+        MiningNodes[i][mn_ObjectID] = CreateDynamicObject(ROCK_MODEL_ID, MiningNodes[i][mn_PosX], MiningNodes[i][mn_PosY], MiningNodes[i][mn_PosZ] - 1.5, 0.0, 0.0, MiningNodes[i][mn_Rot], -1, -1, -1, 150.0, 150.0);
         
         MiningNodes[i][mn_Text3D] = CreateDynamic3DTextLabel("Mo Da", 0xFFFFFFFF, MiningNodes[i][mn_PosX], MiningNodes[i][mn_PosY], MiningNodes[i][mn_PosZ] + 1.2, 25.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, -1, -1, -1, 25.0);
         UpdateNode3DText(i);
@@ -228,12 +228,28 @@ hook OnPlayerShootDynamicObject(playerid, weaponid, STREAMER_TAG_OBJECT:objectid
                 MiningMachines[i][mm_HP] -= damage;
                 
                 if(MiningMachines[i][mm_HP] <= 0) {
-                    // May no
-                    RemoveMachine(i);
                     SendClientMessageEx(playerid, COLOR_YELLOW, "Ban da ban no 1 may dao khoang san!");
                     if(IsPlayerConnected(i)) {
-                        SendClientMessageEx(i, COLOR_RED, "[Canh Bao] May dao khoang san cua ban da bi nguoi khac ban no!");
+                        SendClientMessageEx(i, COLOR_RED, "[Canh Bao] May dao cua ban da bi nguoi khac ban hung! Tu dong thu hoi ve balo.");
+                        
+                        if(MiningMachines[i][mm_Type] == 1) {
+                            MiningMachines[i][mm_Durability] -= 1;
+                            if(MiningMachines[i][mm_Durability] <= 0) {
+                                SendClientMessageEx(i, COLOR_RED, "May dao VIP cua ban da hu hong hoan toan!");
+                            } else {
+                                GivePlayerItem(i, MACHINE_VIP_ID, 1);
+                                new new_slot = AFK_HasItem(i, MACHINE_VIP_ID);
+                                if(new_slot != -1) {
+                                    CharacterInfo[i][0][cb_ItemDurability][new_slot] = MiningMachines[i][mm_Durability] * 10;
+                                }
+                                Inventory_SaveData(i);
+                            }
+                        } else {
+                            GivePlayerItem(i, MACHINE_NORMAL_ID, 1);
+                            Inventory_SaveData(i);
+                        }
                     }
+                    RemoveMachine(i);
                 } else {
                     UpdateMachine3DText(i);
                 }
@@ -305,10 +321,9 @@ CMD:datmay(playerid, params[])
     
     MiningNodes[node_id][mn_MachineOwner] = playerid;
     
-    // Hien thi Object may dao, vi tri gan cuc da
     new machine_model = (type == 1) ? MACHINE_VIP_MODEL_ID : MACHINE_NORMAL_MODEL_ID;
-    MiningMachines[playerid][mm_ObjectID] = CreateDynamicObject(machine_model, MiningNodes[node_id][mn_PosX] + 1.2, MiningNodes[node_id][mn_PosY], MiningNodes[node_id][mn_PosZ] - 0.5, 0.0, 0.0, 0.0, -1, -1, -1, 100.0, 100.0);
-    MiningMachines[playerid][mm_Text3D] = CreateDynamic3DTextLabel("May Dao", 0xFFFFFFFF, MiningNodes[node_id][mn_PosX] + 1.2, MiningNodes[node_id][mn_PosY], MiningNodes[node_id][mn_PosZ] + 1.0, 20.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, -1, -1, -1, 20.0);
+    MiningMachines[playerid][mm_ObjectID] = CreateDynamicObject(machine_model, MiningNodes[node_id][mn_PosX] + 2.0, MiningNodes[node_id][mn_PosY], MiningNodes[node_id][mn_PosZ] - 0.9, 0.0, 0.0, 0.0, -1, -1, -1, 100.0, 100.0);
+    MiningMachines[playerid][mm_Text3D] = CreateDynamic3DTextLabel("May Dao", 0xFFFFFFFF, MiningNodes[node_id][mn_PosX] + 2.0, MiningNodes[node_id][mn_PosY], MiningNodes[node_id][mn_PosZ] + 0.2, 20.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, -1, -1, -1, 20.0);
     
     UpdateMachine3DText(playerid);
     
@@ -409,9 +424,17 @@ public AFKMining_GlobalUpdate()
                     continue; 
                 }
                 
-                // Giam nhien lieu moi giay
-                MiningMachines[i][mm_Fuel] -= 1;
-                if(MiningMachines[i][mm_Fuel] < 0) MiningMachines[i][mm_Fuel] = 0;
+                // Giam nhien lieu (vip: 1L/s, thuong: 1L moi 2s)
+                new bool:consume_fuel = true;
+                if(MiningMachines[i][mm_Type] == 0) {
+                    if(curtime % 2 == 0) consume_fuel = true;
+                    else consume_fuel = false;
+                }
+                
+                if(consume_fuel) {
+                    MiningMachines[i][mm_Fuel] -= 1;
+                    if(MiningMachines[i][mm_Fuel] < 0) MiningMachines[i][mm_Fuel] = 0;
+                }
                 
                 if(MiningMachines[i][mm_Fuel] <= 0) {
                     UpdateMachine3DText(i);
@@ -439,7 +462,7 @@ public AFKMining_GlobalUpdate()
                     format(str, sizeof(str), "May dao cua ban da dao xong! Ban nhan duoc %d khoang san.", amount);
                     SendClientMessageEx(i, COLOR_LIGHTGREEN, str);
                     
-                    // Xu ly may dao
+                    // Xu ly hoan thanh -> may tu bay ve balo
                     if(MiningMachines[i][mm_Type] == 1) {
                         MiningMachines[i][mm_Durability] -= 1;
                         if(MiningMachines[i][mm_Durability] <= 0) {
@@ -454,7 +477,9 @@ public AFKMining_GlobalUpdate()
                             SendClientMessageEx(i, COLOR_YELLOW, "May dao VIP cua ban da duoc thu hoi vao tui do.");
                         }
                     } else {
-                        SendClientMessageEx(i, COLOR_YELLOW, "May dao thuong cua ban da vo tan sau khi su dung.");
+                        GivePlayerItem(i, MACHINE_NORMAL_ID, 1); // Tra lai may thuong
+                        Inventory_SaveData(i);
+                        SendClientMessageEx(i, COLOR_YELLOW, "May dao thuong cua ban da duoc thu hoi vao tui do.");
                     }
                     
                     RemoveMachine(i);
