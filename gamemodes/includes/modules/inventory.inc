@@ -1523,7 +1523,32 @@ stock SetPlayerItem(playerid, id, amount, &succes)
     new j, k, slot = -1, stack = 0;
     new Float:new_weight;
     
-    // 1. --- KIỂM TRA CÂN NẶNG TỔNG VÀ TÌM SLOT MỚI ---
+    // 1. --- LOGIC CỘNG DỒN (STACKING) VÀ CẬP NHẬT 'amount' ---
+    for (new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+    {
+        if (CharacterInfo[playerid][0][cb_ItemID][i] == id)
+        {
+            new current_amount = CharacterInfo[playerid][0][cb_ItemAmount][i];
+            new limit = GetAmountItemLimit(id); // Lấy giới hạn stack của vật phẩm
+            
+            if (current_amount < limit)
+            {
+                new space = limit - current_amount;
+                new amount_to_add = min(amount, space); // Số lượng có thể thêm vào slot này
+                
+                CharacterInfo[playerid][0][cb_ItemAmount][i] += amount_to_add;
+                amount -= amount_to_add; // Cập nhật số lượng còn lại cần thêm
+                
+                if (amount == 0) 
+                {
+                    succes = 1;
+                    return 1; 
+                }
+            }
+        }
+    }
+    
+    // 2. --- KIỂM TRA CÂN NẶNG TỔNG VÀ TÌM SLOT MỚI ---
     // (Lấy logic từ phần 2 của GivePlayerItem)
     
     // Tính tổng trọng lượng hiện tại (Logic Cân nặng Cố định theo Slot)
@@ -1842,6 +1867,7 @@ stock GetAmountItemLimit(item)
     switch(item)
     {
         case 3 .. 7: return 250;
+        case 8 .. 9: return 1;
         case 10 .. 20: return 1;
         case 21: return 100;
         case 22: return 200;

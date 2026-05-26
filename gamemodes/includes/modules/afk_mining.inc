@@ -22,7 +22,7 @@
 
 #define MACHINE_VIP_MAX_DURABILITY 10
 
-#define ROCK_MODEL_ID 1305          // Model ID cục đá khoáng sản (dyn_quarryrock01 - to hơn nhiều)
+#define ROCK_MODEL_ID 906          // Model ID cục đá khoáng sản (p_rubblebig - to, đẹp và không bị lỗi vật lý trôi/chui đất)
 #define MACHINE_NORMAL_MODEL_ID 19921 // Model ID máy đào thường (CutsceneToolBox1 - hòm dụng cụ nhỏ gọn)
 #define MACHINE_VIP_MODEL_ID 943     // Model ID máy đào VIP (Generator di động nhỏ)
 
@@ -311,6 +311,7 @@ CMD:datmay(playerid, params[])
         initial_durability = 1;
         AFK_RemoveItem(playerid, MACHINE_NORMAL_ID, 1);
     }
+    Inventory_SaveData(playerid);
     
     MiningMachines[playerid][mm_IsActive] = true;
     MiningMachines[playerid][mm_Type] = type;
@@ -457,6 +458,7 @@ public AFKMining_GlobalUpdate()
                     if(MiningMachines[i][mm_Type] == 1) amount += 2; // VIP duoc nhieu hon
                     
                     GivePlayerItem(i, item_id, amount);
+                    Inventory_SaveData(i);
                     
                     new str[128];
                     format(str, sizeof(str), "May dao cua ban da dao xong! Ban nhan duoc %d khoang san.", amount);
