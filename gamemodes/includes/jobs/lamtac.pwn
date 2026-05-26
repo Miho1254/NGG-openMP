@@ -1,7 +1,7 @@
 #include <YSI\y_hooks>
 
 #define MAX_TREES 87
-#define TREE_RESPAWN_TIME 600 // 10 phut (600 giay)
+#define TREE_RESPAWN_TIME 300 // 5 phut (300 giay)
 #define TREE_NORMAL_OBJECT 657
 #define TREE_RARE_OBJECT 615
 
@@ -125,7 +125,7 @@ public LamTac_GlobalTimer() {
         UpdateDynamic3DTextLabelText(TreeData[r][treeLabel], COLOR_WHITE, "{FF0000}[GO SUA DO NGAN NAM]{FFFFFF}\nHP: 1000/1000\nSu dung /chatcay de khai thac");
         RareTreeIndex = r;
         
-        SendClientMessageToAll(COLOR_RED, "{FF0000}[TIN TUC] {FFFFFF}Mot cay Go Sua Do ngan nam vua xuat hien tai khu vuc rung nui! Dung /gpsgohiem de xem!");
+        SendClientMessageToAll(COLOR_RED, "{FF0000}[TIN TUC] {FFFFFF}Mot cay Go Sua Do ngan nam vua xuat hien tai khu vuc rung nui! Su dung {FFFF00}/gpsgohiem{FFFFFF} de tim vi tri!");
         SendGroupMessage(GROUP_TYPE_LEA, COLOR_RED, "{0000FF}[HQ] {FFFFFF}Tinh bao: Lam tac dang nham den Go Sua Do, hay chuan bi xe boc thep den tich thu!");
     }
     
@@ -174,6 +174,12 @@ CMD:chatcay(playerid, params[]) {
         SetPVarInt(playerid, "ChatCayCount", 0); // Vo han, tinh theo HP
         SetPVarInt(playerid, "ChatCayTimer", SetTimerEx("ChatCay_RareTick", 1000, true, "i", playerid));
         PlayerTextDrawSetString(playerid, ChatCayTD[playerid], "~r~Dang chat go sua do...");
+        
+        new zone[MAX_ZONE_NAME];
+        Get3DZone(TreePositions[treeid][0], TreePositions[treeid][1], TreePositions[treeid][2], zone, sizeof(zone));
+        new lawMsg[128];
+        format(lawMsg, sizeof(lawMsg), "{0000FF}[HQ] {FFFFFF}Canh bao: Phat hien lam tac dang bat dau khai thac Go Sua Do Ngan Nam tai khu vuc %s!", zone);
+        SendGroupMessage(GROUP_TYPE_LEA, COLOR_RED, lawMsg);
     } else { // Go thuong
         SetPVarInt(playerid, "ChatCayCount", 5); // 5 giay
         SetPVarInt(playerid, "ChatCayTimer", SetTimerEx("ChatCay_NormalTick", 1000, true, "i", playerid));
@@ -207,10 +213,10 @@ public ChatCay_NormalTick(playerid) {
         TreeData[treeid][treeState] = 1;
         TreeData[treeid][treeRespawnTime] = gettime() + TREE_RESPAWN_TIME;
         Streamer_SetIntData(STREAMER_TYPE_OBJECT, TreeData[treeid][treeObj], E_STREAMER_MODEL_ID, 0); // Giau object
-        UpdateDynamic3DTextLabelText(TreeData[treeid][treeLabel], COLOR_WHITE, "{AFAFAF}[CAY DANG MOC]{FFFFFF}\nMoc lai sau: 10 phut");
+        UpdateDynamic3DTextLabelText(TreeData[treeid][treeLabel], COLOR_WHITE, "{AFAFAF}[CAY DANG MOC]{FFFFFF}\nMoc lai sau: 5 phut");
         
         SetPVarInt(playerid, "WoodCarrying", 1);
-        SetPlayerAttachedObject(playerid, 9, 1463, 1, 0.1, 0.3, 0.0, 0.0, 90.0, 0.0); // Cam khuc go
+        SetPlayerAttachedObject(playerid, 9, 1463, 1, 0.1, 0.55, 0.0, 0.0, 90.0, 0.0); // Cam khuc go (RP: push forward to hands)
         SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY);
         SendClientMessageEx(playerid, COLOR_LIGHTGREEN, "{33AA33}[LAM TAC]{FFFFFF} Ban da chat xong 10kg go thuong. Hay ra phia sau xe tai dung lenh {FFFF00}/putgo{FFFFFF}.");
     } else {
@@ -246,11 +252,11 @@ public ChatCay_RareTick(playerid) {
         TreeData[treeid][treeState] = 1;
         TreeData[treeid][treeRespawnTime] = gettime() + TREE_RESPAWN_TIME;
         Streamer_SetIntData(STREAMER_TYPE_OBJECT, TreeData[treeid][treeObj], E_STREAMER_MODEL_ID, 0);
-        UpdateDynamic3DTextLabelText(TreeData[treeid][treeLabel], COLOR_WHITE, "{AFAFAF}[CAY DANG MOC]{FFFFFF}\nMoc lai sau: 10 phut");
+        UpdateDynamic3DTextLabelText(TreeData[treeid][treeLabel], COLOR_WHITE, "{AFAFAF}[CAY DANG MOC]{FFFFFF}\nMoc lai sau: 5 phut");
         RareTreeIndex = -1;
         
         SetPVarInt(playerid, "WoodCarrying", 2); // Go sua do
-        SetPlayerAttachedObject(playerid, 9, 1974, 1, 0.1, 0.3, 0.0, 0.0, 90.0, 0.0); // Khuc go to
+        SetPlayerAttachedObject(playerid, 9, 1974, 1, 0.1, 0.55, 0.0, 0.0, 90.0, 0.0); // Khuc go to (RP: push forward to hands)
         SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY);
         
         new str[128];
@@ -342,6 +348,10 @@ CMD:sellgohiem(playerid, params[]) {
     new str[128];
     format(str, sizeof(str), "{FF0000}[CHO DEN]{FFFFFF} Ban da giao dich thanh cong Go Sua Do va nhan duoc $%s tien ban.", number_format(WOOD_RARE_PRICE));
     SendClientMessageEx(playerid, COLOR_WHITE, str);
+    
+    new globalMsg[128];
+    format(globalMsg, sizeof(globalMsg), "{FF0000}[TIN TUC] {FFFFFF}Mot luong Go Sua Do Ngan Nam da duoc tieu thu thanh cong tai Cho Den!");
+    SendClientMessageToAll(COLOR_RED, globalMsg);
     return 1;
 }
 
@@ -383,6 +393,6 @@ CMD:forcegohiem(playerid, params[]) {
     UpdateDynamic3DTextLabelText(TreeData[r][treeLabel], COLOR_WHITE, "{FF0000}[GO SUA DO NGAN NAM]{FFFFFF}\nHP: 1000/1000\nSu dung /chatcay de khai thac");
     RareTreeIndex = r;
     
-    SendClientMessageToAll(COLOR_RED, "{FF0000}[TIN TUC] {FFFFFF}Mot cay Go Sua Do ngan nam vua xuat hien (ADMIN FORCE)!");
+    SendClientMessageToAll(COLOR_RED, "{FF0000}[TIN TUC] {FFFFFF}Mot cay Go Sua Do ngan nam vua xuat hien (ADMIN FORCE)! Su dung {FFFF00}/gpsgohiem{FFFFFF} de tim vi tri!");
     return 1;
 }

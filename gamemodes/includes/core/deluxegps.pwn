@@ -144,7 +144,9 @@ new Float:gpsMerchantZones[][3] = {
 	{2022.5978,-1266.4010,23.9779}, // Chung cu Glen Park
 	{1128.9141,-1411.1869,13.6130}, // Market
 	{-1636.6312,1201.3365,7.2021}, // Shop xe Downtown (SF)
-	{-2211.9250,611.0851,35.1641} // NPC Six Que (Chuoc xe)
+	{-2211.9250,611.0851,35.1641}, // NPC Six Que (Chuoc xe)
+	{-757.2557, -684.4448, 108.4334}, // Khu khai thac Go (Lam tac)
+	{-237.9103, -230.4285, 2.3567} // Xuong Moc (Nam Lam Nghiep)
 };
 new gpsMerchantNames[][32] = {
 	"Khu cau ca 1 (LS)",
@@ -163,7 +165,9 @@ new gpsMerchantNames[][32] = {
 	"Chung cu Glen Park (LS)",
 	"Market (LS)",
 	"Shop xe Downtown (SF)",
-	"NPC Six Que (Chuoc xe)"
+	"NPC Six Que (Chuoc xe)",
+	"Khu khai thac Go (Lam tac)",
+	"Xuong Moc (Nam Lam Nghiep)"
 };
 
 new Float:gpsIllegalZones[][3] = {
@@ -171,14 +175,16 @@ new Float:gpsIllegalZones[][3] = {
 	{-1333.2675,-2161.7058,22.8201}, // Khu vuc can sa
 	{-2204.5874,961.0796,80.0000}, // NPC thu mua can sa
 	{-1110.5009,-1685.7577,76.3739}, // NPC BlackMarket
-	{-2107.4202,-2402.3198,31.3793} // Cho tieu thu xe trom
+	{-2107.4202,-2402.3198,31.3793}, // Cho tieu thu xe trom
+	{-713.3918, 273.0150, 2.4172} // Cho Den (Ban Go Sua Do)
 };
 new gpsIllegalNames[][32] = {
 	"Khu che bien can sa",
 	"Khu vuc can sa",
 	"NPC thu mua can sa",
 	"NPC BlackMarket (Koon 8 ngon')",
-	"Cho tieu thu xe trom"
+	"Cho tieu thu xe trom",
+	"Cho Den (Ban Go Sua Do)"
 };
 
 stock ShowGPSCategoryDialog(playerid, category) {
