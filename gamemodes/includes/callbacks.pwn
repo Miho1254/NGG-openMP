@@ -4393,10 +4393,8 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	IsPlayerEntering{playerid} = false;
 	if(newstate == PLAYER_STATE_PASSENGER)
 	{
-		if (PlayerInfo[playerid][pSpeedo] != 0)
-		{
-			ShowVehicleHUDForPlayer(playerid);
-		}
+		PlayerInfo[playerid][pSpeedo] = 1;
+		ShowVehicleHUDForPlayer(playerid);
 	}
 	if(newstate == PLAYER_STATE_DRIVER)
 	{
@@ -4418,10 +4416,8 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 			}
 		}
 
-		if (PlayerInfo[playerid][pSpeedo] != 0)
-		{
-			ShowVehicleHUDForPlayer(playerid);
-		}
+		PlayerInfo[playerid][pSpeedo] = 1;
+		ShowVehicleHUDForPlayer(playerid);
 		if(newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER)
 		{
 			if(GetPlayerWeapon(playerid) != 28 && GetPlayerWeapon(playerid) != 29)

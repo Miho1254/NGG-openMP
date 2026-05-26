@@ -34,65 +34,71 @@
 
 stock UpdateVehicleHUDForPlayer(p, fuel, speed)
 {
-	new str[128], vehicleid = GetPlayerVehicleID(p), szColor[4];
-	new engine,lights,alarm,doors,bonnet,boot,objective;
-	GetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,boot,objective);
-	switch(speed)
-	{
-	    case 0..40: szColor = "~w~";
-	    case 41..60: szColor = "~y~";
-	    default: szColor = "~r~";
-	}
+	new str[128], vehicleid = GetPlayerVehicleID(p);
+	if (vehicleid == INVALID_VEHICLE_ID) return;
 
-	if (IsVIPcar(vehicleid) || IsAdminSpawnedVehicle(vehicleid) || IsFamedVeh(vehicleid) || GetVehicleModel(vehicleid) == 481 || GetVehicleModel(vehicleid) == 509 || GetVehicleModel(vehicleid) == 510)
-		format(str, sizeof(str), "~b~Xang: ~w~U");
-	else
-		format(str, sizeof(str), "~b~Xang: ~w~%i",fuel);
+	new engine, lights, alarm, doors, bonnet, boot, objective;
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 
-	PlayerTextDrawSetString(p, _vhudTextFuel[p], str);
+	// Update speed text: speed_TD[p][28]
+	format(str, sizeof(str), "%d", speed);
+	PlayerTextDrawSetString(p, speed_TD[p][28], str);
 
-	format(str, sizeof(str), "~b~Toc do: %s%i",szColor, speed);
-	PlayerTextDrawSetString(p, _vhudTextSpeed[p], str);
+	// Update fuel bar: speed_TD[p][19] (width goes from 0.0 to 57.0)
+	new Float:width = (float(fuel) / 100.0) * 57.0;
+	PlayerTextDrawTextSize(p, speed_TD[p][19], width, 3.0000);
+	PlayerTextDrawShow(p, speed_TD[p][19]); // Re-show to update size
 
-	if(Seatbelt[p] == 0)
-	{
-		format(str, sizeof(str), "~b~%s: ~r~OFF", IsABike(vehicleid) ? ("HM"):("SB"));
-		PlayerTextDrawSetString(p, _vhudSeatBelt[p], str);
+	// Update fuel text: speed_TD[p][20]
+	format(str, sizeof(str), "FILL_%d", fuel);
+	PlayerTextDrawSetString(p, speed_TD[p][20], str);
+
+	// Update engine status: speed_TD[p][22]
+	if (engine == VEHICLE_PARAMS_ON) {
+		PlayerTextDrawColor(p, speed_TD[p][22], 0x42f56bFF); // Green
+	} else {
+		PlayerTextDrawColor(p, speed_TD[p][22], 0x888888FF); // Gray
 	}
-	else if(Seatbelt[p] == 2) {
-		format(str, sizeof(str), "~b~HM: ~g~ON");
-		PlayerTextDrawSetString(p, _vhudSeatBelt[p], str);
+	PlayerTextDrawShow(p, speed_TD[p][22]);
+
+	// Update lock status: speed_TD[p][21]
+	if (doors == VEHICLE_PARAMS_ON) {
+		PlayerTextDrawColor(p, speed_TD[p][21], 0xf54242FF); // Red (Locked)
+	} else {
+		PlayerTextDrawColor(p, speed_TD[p][21], 0x42f56bFF); // Green (Unlocked)
 	}
-	else {
-		format(str, sizeof(str), "~b~SB: ~g~ON");
-		PlayerTextDrawSetString(p, _vhudSeatBelt[p], str);
+	PlayerTextDrawShow(p, speed_TD[p][21]);
+
+	// Update light status: speed_TD[p][23]
+	if (lights == VEHICLE_PARAMS_ON) {
+		PlayerTextDrawColor(p, speed_TD[p][23], 0xf5ee42FF); // Yellow
+	} else {
+		PlayerTextDrawColor(p, speed_TD[p][23], 0x888888FF); // Gray
 	}
-	if(lights != VEHICLE_PARAMS_ON) {
-		format(str, sizeof(str), "~b~Den xe: ~r~OFF");
-		PlayerTextDrawSetString(p, _vhudLights[p], str);
-	}
-	else {
-		format(str, sizeof(str), "~b~Den xe: ~g~ON");
-		PlayerTextDrawSetString(p, _vhudLights[p], str);
-	}
+	PlayerTextDrawShow(p, speed_TD[p][23]);
 }
 
 stock ShowVehicleHUDForPlayer(playerid)
 {
-	PlayerTextDrawShow(playerid, _vhudTextFuel[playerid]);
-	PlayerTextDrawShow(playerid, _vhudTextSpeed[playerid]);
-	PlayerTextDrawShow(playerid, _vhudSeatBelt[playerid]);
-	PlayerTextDrawShow(playerid, _vhudLights[playerid]);
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid != INVALID_VEHICLE_ID) {
+		new model = GetVehicleModel(vehicleid);
+		PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][1], model);
+		PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][3], model);
+		PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][12], model);
+		PlayerTextDrawSetPreviewModel(playerid, speed_TD[playerid][16], model);
+	}
+	for(new i = 0; i < 29; i++) {
+		PlayerTextDrawShow(playerid, speed_TD[playerid][i]);
+	}
 	_vhudVisible[playerid] = 1;
 }
 
-
 stock HideVehicleHUDForPlayer(playerid)
 {
-	PlayerTextDrawHide(playerid, _vhudTextFuel[playerid]);
-	PlayerTextDrawHide(playerid, _vhudTextSpeed[playerid]);
-	PlayerTextDrawHide(playerid, _vhudSeatBelt[playerid]);
-	PlayerTextDrawHide(playerid, _vhudLights[playerid]);
+	for(new i = 0; i < 29; i++) {
+		PlayerTextDrawHide(playerid, speed_TD[playerid][i]);
+	}
 	_vhudVisible[playerid] = 0;
 }
 

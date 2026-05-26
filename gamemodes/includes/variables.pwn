@@ -335,6 +335,7 @@ new PlayerText:_vhudTextSpeed[MAX_PLAYERS];
 new PlayerText:_vhudSeatBelt[MAX_PLAYERS];
 new PlayerText:_vhudLights[MAX_PLAYERS];
 new PlayerText:_vhudFlash[MAX_PLAYERS];
+new PlayerText:speed_TD[MAX_PLAYERS][29];
 new PlayerText:_crTextTarget[MAX_PLAYERS];
 new PlayerText:_crTextSpeed[MAX_PLAYERS];
 new PlayerText:_crTickets[MAX_PLAYERS];
