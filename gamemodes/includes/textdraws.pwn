@@ -2498,6 +2498,7 @@ stock CreatePlayerTextDraws(playerid)
 	PlayerTextDrawSetShadow(playerid, HospTime[playerid], 1);
 	PlayerTextDrawSetSelectable(playerid, HospTime[playerid], 0);
 
+	/*
 	speed_TD[playerid][0] = CreatePlayerTextDraw(playerid, 520.1669, 371.6667, "particle:lamp_shad_64");
 	PlayerTextDrawTextSize(playerid, speed_TD[playerid][0], 76.0000, 33.0000);
 	PlayerTextDrawAlignment(playerid, speed_TD[playerid][0], 1);
@@ -2766,6 +2767,7 @@ stock CreatePlayerTextDraws(playerid)
 	PlayerTextDrawFont(playerid, speed_TD[playerid][28], 3);
 	PlayerTextDrawSetProportional(playerid, speed_TD[playerid][28], 1);
 	PlayerTextDrawSetShadow(playerid, speed_TD[playerid][28], 0);
+	*/
 	return 1;
 }
 
