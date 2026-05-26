@@ -7,7 +7,6 @@
 
 // Tùy chỉnh thông số
 #define MAX_MINING_NODES 60
-#define MAX_MINING_MACHINES_PER_PLAYER 3
 
 #define MINING_NODE_MAX_HP 1000
 #define MINING_NODE_RESPAWN_TIME 900 // 15 phút (giây)
@@ -23,6 +22,10 @@
 
 #define MACHINE_VIP_MAX_DURABILITY 10
 
+#define ROCK_MODEL_ID 3931          // Model ID cục đá khoáng sản (to hơn)
+#define MACHINE_NORMAL_MODEL_ID 943  // Model ID máy đào thường (Generator di động)
+#define MACHINE_VIP_MODEL_ID 929     // Model ID máy đào VIP (Generator công nghiệp lớn)
+
 // Enum và Biến
 enum e_MiningNode {
     Float:mn_PosX,
@@ -34,8 +37,7 @@ enum e_MiningNode {
     mn_HP,
     mn_RespawnTime, // Timestamp khi nào respawn
     bool:mn_IsActive,
-    mn_MachineOwner, // PlayerID cua may dao dang cam
-    mn_MachineSlot   // Slot cua may dao
+    mn_MachineOwner // PlayerID cua may dao dang cam
 };
 
 enum e_MiningMachine {
@@ -45,11 +47,12 @@ enum e_MiningMachine {
     mm_ObjectID,
     Text3D:mm_Text3D,
     mm_HP,
-    mm_Durability
+    mm_Durability,
+    mm_Fuel // Muc nhien lieu con lai (0 - 100)
 };
 
 new MiningNodes[MAX_MINING_NODES][e_MiningNode];
-new MiningMachines[MAX_PLAYERS][MAX_MINING_MACHINES_PER_PLAYER][e_MiningMachine];
+new MiningMachines[MAX_PLAYERS][e_MiningMachine];
 
 new Float:MiningSpawnPoints[][4] = {
     {-1252.1819, -841.4357, 106.4100, 180.8114},
@@ -144,29 +147,33 @@ stock UpdateNode3DText(nodeid) {
     UpdateDynamic3DTextLabelText(MiningNodes[nodeid][mn_Text3D], 0xFFFFFFFF, str);
 }
 
-stock UpdateMachine3DText(playerid, slot) {
-    if(!MiningMachines[playerid][slot][mm_IsActive]) return;
+stock UpdateMachine3DText(playerid) {
+    if(!MiningMachines[playerid][mm_IsActive]) return;
     new str[128], type_str[32];
-    if(MiningMachines[playerid][slot][mm_Type] == 0) type_str = "Thuong";
+    if(MiningMachines[playerid][mm_Type] == 0) type_str = "Thuong";
     else type_str = "VIP";
     
-    format(str, sizeof(str), "{00FFFF}[May Dao %s]{FFFFFF}\nChu: %s\nHP May: %d\nDang khai thac...", type_str, GetPlayerNameEx(playerid), MiningMachines[playerid][slot][mm_HP]);
-    UpdateDynamic3DTextLabelText(MiningMachines[playerid][slot][mm_Text3D], 0xFFFFFFFF, str);
+    new fuel = MiningMachines[playerid][mm_Fuel];
+    if(fuel <= 0) {
+        format(str, sizeof(str), "{FF0000}[May Dao %s (Het Xang)]{FFFFFF}\nChu: %s\nHP May: %d\n/bomxang de tiep nhien lieu", type_str, GetPlayerNameEx(playerid), MiningMachines[playerid][mm_HP]);
+    } else {
+        format(str, sizeof(str), "{00FFFF}[May Dao %s]{FFFFFF}\nChu: %s\nHP May: %d\nXang: %d/100L\nDang khai thac...", type_str, GetPlayerNameEx(playerid), MiningMachines[playerid][mm_HP], fuel);
+    }
+    UpdateDynamic3DTextLabelText(MiningMachines[playerid][mm_Text3D], 0xFFFFFFFF, str);
 }
 
-stock RemoveMachine(playerid, slot) {
-    if(MiningMachines[playerid][slot][mm_IsActive]) {
-        DestroyDynamicObject(MiningMachines[playerid][slot][mm_ObjectID]);
-        DestroyDynamic3DTextLabel(MiningMachines[playerid][slot][mm_Text3D]);
+stock RemoveMachine(playerid) {
+    if(MiningMachines[playerid][mm_IsActive]) {
+        DestroyDynamicObject(MiningMachines[playerid][mm_ObjectID]);
+        DestroyDynamic3DTextLabel(MiningMachines[playerid][mm_Text3D]);
         
-        new nodeid = MiningMachines[playerid][slot][mm_NodeID];
-        if(nodeid != -1 && MiningNodes[nodeid][mn_MachineOwner] == playerid && MiningNodes[nodeid][mn_MachineSlot] == slot) {
+        new nodeid = MiningMachines[playerid][mm_NodeID];
+        if(nodeid != -1 && MiningNodes[nodeid][mn_MachineOwner] == playerid) {
             MiningNodes[nodeid][mn_MachineOwner] = -1;
-            MiningNodes[nodeid][mn_MachineSlot] = -1;
         }
         
-        MiningMachines[playerid][slot][mm_IsActive] = false;
-        MiningMachines[playerid][slot][mm_NodeID] = -1;
+        MiningMachines[playerid][mm_IsActive] = false;
+        MiningMachines[playerid][mm_NodeID] = -1;
     }
 }
 
@@ -184,11 +191,10 @@ hook OnGameModeInit()
         MiningNodes[i][mn_IsActive] = true;
         MiningNodes[i][mn_RespawnTime] = 0;
         MiningNodes[i][mn_MachineOwner] = -1;
-        MiningNodes[i][mn_MachineSlot] = -1;
 
-        MiningNodes[i][mn_ObjectID] = CreateDynamicObject(3930, MiningNodes[i][mn_PosX], MiningNodes[i][mn_PosY], MiningNodes[i][mn_PosZ] - 0.5, 0.0, 0.0, MiningNodes[i][mn_Rot], -1, -1, -1, 500.0, 500.0);
+        MiningNodes[i][mn_ObjectID] = CreateDynamicObject(ROCK_MODEL_ID, MiningNodes[i][mn_PosX], MiningNodes[i][mn_PosY], MiningNodes[i][mn_PosZ] - 0.5, 0.0, 0.0, MiningNodes[i][mn_Rot], -1, -1, -1, 150.0, 150.0);
         
-        MiningNodes[i][mn_Text3D] = CreateDynamic3DTextLabel("Mo Da", 0xFFFFFFFF, MiningNodes[i][mn_PosX], MiningNodes[i][mn_PosY], MiningNodes[i][mn_PosZ] + 1.0, 300.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, -1, -1, -1, 300.0);
+        MiningNodes[i][mn_Text3D] = CreateDynamic3DTextLabel("Mo Da", 0xFFFFFFFF, MiningNodes[i][mn_PosX], MiningNodes[i][mn_PosY], MiningNodes[i][mn_PosZ] + 1.2, 25.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, -1, -1, -1, 25.0);
         UpdateNode3DText(i);
     }
     
@@ -202,11 +208,9 @@ hook OnGameModeExit()
 
 hook OnPlayerDisconnect(playerid, reason)
 {
-    for(new i = 0; i < MAX_MINING_MACHINES_PER_PLAYER; i++) {
-        if(MiningMachines[playerid][i][mm_IsActive]) {
-            // Khi out game, may dao se bi mat
-            RemoveMachine(playerid, i);
-        }
+    if(MiningMachines[playerid][mm_IsActive]) {
+        // Khi out game, may dao se bi mat
+        RemoveMachine(playerid);
     }
 }
 
@@ -214,28 +218,26 @@ hook OnPlayerShootDynamicObject(playerid, weaponid, STREAMER_TAG_OBJECT:objectid
 {
     // Kiem tra xem co trung may dao nao khong
     for(new i = 0; i < MAX_PLAYERS; i++) {
-        if(IsPlayerConnected(i)) {
-            for(new j = 0; j < MAX_MINING_MACHINES_PER_PLAYER; j++) {
-                if(MiningMachines[i][j][mm_IsActive] && objectid == STREAMER_TAG_OBJECT:MiningMachines[i][j][mm_ObjectID]) {
-                    // Trung may dao
-                    new damage = 20; // Sat thuong mac dinh moi vien dan
-                    if(weaponid >= 22 && weaponid <= 34) damage = 30;
-                    if(weaponid == 38) damage = 50; // minigun
-                    
-                    MiningMachines[i][j][mm_HP] -= damage;
-                    
-                    if(MiningMachines[i][j][mm_HP] <= 0) {
-                        // May no
-                        RemoveMachine(i, j);
-                        SendClientMessageEx(playerid, COLOR_YELLOW, "Ban da ban no 1 may dao khoang san!");
-                        if(IsPlayerConnected(i)) {
-                            SendClientMessageEx(i, COLOR_RED, "[Canh Bao] May dao khoang san cua ban da bi nguoi khac ban no!");
-                        }
-                    } else {
-                        UpdateMachine3DText(i, j);
+        if(IsPlayerConnected(i) && MiningMachines[i][mm_IsActive]) {
+            if(objectid == STREAMER_TAG_OBJECT:MiningMachines[i][mm_ObjectID]) {
+                // Trung may dao
+                new damage = 20; // Sat thuong mac dinh moi vien dan
+                if(weaponid >= 22 && weaponid <= 34) damage = 30;
+                if(weaponid == 38) damage = 50; // minigun
+                
+                MiningMachines[i][mm_HP] -= damage;
+                
+                if(MiningMachines[i][mm_HP] <= 0) {
+                    // May no
+                    RemoveMachine(i);
+                    SendClientMessageEx(playerid, COLOR_YELLOW, "Ban da ban no 1 may dao khoang san!");
+                    if(IsPlayerConnected(i)) {
+                        SendClientMessageEx(i, COLOR_RED, "[Canh Bao] May dao khoang san cua ban da bi nguoi khac ban no!");
                     }
-                    return 1;
+                } else {
+                    UpdateMachine3DText(i);
                 }
+                return 1;
             }
         }
     }
@@ -260,6 +262,11 @@ CMD:datmay(playerid, params[])
     
     if(!has_normal && !has_vip) return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong co May Dao (Thuong hoac VIP) trong tui do.");
     
+    // Check limit: maximum 1 machine of any type active
+    if(MiningMachines[playerid][mm_IsActive]) {
+        return SendClientMessageEx(playerid, COLOR_GREY, "Ban da dat 1 may dao roi, khong the dat them.");
+    }
+    
     new type = 0; // 0 = thuong, 1 = VIP
     if(has_normal && has_vip) {
         if(strcmp(params, "vip", true) == 0) {
@@ -275,33 +282,6 @@ CMD:datmay(playerid, params[])
         type = 0;
     }
     
-    // Check limit per type: Max 1 active normal machine, Max 2 active VIP machines
-    new active_normal = 0;
-    new active_vip = 0;
-    for(new i = 0; i < MAX_MINING_MACHINES_PER_PLAYER; i++) {
-        if(MiningMachines[playerid][i][mm_IsActive]) {
-            if(MiningMachines[playerid][i][mm_Type] == 1) active_vip++;
-            else active_normal++;
-        }
-    }
-    
-    if(type == 1) {
-        if(active_vip >= 2) return SendClientMessageEx(playerid, COLOR_GREY, "Ban da dat toi da so luong may dao VIP cho phep (2 may).");
-    } else {
-        if(active_normal >= 1) return SendClientMessageEx(playerid, COLOR_GREY, "Ban da dat toi da so luong may dao thuong cho phep (1 may).");
-    }
-    
-    // Tim slot trong
-    new slot = -1;
-    for(new i = 0; i < MAX_MINING_MACHINES_PER_PLAYER; i++) {
-        if(!MiningMachines[playerid][i][mm_IsActive]) {
-            slot = i;
-            break;
-        }
-    }
-    
-    if(slot == -1) return 1;
-    
     new initial_durability = 1;
     if(type == 1) {
         new inv_slot = AFK_HasItem(playerid, MACHINE_VIP_ID);
@@ -316,22 +296,89 @@ CMD:datmay(playerid, params[])
         AFK_RemoveItem(playerid, MACHINE_NORMAL_ID, 1);
     }
     
-    MiningMachines[playerid][slot][mm_IsActive] = true;
-    MiningMachines[playerid][slot][mm_Type] = type;
-    MiningMachines[playerid][slot][mm_NodeID] = node_id;
-    MiningMachines[playerid][slot][mm_HP] = (type == 1) ? MACHINE_VIP_HP : MACHINE_NORMAL_HP;
-    MiningMachines[playerid][slot][mm_Durability] = initial_durability;
+    MiningMachines[playerid][mm_IsActive] = true;
+    MiningMachines[playerid][mm_Type] = type;
+    MiningMachines[playerid][mm_NodeID] = node_id;
+    MiningMachines[playerid][mm_HP] = (type == 1) ? MACHINE_VIP_HP : MACHINE_NORMAL_HP;
+    MiningMachines[playerid][mm_Durability] = initial_durability;
+    MiningMachines[playerid][mm_Fuel] = 100; // Bat dau voi 100% nhien lieu
     
     MiningNodes[node_id][mn_MachineOwner] = playerid;
-    MiningNodes[node_id][mn_MachineSlot] = slot;
     
     // Hien thi Object may dao, vi tri gan cuc da
-    MiningMachines[playerid][slot][mm_ObjectID] = CreateDynamicObject(1886, MiningNodes[node_id][mn_PosX] + 1.0, MiningNodes[node_id][mn_PosY], MiningNodes[node_id][mn_PosZ] - 0.5, 0.0, 0.0, 0.0, -1, -1, -1, 500.0, 500.0);
-    MiningMachines[playerid][slot][mm_Text3D] = CreateDynamic3DTextLabel("May Dao", 0xFFFFFFFF, MiningNodes[node_id][mn_PosX] + 1.0, MiningNodes[node_id][mn_PosY], MiningNodes[node_id][mn_PosZ] + 1.0, 300.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, -1, -1, -1, 300.0);
+    new machine_model = (type == 1) ? MACHINE_VIP_MODEL_ID : MACHINE_NORMAL_MODEL_ID;
+    MiningMachines[playerid][mm_ObjectID] = CreateDynamicObject(machine_model, MiningNodes[node_id][mn_PosX] + 1.2, MiningNodes[node_id][mn_PosY], MiningNodes[node_id][mn_PosZ] - 0.5, 0.0, 0.0, 0.0, -1, -1, -1, 100.0, 100.0);
+    MiningMachines[playerid][mm_Text3D] = CreateDynamic3DTextLabel("May Dao", 0xFFFFFFFF, MiningNodes[node_id][mn_PosX] + 1.2, MiningNodes[node_id][mn_PosY], MiningNodes[node_id][mn_PosZ] + 1.0, 20.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, -1, -1, -1, 20.0);
     
-    UpdateMachine3DText(playerid, slot);
+    UpdateMachine3DText(playerid);
     
-    SendClientMessageEx(playerid, COLOR_LIGHTGREEN, "Ban da dat may dao thanh cong. Ban co the di lam viec khac.");
+    SendClientMessageEx(playerid, COLOR_LIGHTGREEN, "Ban da dat may dao thanh cong. Ban co the di lam viec khac. Dung Can Xang de /bomxang khi het.");
+    return 1;
+}
+
+CMD:bomxang(playerid, params[])
+{
+    if(!MiningMachines[playerid][mm_IsActive]) {
+        return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong co may dao nao dang hoat dong.");
+    }
+    
+    new node_id = MiningMachines[playerid][mm_NodeID];
+    if(node_id == -1) return 1;
+    
+    // Kiem tra cu ly gan may dao
+    if(!IsPlayerInRangeOfPoint(playerid, 4.0, MiningNodes[node_id][mn_PosX], MiningNodes[node_id][mn_PosY], MiningNodes[node_id][mn_PosZ])) {
+        return SendClientMessageEx(playerid, COLOR_GREY, "Ban phai dung gan may dao cua minh de bom xang.");
+    }
+    
+    if(MiningMachines[playerid][mm_Fuel] >= 100) {
+        return SendClientMessageEx(playerid, COLOR_GREY, "May dao cua ban da day nhien lieu.");
+    }
+    
+    // Tim Can xang trong tui do (Item 21 = 100L, Item 22 = 200L)
+    new can_slot = AFK_HasItem(playerid, 21);
+    if(can_slot == -1) {
+        can_slot = AFK_HasItem(playerid, 22);
+    }
+    
+    if(can_slot == -1) {
+        return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong co Can Xang (Jerry Can) trong tui do.");
+    }
+    
+    new fuel_in_can = CharacterInfo[playerid][0][cb_ItemAmount][can_slot];
+    if(fuel_in_can <= 0) {
+        return SendClientMessageEx(playerid, COLOR_GREY, "Can xang cua ban da het nhien lieu. Hay den tram xang de nap.");
+    }
+    
+    new max_capacity = (CharacterInfo[playerid][0][cb_ItemID][can_slot] == 22) ? 200 : 100;
+    new needed = 100 - MiningMachines[playerid][mm_Fuel];
+    new transfer = (fuel_in_can > needed) ? needed : fuel_in_can;
+    
+    MiningMachines[playerid][mm_Fuel] += transfer;
+    CharacterInfo[playerid][0][cb_ItemAmount][can_slot] -= transfer;
+    
+    if(CharacterInfo[playerid][0][cb_ItemAmount][can_slot] <= 0) {
+        CharacterInfo[playerid][0][cb_ItemAmount][can_slot] = 0;
+        CharacterInfo[playerid][0][cb_ItemWeight][can_slot] = 0.0;
+        SendClientMessageEx(playerid, COLOR_YELLOW, "Can xang cua ban da het sach xang.");
+    } else {
+        new str[128];
+        format(str, sizeof(str), "Ban da bom %d lit xang vao may. Can xang con lai: %d/%d lit.", transfer, CharacterInfo[playerid][0][cb_ItemAmount][can_slot], max_capacity);
+        SendClientMessageEx(playerid, COLOR_LIGHTGREEN, str);
+    }
+    
+    // Luu lai balo
+    Inventory_SaveData(playerid);
+    
+    // Cap nhat 3D text
+    UpdateMachine3DText(playerid);
+    
+    // Phat tieng dong bom xang
+    PlayerPlaySound(playerid, 1058, 0.0, 0.0, 0.0);
+    
+    new action_str[128];
+    format(action_str, sizeof(action_str), "* %s da bom xang vao may dao khoang san cua ho.", GetPlayerNameEx(playerid));
+    ProxChatBubble(playerid, action_str);
+    
     return 1;
 }
 
@@ -347,7 +394,6 @@ public AFKMining_GlobalUpdate()
                 MiningNodes[i][mn_IsActive] = true;
                 MiningNodes[i][mn_HP] = MINING_NODE_MAX_HP;
                 MiningNodes[i][mn_MachineOwner] = -1;
-                MiningNodes[i][mn_MachineSlot] = -1;
                 UpdateNode3DText(i);
             }
         }
@@ -355,55 +401,67 @@ public AFKMining_GlobalUpdate()
     
     // Update Machines
     for(new i = 0; i < MAX_PLAYERS; i++) {
-        if(IsPlayerConnected(i)) {
-            for(new j = 0; j < MAX_MINING_MACHINES_PER_PLAYER; j++) {
-                if(MiningMachines[i][j][mm_IsActive]) {
-                    new node = MiningMachines[i][j][mm_NodeID];
-                    if(node != -1 && MiningNodes[node][mn_IsActive]) {
-                        new speed = (MiningMachines[i][j][mm_Type] == 1) ? MACHINE_VIP_SPEED : MACHINE_NORMAL_SPEED;
-                        MiningNodes[node][mn_HP] -= speed;
-                        
-                        if(MiningNodes[node][mn_HP] <= 0) {
-                            // Da vo, hoan thanh viec dao
-                            MiningNodes[node][mn_HP] = 0;
-                            MiningNodes[node][mn_IsActive] = false;
-                            MiningNodes[node][mn_RespawnTime] = curtime + MINING_NODE_RESPAWN_TIME;
-                            
-                            // Random khoang san (ID 3 toi 7)
-                            new item_id = 3 + random(5);
-                            new amount = 1 + random(2);
-                            if(MiningMachines[i][j][mm_Type] == 1) amount += 2; // VIP duoc nhieu hon
-                            
-                            GivePlayerItem(i, item_id, amount);
-                            
-                            new str[128];
-                            format(str, sizeof(str), "May dao cua ban da dao xong! Ban nhan duoc %d khoang san.", amount);
-                            SendClientMessageEx(i, COLOR_LIGHTGREEN, str);
-                            
-                            // Xu ly may dao
-                            if(MiningMachines[i][j][mm_Type] == 1) {
-                                MiningMachines[i][j][mm_Durability] -= 1;
-                                if(MiningMachines[i][j][mm_Durability] <= 0) {
-                                    SendClientMessageEx(i, COLOR_RED, "May dao VIP cua ban da hu hong hoan toan!");
-                                } else {
-                                    GivePlayerItem(i, MACHINE_VIP_ID, 1); // Tra lai VIP
-                                    new new_slot = AFK_HasItem(i, MACHINE_VIP_ID);
-                                    if(new_slot != -1) {
-                                        CharacterInfo[i][0][cb_ItemDurability][new_slot] = MiningMachines[i][j][mm_Durability] * 10;
-                                    }
-                                    Inventory_SaveData(i);
-                                    SendClientMessageEx(i, COLOR_YELLOW, "May dao VIP cua ban da duoc thu hoi vao tui do.");
-                                }
-                            } else {
-                                SendClientMessageEx(i, COLOR_YELLOW, "May dao thuong cua ban da vo tan sau khi su dung.");
-                            }
-                            
-                            RemoveMachine(i, j);
-                            UpdateNode3DText(node);
+        if(IsPlayerConnected(i) && MiningMachines[i][mm_IsActive]) {
+            new node = MiningMachines[i][mm_NodeID];
+            if(node != -1 && MiningNodes[node][mn_IsActive]) {
+                if(MiningMachines[i][mm_Fuel] <= 0) {
+                    // Het nhien lieu, tam ngung khai thac
+                    continue; 
+                }
+                
+                // Giam nhien lieu moi giay
+                MiningMachines[i][mm_Fuel] -= 1;
+                if(MiningMachines[i][mm_Fuel] < 0) MiningMachines[i][mm_Fuel] = 0;
+                
+                if(MiningMachines[i][mm_Fuel] <= 0) {
+                    UpdateMachine3DText(i);
+                    SendClientMessageEx(i, COLOR_RED, "[Canh Bao] May dao cua ban da het nhien lieu! Dung Can Xang de /bomxang.");
+                    continue;
+                }
+                
+                new speed = (MiningMachines[i][mm_Type] == 1) ? MACHINE_VIP_SPEED : MACHINE_NORMAL_SPEED;
+                MiningNodes[node][mn_HP] -= speed;
+                
+                if(MiningNodes[node][mn_HP] <= 0) {
+                    // Da vo, hoan thanh
+                    MiningNodes[node][mn_HP] = 0;
+                    MiningNodes[node][mn_IsActive] = false;
+                    MiningNodes[node][mn_RespawnTime] = curtime + MINING_NODE_RESPAWN_TIME;
+                    
+                    // Random khoang san (ID 3 toi 7)
+                    new item_id = 3 + random(5);
+                    new amount = 1 + random(2);
+                    if(MiningMachines[i][mm_Type] == 1) amount += 2; // VIP duoc nhieu hon
+                    
+                    GivePlayerItem(i, item_id, amount);
+                    
+                    new str[128];
+                    format(str, sizeof(str), "May dao cua ban da dao xong! Ban nhan duoc %d khoang san.", amount);
+                    SendClientMessageEx(i, COLOR_LIGHTGREEN, str);
+                    
+                    // Xu ly may dao
+                    if(MiningMachines[i][mm_Type] == 1) {
+                        MiningMachines[i][mm_Durability] -= 1;
+                        if(MiningMachines[i][mm_Durability] <= 0) {
+                            SendClientMessageEx(i, COLOR_RED, "May dao VIP cua ban da hu hong hoan toan!");
                         } else {
-                            UpdateNode3DText(node);
+                            GivePlayerItem(i, MACHINE_VIP_ID, 1); // Tra lai VIP
+                            new new_slot = AFK_HasItem(i, MACHINE_VIP_ID);
+                            if(new_slot != -1) {
+                                CharacterInfo[i][0][cb_ItemDurability][new_slot] = MiningMachines[i][mm_Durability] * 10;
+                            }
+                            Inventory_SaveData(i);
+                            SendClientMessageEx(i, COLOR_YELLOW, "May dao VIP cua ban da duoc thu hoi vao tui do.");
                         }
+                    } else {
+                        SendClientMessageEx(i, COLOR_YELLOW, "May dao thuong cua ban da vo tan sau khi su dung.");
                     }
+                    
+                    RemoveMachine(i);
+                    UpdateNode3DText(node);
+                } else {
+                    UpdateNode3DText(node);
+                    UpdateMachine3DText(i);
                 }
             }
         }
