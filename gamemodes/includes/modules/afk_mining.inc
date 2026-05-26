@@ -164,6 +164,13 @@ stock UpdateMachine3DText(playerid) {
 
 stock RemoveMachine(playerid) {
     if(MiningMachines[playerid][mm_IsActive]) {
+        // Save current fuel level in PVars
+        if(MiningMachines[playerid][mm_Type] == 0) {
+            SetPVarInt(playerid, "NormalMachineFuel", MiningMachines[playerid][mm_Fuel]);
+        } else {
+            SetPVarInt(playerid, "VIPMachineFuel", MiningMachines[playerid][mm_Fuel]);
+        }
+
         DestroyDynamicObject(MiningMachines[playerid][mm_ObjectID]);
         DestroyDynamic3DTextLabel(MiningMachines[playerid][mm_Text3D]);
         
@@ -318,7 +325,18 @@ CMD:datmay(playerid, params[])
     MiningMachines[playerid][mm_NodeID] = node_id;
     MiningMachines[playerid][mm_HP] = (type == 1) ? MACHINE_VIP_HP : MACHINE_NORMAL_HP;
     MiningMachines[playerid][mm_Durability] = initial_durability;
-    MiningMachines[playerid][mm_Fuel] = 100; // Bat dau voi 100% nhien lieu
+    
+    new stored_fuel = 100;
+    if(type == 0) {
+        if(GetPVarType(playerid, "NormalMachineFuel") != PLAYER_VARTYPE_NONE) {
+            stored_fuel = GetPVarInt(playerid, "NormalMachineFuel");
+        }
+    } else {
+        if(GetPVarType(playerid, "VIPMachineFuel") != PLAYER_VARTYPE_NONE) {
+            stored_fuel = GetPVarInt(playerid, "VIPMachineFuel");
+        }
+    }
+    MiningMachines[playerid][mm_Fuel] = stored_fuel;
     
     MiningNodes[node_id][mn_MachineOwner] = playerid;
     
@@ -461,7 +479,7 @@ public AFKMining_GlobalUpdate()
                     Inventory_SaveData(i);
                     
                     new str[128];
-                    format(str, sizeof(str), "May dao cua ban da dao xong! Ban nhan duoc %d khoang san.", amount);
+                    format(str, sizeof(str), "May dao cua ban da dao xong! Ban nhan duoc %d %s.", amount, GetItemName(item_id));
                     SendClientMessageEx(i, COLOR_LIGHTGREEN, str);
                     
                     // Xu ly hoan thanh -> may tu bay ve balo

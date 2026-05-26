@@ -500,6 +500,7 @@ Dialog:DIALOG_NPC_VIPSHOP(playerid, response, listitem, inputtext[])
                     if(success == 1)
                     {
                         GivePlayerCash(playerid, -150000);
+                        SetPVarInt(playerid, "NormalMachineFuel", 100);
                         SendClientMessageEx(playerid, COLOR_WHITE, "[{62FF00}Cua Hang{FFFFFF}] Ban da mua mot may khai thac thuong voi gia $150,000.");
                     }
                 }
@@ -531,6 +532,7 @@ Dialog:DIALOG_NPC_VIPSHOP(playerid, response, listitem, inputtext[])
                     if(success == 1)
                     {
                         PlayerData[playerid][pc_GP] -= 65000;
+                        SetPVarInt(playerid, "VIPMachineFuel", 100);
                         SendClientMessageEx(playerid, COLOR_WHITE, "[{62FF00}Cua Hang{FFFFFF}] Ban da mua mot may khai thac VIP voi gia 65,000 GP.");
                     }
                 }

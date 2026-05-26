@@ -4517,10 +4517,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 					}
 				}
 			}
-			if (_vhudVisible[playerid] == 1)
-			{
-				HideVehicleHUDForPlayer(playerid); // incase vehicle despawns
-			}
 			if (CarRadars[playerid] > 0)
 			{
 				PlayerTextDrawHide(playerid, _crTextTarget[playerid]);
@@ -4531,6 +4527,14 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 			SetPlayerWeaponsEx(playerid);
 		}
 		else if(oldstate == PLAYER_STATE_PASSENGER) SetPlayerWeaponsEx(playerid);
+
+		if(oldstate == PLAYER_STATE_DRIVER || oldstate == PLAYER_STATE_PASSENGER)
+		{
+			if (_vhudVisible[playerid] == 1)
+			{
+				HideVehicleHUDForPlayer(playerid);
+			}
+		}
 
 		if(ConnectedToPC[playerid] == 1337)//mdc
 	    {

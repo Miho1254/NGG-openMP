@@ -514,6 +514,7 @@ Dialog:DIALOG_RICHARD_QUEST(playerid, response, listitem, inputtext[])
             SetPlayerItem(playerid, 8, 1, success1);
             SetPlayerItem(playerid, 21, 100, success2);
             SetPlayerItem(playerid, 43, 1, success3);
+            if(success1 == 1) SetPVarInt(playerid, "NormalMachineFuel", 100);
             if(success1 == -1 || success2 == -1 || success3 == -1)
             {
                 fameReadPost[playerid] = 0;

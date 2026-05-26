@@ -34,8 +34,10 @@
 
 stock UpdateVehicleHUDForPlayer(p, fuel, speed)
 {
+	if (PlayerInfo[p][pSpeedo] == 0 || _vhudVisible[p] == 0) return;
+
 	new str[128], vehicleid = GetPlayerVehicleID(p);
-	if (vehicleid == INVALID_VEHICLE_ID) return;
+	if (vehicleid == INVALID_VEHICLE_ID || vehicleid == 0) return;
 
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
