@@ -208,7 +208,7 @@ stock DynVeh_Spawn(iDvSlotID, free = 0)
 		}
 	}
 	DynVehicleInfo[iDvSlotID][gv_iSpawnedID] = CreateVehicle(DynVehicleInfo[iDvSlotID][gv_iModel], DynVehicleInfo[iDvSlotID][gv_fX], DynVehicleInfo[iDvSlotID][gv_fY], DynVehicleInfo[iDvSlotID][gv_fZ], DynVehicleInfo[iDvSlotID][gv_fRotZ], DynVehicleInfo[iDvSlotID][gv_iCol1], DynVehicleInfo[iDvSlotID][gv_iCol2], VEHICLE_RESPAWN, DynVehicleInfo[iDvSlotID][gv_iSiren]);
-	DynVeh_Save(iDvSlotID);
+	// DynVeh_Save(iDvSlotID); // redundant save, causes MySQL 2013 connection drop due to massive startup/spawn query spam
 	format(szMiscArray, sizeof(szMiscArray), "Vehicle ID %d spawned for DV Slot %d",DynVehicleInfo[iDvSlotID][gv_iSpawnedID], iDvSlotID);
 	Log("logs/dvspawn.log", szMiscArray);
 	SetVehicleHealth(DynVehicleInfo[iDvSlotID][gv_iSpawnedID], DynVehicleInfo[iDvSlotID][gv_fMaxHealth]);
