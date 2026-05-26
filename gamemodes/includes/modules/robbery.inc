@@ -176,9 +176,9 @@ static Rob_AddWanted(playerid, amount) {
 
 /* ── Helper: reset state player ──────────────────────────── */
 static Rob_ResetState(playerid) {
-    if (arrRobState[playerid][rob_iTimer] != -1) {
+    if (arrRobState[playerid][rob_iTimer] > 0) {
         KillTimer(arrRobState[playerid][rob_iTimer]);
-        arrRobState[playerid][rob_iTimer] = -1;
+        arrRobState[playerid][rob_iTimer] = 0;
     }
     TogglePlayerControllable(playerid, 1);
     arrRobState[playerid][rob_iState]    = ROB_STATE_NONE;
@@ -191,7 +191,7 @@ public Rob_OnCrackDone(playerid) {
     if (!IsPlayerConnected(playerid)) return 1;
     if (arrRobState[playerid][rob_iState] != ROB_STATE_CRACKING) return 1;
 
-    arrRobState[playerid][rob_iTimer] = -1;
+    arrRobState[playerid][rob_iTimer] = 0;
 
     // Mo khoa thanh cong – bat dau phase gom tien
     arrRobState[playerid][rob_iState] = ROB_STATE_COLLECTING;
@@ -222,7 +222,7 @@ public Rob_OnCollectDone(playerid) {
     if (!IsPlayerConnected(playerid)) return 1;
     if (arrRobState[playerid][rob_iState] != ROB_STATE_COLLECTING) return 1;
 
-    arrRobState[playerid][rob_iTimer] = -1;
+    arrRobState[playerid][rob_iTimer] = 0;
 
     // Tinh toan phan thuong
     new iMin, iMax;
@@ -475,18 +475,5 @@ CMD:gpsbiz(playerid, params[]) {
     return SendClientMessageEx(playerid, COLOR_YELLOW, szMsg);
 }
 
-/* ── Init: reset mang khi gamemode khoi dong ────────────── */
-hook OnGameModeInit() {
-    for (new i = 0; i < MAX_PLAYERS; i++) {
-        arrRobState[i][rob_iState]    = ROB_STATE_NONE;
-        arrRobState[i][rob_iType]     = 0;
-        arrRobState[i][rob_iTargetID] = -1;
-        arrRobState[i][rob_iTimer]    = -1;
-        arrRobState[i][rob_iPlayerCD] = 0;
-    }
-    for (new i = 0; i < 43; i++)           g_iATMCooldown[i] = 0;
-    for (new i = 0; i < MAX_BUSINESSES; i++) g_iBizCooldown[i] = 0;
-
-    print("[Robbery] He thong cuop ATM & 24/7 Biz da khoi dong.");
-    return 1;
-}
+// Ghi chu: arrRobState, g_iATMCooldown, g_iBizCooldown duoc Pawn
+// tu dong khoi tao = 0 khi gamemode start, khong can hook OnGameModeInit.
