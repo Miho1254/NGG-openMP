@@ -10,7 +10,7 @@ new PlayerBar:EABar[MAX_PLAYERS];
 
 hook OnPlayerConnect(playerid)
 {
-    EABar[playerid] = CreatePlayerProgressBar(playerid, -1.000000, 446.000000, 644.000000, 700.200012, 1224671487, 100000000.0000, BAR_DIRECTION_RIGHT); // 100m exp
+    EABar[playerid] = CreatePlayerProgressBar(playerid, 0.000000, 475.000000, 640.000000, 5.000000, 1224671487, 100000000.0000, BAR_DIRECTION_RIGHT); // 100m exp
     return 1;
 }
 

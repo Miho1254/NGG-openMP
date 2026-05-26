@@ -143,7 +143,7 @@ stock ShowStatsNew(playerid,targetid)
 			%s\
 			%s\
 			{FFFFFF}Cap do: %d\n\
-			EXP Farm: %d\n\
+			EXP Adventure: %d\n\
 			GP: %d\n\
 			Coin: %d\n\
 			Danh vong: %s\n\
@@ -191,12 +191,12 @@ stock ShowStatsNew(playerid,targetid)
 			nation,
 			org,
 			biz,
-            GetJobNameEx(PlayerData[playerid][pc_Job]),
-            GetJobLevelEx(playerid, PlayerData[playerid][pc_Job]),
-            GetJobNameEx(PlayerData[playerid][pc_Job2]),
-            GetJobLevelEx(playerid, PlayerData[playerid][pc_Job2]),
-            GetJobNameEx(PlayerData[playerid][pc_Job3]),
-            GetJobLevelEx(playerid, PlayerData[playerid][pc_Job3]),
+            GetJobNameEx(PlayerData[targetid][pc_Job]),
+            GetJobLevelEx(targetid, PlayerData[targetid][pc_Job]),
+            GetJobNameEx(PlayerData[targetid][pc_Job2]),
+            GetJobLevelEx(targetid, PlayerData[targetid][pc_Job2]),
+            GetJobNameEx(PlayerData[targetid][pc_Job3]),
+            GetJobLevelEx(targetid, PlayerData[targetid][pc_Job3]),
 			insur);
 		ShowPlayerDialogEx(playerid, DISPLAY_STATS, DIALOG_STYLE_MSGBOX, header, resultline, "Next Page", "Close");
 	}

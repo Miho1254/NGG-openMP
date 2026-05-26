@@ -431,6 +431,7 @@ public Float:player_get_speed(playerid)
 
 // Inventory System (Rgame2018 port) - MUST be before modules that use CharacterInfo/Inventory API
 #include "./includes/modules/inventory.inc"
+#include "./includes/modules/afk_mining.inc"
 #include "./includes/modules/useitemgain.inc"
 
 // Inventory-dependent modules

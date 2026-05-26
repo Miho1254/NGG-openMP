@@ -494,13 +494,13 @@ Dialog:DIALOG_NPC_VIPSHOP(playerid, response, listitem, inputtext[])
 
                 if(count == -1)
                 {
-                    if(GetPlayerCash(playerid) < 75000) return SendClientMessageEx(playerid, COLOR_GRAD3, "Ban khong du tien de mua vat pham nay!");
+                    if(GetPlayerCash(playerid) < 150000) return SendClientMessageEx(playerid, COLOR_GRAD3, "Ban khong du tien de mua vat pham nay!");
                     new success = -1;
                     SetPlayerItem(playerid, 8, 100, success);
                     if(success == 1)
                     {
-                        GivePlayerCash(playerid, -75000);
-                        SendClientMessageEx(playerid, COLOR_WHITE, "[{62FF00}Cua Hang{FFFFFF}] Ban da mua mot may khai thac thuong voi gia $75,000.");
+                        GivePlayerCash(playerid, -150000);
+                        SendClientMessageEx(playerid, COLOR_WHITE, "[{62FF00}Cua Hang{FFFFFF}] Ban da mua mot may khai thac thuong voi gia $150,000.");
                     }
                 }
                 else SendClientMessageEx(playerid, COLOR_GRAD3, "Ban da co vat pham nay trong tui do roi nen khong the mua them nua.");
@@ -596,14 +596,34 @@ Dialog:DIALOG_NPC_VIPSHOP(playerid, response, listitem, inputtext[])
     return 1;
 }
 
+new g_VIPShopActor = INVALID_ACTOR_ID;
+
+hook OnGameModeInit()
+{
+    // Tao Actor NPC cho Cua hang VIP SF
+    // Toa do: -2411.3362, 519.2717, 29.9297 | Huong mat: 180.0 (huong xuong phia nam)
+    g_VIPShopActor = CreateActor(29, -2411.3362, 519.2717, 29.9297, 180.0);
+    SetActorInvulnerable(g_VIPShopActor, true);
+    // 3D Text Label huong dan
+    CreateDynamic3DTextLabel(
+        "{FFFF00}[Cua Hang VIP]\n{FFFFFF}Nhan {62FF00}Y{FFFFFF} de mua vat pham\n{AAAAAA}May dao | Medkit | Xang | GPS",
+        0xFFFFFFFF,
+        -2411.3362, 519.2717, 30.9297,
+        10.0,
+        .worldid = 0
+    );
+    return 1;
+}
+
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
     if(PRESSED(KEY_YES) && IsPlayerInRangeOfPoint(playerid, 5.0, -2411.3362,519.2717,29.9297)) // NPC cua hang
+
     {
         SetPVarInt(playerid, "ShopQuestion", 1);
         new string[256];
         format(string, sizeof(string), "Vat pham ban\tGia tien\n");
-        strcat(string, "May khai thac (thuong)\t$75,000\n");
+        strcat(string, "May khai thac (thuong)\t$150,000\n");
         strcat(string, "Medkit-A\t$15,000\n");
         strcat(string, "May khai thac (VIP)\t65,000 GP\n");
         strcat(string, "Can xang (100 lit)\t$120,000\n");
