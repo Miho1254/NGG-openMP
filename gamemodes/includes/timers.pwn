@@ -122,6 +122,9 @@ timer FinishMeal[5000](playerid)
 		format(szMiscArray, sizeof(szMiscArray),"* You have used a Full Meal from your backpack(%d remaining meals).",PlayerInfo[playerid][pBItems][0]);
 		SendClientMessage(playerid, COLOR_GRAD2, szMiscArray);
 		SetHealth(playerid, 100.0);
+		PlayerData[playerid][pc_FoodBar] = 100;
+		PlayerData[playerid][pc_WaterBar] = 100;
+		Update_Hunger(playerid);
 
 		new ip[MAX_PLAYER_NAME];
 		GetPlayerIp(playerid, ip, sizeof(ip));

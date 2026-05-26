@@ -677,6 +677,9 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				else
 					PlayerInfo[playerid][pFitness] = 0;
 				SetHealth(playerid, 100.0);
+				PlayerData[playerid][pc_FoodBar] = 100;
+				PlayerData[playerid][pc_WaterBar] = 100;
+				Update_Hunger(playerid);
 			}
 		}
 		case DIALOG_BDROP:

@@ -8,38 +8,6 @@
 
 #define MAX_ITEM_TRADE_NEFT 1
 
-enum pc_Info
-{
-    pc_Pass[4],
-    pc_GP,
-    pc_Coin,
-    pc_EA, // exp adventure
-    pc_FoodBar,
-    pc_WaterBar,
-    pc_Job,
-    pc_Job2,
-    pc_Job3,
-    pc_FishmanSkill,
-    pc_AlcoholSkill,
-    pc_PizzaBoySkill,
-    pc_SweeperSkill,
-    pc_TruckerSkill,
-    pc_AlcoholLimit, // gioi han lam viec
-    pc_SweeperLimit, // gioi han lam viec
-    pc_AlcoholTimer, // mo khoa gioi han lam viec
-    pc_SweeperTimer, // mo khoa gioi han lam viec
-    pc_CaribbeanTeam, // thông tin phe tham gia
-    pc_CaribbeanEvent, // tình trạng tham gia
-    pc_FamedPoint, // Điểm danh vọng
-    pc_LimitEventReward, // nhận quà đền bù
-    pc_ClaimRoseWinter, // thu thập hoa hồng
-    pc_CargoTimeOnline, // thoi gian lam viec cua job nguoi van chuyen
-    pc_CargoTimeSeconds, // thoi gian ++ cua nguoi van chuyen
-    pc_ItemTradeNeft_Miner, // neft giao dịch vật phẩm
-    pc_ItemTradeNeftExpire_Miner // thời gian neft giao dịch vật phẩm
-};
-new PlayerData[MAX_PLAYERS][pc_Info];
-
 new pc_PassKey[][] =
 {
     "1","2","3","4","5","6","7","8","9","Reset","Hoan thanh"

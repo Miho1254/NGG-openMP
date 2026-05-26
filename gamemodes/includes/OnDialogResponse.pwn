@@ -4059,6 +4059,16 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				}
 
 				SetHealth(playerid, 100.0);
+				if (iItem == 0 || iItem == 1)
+				{
+					PlayerData[playerid][pc_FoodBar] = 100;
+					PlayerData[playerid][pc_WaterBar] = 100;
+				}
+				else if (iItem >= 2 && iItem <= 9)
+				{
+					PlayerData[playerid][pc_WaterBar] = 100;
+				}
+				Update_Hunger(playerid);
 			}
 		}
 		for (new i; i <= 13; i++)
