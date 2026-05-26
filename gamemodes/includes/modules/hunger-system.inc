@@ -14,7 +14,7 @@ new PlayerText:WaterValTD[MAX_PLAYERS] = {PlayerText:INVALID_TEXT_DRAW, ...};
 hook OnPlayerConnect(playerid)
 {
     // Food Icon (Burger)
-    FoodIconTD[playerid] = CreatePlayerTextDraw(playerid, 548.000000, 10.000000, "hud:radar_burger");
+    FoodIconTD[playerid] = CreatePlayerTextDraw(playerid, 548.000000, 10.000000, "hud:radar_burgerShot");
     PlayerTextDrawFont(playerid, FoodIconTD[playerid], 4);
     PlayerTextDrawTextSize(playerid, FoodIconTD[playerid], 11.000000, 11.000000);
     PlayerTextDrawColor(playerid, FoodIconTD[playerid], -1);
@@ -30,7 +30,7 @@ hook OnPlayerConnect(playerid)
     PlayerTextDrawSetProportional(playerid, FoodValTD[playerid], 1);
 
     // Water Icon (Beverage)
-    WaterIconTD[playerid] = CreatePlayerTextDraw(playerid, 548.000000, 22.000000, "hud:radar_bar");
+    WaterIconTD[playerid] = CreatePlayerTextDraw(playerid, 548.000000, 22.000000, "hud:radar_dateDrink");
     PlayerTextDrawFont(playerid, WaterIconTD[playerid], 4);
     PlayerTextDrawTextSize(playerid, WaterIconTD[playerid], 11.000000, 11.000000);
     PlayerTextDrawColor(playerid, WaterIconTD[playerid], -1);
