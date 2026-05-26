@@ -895,8 +895,10 @@ public OnQueryFinish(resultid, extraid, handleid)
 		{
 			if(IsPlayerConnected(extraid))
 			{
-				AdvanceTutorial(extraid);
-				g_mysql_AccountLoginCheck(extraid);
+				GetPVarString(extraid, "PassAuth", PlayerInfo[extraid][pLastPass], 65);
+				DeletePVar(extraid, "PassAuth");
+				HideNoticeGUIFrame(extraid);
+				g_mysql_LoadAccount(extraid);
 				format(szMiscArray, sizeof(szMiscArray), "[DANG KY] Nguoi choi %s (ID: %d) da dang ky tai khoan. %s", GetPlayerNameEx(extraid), extraid, GetPlayerCountry(extraid));
 				ABroadCast(COLOR_LIGHTRED, szMiscArray, 2);
 				TotalRegister++;
