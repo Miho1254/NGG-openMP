@@ -389,6 +389,7 @@ public Float:player_get_speed(playerid)
 #include "./includes/core/drugcore.pwn"
 #include "./includes/jobs/giaobao.pwn"
 #include "./includes/jobs/vechai.pwn"
+#include "./includes/jobs/lamtac.pwn"
 //perk system includes
 #include "./includes/perks/boombox.pwn"
 #include "./includes/perks/backpack.pwn"

@@ -48,7 +48,7 @@ hook OnGameModeInit() {
     
     // Thuong lai NPC
     CreateDynamicActor(153, -2525.4250, 247.3949, 11.0938, 217.2882, 1, 100.0, -1, -1, -1);
-    CreateDynamic3DTextLabel("{FFFF00}Thuong Lai Ve Chai\n{FFFFFF}Su dung {FFFF00}/banvechai\n{FFFFFF}Yeu cau do xe tai gan day", COLOR_YELLOW, -2525.4250, 247.3949, 11.0938 + 1.0, 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, -1, -1, -1, 15.0);
+    CreateDynamic3DTextLabel("{FFFF00}Anh Nguyen Chu Thau (Thu mua Vat Lieu)\n{FFFFFF}Su dung {FFFF00}/banvechai\n{FFFFFF}Yeu cau do xe tai gan day", COLOR_YELLOW, -2525.4250, 247.3949, 11.0938 + 1.0, 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, -1, -1, -1, 15.0);
     return 1;
 }
 
@@ -104,6 +104,11 @@ stock IsValidVeChaiTruck(vehicleid) {
 CMD:muavechai(playerid, params[]) {
     if(pVeChai[playerid] > 0) return SendClientMessageEx(playerid, COLOR_GREY, "Ban dang om mot dong ve chai tren tay roi, khong the be them!");
     if(IsPlayerInAnyVehicle(playerid)) return SendClientMessageEx(playerid, COLOR_GREY, "Ban phai buoc xuong xe moi co the mua!");
+    if(gettime() < GetPVarInt(playerid, "VeChaiCooldown")) {
+        new string[128];
+        format(string, sizeof(string), "Ban phai cho %d giay de tiep tuc thu mua ve chai!", GetPVarInt(playerid, "VeChaiCooldown") - gettime());
+        return SendClientMessageEx(playerid, COLOR_GREY, string);
+    }
     
     new nearest_point = -1;
     for(new i = 0; i < MAX_VECHAI_POINTS; i++) {
@@ -146,6 +151,8 @@ CMD:muavechai(playerid, params[]) {
     SetPlayerAttachedObject(playerid, 9, 1271, 1, -0.071, 0.536, -0.026999, -2.19999, 87.1999, 0.699999, 0.8, 0.8, 0.8);
     SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY); // Force walk
     
+    SetPVarInt(playerid, "VeChaiCooldown", gettime() + 10);
+    
     new string[128];
     format(string, sizeof(string), "Ban da mua thanh cong %d kg ve chai voi gia $%s (gia $%d/kg). Hay di bo dem bo vao cop xe tai cua ban (/putvechai).", amount, number_format(total_cost), price_per_kg);
     SendClientMessageEx(playerid, COLOR_GREEN, string);
@@ -174,6 +181,8 @@ CMD:putvechai(playerid, params[]) {
     GetVehicleParamsEx(closestcar, engine, lights, alarm, doors, bonnet, boot, objective);
     if(boot == VEHICLE_PARAMS_OFF || boot == VEHICLE_PARAMS_UNSET) return SendClientMessageEx(playerid, COLOR_GRAD3, "Ban phai mo cop xe ra truoc! (/car trunk)");
     
+    if(VehVeChai[closestcar] + pVeChai[playerid] > 100) return SendClientMessageEx(playerid, COLOR_GREY, "Xe tai cua ban da dat gioi han tai trong ve chai (Toi da 100 kg)!");
+    
     VehVeChai[closestcar] += pVeChai[playerid];
     new string[128];
     format(string, sizeof(string), "Ban da bo %d kg ve chai vao cop xe. (Tong cong: %d kg tren xe)", pVeChai[playerid], VehVeChai[closestcar]);
@@ -187,7 +196,8 @@ CMD:putvechai(playerid, params[]) {
 }
 
 CMD:banvechai(playerid, params[]) {
-    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2525.4250, 247.3949, 11.0938)) return SendClientMessageEx(playerid, COLOR_GREY, "Ban phai dung gan NPC Thuong Lai Ve Chai!");
+    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2525.4250, 247.3949, 11.0938)) return SendClientMessageEx(playerid, COLOR_GREY, "Ban phai dung gan Anh Nguyen Chu Thau!");
+    if(IsPlayerInAnyVehicle(playerid)) return SendClientMessageEx(playerid, COLOR_GREY, "Ban phai buoc xuong xe moi co the ban ve chai!");
     
     new closestcar = -1;
     new Float:x, Float:y, Float:z;
@@ -202,7 +212,18 @@ CMD:banvechai(playerid, params[]) {
     }
     
     if(closestcar == -1) return SendClientMessageEx(playerid, COLOR_GREY, "Phai co xe tai cua ban cho ve chai nam o gan day!");
+    
+    new engine, lights, alarm, doors, bonnet, boot, objective;
+    GetVehicleParamsEx(closestcar, engine, lights, alarm, doors, bonnet, boot, objective);
+    if(boot == VEHICLE_PARAMS_OFF || boot == VEHICLE_PARAMS_UNSET) return SendClientMessageEx(playerid, COLOR_GRAD3, "Ban phai mo cop xe ra de lay hang! (/car trunk)");
+    
     if(VehVeChai[closestcar] <= 0) return SendClientMessageEx(playerid, COLOR_GREY, "Xe tai cua ban khong co kg ve chai nao!");
+    
+    ApplyAnimation(playerid, "BOMBER", "BOM_Plant", 4.0, 0, 0, 0, 0, 0, 1);
+    
+    new name_str[128];
+    format(name_str, sizeof(name_str), "* %s dang be ve chai tu trong cop xe ban cho Anh Nguyen Chu Thau.", GetPlayerNameEx(playerid));
+    ProxDetector(30.0, playerid, name_str, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
     
     new totalMats = 0;
     for(new i = 0; i < MAX_GROUPS; i++) {
@@ -226,7 +247,7 @@ CMD:banvechai(playerid, params[]) {
     
     if(GetPlayerCash(playerid) < fee_total) {
         new string[128];
-        format(string, sizeof(string), "Thuong Lai [NPC]: May khong du tien tra phi gia cong roi! Can $%s de gia cong %d kg.", number_format(fee_total), kg);
+        format(string, sizeof(string), "Anh Nguyen Chu Thau [NPC]: May khong du tien tra phi gia cong roi! Can $%s de gia cong %d kg.", number_format(fee_total), kg);
         SendClientMessageEx(playerid, COLOR_WHITE, string);
         return 1;
     }

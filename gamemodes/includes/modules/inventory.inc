@@ -3404,10 +3404,18 @@ Dialog:DIALOG_INVENTORY_ACTION(playerid, response, listitem, inputtext[])
             Dialog_Show(playerid, DG_INVENTORY_GIVE_ITEM, DIALOG_STYLE_LIST, "List of Items", string, "Chon", "Huy");
             return 1;
         }
+        if(GetPVarInt(playerid, "BaloDialogOpen") == 1)
+        {
+            return Balo_ShowMain(playerid);
+        }
     }
     else
     {
         SetPVarInt(playerid, "CheckDialogInventory", 0);
+        if(GetPVarInt(playerid, "BaloDialogOpen") == 1)
+        {
+            return Balo_ShowMain(playerid);
+        }
         return 1;
     }
     return 1;
@@ -3528,29 +3536,13 @@ Dialog:DG_INVENTORY_GIVE_ITEM(playerid, response, listitem, inputtext[])
             SetPVarInt(playerid, "AdminYourSelf", 0);
             SetPVarInt(playerid, "CheckDialogInventory", 0);
             PlayerPlaySound(playerid, 1130, 0.0, 0.0, 0.0); // am thanh ghep
+            if(GetPVarInt(playerid, "BaloDialogOpen") == 1) return Balo_ShowMain(playerid);
         }
-     /*   if(strcmp(inputtext, "(0) Camera", true) == 0)
-        {
-            if(GetPVarInt(playerid, "AdminYourSelf") == 1)
-            {
-                Inventory_AddItem(playerid, playerid, 1, 0);
-                SetPVarInt(playerid, "AdminYourSelf", 0);
-            }
-            return 1;
-        }
-        if(strcmp(inputtext, "(1) Minigun", true) == 0)
-        {
-            if(GetPVarInt(playerid, "AdminYourSelf") == 1)
-            {
-                Inventory_AddItem(playerid, playerid, 2, 0);
-                SetPVarInt(playerid, "AdminYourSelf", 0);
-            }
-            return 1;
-        }*/
     }
     else
     {
         SetPVarInt(playerid, "CheckDialogInventory", 0);
+        if(GetPVarInt(playerid, "BaloDialogOpen") == 1) return Balo_ShowMain(playerid);
         return 1;
     }
     return 1;
@@ -3625,7 +3617,9 @@ Dialog:DG_EXCHANGE_COIN(playerid, response, listitem, inputtext[])
             if(PlayerData[playerid][pc_GP] <= 0)
             {
                 SetPVarInt(playerid, "Exchange_Coin_Request", 0);
-                return SendClientMessageEx(playerid, COLOR_GRAD3, "Chuyen doi that bai do ban khong du GP trong nguoi.");
+                SendClientMessageEx(playerid, COLOR_GRAD3, "Chuyen doi that bai do ban khong du GP trong nguoi.");
+                if(GetPVarInt(playerid, "BaloDialogOpen") == 1) return Balo_ShowMain(playerid);
+                return 1;
             }
             if(isnull(inputtext))
             {
@@ -3634,7 +3628,9 @@ Dialog:DG_EXCHANGE_COIN(playerid, response, listitem, inputtext[])
             if(PlayerData[playerid][pc_GP] < strval(inputtext) * 1000)
             {
                 SetPVarInt(playerid, "Exchange_Coin_Request", 0);
-                return SendClientMessageEx(playerid, COLOR_GRAD3, "Chuyen doi that bai do ban khong du GP trong nguoi.");
+                SendClientMessageEx(playerid, COLOR_GRAD3, "Chuyen doi that bai do ban khong du GP trong nguoi.");
+                if(GetPVarInt(playerid, "BaloDialogOpen") == 1) return Balo_ShowMain(playerid);
+                return 1;
             }
             new str[156];
             PlayerData[playerid][pc_Coin] += strval(inputtext);
@@ -3644,13 +3640,16 @@ Dialog:DG_EXCHANGE_COIN(playerid, response, listitem, inputtext[])
             Inventory_Action(playerid, -1);
             PlayerPlaySound(playerid, 1130, 0.0, 0.0, 0.0); // am thanh ghep
             format(str, sizeof(str), "[{FFB561}COIN EXCHANGE{FFFFFF}]: Ban da chuyen doi %d GP sang %d Coin thanh cong.", strval(inputtext) * 1000, strval(inputtext));
-            return SendClientMessageEx(playerid, COLOR_WHITE, str);
+            SendClientMessageEx(playerid, COLOR_WHITE, str);
+            if(GetPVarInt(playerid, "BaloDialogOpen") == 1) return Balo_ShowMain(playerid);
+            return 1;
         }
     }
     else
     {
         SetPVarInt(playerid, "Exchange_Coin_Request", 0);
         SetPVarInt(playerid, "CheckDialogInventory", 0);
+        if(GetPVarInt(playerid, "BaloDialogOpen") == 1) return Balo_ShowMain(playerid);
     }
     return 1;
 }
@@ -3835,6 +3834,7 @@ CMD:balo(playerid, params[])
 
 stock Balo_ShowMain(playerid)
 {
+    SetPVarInt(playerid, "BaloDialogOpen", 1);
     new title[128], szStr[4096], count;
     new Float:totalWeight;
 
@@ -4277,7 +4277,11 @@ CMD:use(playerid, params[])
 
 Dialog:DIALOG_BALO_MAIN(playerid, response, listitem, inputtext[])
 {
-    if(!response) return 1;
+    if(!response)
+    {
+        DeletePVar(playerid, "BaloDialogOpen");
+        return 1;
+    }
     if(listitem < 0) return 1;
 
     new slot = listitem;
@@ -4466,6 +4470,7 @@ Dialog:DIALOG_BALO_INFO(playerid, response, listitem, inputtext[])
     #pragma unused listitem, inputtext
     if(response)
         return Balo_ShowMain(playerid);
+    DeletePVar(playerid, "BaloDialogOpen");
     return 1;
 }
 
@@ -4666,6 +4671,7 @@ stock Balo_UseItem(playerid, target, slot, itemid)
         SetPVarInt(playerid, "usg_ItemIDs", 11);
         SetPVarInt(playerid, "usg_ItemTimers", 15);
         ItemGain(playerid, 1);
+        DeletePVar(playerid, "BaloDialogOpen");
         return 1;
     }
     // Gatacetamol
@@ -4674,6 +4680,7 @@ stock Balo_UseItem(playerid, target, slot, itemid)
         SetPVarInt(playerid, "usg_ItemIDs", 12);
         SetPVarInt(playerid, "usg_ItemTimers", 15);
         ItemGain(playerid, 1);
+        DeletePVar(playerid, "BaloDialogOpen");
         return 1;
     }
     // Coin Exchange
@@ -4746,6 +4753,7 @@ stock Balo_UseItem(playerid, target, slot, itemid)
     if(itemid == 43)
     {
         SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban dang xem ban do kho bau...");
+        DeletePVar(playerid, "BaloDialogOpen");
         defer ShowBDKBTimer(playerid);
         return 1;
     }
@@ -5408,6 +5416,8 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
     // Hotkey H (KEY_CTRL_BACK) to open balo
     if(PRESSED(KEY_CTRL_BACK))
     {
+        if(GetPVarInt(playerid, "BaloDialogOpen") == 1) return 1;
+
         if(gPlayerLogged{playerid} && !GetPVarType(playerid, "PlayerCuffed") && GetPVarInt(playerid, "pBagged") < 1 && !GetPVarType(playerid, "Injured") && !GetPVarType(playerid, "IsFrozen"))
         {
             if(Inventory_Show[playerid] == 0)
