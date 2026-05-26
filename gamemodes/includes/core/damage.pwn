@@ -675,7 +675,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 				format(szMiscArray, sizeof(szMiscArray), "(( You took damage from %s(%d) using %s.))", GetPlayerNameEx(issuerid), issuerid, GetWeaponNameEx(weaponid));
 				SendClientMessageEx(playerid, COLOR_RED, "(( You failed to pick lock this vehicle because you took damage. ))");
 				SendClientMessageEx(playerid, COLOR_RED, szMiscArray);
-				SendClientMessageEx(playerid, COLOR_RED, "(( If this was DM, visit ng-gaming.net and make a Player Complaint. ))");
+				SendClientMessageEx(playerid, COLOR_RED, "(( If this was DM, visit saw-community.net and make a Player Complaint. ))");
 				ClearAnimationsEx(playerid, 1);
 			}
 			if(GetPVarType(playerid, "AttemptingCrackTrunk")) {
@@ -686,7 +686,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 				format(szMiscArray, sizeof(szMiscArray), "(( You took damage from %s(%d) using %s.))", GetPlayerNameEx(issuerid), issuerid, GetWeaponNameEx(weaponid));
 				SendClientMessageEx(playerid, COLOR_RED, "(( You failed to crack this vehicle's trunk because you took damage. ))");
 				SendClientMessageEx(playerid, COLOR_RED, szMiscArray);
-				SendClientMessageEx(playerid, COLOR_RED, "(( If this was DM, visit ng-gaming.net and make a Player Complaint. ))");
+				SendClientMessageEx(playerid, COLOR_RED, "(( If this was DM, visit saw-community.net and make a Player Complaint. ))");
 			}
 
 			if(GetPVarInt(playerid, "commitSuicide") == 1) SetPVarInt(playerid, "commitSuicide", 0);

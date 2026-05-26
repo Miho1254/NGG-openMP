@@ -846,7 +846,7 @@ CMD:findnewb(playerid, params[]) {
 					PlayerInfo[x][pHelpedBefore] = 1;
 					SetPVarInt(playerid, "HelpingSomeone", 1);
 					SetPlayerHealth(playerid, 999999);
-					ShowPlayerDialogEx(x, 0, DIALOG_STYLE_MSGBOX, "Advisor Alert", "A Advisor has just teleported to you. Feel free to ask him anything related to GTA.Network that you may have issues/concerns with.", "Close", "");
+					ShowPlayerDialogEx(x, 0, DIALOG_STYLE_MSGBOX, "Advisor Alert", "A Advisor has just teleported to you. Feel free to ask him anything related to SAW Community that you may have issues/concerns with.", "Close", "");
 					if(i[0] > 0 || vw[0] > 0) Player_StreamPrep(playerid, Pos[0][0], Pos[1][0], Pos[2][0], FREEZE_TIME);
 					format(szMiscArray, sizeof(szMiscArray), "You have been teleported to newbie %s, retype the command to be teleported back.", GetPlayerNameEx(x));
 					SendClientMessageEx(playerid, COLOR_WHITE, szMiscArray);

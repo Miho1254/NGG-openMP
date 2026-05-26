@@ -102,7 +102,7 @@ stock ShowMainMenuDialog(playerid, frame)
     {
         case 1: // Đăng nhập
         {
-            format(titlestring, sizeof(titlestring), "{00FFCC}GTA NETWORK {FFFFFF}>> Dang Nhap");
+            format(titlestring, sizeof(titlestring), "{00FFCC}SAW Community {FFFFFF}>> Dang Nhap");
             format(string, sizeof(string), "\
             {FFFFFF}Chao mung tro lai, {00FFCC}%s{FFFFFF}!\n\
             {FFFFFF}Trang thai dinh danh: {4EC25D}Da co du lieu{FFFFFF}.\n\
@@ -114,7 +114,7 @@ stock ShowMainMenuDialog(playerid, frame)
         }
         case 2: // Đăng ký
         {
-            format(titlestring, sizeof(titlestring), "{00FFCC}GTA NETWORK {FFFFFF}>> Dang Ky Dinh Danh");
+            format(titlestring, sizeof(titlestring), "{00FFCC}SAW Community {FFFFFF}>> Dang Ky Dinh Danh");
             format(string, sizeof(string), "\
             {FFFFFF}Nhan dien cu dan moi: {00FFCC}%s{FFFFFF}\n\
             {FFFFFF}Trang thai dinh danh: {FF4C4C}Chua co ho so{FFFFFF}.\n\
@@ -186,7 +186,7 @@ stock SafeLogin(playerid, type)
 			}
 			else
 			{
-				Dialog_Show(playerid, -1, DIALOG_STYLE_MSGBOX, "ERROR: You were kicked!", "You're unable to create an account on this server!\n\nThis server is for the Beta Team only.\n\nIf you are a beta tester go to http://cp.ng-gaming.net and create an account.", "Tat", "");
+				Dialog_Show(playerid, -1, DIALOG_STYLE_MSGBOX, "ERROR: You were kicked!", "You're unable to create an account on this server!\n\nThis server is for the Beta Team only.\n\nIf you are a beta tester go to http://saw-community.net and create an account.", "Tat", "");
 				SetTimerEx("KickEx", 3000, 0, "i", playerid);
 			}
 		}

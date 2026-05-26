@@ -230,6 +230,7 @@ CharacterCreation(playerid)
 			SetPlayerVirtualWorld(playerid, 0);
 			SetHealth(playerid, 100);
 			ClearChatbox(playerid);
+			PlayerInfo[playerid][pTut] = -1;
 
 			//ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK Huong dan", "Ban co muon lam nhiem vu nguoi choi moi khong?", "Co", "Khong");
 			//ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "GTA.NETWORK Huong dan", "Ban hay di lam pizza de kiem tien mua xe", "Ok", "");

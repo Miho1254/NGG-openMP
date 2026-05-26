@@ -51,7 +51,7 @@ public OnPlayerLoad(playerid)
 	{
 		// format(string, sizeof(string), "WARNING: %s (IP:%s) tried to login whilst banned by the old system.", GetPlayerNameEx( playerid ), PlayerInfo[playerid][pIP] );
 		// ABroadCast(COLOR_YELLOW, string, 2);
-		SendClientMessage(playerid, COLOR_RED, "Tai khoan cua ban da bi khoa, co the xin mo khoa tai GTA.Network/4rum");
+		SendClientMessage(playerid, COLOR_RED, "Tai khoan cua ban da bi khoa, co the xin mo khoa tai diendan.saw-community.net");
 		SendClientMessage(playerid, COLOR_RED, "Thoi han mo tai khoan cua ban da duoc dat, khi den thoi han tai khoan se tu dong mo. ");
 		SetTimerEx("KickEx", 1000, 0, "i", playerid);
 		return 1;
@@ -62,7 +62,7 @@ public OnPlayerLoad(playerid)
 
 	if(PlayerInfo[playerid][pDisabled] == 2)
 	{
-		ShowPlayerDialogEx(playerid, DIALOG_DISABLED, DIALOG_STYLE_MSGBOX, "Tai khoan bi vo hieu hoa - Truy cap GTA.Network/4rum", "Tai khoan cua ban da bi vo hieu hoa vi khong hoat dong trong 6 thang.\nVui long truy cap Forum.GTA.NETWORK de lien he Admin tat che do vo hieu hoa cho tai khoan cua ban.", "Ok", "");
+		ShowPlayerDialogEx(playerid, DIALOG_DISABLED, DIALOG_STYLE_MSGBOX, "Tai khoan bi vo hieu hoa - Truy cap diendan.saw-community.net", "Tai khoan cua ban da bi vo hieu hoa vi khong hoat dong trong 6 thang.\nVui long truy cap diendan.saw-community.net de lien he Admin tat che do vo hieu hoa cho tai khoan cua ban.", "Ok", "");
 		SetTimerEx("KickEx", 5000, 0, "i", playerid);
 		return 1;
 	}
@@ -604,7 +604,7 @@ public OnPlayerLoad(playerid)
 	    }
 	    else if(Businesses[PlayerInfo[playerid][pBusiness]][bMonths] - 259200 < gettime())
 	    {
-	        SendClientMessageEx(playerid, COLOR_RED, "Your business expires in less than three days - renew today at gta.network! Type /businessdate for more information.");
+	        SendClientMessageEx(playerid, COLOR_RED, "Your business expires in less than three days - renew today at saw-community.net! Type /businessdate for more information.");
 	    }
 	}
 	if(PlayerInfo[playerid][pJob2] >= 1 && (PlayerInfo[playerid][pDonateRank] < 1 && PlayerInfo[playerid][pFamed] < 1))
@@ -758,7 +758,7 @@ public OnPlayerLoad(playerid)
 
 	if(PlayerInfo[playerid][pTut] != -1) 
 	{
-		if(PlayerInfo[playerid][pTut] < 14) PlayerInfo[playerid][pTut] = 0;
+		if(PlayerInfo[playerid][pTut] < 14) PlayerInfo[playerid][pTut] = 13;
 		AdvanceTutorial(playerid);
 	}
 	if(PlayerInfo[playerid][pAdmin] >= 2)
@@ -1125,7 +1125,7 @@ public OnPlayerLoad(playerid)
 			PlayerInfo[playerid][pVIPSellable] = 1;
 			PlayerInfo[playerid][pVIPExpire] = 1430110800;
 			LoadPlayerDisabledVehicles(playerid);
-			SendClientMessageEx(playerid, -1, "Ban da nhan duoc VIP Silver khi choi vao ngay sinh nhat cua GTA.NETWORK!");
+			SendClientMessageEx(playerid, -1, "Ban da nhan duoc VIP Silver khi choi vao ngay sinh nhat cua SAW Community!");
 		}
 		if(PlayerInfo[playerid][pDonateRank] == 4 && !PlayerInfo[playerid][pReceivedPrize])
 		{

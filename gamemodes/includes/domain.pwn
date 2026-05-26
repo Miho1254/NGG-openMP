@@ -5,7 +5,7 @@
 
 hook OnGameModeInit()
 {
-	TDE_DOMAINSV[0] = TextDrawCreate(1.900017, 433.669677, "GTN:VN v1.4");
+	TDE_DOMAINSV[0] = TextDrawCreate(1.900017, 433.669677, "SAW:VN v1.4");
 	TextDrawLetterSize(TDE_DOMAINSV[0], 0.251998, 1.201776);
 	TextDrawAlignment(TDE_DOMAINSV[0], 1);
 	TextDrawColor(TDE_DOMAINSV[0], -77);

@@ -52,7 +52,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 		return 1;
 	}
 	if(arrAntiCheat[playerid][ac_iFlags][AC_DIALOGSPOOFING] > 0) return 1;
-	if(dialogid == DIALOG_DISABLED) return ShowPlayerDialogEx(playerid, DIALOG_DISABLED, DIALOG_STYLE_MSGBOX, "Account Disabled - Visit http://gta.network/4rum", "Your account has been disabled as it has been inactive for more than six months.\nPlease visit the forum.gta.networks and post an Administrative Request to begin the process to reactivate your account.", "Okay", "");
+	if(dialogid == DIALOG_DISABLED) return ShowPlayerDialogEx(playerid, DIALOG_DISABLED, DIALOG_STYLE_MSGBOX, "Account Disabled - Visit http://diendan.saw-community.net", "Your account has been disabled as it has been inactive for more than six months.\nPlease visit the forum (diendan.saw-community.net) and post an Administrative Request to begin the process to reactivate your account.", "Okay", "");
 	new sendername[MAX_PLAYER_NAME];
 	new string[256];
 	szMiscArray[0] = 0;
@@ -978,7 +978,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 
 			SetPVarInt(playerid, "ShopOrderTimer", 60); SetTimerEx("OtherTimerEx", 1000, false, "ii", playerid, TYPE_SHOPORDERTIMER);
 
-			format(string, sizeof(string), "gta.network/idcheck.php?id=%d", orderid);
+			format(string, sizeof(string), "saw-community.net/idcheck.php?id=%d", orderid);
 			HTTP(playerid, HTTP_GET, string, "", "HttpCallback_ShopIDCheck");
 		}
 	}
@@ -987,7 +987,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 	{
 		if(response)
 		{
-			ShowPlayerDialogEx(playerid, DIALOG_SHOPORDER, DIALOG_STYLE_INPUT, "Shop Order", "Day la don hang tu GTA.NETWORK\n\nNeu ban chua co don hang thi hay huy hop thoai nay ngay.\n\nWarning: Lam dung tinh nang nay co the dan den viec khoa lenh.\n\nVui long nhap don id hang cua ban (Neu ban khong biet vui long nhap 1):", "Gui", "Huy" );
+			ShowPlayerDialogEx(playerid, DIALOG_SHOPORDER, DIALOG_STYLE_INPUT, "Shop Order", "Day la don hang tu SAW Community\n\nNeu ban chua co don hang thi hay huy hop thoai nay ngay.\n\nWarning: Lam dung tinh nang nay co the dan den viec khoa lenh.\n\nVui long nhap don id hang cua ban (Neu ban khong biet vui long nhap 1):", "Gui", "Huy" );
 		}
 	}
 	if(dialogid == DIALOG_SHOPERROR2)
@@ -999,7 +999,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 	}
 	if(dialogid == PMOTDNOTICE && 1 <= PlayerInfo[playerid][pDonateRank] <= 3 && (PlayerInfo[playerid][pVIPExpire] - 86400 < gettime()))
 	{
-		ShowPlayerDialogEx(playerid, VIP_EXPIRES, DIALOG_STYLE_MSGBOX, "Het han VIP!", "VIP cua ban se het han trong vai ngay nua - gia han ngay hom nay tai GTA.NETWORK!", "OK", "");
+		ShowPlayerDialogEx(playerid, VIP_EXPIRES, DIALOG_STYLE_MSGBOX, "Het han VIP!", "VIP cua ban se het han trong vai ngay nua - gia han ngay hom nay tai saw-community.net!", "OK", "");
 	}
 	else if(dialogid == PMOTDNOTICE || dialogid == VIP_EXPIRES)
 	{
@@ -3264,7 +3264,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 
 					else
 					{
-						SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong co enough credits to purchase this item. Visit gta.network to purchase credits.");
+						SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong co enough credits to purchase this item. Visit saw-community.net to purchase credits.");
 					}
 					*/
 					new namechangecost;
@@ -6958,7 +6958,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				}
 				case 1: //OOC Hit
 				{
-					ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "OOC Hit", "{FFFFFF}OOC Hits are to be handled on the gta.network/4rum. (Player Complaint)\n\n                 Forum.GTA.NETWORK", "Dong", "");
+					ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "OOC Hit", "{FFFFFF}OOC Hits are to be handled on the diendan.saw-community.net. (Player Complaint)\n\n                 diendan.saw-community.net", "Dong", "");
 				}
 				case 2: //Server Advertising
 				{
@@ -7078,7 +7078,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			//if(PlayerInfo[playerid][pLevel] < 2) return SendClientMessage(playerid, COLOR_GRAD2, "You must be level 2 to use this command.");
 			if(playerid == Player) return SendClientMessage(playerid, COLOR_GREY, "Ban khong the bao cao chinh minh!");
 
-			if(PlayerInfo[Player][pAdmin] >= 2 && PlayerInfo[Player][pTogReports] != 1) return SendClientMessage(playerid, COLOR_GREY, "Ban khong the bao cao mot Admin nao do vi pham, hay truy cap GTA.Network/4rum de khieu nai Admin!");
+			if(PlayerInfo[Player][pAdmin] >= 2 && PlayerInfo[Player][pTogReports] != 1) return SendClientMessage(playerid, COLOR_GREY, "Ban khong the bao cao mot Admin nao do vi vi pham, hay truy cap diendan.saw-community.net de khieu nai Admin!");
 			if(gettime() - ShotPlayer[Player][playerid] < 300)
 			{
 				SetPVarInt(playerid, "pDMReport", Player);
@@ -10170,7 +10170,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				}
 				case 2:
 				{
-					ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "Business Shop", "Want to buy a business or renew your current one? Use the command /businessshop and this will allow you to purchase a business or renew your current one.\n It is important that you read the business rules on the GTA.Network/4rum and read more about businesses on the Shop Control Panel. Note: The Purchase Business will list the available businesses for sale at that time.", "Exit", "");
+					ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "Business Shop", "Want to buy a business or renew your current one? Use the command /businessshop and this will allow you to purchase a business or renew your current one.\n It is important that you read the business rules on the diendan.saw-community.net and read more about businesses on the Shop Control Panel. Note: The Purchase Business will list the available businesses for sale at that time.", "Exit", "");
 				}
 				case 3:
 				{
@@ -11291,7 +11291,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			case 0:
 			{
 				new Message[520];
-				Message = "Purple VIP name on the forum.gta.networks.\nVIP forum.gta.networks Access\
+				Message = "Purple VIP name on the diendan.saw-community.net.\nVIP diendan.saw-community.net Access\
 				\nVIP Chat\nVIP Garage with access to all the most select cars on the map.\nVIP Lounge\nFirst Aid Station [HP Refills]\nGun Locker \nAbility to get Cannabis and Crack using the jobs without having to wait for refills at the Drug House.";
 				strcat(Message, "\nPreferred Pricing on Cars from the Dealership [20% off]\n24/7 VIP Pricing [20% Off]\nFree ATM Use \nFree Checking \nInvites to VIP Only Parties\nMax Hourly Interest Increase: $100k per paycheck");
 				ShowPlayerDialogEx(playerid, DIALOG_VIPBRONZE, DIALOG_STYLE_MSGBOX, "Bronze VIP Features" , Message, "Tiep tuc", "Huy" );
@@ -11299,8 +11299,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			case 1:
 			{
 				new Message[850];
-				Message = "Purple VIP name on the forum.gta.networks. \n\
-				VIP forum.gta.networks Access \n\
+				Message = "Purple VIP name on the diendan.saw-community.net. \n\
+				VIP diendan.saw-community.net Access \n\
 				VIP Chat \n\
 				VIP Garage with access to all the most select cars on the map. \n\
 				VIP Lounge\n\
@@ -11329,8 +11329,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			case 2:
 			{
 				new Message[1000];
-				Message = "Purple VIP name on the forum.gta.networks. \n\
-				VIP forum.gta.networks Access \n\
+				Message = "Purple VIP name on the diendan.saw-community.net. \n\
+				VIP diendan.saw-community.net Access \n\
 				Gold VIP Tag on TS. \n\
 				VIP Chat \n\
 				VIP Garage with access to all the most select cars on the map. \n\

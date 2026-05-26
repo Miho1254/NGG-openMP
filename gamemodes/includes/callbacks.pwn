@@ -3060,7 +3060,7 @@ public OnPlayerSpawn(playerid)
 	SetPlayerArmedWeapon(playerid, 0); // making sure players spawn with their fists.
 	if(PlayerInfo[playerid][pTut] != -1)
 	{
-		if(PlayerInfo[playerid][pTut] < 14) PlayerInfo[playerid][pTut] = 0;
+		if(PlayerInfo[playerid][pTut] < 14) PlayerInfo[playerid][pTut] = 13;
 		AdvanceTutorial(playerid);
 	}
 
@@ -3101,7 +3101,7 @@ public OnPlayerLeaveCheckpoint(playerid)
 	}
 	if(PlayerInfo[playerid][pTut] != -1)
 	{
-		if(PlayerInfo[playerid][pTut] < 14) PlayerInfo[playerid][pTut] = 0;
+		if(PlayerInfo[playerid][pTut] < 14) PlayerInfo[playerid][pTut] = 13;
 		AdvanceTutorial(playerid);
 	}
 	return 1;
