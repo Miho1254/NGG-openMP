@@ -83,13 +83,39 @@ hook OnPlayerConnect(playerid) {
     return 1;
 }
 
+hook OnPlayerDisconnect(playerid, reason) {
+    pVeChai[playerid] = 0;
+    return 1;
+}
+
+hook OnPlayerDeath(playerid, killerid, reason) {
+    if(pVeChai[playerid] > 0) {
+        pVeChai[playerid] = 0;
+        RemovePlayerAttachedObject(playerid, 9);
+        SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
+        SendClientMessageEx(playerid, COLOR_GREY, "Ban da bi chet va lam rot so ve chai dang cam!");
+    }
+    return 1;
+}
+
 hook OnVehicleSpawn(vehicleid) {
     VehVeChai[vehicleid] = 0;
     return 1;
 }
 
 hook OnVehicleDeath(vehicleid, killerid) {
-    VehVeChai[vehicleid] = 0;
+    if(VehVeChai[vehicleid] > 0) {
+        new msg[128];
+        format(msg, sizeof(msg), "%dkg ve chai tren xe da bi mat vi xe bi pha huy!", VehVeChai[vehicleid]);
+        new Float:vx, Float:vy, Float:vz;
+        GetVehiclePos(vehicleid, vx, vy, vz);
+        foreach(new i : Player) {
+            if(IsPlayerInRangeOfPoint(i, 50.0, vx, vy, vz)) {
+                SendClientMessageEx(i, COLOR_RED, msg);
+            }
+        }
+        VehVeChai[vehicleid] = 0;
+    }
     return 1;
 }
 

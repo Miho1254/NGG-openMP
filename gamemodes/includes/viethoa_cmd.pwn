@@ -254,6 +254,11 @@ public PC_OnInit()
     SafeRegAlias("createfamily", "taofamily");
     SafeRegAlias("createfaction", "taofaction");
 
+    // Lenh cuop
+    SafeRegAlias("robatm", "cuopatm");
+    SafeRegAlias("robbiz", "cuopbiz");
+    SafeRegAlias("cancelrob", "huycuop");
+
     printf("[Pawn.CMD] Hoan tat nap Alias.");
     return 1;
 }

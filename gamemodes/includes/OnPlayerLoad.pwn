@@ -294,6 +294,9 @@ public OnPlayerLoad(playerid)
 		PlayerInfo[playerid][pBeingSentenced] = 0;
 		PlayerInfo[playerid][pProbationTime] = 0;
 		PlayerInfo[playerid][pModel] = 299;
+		PlayerInfo[playerid][pPos_x] = -1704.8635;
+		PlayerInfo[playerid][pPos_y] = 1338.0919;
+		PlayerInfo[playerid][pPos_z] = 7.1791;
 		PlayerInfo[playerid][pPnumber] = 0;
 		PlayerInfo[playerid][pPhousekey] = INVALID_HOUSE_ID;
 		PlayerInfo[playerid][pPhousekey2] = INVALID_HOUSE_ID;

@@ -92,6 +92,54 @@ hook OnPlayerConnect(playerid) {
     return 1;
 }
 
+hook OnPlayerDisconnect(playerid, reason) {
+    if(GetPVarInt(playerid, "ChatCayTimer") != 0) {
+        ClearChatCay(playerid);
+    }
+    DeletePVar(playerid, "WoodCarrying");
+    return 1;
+}
+
+hook OnPlayerDeath(playerid, killerid, reason) {
+    if(GetPVarInt(playerid, "ChatCayTimer") != 0) {
+        ClearChatCay(playerid);
+        SendClientMessageEx(playerid, COLOR_GREY, "Ban da bi chet khi dang chat cay! Chuyen chat cay bi huy.");
+    }
+    if(GetPVarInt(playerid, "WoodCarrying") > 0) {
+        DeletePVar(playerid, "WoodCarrying");
+        RemovePlayerAttachedObject(playerid, 9);
+        SendClientMessageEx(playerid, COLOR_GREY, "Ban da bi chet va lam rot khoi go!");
+    }
+    return 1;
+}
+
+hook OnVehicleDeath(vehicleid, killerid) {
+    if(VehWood[vehicleid] > 0 || VehRareWood[vehicleid] > 0) {
+        new msg[128];
+        if(VehRareWood[vehicleid] > 0) {
+            format(msg, sizeof(msg), "Go Sua Do Ngan Nam tren xe da bi mat vi xe bi pha huy!");
+        } else {
+            format(msg, sizeof(msg), "%dkg go thuong tren xe da bi mat vi xe bi pha huy!", VehWood[vehicleid]);
+        }
+        new Float:vx, Float:vy, Float:vz;
+        GetVehiclePos(vehicleid, vx, vy, vz);
+        foreach(new i : Player) {
+            if(IsPlayerInRangeOfPoint(i, 50.0, vx, vy, vz)) {
+                SendClientMessageEx(i, COLOR_RED, msg);
+            }
+        }
+        VehWood[vehicleid] = 0;
+        VehRareWood[vehicleid] = 0;
+    }
+    return 1;
+}
+
+hook OnVehicleSpawn(vehicleid) {
+    VehWood[vehicleid] = 0;
+    VehRareWood[vehicleid] = 0;
+    return 1;
+}
+
 forward LamTac_GlobalTimer();
 public LamTac_GlobalTimer() {
     new year, month, day, hour, minute, second;
@@ -120,9 +168,9 @@ public LamTac_GlobalTimer() {
         new r = random(MAX_TREES);
         // Neu cay do dang respawn, reset no luon
         TreeData[r][treeState] = 2;
-        TreeData[r][treeHP] = 1000;
+        TreeData[r][treeHP] = 10000;
         Streamer_SetIntData(STREAMER_TYPE_OBJECT, TreeData[r][treeObj], E_STREAMER_MODEL_ID, TREE_RARE_OBJECT);
-        UpdateDynamic3DTextLabelText(TreeData[r][treeLabel], COLOR_WHITE, "{FF0000}[GO SUA DO NGAN NAM]{FFFFFF}\nHP: 1000/1000\nSu dung /chatcay de khai thac");
+        UpdateDynamic3DTextLabelText(TreeData[r][treeLabel], COLOR_WHITE, "{FF0000}[GO SUA DO NGAN NAM]{FFFFFF}\nHP: 10000/10000\nSu dung /chatcay de khai thac");
         RareTreeIndex = r;
         
         SendClientMessageToAll(COLOR_RED, "{FF0000}[TIN TUC] {FFFFFF}Mot cay Go Sua Do ngan nam vua xuat hien tai khu vuc rung nui! Su dung {FFFF00}/gpsgohiem{FFFFFF} de tim vi tri!");
@@ -265,7 +313,7 @@ public ChatCay_RareTick(playerid) {
         SendClientMessageEx(playerid, COLOR_LIGHTGREEN, "{FF0000}[LAM TAC]{FFFFFF} Ban da lay duoc Go Sua Do! Mau dua len xe tai va dem ban tai Cho Den {FFFF00}/putgo{FFFFFF}.");
     } else {
         new str[128];
-        format(str, sizeof(str), "{FF0000}[GO SUA DO NGAN NAM]{FFFFFF}\nHP: %d/1000\nSu dung /chatcay de khai thac", TreeData[treeid][treeHP]);
+        format(str, sizeof(str), "{FF0000}[GO SUA DO NGAN NAM]{FFFFFF}\nHP: %d/10000\nSu dung /chatcay de khai thac", TreeData[treeid][treeHP]);
         UpdateDynamic3DTextLabelText(TreeData[treeid][treeLabel], COLOR_WHITE, str);
     }
     return 1;
@@ -388,9 +436,9 @@ CMD:forcegohiem(playerid, params[]) {
     
     new r = random(MAX_TREES);
     TreeData[r][treeState] = 2;
-    TreeData[r][treeHP] = 1000;
+    TreeData[r][treeHP] = 10000;
     Streamer_SetIntData(STREAMER_TYPE_OBJECT, TreeData[r][treeObj], E_STREAMER_MODEL_ID, TREE_RARE_OBJECT);
-    UpdateDynamic3DTextLabelText(TreeData[r][treeLabel], COLOR_WHITE, "{FF0000}[GO SUA DO NGAN NAM]{FFFFFF}\nHP: 1000/1000\nSu dung /chatcay de khai thac");
+    UpdateDynamic3DTextLabelText(TreeData[r][treeLabel], COLOR_WHITE, "{FF0000}[GO SUA DO NGAN NAM]{FFFFFF}\nHP: 10000/10000\nSu dung /chatcay de khai thac");
     RareTreeIndex = r;
     
     SendClientMessageToAll(COLOR_RED, "{FF0000}[TIN TUC] {FFFFFF}Mot cay Go Sua Do ngan nam vua xuat hien (ADMIN FORCE)! Su dung {FFFF00}/gpsgohiem{FFFFFF} de tim vi tri!");

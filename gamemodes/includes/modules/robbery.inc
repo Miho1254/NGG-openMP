@@ -258,6 +258,7 @@ static Rob_ResetState(playerid) {
         arrRobState[playerid][rob_iRangeTimer] = 0;
     }
     Rob_ClearTargetRobber(playerid);
+    ClearAnimations(playerid);
     TogglePlayerControllable(playerid, 1);
     arrRobState[playerid][rob_iState]    = ROB_STATE_NONE;
     arrRobState[playerid][rob_iType]     = 0;
@@ -503,7 +504,14 @@ CMD:robbiz(playerid, params[]) {
         return SendClientMessageEx(playerid, COLOR_RED, szMsg);
     }
 
+    // Kiem tra cong cu (can Picklock)
+    new iTool = Rob_HasToolForATM(playerid);
+    if (!iTool)
+        return SendClientMessageEx(playerid, COLOR_RED,
+            "{FF0000}[CUOP]{FFFFFF}: Ban can {FFFF00}Picklock (khoa mo){FFFFFF} de pha khoa cua hang.");
+
     // Bat dau pha khoa biz
+    Rob_RemoveTool(playerid, iTool);
     arrRobState[playerid][rob_iState]    = ROB_STATE_CRACKING;
     arrRobState[playerid][rob_iType]     = ROB_TYPE_BIZ;
     arrRobState[playerid][rob_iTargetID] = iBiz;
@@ -512,6 +520,7 @@ CMD:robbiz(playerid, params[]) {
     Rob_SetTargetRobber(ROB_TYPE_BIZ, iBiz, playerid);
 
     TogglePlayerControllable(playerid, 0);
+    ApplyAnimation(playerid, "BOMBER", "BOM_Plant", 4.0, 1, 0, 0, 1, 10000, 1);
 
     new szMsg[128];
     format(szMsg, sizeof(szMsg),
