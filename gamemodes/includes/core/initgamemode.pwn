@@ -164,6 +164,7 @@ stock LoadCustomSkin()
 	AddSimpleModel(-1,19379, -2002, "object.dff", "gtanetwork.txd");
 }
 
+/*
 new SERVER_DOWNLOAD[] = "http://gta.network/models/"; 
 public OnPlayerRequestDownload(playerid, type, crc) 
 { 
@@ -187,3 +188,4 @@ public OnPlayerRequestDownload(playerid, type, crc)
     } 
     return 1; 
 }  
+*/
