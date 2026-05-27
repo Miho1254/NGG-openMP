@@ -160,7 +160,7 @@ stock LoadCustomSkin()
 	AddCharModel(193, 21086, "gucci.dff", "gucci.txd");
 	AddCharModel(193, 21087, "gucci1.dff", "gucci1.txd");
 	AddCharModel(193, 21087, "girlprivate.dff", "girlprivate.txd");
-	AddCharModel(193, 21088, "skins/Elaina.dff", "skins/Elaina.txd");
+	AddCharModel(193, 21088, "Elaina.dff", "Elaina.txd");
 	AddSimpleModel(-1,19379, -2002, "object.dff", "gtanetwork.txd");
 }
 
