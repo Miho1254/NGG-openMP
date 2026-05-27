@@ -2,7 +2,8 @@
   "announce": true,
   "artwork": {
     "cdn": "",
-    "enable": true
+    "enable": true,
+    "web_server_bind": "0.0.0.0"
   },
   "banners": {
     "dark": "",
