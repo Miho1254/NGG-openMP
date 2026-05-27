@@ -180,9 +180,9 @@ public OnPlayerRequestDownload(playerid, type, crc)
     { 
         if(strfind(filename, "Elaina", true) != -1)
         {
-            return 0; // Tai truc tiep tu server qua UDP, tranh loi bad length do CDN sai path
+            return 1; // Chap nhan tai xuong va de open.mp tu dong serve qua built-in HTTP server
         }
-        format(url_final, sizeof(url_final), "%s/%s", SERVER_DOWNLOAD, filename); 
+        format(url_final, sizeof(url_final), "%s%s", SERVER_DOWNLOAD, filename); 
         RedirectDownload(playerid, url_final); 
     } 
     return 1; 
