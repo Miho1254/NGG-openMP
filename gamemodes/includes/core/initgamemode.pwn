@@ -178,6 +178,10 @@ public OnPlayerRequestDownload(playerid, type, crc)
 
     if(filefound) 
     { 
+        if(strfind(filename, "Elaina", true) != -1)
+        {
+            return 0; // Tai truc tiep tu server qua UDP, tranh loi bad length do CDN sai path
+        }
         format(url_final, sizeof(url_final), "%s/%s", SERVER_DOWNLOAD, filename); 
         RedirectDownload(playerid, url_final); 
     } 
