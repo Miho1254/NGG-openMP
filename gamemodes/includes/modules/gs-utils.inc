@@ -11,6 +11,51 @@ new skinCustomVIPList[] =
     20006, 20009
 };
 
+stock GetPlayerItemAmountTotal(playerid, itemid)
+{
+    new total = 0;
+    for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+    {
+        if(CharacterInfo[playerid][0][cb_ItemID][i] == itemid && CharacterInfo[playerid][0][cb_ItemLock][i] == 0)
+        {
+            total += CharacterInfo[playerid][0][cb_ItemAmount][i];
+        }
+    }
+    return total;
+}
+
+stock RemovePlayerItemAmountTotal(playerid, itemid, amount)
+{
+    new remaining = amount;
+    for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+    {
+        if(CharacterInfo[playerid][0][cb_ItemID][i] == itemid && CharacterInfo[playerid][0][cb_ItemLock][i] == 0)
+        {
+            new slotAmount = CharacterInfo[playerid][0][cb_ItemAmount][i];
+            if(slotAmount >= remaining)
+            {
+                CharacterInfo[playerid][0][cb_ItemAmount][i] -= remaining;
+                if(CharacterInfo[playerid][0][cb_ItemAmount][i] <= 0)
+                {
+                    RemovePlayerItem(playerid, i);
+                }
+                else
+                {
+                    CharacterInfo[playerid][0][cb_ItemWeight][i] = GetItemWeight(itemid);
+                }
+                remaining = 0;
+                break;
+            }
+            else
+            {
+                remaining -= slotAmount;
+                RemovePlayerItem(playerid, i);
+            }
+        }
+    }
+    return (remaining == 0);
+}
+
 /*CMD:quadenbu(playerid, params[])
 {
     if(PlayerData[playerid][pc_LimitEventReward] == 0 && PlayerInfo[playerid][pDonateRank] == 3)
@@ -588,6 +633,74 @@ Dialog:DIALOG_NPC_VIPSHOP(playerid, response, listitem, inputtext[])
                 SetPVarInt(playerid, "ShopQuestion", 0);
                 SetPVarInt(playerid, "VSShopItem", -1);
             }
+            if(GetPVarInt(playerid, "VSShopItem") == 6) // Phieu mo rong tui do (1 o)
+            {
+                new silver = GetPlayerItemAmountTotal(playerid, 3);
+                new niken = GetPlayerItemAmountTotal(playerid, 4);
+                new cu = GetPlayerItemAmountTotal(playerid, 6);
+                new crom = GetPlayerItemAmountTotal(playerid, 7);
+                new gold = GetPlayerItemAmountTotal(playerid, 5);
+
+                if(silver < 30 || niken < 30 || cu < 40 || crom < 20 || gold < 10)
+                {
+                    SendClientMessageEx(playerid, COLOR_GRAD3, "Ban khong co du nguyen lieu de doi Phieu mo rong!");
+                    SendClientMessageEx(playerid, COLOR_WHITE, "Yeu cau: 30 Bac, 30 Niken, 40 Dong, 20 Crom, 10 Vang.");
+                }
+                else
+                {
+                    new success = -1;
+                    SetPlayerItem(playerid, 13, 1, success);
+                    if(success == 1)
+                    {
+                        RemovePlayerItemAmountTotal(playerid, 3, 30);
+                        RemovePlayerItemAmountTotal(playerid, 4, 30);
+                        RemovePlayerItemAmountTotal(playerid, 6, 40);
+                        RemovePlayerItemAmountTotal(playerid, 7, 20);
+                        RemovePlayerItemAmountTotal(playerid, 5, 10);
+                        SendClientMessageEx(playerid, COLOR_WHITE, "[{62FF00}Cua Hang{FFFFFF}] Ban da doi thanh cong 1 Phieu mo rong slot tui do.");
+                    }
+                    else
+                    {
+                        SendClientMessageEx(playerid, COLOR_GRAD3, "Khong the them vat pham (co the tui do cua ban da day hoac qua nang).");
+                    }
+                }
+                SetPVarInt(playerid, "ShopQuestion", 0);
+                SetPVarInt(playerid, "VSShopItem", -1);
+            }
+            if(GetPVarInt(playerid, "VSShopItem") == 7) // The nang cap balo (+5kg)
+            {
+                new silver = GetPlayerItemAmountTotal(playerid, 3);
+                new niken = GetPlayerItemAmountTotal(playerid, 4);
+                new cu = GetPlayerItemAmountTotal(playerid, 6);
+                new crom = GetPlayerItemAmountTotal(playerid, 7);
+                new gold = GetPlayerItemAmountTotal(playerid, 5);
+
+                if(silver < 50 || niken < 50 || cu < 60 || crom < 40 || gold < 30)
+                {
+                    SendClientMessageEx(playerid, COLOR_GRAD3, "Ban khong co du nguyen lieu de doi The nang cap trong luong!");
+                    SendClientMessageEx(playerid, COLOR_WHITE, "Yeu cau: 50 Bac, 50 Niken, 60 Dong, 40 Crom, 30 Vang.");
+                }
+                else
+                {
+                    new success = -1;
+                    SetPlayerItem(playerid, 54, 1, success);
+                    if(success == 1)
+                    {
+                        RemovePlayerItemAmountTotal(playerid, 3, 50);
+                        RemovePlayerItemAmountTotal(playerid, 4, 50);
+                        RemovePlayerItemAmountTotal(playerid, 6, 60);
+                        RemovePlayerItemAmountTotal(playerid, 7, 40);
+                        RemovePlayerItemAmountTotal(playerid, 5, 30);
+                        SendClientMessageEx(playerid, COLOR_WHITE, "[{62FF00}Cua Hang{FFFFFF}] Ban da doi thanh cong 1 The nang cap balo (+5kg).");
+                    }
+                    else
+                    {
+                        SendClientMessageEx(playerid, COLOR_GRAD3, "Khong the them vat pham (co the tui do cua ban da day hoac qua nang).");
+                    }
+                }
+                SetPVarInt(playerid, "ShopQuestion", 0);
+                SetPVarInt(playerid, "VSShopItem", -1);
+            }
         }
     }
     else
@@ -620,17 +733,18 @@ hook OnGameModeInit()
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
     if(PRESSED(KEY_YES) && IsPlayerInRangeOfPoint(playerid, 5.0, -2411.3362,519.2717,29.9297)) // NPC cua hang
-
     {
         SetPVarInt(playerid, "ShopQuestion", 1);
-        new string[256];
-        format(string, sizeof(string), "Vat pham ban\tGia tien\n");
+        new string[512];
+        format(string, sizeof(string), "Vat pham ban\tGia tien / Nguyen lieu doi\n");
         strcat(string, "May khai thac (thuong)\t$150,000\n");
         strcat(string, "Medkit-A\t$15,000\n");
         strcat(string, "May khai thac (VIP)\t65,000 GP\n");
         strcat(string, "Can xang (100 lit)\t$120,000\n");
         strcat(string, "Can xang (200 lit)\t$220,000\n");
         strcat(string, "GPS\t$25,000\n");
+        strcat(string, "Phieu mo rong tui do (1 o)\t30 Bac, 30 Niken, 40 Dong, 20 Crom, 10 Vang\n");
+        strcat(string, "The nang cap balo (+5kg)\t50 Bac, 50 Niken, 60 Dong, 40 Crom, 30 Vang\n");
         Dialog_Show(playerid, DIALOG_NPC_VIPSHOP, DIALOG_STYLE_TABLIST_HEADERS, "Cua hang - San Fierro VIP", string, "Chon", "Huy");
     }
     return 1;

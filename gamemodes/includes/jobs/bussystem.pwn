@@ -21,6 +21,8 @@ new BusFreezeCount[MAX_PLAYERS];
 new BusLeaveCount[MAX_PLAYERS];
 new BusLoopCount[MAX_PLAYERS];
 new BusTotalTips[MAX_PLAYERS];
+new BusPlayerVeh[MAX_PLAYERS];
+new BusVehUsedBy[8];
 
 new const Float:BusStops[BUS_MAX_STOPS][3] = {
     {-1710.0544, 1332.0048, 7.0468},
@@ -174,6 +176,7 @@ hook OnGameModeInit()
         BusVehicles[i] = AddStaticVehicleEx(BUS_VEHICLE_MODEL,
             BusSpawnPos[i][0], BusSpawnPos[i][1], BusSpawnPos[i][2], BusSpawnPos[i][3],
             -1, -1, 300);
+        BusVehUsedBy[i] = INVALID_PLAYER_ID;
     }
 
     for(new i = 0; i < BUS_MAX_STOPS; i++) {
@@ -199,11 +202,15 @@ hook OnPlayerConnect(playerid)
     BusLeaveCount[playerid] = 0;
     BusLoopCount[playerid] = 0;
     BusTotalTips[playerid] = 0;
+    BusPlayerVeh[playerid] = INVALID_VEHICLE_ID;
     return 1;
 }
 
 hook OnPlayerDisconnect(playerid, reason)
 {
+    if(BusPlayerVeh[playerid] != INVALID_VEHICLE_ID) {
+        Bus_RespawnVehicle(playerid);
+    }
     Bus_ResetJob(playerid);
     return 1;
 }
@@ -247,12 +254,48 @@ hook OnPlayerStateChange(playerid, newstate, oldstate)
         }
     }
 
-    if(newstate == PLAYER_STATE_DRIVER && BusOnRoute[playerid]) {
-        if(IsAnBus(GetPlayerVehicleID(playerid))) {
-            if(BusLeaveCount[playerid] > 0) {
-                BusLeaveCount[playerid] = 0;
-                SendClientMessageEx(playerid, COLOR_GREEN, "Ban da tro lai xe bus! Tiep tuc tuyen duong.");
+    if(newstate == PLAYER_STATE_DRIVER && IsAnBus(GetPlayerVehicleID(playerid))) {
+        new vehid = GetPlayerVehicleID(playerid);
+        for(new i = 0; i < 8; i++) {
+            if(BusVehicles[i] == vehid && BusVehUsedBy[i] != INVALID_PLAYER_ID && BusVehUsedBy[i] != playerid) {
+                RemovePlayerFromVehicle(playerid);
+                SendClientMessageEx(playerid, COLOR_GREY, "Xe bus nay dang duoc tai khac su dung tuyen!");
+                break;
             }
+        }
+
+        if(BusOnRoute[playerid] && BusLeaveCount[playerid] > 0) {
+            BusLeaveCount[playerid] = 0;
+            SendClientMessageEx(playerid, COLOR_GREEN, "Ban da tro lai xe bus! Tiep tuc tuyen duong.");
+        }
+    }
+    return 1;
+}
+
+hook OnPlayerDeath(playerid, killerid, reason)
+{
+    if(BusOnRoute[playerid]) {
+        Bus_RespawnVehicle(playerid);
+        Bus_ResetJob(playerid);
+        DisablePlayerCheckpoint(playerid);
+        TogglePlayerControllable(playerid, true);
+        SendClientMessageEx(playerid, COLOR_RED, "Chuyen xe buyt da bi huy vi ban da chet.");
+    }
+    return 1;
+}
+
+hook OnVehicleDeath(vehicleid, killerid)
+{
+    for(new i = 0; i < 8; i++) {
+        if(BusVehicles[i] == vehicleid && BusVehUsedBy[i] != INVALID_PLAYER_ID) {
+            new playerid = BusVehUsedBy[i];
+            if(IsPlayerConnected(playerid) && BusOnRoute[playerid]) {
+                Bus_ResetJob(playerid);
+                DisablePlayerCheckpoint(playerid);
+                TogglePlayerControllable(playerid, true);
+                SendClientMessageEx(playerid, COLOR_RED, "Chuyen xe buyt da bi huy vi xe bi pha huy!");
+            }
+            break;
         }
     }
     return 1;
@@ -316,12 +359,27 @@ CMD:busrun(playerid, params[])
         return SendClientMessageEx(playerid, COLOR_GREY, "Ban can ngoi tren xe bus de bat dau!");
     }
 
+    new vehid = GetPlayerVehicleID(playerid);
+    for(new i = 0; i < 8; i++) {
+        if(BusVehUsedBy[i] != INVALID_PLAYER_ID && BusVehicles[i] == vehid) {
+            return SendClientMessageEx(playerid, COLOR_GREY, "Xe bus nay dang duoc tai khac su dung!");
+        }
+    }
+
     if(CheckPointCheck(playerid)) callcmd::killcheckpoint(playerid, params);
 
     BusOnRoute[playerid] = true;
     BusStopIndex[playerid] = 0;
     BusLoopCount[playerid] = 0;
     BusTotalTips[playerid] = 0;
+    BusPlayerVeh[playerid] = vehid;
+
+    for(new i = 0; i < 8; i++) {
+        if(BusVehicles[i] == vehid) {
+            BusVehUsedBy[i] = playerid;
+            break;
+        }
+    }
 
     Bus_SetNextCheckpoint(playerid);
 
@@ -339,6 +397,7 @@ CMD:huybus(playerid, params[])
         return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong dang chay tuyen xe buyt!");
     }
 
+    Bus_RespawnVehicle(playerid);
     Bus_ResetJob(playerid);
     DisablePlayerCheckpoint(playerid);
     TogglePlayerControllable(playerid, true);
@@ -417,6 +476,7 @@ stock Bus_FailJob(playerid)
 {
     SendClientMessageEx(playerid, COLOR_RED, "Chuyen xe buyt da bi huy vi ban roi khoi xe qua lau!");
     GameTextForPlayer(playerid, "~r~That bai!", 3000, 4);
+    Bus_RespawnVehicle(playerid);
     Bus_ResetJob(playerid);
     DisablePlayerCheckpoint(playerid);
     TogglePlayerControllable(playerid, true);
@@ -431,12 +491,35 @@ stock Bus_StartLeaveTimer(playerid)
 
 stock Bus_ResetJob(playerid)
 {
+    if(BusPlayerVeh[playerid] != INVALID_VEHICLE_ID) {
+        for(new i = 0; i < 8; i++) {
+            if(BusVehicles[i] == BusPlayerVeh[playerid]) {
+                BusVehUsedBy[i] = INVALID_PLAYER_ID;
+                break;
+            }
+        }
+    }
     BusOnRoute[playerid] = false;
     BusStopIndex[playerid] = 0;
     BusFreezeCount[playerid] = 0;
     BusLeaveCount[playerid] = 0;
     BusLoopCount[playerid] = 0;
     BusTotalTips[playerid] = 0;
+    BusPlayerVeh[playerid] = INVALID_VEHICLE_ID;
+}
+
+stock Bus_RespawnVehicle(playerid)
+{
+    if(BusPlayerVeh[playerid] == INVALID_VEHICLE_ID) return;
+    new vehid = BusPlayerVeh[playerid];
+    if(!IsValidVehicle(vehid)) return;
+
+    foreach(new i : Player) {
+        if(i != playerid && IsPlayerInVehicle(i, vehid)) {
+            RemovePlayerFromVehicle(i);
+        }
+    }
+    SetVehicleToRespawn(vehid);
 }
 
 stock Bus_IsPlayerOnRoute(playerid)

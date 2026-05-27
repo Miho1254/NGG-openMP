@@ -116,8 +116,8 @@ new Inventory_ListItems[][] =
     "The EXP Bonus 30%", "Hom trang phuc Event Vietnam Capsule mua 1", "Hom xe Event Vietnam Capsule mua 1", "Hom Toy Event Vietnam Capsule mua 1",
     "Jerry can (100 lit)", "Jerry can (200 lit)", "SD-Pistol", "Colt-9mm", "Deagle", "Shotgun", "Sawn-Off", "Spas-12", "Uzi", "Mp5", "AK", "M4",
     "Tec9", "Rifle", "Sniper", "Da tho", "Ca thu", "Ca ngu", "Ca noc", "Ruou & thuoc la", "Hop dan tich hop", "Combo GFC", "Ban do kho bau","M4 LAW",
-    "AK LAW", "Deagle LAW", "9mm LAW", "MP5 LAW", "Sword Katana", "Gay Bong Chay",
-    "Can sa nguyen chat", "Tui zip can sa", "Picklock"
+    "AK LAW", "Deagle LAW", "9mm LAW", "MP5 LAW",    "Sword Katana", "Gay Bong Chay",
+    "Can sa nguyen chat", "Tui zip can sa", "Picklock", "The nang cap balo (+5kg)"
 };
 
 new PlayerText: GTASA_Inventory[MAX_PLAYERS][2][62];
@@ -220,6 +220,10 @@ stock Float:GetItemWeight(item)
             return 0.4;
         }
         case 53: // Picklock
+        {
+            return 0.5;
+        }
+        case 54: // The nang cap balo (+5kg)
         {
             return 0.5;
         }
@@ -1858,6 +1862,7 @@ stock GetItemInfo(item)
         case 44 .. 48: string = "Vu khi LAW Faction";
         case 49: string = "Thanh kiem voi sat thuong lon";
         case 50: string = "Gay bong chay cua cac tuyen thu";
+        case 54: string = "Dung de nang cap them 5kg trong luong balo (Toi da 150kg).";
     }
     return string;
 }
@@ -1880,6 +1885,7 @@ stock GetAmountItemLimit(item)
         case 51: return 50;  // Can sa nguyen chat
         case 52: return 100; // Tui zip can sa
         case 53: return 5;   // Picklock
+        case 54: return 10;  // The nang cap balo (+5kg)
     }
     return 0;
 }
@@ -2013,6 +2019,8 @@ stock GetItemMDL(item)
         case 50: string = "mdl-2002:item_baseballbat";
         case 51: string = "mdl-2002:item_kssilver"; // TODO: thay bang texture can sa thoi
         case 52: string = "mdl-2002:item_medkit";   // TODO: thay bang texture tui zip
+        case 53: string = "mdl-2002:item_slotcard"; // Picklock
+        case 54: string = "mdl-2002:item_slotcard"; // The nang cap balo (+5kg)
     }
     return string;
 }
@@ -2230,6 +2238,14 @@ stock GetItemName(item)
         {
             string = "Tui zip can sa";
         }
+        case 53:
+        {
+            string = "Picklock";
+        }
+        case 54:
+        {
+            string = "The nang cap balo (+5kg)";
+        }
     }
     return string;
 }
@@ -2240,6 +2256,7 @@ stock Inventory_SaveData(playerid)
     new str[30];
     new sqlid = PlayerInfo[playerid][pId];
     if(sqlid <= 0) return 0;
+    if(CharacterInfo[playerid][0][cb_Weight] <= 0.0) return 0; // Don't save if inventory data is not loaded (prevents DB corruption)
 
     Inventory_SavePlayerFloat(sqlid, "Weight", CharacterInfo[playerid][0][cb_Weight]);
     Inventory_SavePlayerFloat(sqlid, "Weight2", CharacterInfo[playerid][1][cb_Weight]);
@@ -3985,6 +4002,7 @@ stock Balo_IsUsable(itemid)
     if(itemid == 41) return 1;                   // Ammo box
     if(itemid == 42) return 1;                   // Combo GFC
     if(itemid == 43) return 1;                   // Treasure map
+    if(itemid == 54) return 1;                   // The nang cap balo (+5kg)
     return 0;                                    // Weapons, materials, fish = not usable directly
 }
 
@@ -4818,6 +4836,32 @@ stock Balo_UseItem(playerid, target, slot, itemid)
                 RemovePlayerItem(playerid, slot);
         }
         SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da su dung the bonus.");
+        return Balo_ShowMain(playerid);
+    }
+    // The nang cap balo (+5kg)
+    if(itemid == 54)
+    {
+        if(CharacterInfo[playerid][0][cb_Weight] >= 150.0)
+        {
+            SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Balo cua ban da dat gioi han trong luong toi da (150kg).");
+            return Balo_ShowMain(playerid);
+        }
+        CharacterInfo[playerid][0][cb_Weight] += 5.0;
+        CharacterInfo[playerid][1][cb_Weight] = CharacterInfo[playerid][0][cb_Weight] / 2;
+
+        if(!isAdmin) {
+            CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
+            if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
+                RemovePlayerItem(playerid, slot);
+        }
+
+        // Luu MySQL
+        Inventory_SavePlayerFloat(PlayerInfo[playerid][pId], "Weight", CharacterInfo[playerid][0][cb_Weight]);
+        Inventory_SavePlayerFloat(PlayerInfo[playerid][pId], "Weight2", CharacterInfo[playerid][1][cb_Weight]);
+
+        new szMsg[128];
+        format(szMsg, sizeof(szMsg), "[{FFB561}BALO{FFFFFF}]: Ban da su dung The nang cap balo. Trong luong toi da hien tai: %.1f kg.", CharacterInfo[playerid][0][cb_Weight]);
+        SendClientMessageEx(playerid, COLOR_WHITE, szMsg);
         return Balo_ShowMain(playerid);
     }
     // Default: can't use
