@@ -220,24 +220,26 @@ stock InvalidNameCheck(playerid) {
 
 stock ShowMainMenuGUI(playerid)
 {
-	InsideMainMenu{playerid} = true;
-	MainMenuUpdateForPlayer(playerid);
+    InsideMainMenu{playerid} = true;
+    MainMenuUpdateForPlayer(playerid);
 
-	TextDrawShowForPlayer(playerid, MainMenuTxtdraw[0]);
-	TextDrawShowForPlayer(playerid, MainMenuTxtdraw[1]);
-	TextDrawShowForPlayer(playerid, MainMenuTxtdraw[2]);
-	TextDrawShowForPlayer(playerid, MainMenuTxtdraw[3]);
-	TextDrawShowForPlayer(playerid, MainMenuTxtdraw[4]);
-	TextDrawShowForPlayer(playerid, MainMenuTxtdraw[5]);
-	TextDrawShowForPlayer(playerid, MainMenuTxtdraw[6]);
-	TextDrawShowForPlayer(playerid, MainMenuTxtdraw[9]);
-	TextDrawShowForPlayer(playerid, MainMenuTxtdraw[10]);
-	TextDrawShowForPlayer(playerid, TD_LoginScreen);
+    /* Tạm tắt để tìm bug
+    TextDrawShowForPlayer(playerid, MainMenuTxtdraw[0]);
+    TextDrawShowForPlayer(playerid, MainMenuTxtdraw[1]);
+    TextDrawShowForPlayer(playerid, MainMenuTxtdraw[2]);
+    TextDrawShowForPlayer(playerid, MainMenuTxtdraw[3]);
+    TextDrawShowForPlayer(playerid, MainMenuTxtdraw[4]);
+    TextDrawShowForPlayer(playerid, MainMenuTxtdraw[5]);
+    TextDrawShowForPlayer(playerid, MainMenuTxtdraw[6]);
+    TextDrawShowForPlayer(playerid, MainMenuTxtdraw[9]);
+    TextDrawShowForPlayer(playerid, MainMenuTxtdraw[10]);
+    TextDrawShowForPlayer(playerid, TD_LoginScreen);
+    */
 
-	PlayAudioStreamForPlayer(playerid, "http://160.187.229.19/login_background_audio.mp3");
+	//Mixi Nun na na na Anh do Mixi.........
+    //PlayAudioStreamForPlayer(playerid, "http://160.187.229.19/login_background_audio.mp3");
 
-	TogglePlayerSpectating(playerid, true);
-	//SetTimerEx("loginCamera", 1000, false, "i", playerid);
+    TogglePlayerSpectating(playerid, true);
 }
 
 stock HideMainMenuGUI(playerid)
