@@ -4,19 +4,16 @@
  * ============================================================
  *
  *  Flow:
- *    1. Player dung sat ATM/Biz va dung lenh /robatm hoac /robbiz <bizid>
- *    2. Can co >= 2 cops online, co rua / bua trong tui (ATM), va chua trong cooldown.
- *    3. Pha khoa 10 giay (frozen), sau do bat dau 3 phut gom tien.
- *    4. Sau 10 giay: bao dong phat qua radio den toan bo LEA (vi tri + /gpsatm hoac /mygps).
- *    5. Sau 3 phut: tra thuong Dirty Money ngau nhien, them Wanted, dang log.
+ *    1. Player dung sat ATM/Biz va dung lenh /robatm hoac /robbiz
+ *    2. Can co >= 2 cops online, co Picklock trong tui, va chua trong cooldown.
+ *    3. Pha khoa 10 giay (frozen), sau do bat dau 1 phut gom tien.
+ *    4. Sau 10 giay: bao dong phat qua radio den toan bo LEA (khu vuc).
+ *    5. Sau 1 phut: tra thuong Dirty Money ngau nhien, bao dong tao thoat, dang log.
  *    6. Cooldown ca nhan 15 phut, cooldown tung ATM/Biz 30 phut.
  *
  *  Rewards (Dirty Money):
  *    ATM : $35,000 – $70,000
  *    Biz : $60,000 – $110,000
- *
- *  Phat them:
- *    +2 wanted stars sau khi lay tien xong.
  *
  * ============================================================
  */
@@ -24,7 +21,7 @@
 
 /* ── Constants ────────────────────────────────────────────── */
 #define ROB_CRACK_TIME          10          // giay pha khoa
-#define ROB_COLLECT_TIME        180         // 3 phut gom tien (giay)
+#define ROB_COLLECT_TIME        60          // 1 phut gom tien (giay)
 #define ROB_RANGE_CHECK_TIME    5           // giay kiem tra khoang cach
 #define ROB_KEEP_RANGE          8.0         // khoang cach toi da khi gom tien
 #define ROB_PLAYER_COOLDOWN     900         // 15 phut cooldown ca nhan
@@ -64,11 +61,11 @@ enum eRobState {
 new arrRobState[MAX_PLAYERS][eRobState];
 
 /* ── Per-target cooldown ──────────────────────────────────── */
-// ATM co 43 slot, Biz co MAX_BUSINESSES slot
 new g_iATMCooldown[43];     // unix timestamp het CD
 new g_iBizCooldown[MAX_BUSINESSES];
 new g_iATMRobber[43];       // player dang cuop target, INVALID_PLAYER_ID neu trong
 new g_iBizRobber[MAX_BUSINESSES];
+new Text3D:g_iATMLabel[43]; // 3D text tren ATM khi dang cooldown
 
 /* ── Forwards ─────────────────────────────────────────────── */
 forward Rob_OnCrackDone(playerid);
@@ -81,7 +78,10 @@ static Rob_Init()
 {
     if (g_bRobberyInit) return 1;
 
-    for (new i = 0; i < sizeof(ATMPoint); i++) g_iATMRobber[i] = INVALID_PLAYER_ID;
+    for (new i = 0; i < sizeof(ATMPoint); i++) {
+        g_iATMRobber[i] = INVALID_PLAYER_ID;
+        g_iATMLabel[i] = Text3D:INVALID_3DTEXT_ID;
+    }
     for (new i = 0; i < MAX_BUSINESSES; i++) g_iBizRobber[i] = INVALID_PLAYER_ID;
     g_bRobberyInit = true;
     return 1;
@@ -96,8 +96,7 @@ stock Rob_CountCops() {
     return iCount;
 }
 
-/* ── Helper: tim slot chua item trong tui (CharacterInfo bag [0]) ─ */
-// Tra ve slot index (>= 0) neu co, -1 neu khong co
+/* ── Helper: tim slot chua item trong tui ─────────────────── */
 stock Rob_FindItemSlot(playerid, itemid) {
     for (new i = 0; i < MAX_PLAYER_CB_ITEM; i++) {
         if (CharacterInfo[playerid][0][cb_ItemID][i] == itemid &&
@@ -107,25 +106,21 @@ stock Rob_FindItemSlot(playerid, itemid) {
     return -1;
 }
 
-/* ── Helper: kiem tra item tool (Picklock) trong tui ─────── */
-// Tra ve ITEM_PICKLOCK neu co, 0 neu khong
 stock Rob_HasToolForATM(playerid) {
     if (Rob_FindItemSlot(playerid, ITEM_PICKLOCK) >= 0) return ITEM_PICKLOCK;
     return 0;
 }
 
-/* ── Helper: tru 1 tool khoi tui ────────────────────────── */
 stock Rob_RemoveTool(playerid, itemid) {
     new iSlot = Rob_FindItemSlot(playerid, itemid);
     if (iSlot >= 0) {
-        // Giam amount; neu ve 0 thi xoa han slot
         CharacterInfo[playerid][0][cb_ItemAmount][iSlot]--;
         if (CharacterInfo[playerid][0][cb_ItemAmount][iSlot] <= 0)
             RemovePlayerItem(playerid, iSlot);
     }
 }
 
-/* ── Helper: lay vi tri ATM theo index ───────────────────── */
+/* ── Helper: lay vi tri ATM ──────────────────────────────── */
 stock Rob_GetATMPos(atmid, &Float:x, &Float:y, &Float:z) {
     Streamer_GetFloatData(STREAMER_TYPE_AREA, ATMPoint[atmid], E_STREAMER_X, x);
     Streamer_GetFloatData(STREAMER_TYPE_AREA, ATMPoint[atmid], E_STREAMER_Y, y);
@@ -136,7 +131,7 @@ stock Rob_IsValidATM(atmid) {
     return (0 <= atmid < sizeof(ATMPoint) && IsValidDynamicArea(STREAMER_TAG_AREA:ATMPoint[atmid]));
 }
 
-/* ── Helper: tim ATM gan nhat voi player ─────────────────── */
+/* ── Helper: tim ATM gan nhat ─────────────────────────────── */
 stock Rob_FindNearestATM(playerid) {
     new Float:px, Float:py, Float:pz;
     GetPlayerPos(playerid, px, py, pz);
@@ -172,34 +167,69 @@ stock Rob_FindNearestBiz247(playerid) {
     return -1;
 }
 
-/* ── Helper: phat bao dong den LEA ───────────────────────── */
-static Rob_Alarm(playerid, iType, iTargetID) {
-    new szAlert[256], szName[MAX_PLAYER_NAME];
-    GetPlayerName(playerid, szName, sizeof(szName));
+/* ── Helper: phat bao dong den LEA (khi bat dau cuop) ─────── */
+static Rob_Alarm(iType, iTargetID) {
+    new szAlert[256], zone[MAX_ZONE_NAME];
 
     if (iType == ROB_TYPE_ATM) {
         new Float:ax, Float:ay, Float:az;
         Rob_GetATMPos(iTargetID, ax, ay, az);
+        Get3DZone(ax, ay, az, zone, sizeof(zone));
         format(szAlert, sizeof(szAlert),
-            "{FF0000}** BAO DONG [{FFFF00}ATM #%d{FF0000}]{FFFFFF}: %s (ID:%d) dang cuop ATM tai {00FF00}(%.1f, %.1f){FFFFFF}. Dung {FFFF00}/gpsatm{FFFFFF} de danh dau!",
-            iTargetID, szName, playerid, ax, ay);
+            "{FF0000}** BAO DONG {FFFFFF}: Phat hien nguoi dang cuop ATM tai {FFFF00}%s{FFFFFF}. Dung {FFFF00}/gpsatm{FFFFFF} de danh dau!",
+            zone);
     } else {
+        Get3DZone(Businesses[iTargetID][bExtPos][0], Businesses[iTargetID][bExtPos][1], Businesses[iTargetID][bExtPos][2], zone, sizeof(zone));
         format(szAlert, sizeof(szAlert),
-            "{FF0000}** BAO DONG [{FFFF00}BIZ #%d{FF0000}]{FFFFFF}: %s (ID:%d) dang cuop {FFFF00}\"%s\"{FFFFFF}. Dung {FFFF00}/gpsbiz %d{FFFFFF} de danh dau!",
-            iTargetID, szName, playerid, Businesses[iTargetID][bName], iTargetID);
+            "{FF0000}** BAO DONG {FFFFFF}: Phat hien nguoi dang cuop cua hang {FFFF00}\"%s\"{FFFFFF} tai {FFFF00}%s{FFFFFF}. Dung {FFFF00}/gpsbiz{FFFFFF} de danh dau!",
+            Businesses[iTargetID][bName], zone);
     }
 
     SendGroupMessage(GROUP_TYPE_LEA, COLOR_LIGHTRED, szAlert);
 }
 
-/* ── Helper: tang wanted ──────────────────────────────────── */
-static Rob_AddWanted(playerid, amount) {
-    PlayerInfo[playerid][pWantedLevel] += amount;
-    if (PlayerInfo[playerid][pWantedLevel] > ROB_MAX_WANTED)
-        PlayerInfo[playerid][pWantedLevel] = ROB_MAX_WANTED;
-    SetPlayerWantedLevel(playerid, PlayerInfo[playerid][pWantedLevel]);
+/* ── Helper: bao dong tao thoat ───────────────────────────── */
+static Rob_EscapeNotify(iType, iTargetID) {
+    new szAlert[256], zone[MAX_ZONE_NAME];
+
+    if (iType == ROB_TYPE_ATM) {
+        new Float:ax, Float:ay, Float:az;
+        Rob_GetATMPos(iTargetID, ax, ay, az);
+        Get3DZone(ax, ay, az, zone, sizeof(zone));
+        format(szAlert, sizeof(szAlert),
+            "{FF0000}** BAO DONG {FFFFFF}: Doi tuong cuop ATM tai {FFFF00}%s{FFFFFF} da tao thoat khoi hien truong!",
+            zone);
+    } else {
+        Get3DZone(Businesses[iTargetID][bExtPos][0], Businesses[iTargetID][bExtPos][1], Businesses[iTargetID][bExtPos][2], zone, sizeof(zone));
+        format(szAlert, sizeof(szAlert),
+            "{FF0000}** BAO DONG {FFFFFF}: Doi tuong cuop cua hang {FFFF00}\"%s\"{FFFFFF} tai {FFFF00}%s{FFFFFF} da tao thoat khoi hien truong!",
+            Businesses[iTargetID][bName], zone);
+    }
+
+    SendGroupMessage(GROUP_TYPE_LEA, COLOR_LIGHTRED, szAlert);
 }
 
+/* ── Helper: hien/hide 3D text tren ATM khi cooldown ──────── */
+static Rob_ShowATMCooldownLabel(atmid) {
+    if (!Rob_IsValidATM(atmid)) return;
+    if (g_iATMLabel[atmid] != Text3D:INVALID_3DTEXT_ID) return;
+
+    new Float:x, Float:y, Float:z;
+    Rob_GetATMPos(atmid, x, y, z);
+    new iLeft = g_iATMCooldown[atmid] - gettime();
+    new str[128];
+    format(str, sizeof(str), "{FF0000}ATM bi cuop gan day!\n{FFFF00}Kha dung lai sau: %d phut", (iLeft / 60) + 1);
+    g_iATMLabel[atmid] = CreateDynamic3DTextLabel(str, COLOR_RED, x, y, z + 1.5, 15.0, .testlos = 1, .streamdistance = 15.0);
+}
+
+static Rob_HideATMCooldownLabel(atmid) {
+    if (g_iATMLabel[atmid] != Text3D:INVALID_3DTEXT_ID) {
+        DestroyDynamic3DTextLabel(g_iATMLabel[atmid]);
+        g_iATMLabel[atmid] = Text3D:INVALID_3DTEXT_ID;
+    }
+}
+
+/* ── Helper: kiem tra target busy ─────────────────────────── */
 static Rob_IsTargetBusy(iType, iTargetID) {
     if (iType == ROB_TYPE_ATM) {
         if (!Rob_IsValidATM(iTargetID)) return 1;
@@ -267,6 +297,26 @@ static Rob_ResetState(playerid) {
     arrRobState[playerid][rob_iVW]       = 0;
 }
 
+/* ── Timer: cap nhat / xoa 3D text ATM cooldown ──────────── */
+task Rob_CooldownUpdate[60000]() {
+    new now = gettime();
+    for (new i = 0; i < sizeof(ATMPoint); i++) {
+        if (g_iATMCooldown[i] > 0) {
+            if (now >= g_iATMCooldown[i]) {
+                g_iATMCooldown[i] = 0;
+                Rob_HideATMCooldownLabel(i);
+            } else {
+                new iLeft = g_iATMCooldown[i] - now;
+                if (g_iATMLabel[i] != Text3D:INVALID_3DTEXT_ID) {
+                    new str[128];
+                    format(str, sizeof(str), "{FF0000}ATM bi cuop gan day!\n{FFFF00}Kha dung lai sau: %d phut", (iLeft / 60) + 1);
+                    UpdateDynamic3DTextLabelText(g_iATMLabel[i], COLOR_RED, str);
+                }
+            }
+        }
+    }
+}
+
 /* ── Callbacks ────────────────────────────────────────────── */
 public Rob_OnCrackDone(playerid) {
     if (!IsPlayerConnected(playerid)) return 1;
@@ -281,25 +331,22 @@ public Rob_OnCrackDone(playerid) {
 
     arrRobState[playerid][rob_iTimer] = 0;
 
-    // Mo khoa thanh cong – bat dau phase gom tien
     arrRobState[playerid][rob_iState] = ROB_STATE_COLLECTING;
 
     SendClientMessageEx(playerid, COLOR_GREEN,
-        "{FFFF00}[CUOP]{FFFFFF}: Ban da pha khoa thanh cong! {00FF00}Dang gom tien (3 phut){FFFFFF}...");
+        "{FFFF00}[CUOP]{FFFFFF}: Ban da pha khoa thanh cong! {00FF00}Dang gom tien (1 phut){FFFFFF}...");
 
-    // Bao dong cho police
-    Rob_Alarm(playerid,
-        arrRobState[playerid][rob_iType],
+    Rob_Alarm(arrRobState[playerid][rob_iType],
         arrRobState[playerid][rob_iTargetID]);
 
-    // Dat cooldown cho muc tieu ngay khi bat dau gom de tranh cuop trung
     new iTargetID = arrRobState[playerid][rob_iTargetID];
-    if (arrRobState[playerid][rob_iType] == ROB_TYPE_ATM)
+    if (arrRobState[playerid][rob_iType] == ROB_TYPE_ATM) {
         g_iATMCooldown[iTargetID] = gettime() + ROB_TARGET_COOLDOWN;
-    else
+        Rob_ShowATMCooldownLabel(iTargetID);
+    } else {
         g_iBizCooldown[iTargetID] = gettime() + ROB_TARGET_COOLDOWN;
+    }
 
-    // Bat dau timer 3 phut gom tien (player van di lai duoc)
     arrRobState[playerid][rob_iTimer] = SetTimerEx("Rob_OnCollectDone",
         ROB_COLLECT_TIME * 1000, false, "i", playerid);
     arrRobState[playerid][rob_iRangeTimer] = SetTimerEx("Rob_OnRangeCheck",
@@ -337,46 +384,46 @@ public Rob_OnCollectDone(playerid) {
         arrRobState[playerid][rob_iRangeTimer] = 0;
     }
 
+    new iRobType  = arrRobState[playerid][rob_iType];
+    new iTargetID = arrRobState[playerid][rob_iTargetID];
+
     // Tinh toan phan thuong
     new iMin, iMax;
-    if (arrRobState[playerid][rob_iType] == ROB_TYPE_ATM) {
+    if (iRobType == ROB_TYPE_ATM) {
         iMin = ROB_ATM_MIN; iMax = ROB_ATM_MAX;
     } else {
         iMin = ROB_BIZ_MIN; iMax = ROB_BIZ_MAX;
     }
     new iReward = iMin + random(iMax - iMin + 1);
 
-    // Cap phat Dirty Money
     PlayerInfo[playerid][pDirtyMoney] += iReward;
-
-    // Tang wanted
-    Rob_AddWanted(playerid, 2);
 
     // Set cooldown ca nhan
     arrRobState[playerid][rob_iPlayerCD] = gettime() + ROB_PLAYER_COOLDOWN;
 
-    // Thong bao
+    // Thong bao cho player
     new szMsg[192];
     format(szMsg, sizeof(szMsg),
-        "{FFFF00}[CUOP]{FFFFFF}: Cuop thanh cong! Ban nhan duoc {C4A656}$%s tien ban{FFFFFF}. +2 Wanted.",
+        "{FFFF00}[CUOP]{FFFFFF}: Cuop thanh cong! Ban nhan duoc {C4A656}$%s tien ban{FFFFFF}.",
         number_format(iReward));
     SendClientMessageEx(playerid, COLOR_GREEN, szMsg);
+
+    // Bao dong tao thoat den LEA
+    Rob_EscapeNotify(iRobType, iTargetID);
 
     // Log
     new szName[MAX_PLAYER_NAME];
     GetPlayerName(playerid, szName, sizeof(szName));
     new szLog[256];
-    if (arrRobState[playerid][rob_iType] == ROB_TYPE_ATM) {
+    if (iRobType == ROB_TYPE_ATM) {
         format(szLog, sizeof(szLog), "[ROBBERY] %s (ID:%d) da cuop ATM[%d] duoc $%d dirty money.",
-            szName, playerid, arrRobState[playerid][rob_iTargetID], iReward);
+            szName, playerid, iTargetID, iReward);
     } else {
         format(szLog, sizeof(szLog), "[ROBBERY] %s (ID:%d) da cuop Biz[%d] '%s' duoc $%d dirty money.",
-            szName, playerid, arrRobState[playerid][rob_iTargetID],
-            Businesses[arrRobState[playerid][rob_iTargetID]][bName], iReward);
+            szName, playerid, iTargetID, Businesses[iTargetID][bName], iReward);
     }
     Log("logs/robbery.log", szLog);
 
-    // Save stats
     OnPlayerStatsUpdate(playerid);
 
     Rob_ResetState(playerid);
@@ -402,18 +449,15 @@ hook OnPlayerDeath(playerid, killerid, reason) {
 CMD:robatm(playerid, params[]) {
     Rob_Init();
 
-    // Kiem tra dang hoat dong gi khac
     if (arrRobState[playerid][rob_iState] != ROB_STATE_NONE)
         return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Ban dang trong qua trinh cuop roi.");
 
     if (IsACop(playerid))
         return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Canh sat khong the thuc hien cuop.");
 
-    // Kiem tra cop
     if (Rob_CountCops() < ROB_MIN_COPS)
         return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Can co it nhat 2 canh sat online.");
 
-    // Kiem tra cooldown ca nhan
     if (gettime() < arrRobState[playerid][rob_iPlayerCD]) {
         new iLeft = arrRobState[playerid][rob_iPlayerCD] - gettime();
         new szMsg[96];
@@ -422,7 +466,6 @@ CMD:robatm(playerid, params[]) {
         return SendClientMessageEx(playerid, COLOR_RED, szMsg);
     }
 
-    // Tim ATM gan nhat
     new iATM = Rob_FindNearestATM(playerid);
     if (iATM == -1)
         return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: Ban khong dung gan ATM nao (trong vong 5m).");
@@ -430,22 +473,19 @@ CMD:robatm(playerid, params[]) {
     if (Rob_IsTargetBusy(ROB_TYPE_ATM, iATM))
         return SendClientMessageEx(playerid, COLOR_RED, "{FF0000}[CUOP]{FFFFFF}: ATM nay dang bi nguoi khac cuop.");
 
-    // Kiem tra cooldown ATM
     if (gettime() < g_iATMCooldown[iATM]) {
         new iLeft = g_iATMCooldown[iATM] - gettime();
         new szMsg[96];
-        format(szMsg, sizeof(szMsg), "{FF0000}[CUOP]{FFFFFF}: ATM nay da bi cuop. Cho them %d phut %d giay.",
+        format(szMsg, sizeof(szMsg), "{FF0000}[CUOP]{FFFFFF}: ATM nay vua bi cuop. Cho them %d phut %d giay.",
             iLeft / 60, iLeft % 60);
         return SendClientMessageEx(playerid, COLOR_RED, szMsg);
     }
 
-    // Kiem tra cong cu (can Picklock)
     new iTool = Rob_HasToolForATM(playerid);
     if (!iTool)
         return SendClientMessageEx(playerid, COLOR_RED,
             "{FF0000}[CUOP]{FFFFFF}: Ban can {FFFF00}Picklock (khoa mo){FFFFFF} de pha khoa ATM.");
 
-    // Bat dau pha khoa
     Rob_RemoveTool(playerid, iTool);
     arrRobState[playerid][rob_iState]    = ROB_STATE_CRACKING;
     arrRobState[playerid][rob_iType]     = ROB_TYPE_ATM;
@@ -454,8 +494,8 @@ CMD:robatm(playerid, params[]) {
     arrRobState[playerid][rob_iVW]       = GetPlayerVirtualWorld(playerid);
     Rob_SetTargetRobber(ROB_TYPE_ATM, iATM, playerid);
 
-    TogglePlayerControllable(playerid, 0); // dong bang player
-    ApplyAnimation(playerid, "BOMBER", "BOM_Plant", 4.0, 1, 0, 0, 1, 10000, 1); // animation cui xuong pha khoa
+    TogglePlayerControllable(playerid, 0);
+    ApplyAnimation(playerid, "BOMBER", "BOM_Plant", 4.0, 1, 0, 0, 1, 10000, 1);
 
     SendClientMessageEx(playerid, COLOR_YELLOW,
         "{FFFF00}[CUOP]{FFFFFF}: Dang pha khoa ATM... {FF8800}Dung di chuyen! (10 giay){FFFFFF}");
@@ -487,7 +527,6 @@ CMD:robbiz(playerid, params[]) {
         return SendClientMessageEx(playerid, COLOR_RED, szMsg);
     }
 
-    // Tim cua hang 24/7 gan nhat
     new iBiz = Rob_FindNearestBiz247(playerid);
     if (iBiz == -1)
         return SendClientMessageEx(playerid, COLOR_RED,
@@ -499,18 +538,16 @@ CMD:robbiz(playerid, params[]) {
     if (gettime() < g_iBizCooldown[iBiz]) {
         new iLeft = g_iBizCooldown[iBiz] - gettime();
         new szMsg[128];
-        format(szMsg, sizeof(szMsg), "{FF0000}[CUOP]{FFFFFF}: Cua hang '%s' da bi cuop. Cho them %d phut %d giay.",
+        format(szMsg, sizeof(szMsg), "{FF0000}[CUOP]{FFFFFF}: Cua hang '%s' vua bi cuop. Cho them %d phut %d giay.",
             Businesses[iBiz][bName], iLeft / 60, iLeft % 60);
         return SendClientMessageEx(playerid, COLOR_RED, szMsg);
     }
 
-    // Kiem tra cong cu (can Picklock)
     new iTool = Rob_HasToolForATM(playerid);
     if (!iTool)
         return SendClientMessageEx(playerid, COLOR_RED,
             "{FF0000}[CUOP]{FFFFFF}: Ban can {FFFF00}Picklock (khoa mo){FFFFFF} de pha khoa cua hang.");
 
-    // Bat dau pha khoa biz
     Rob_RemoveTool(playerid, iTool);
     arrRobState[playerid][rob_iState]    = ROB_STATE_CRACKING;
     arrRobState[playerid][rob_iType]     = ROB_TYPE_BIZ;
@@ -534,7 +571,7 @@ CMD:robbiz(playerid, params[]) {
     return 1;
 }
 
-/* ── CMD: /cancelrob – huy cuop (mat cong cu) ────────────── */
+/* ── CMD: /cancelrob ──────────────────────────────────────── */
 CMD:cancelrob(playerid, params[]) {
     if (arrRobState[playerid][rob_iState] == ROB_STATE_NONE)
         return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong dang thuc hien cuop gi ca.");
@@ -545,14 +582,13 @@ CMD:cancelrob(playerid, params[]) {
     return 1;
 }
 
-/* ── CMD: /gpsatm – police dung de tim ATM bi cuop ────────── */
+/* ── CMD: /gpsatm – police tim ATM bi cuop ────────────────── */
 CMD:gpsatm(playerid, params[]) {
     Rob_Init();
 
     if (!IsACop(playerid))
-        return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong phai canh sat.");
+        return SendClientMessageEx(playerid, COLOR_GRAD1, "Chi canh sat moi co the su dung lenh nay.");
 
-    // Tim player dang rob ATM
     new iFoundPlayer = INVALID_PLAYER_ID;
     foreach (new i : Player) {
         if (arrRobState[i][rob_iState] != ROB_STATE_NONE &&
@@ -569,8 +605,7 @@ CMD:gpsatm(playerid, params[]) {
         SetPlayerCheckpoint(playerid, ax, ay, az, 3.0);
         new szMsg[160];
         format(szMsg, sizeof(szMsg),
-            "{FFFF00}[GPS ATM #%d]{FFFFFF}: Da danh dau checkpoint vi tri ATM. Toa do (%.1f, %.1f).",
-            iATM, ax, ay);
+            "{FFFF00}[GPS]{FFFFFF}: Da danh dau checkpoint vi tri ATM dang bi cuop.");
         return SendClientMessageEx(playerid, COLOR_YELLOW, szMsg);
     }
 
@@ -578,18 +613,16 @@ CMD:gpsatm(playerid, params[]) {
         "Hien tai khong co ATM nao dang bi cuop.");
 }
 
-/* ── CMD: /gpsbiz [bizid] – police tim biz dang bi cuop ────── */
+/* ── CMD: /gpsbiz – police tim biz dang bi cuop ───────────── */
 CMD:gpsbiz(playerid, params[]) {
     Rob_Init();
 
     if (!IsACop(playerid))
-        return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong phai canh sat.");
+        return SendClientMessageEx(playerid, COLOR_GRAD1, "Chi canh sat moi co the su dung lenh nay.");
 
     new iBizID;
 
-    // Neu co truyen bizid thi dung luon
     if (sscanf(params, "i", iBizID)) {
-        // Khong truyen tham so – tu tim biz dang bi cuop
         new iFoundPlayer = INVALID_PLAYER_ID;
         foreach (new i : Player) {
             if (arrRobState[i][rob_iState] != ROB_STATE_NONE &&
@@ -615,10 +648,7 @@ CMD:gpsbiz(playerid, params[]) {
 
     new szMsg[192];
     format(szMsg, sizeof(szMsg),
-        "{FFFF00}[GPS BIZ #%d]{FFFFFF}: Da danh dau checkpoint \"%s\". Toa do (%.1f, %.1f).",
-        iBizID, Businesses[iBizID][bName], bx, by);
+        "{FFFF00}[GPS]{FFFFFF}: Da danh dau checkpoint cua hang \"%s\".",
+        Businesses[iBizID][bName]);
     return SendClientMessageEx(playerid, COLOR_YELLOW, szMsg);
 }
-
-// Ghi chu: arrRobState, g_iATMCooldown, g_iBizCooldown duoc Pawn
-// tu dong khoi tao = 0 khi gamemode start, khong can hook OnGameModeInit.
