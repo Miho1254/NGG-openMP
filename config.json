@@ -2,7 +2,7 @@
   "announce": true,
   "artwork": {
     "cdn": "",
-    "enable": false
+    "enable": true
   },
   "banners": {
     "dark": "",

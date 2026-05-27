@@ -604,7 +604,7 @@ hook OnGameModeInit()
 {
     // Tao Actor NPC cho Cua hang VIP SF
     // Toa do: -2411.3362, 519.2717, 29.9297 | Huong mat: 180.0 (huong xuong phia nam)
-    g_VIPShopActor = CreateActor(29, -2411.3362, 519.2717, 29.9297, 180.0);
+    g_VIPShopActor = CreateActor(21088, -2411.3362, 519.2717, 29.9297, 180.0);
     SetActorInvulnerable(g_VIPShopActor, true);
     // 3D Text Label huong dan
     CreateDynamic3DTextLabel(
