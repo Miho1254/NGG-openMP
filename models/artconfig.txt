@@ -7,6 +7,9 @@ AddCharModel(291, 20006, "./skincustom/dwmolc2.dff","./skincustom/dwmolc2.txd");
 AddCharModel(211, 20007, "./skincustom/ofyst.dff","./skincustom/ofyst.txd");
 AddCharModel(294, 20008, "./skincustom/male01.dff","./skincustom/male01.txd");
 AddCharModel(294, 20009, "./skincustom/swmyhp1.dff","./skincustom/swmyhp1.txd");
+AddCharModel(294, 20009, "./skincustom/swmyhp1.dff","./skincustom/swmyhp1.txd");
+AddCharModel(193, 21088, "./skincustom/Elaina.dff","./skincustom/Elaina.txd");
+
 
 AddSimpleModel(-1, 386, -1000, "./item/flamednormal.dff", "./item/flamednormal.txd");
 AddSimpleModel(-1, 386, -1001, "./item/flamedvip.dff", "./item/flamedvip.txd");
