@@ -1,1 +1,3 @@
 AddCharModel(193, 21088, "./skincustom/plana_ba.dff","./skincustom/plana_ba.txd");
+
+AddSimpleModel(-1, 19379, -2002, "./textdraw/object.dff", "./textdraw/gtasa_character.txd");
