@@ -477,6 +477,7 @@ public Float:player_get_speed(playerid)
 //#include "./includes/core/interact.pwn"
 
 #include "./includes/raknet.pwn"
+#include "./includes/platform_label.pwn"
 #include "./includes/core/safezone.pwn"
 #include "./includes/antislap.pwn"
 #include "./includes/toidasolan.pwn"
