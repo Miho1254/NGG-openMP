@@ -288,22 +288,20 @@ public checkPlayer(playerid)
     }
 #endif
 
+#if ALLOW_RESHADE == 0
     if ( AC_Player[playerid][pResponded] == false )
     {
         SendClientMessage(playerid, C_ERROR, "[ERROR] System has detected that you are probably using some mods. If you think this is a mistake, please contact the Admin.");
         SetTimerEx("kickPlayer", 1500, false, "ii", playerid, 0);
     }
-    // --
-    if ( AC_Player[playerid][pSuspicious] == true )
-    {
-        SendClientMessage(playerid, C_ERROR, "[ERROR] System has detected that you are probably using some mods. If you think this is a mistake, please contact the Admin.");
-        SetTimerEx("kickPlayer", 1500, false, "ii", playerid, 0);
-    }
+#else
     if ( AC_Player[playerid][pResponded] == false )
     {
-        SendClientMessage(playerid, C_ERROR, "[ERROR] System has detected that you are probably using some mods. If you think this is a mistake, please contact the Admin.");
-        SetTimerEx("kickPlayer", 1500, false, "ii", playerid, 0);
+        new pName[MAX_PLAYER_NAME+1];
+        GetPlayerName(playerid, pName, sizeof(pName));
+        printf("[RESHADE BYPASS] Player %s (ID: %d) did not respond to client check - allowed (ReShade mode)", pName, playerid);
     }
+#endif
     // --
     
 	for (new i = 0; i < MAX_CHEATS; i++)
