@@ -212,7 +212,7 @@ stock SaveImpoundPoint(id)
 		ImpoundPoints[id][impoundPosZ],
 		ImpoundPoints[id][impoundVW],
 		ImpoundPoints[id][impoundInt],
-		id
+		ImpoundPoints[id][impoundSQLId]
 	);
 
 	mysql_tquery(MainPipeline, string, "OnQueryFinish", "i", SENDDATA_THREAD);
@@ -293,20 +293,19 @@ public OnLoadImpoundPoints()
 	szMiscArray[0] = 0;
 	cache_get_row_count(rows);
 
-	while(i < rows)
+	while(i < rows && i < MAX_IMPOUNDPOINTS)
 	{
-		/*ImpoundPoints[i][impoundSQLId] = cache_get_field_content_int(i, "id", MainPipeline); 
-		ImpoundPoints[i][impoundPosX] = cache_get_field_content_float(i, "PosX", MainPipeline);
-		ImpoundPoints[i][impoundPosY] = cache_get_field_content_float(i, "PosY", MainPipeline);
-		ImpoundPoints[i][impoundPosZ] = cache_get_field_content_float(i, "PosZ", MainPipeline);
-		ImpoundPoints[i][impoundVW] = cache_get_field_content_int(i, "VW", MainPipeline);
-		ImpoundPoints[i][impoundInt] = cache_get_field_content_int(i, "Int", MainPipeline); 
+		cache_get_value_name_int(i, "id", ImpoundPoints[i][impoundSQLId]);
+		cache_get_value_name_float(i, "PosX", ImpoundPoints[i][impoundPosX]);
+		cache_get_value_name_float(i, "PosY", ImpoundPoints[i][impoundPosY]);
+		cache_get_value_name_float(i, "PosZ", ImpoundPoints[i][impoundPosZ]);
+		cache_get_value_name_int(i, "VW", ImpoundPoints[i][impoundVW]);
+		cache_get_value_name_int(i, "Int", ImpoundPoints[i][impoundInt]);
 		if(ImpoundPoints[i][impoundPosX] != 0)
 		{
 			format(szMiscArray, sizeof(szMiscArray), "Impound Yard #%d\nType /impound to impound chiec xe", i);
 			ImpoundPoints[i][impoundTextID] = CreateDynamic3DTextLabel(szMiscArray, COLOR_YELLOW, ImpoundPoints[i][impoundPosX], ImpoundPoints[i][impoundPosY], ImpoundPoints[i][impoundPosZ]+0.6, 5.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, ImpoundPoints[i][impoundVW], ImpoundPoints[i][impoundInt], -1);
-		}*/
-		LoadImpoundPoint(i);
+		}
 		i++;
 	}
 }

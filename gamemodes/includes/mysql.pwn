@@ -5311,8 +5311,11 @@ public Group_QueryFinish(iType, iExtraID) {
 			cache_get_value_name(iIndex, "Locker_ID", szResult);
 			new iLocker = strval(szResult)-1;
 
-			if (!(0 <= iGroup < MAX_GROUPS)) break;
-			if (!(0 <= iLocker < MAX_GROUP_LOCKERS)) break;
+			if (!(0 <= iGroup < MAX_GROUPS) || !(0 <= iLocker < MAX_GROUP_LOCKERS))
+			{
+				iIndex++;
+				continue;
+			}
 
 			cache_get_value_name(iIndex, "Id", szResult);
 			arrGroupLockers[iGroup][iLocker][g_iLockerSQLId] = strval(szResult);

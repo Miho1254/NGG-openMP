@@ -253,14 +253,38 @@ public SaveGroup(iGroupID) {
 	}
 	SQLUpdateFinish(query, "groups", iGroupID+1);
 	for (i = 0; i < MAX_GROUP_LOCKERS; i++)	{
-		format(query, 2048, "UPDATE `lockers` SET ");
-		SaveFloat(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId], "LockerX", arrGroupLockers[iGroupID][i][g_fLockerPos][0]);
-		SaveFloat(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId], "LockerY", arrGroupLockers[iGroupID][i][g_fLockerPos][1]);
-		SaveFloat(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId], "LockerZ", arrGroupLockers[iGroupID][i][g_fLockerPos][2]);
-		SaveInteger(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId], "LockerVW", arrGroupLockers[iGroupID][i][g_iLockerVW]);
-		SaveInteger(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId], "LockerShare", arrGroupLockers[iGroupID][i][g_iLockerShare]);
-		SQLUpdateFinish(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId]);
+		if (arrGroupLockers[iGroupID][i][g_iLockerSQLId] == 0) {
+			if (arrGroupLockers[iGroupID][i][g_fLockerPos][0] != 0.0) {
+				new insert_query[512];
+				mysql_format(MainPipeline, insert_query, sizeof(insert_query), 
+					"INSERT INTO `lockers` (`Group_ID`, `Locker_ID`, `LockerX`, `LockerY`, `LockerZ`, `LockerVW`, `LockerShare`) VALUES (%d, %d, %f, %f, %f, %d, %d)",
+					iGroupID + 1, i + 1, 
+					arrGroupLockers[iGroupID][i][g_fLockerPos][0],
+					arrGroupLockers[iGroupID][i][g_fLockerPos][1],
+					arrGroupLockers[iGroupID][i][g_fLockerPos][2],
+					arrGroupLockers[iGroupID][i][g_iLockerVW],
+					arrGroupLockers[iGroupID][i][g_iLockerShare]
+				);
+				mysql_tquery(MainPipeline, insert_query, "OnInsertLocker", "dd", iGroupID, i);
+			}
+		}
+		else {
+			format(query, 2048, "UPDATE `lockers` SET ");
+			SaveFloat(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId], "LockerX", arrGroupLockers[iGroupID][i][g_fLockerPos][0]);
+			SaveFloat(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId], "LockerY", arrGroupLockers[iGroupID][i][g_fLockerPos][1]);
+			SaveFloat(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId], "LockerZ", arrGroupLockers[iGroupID][i][g_fLockerPos][2]);
+			SaveInteger(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId], "LockerVW", arrGroupLockers[iGroupID][i][g_iLockerVW]);
+			SaveInteger(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId], "LockerShare", arrGroupLockers[iGroupID][i][g_iLockerShare]);
+			SQLUpdateFinish(query, "lockers", arrGroupLockers[iGroupID][i][g_iLockerSQLId]);
+		}
 	}
+	return 1;
+}
+
+forward OnInsertLocker(iGroupID, iLocker);
+public OnInsertLocker(iGroupID, iLocker)
+{
+	arrGroupLockers[iGroupID][iLocker][g_iLockerSQLId] = cache_insert_id();
 	return 1;
 }
 
@@ -2287,6 +2311,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					arrGroupLockers[iGroupID][iLocker][g_iLockerAreaID] = CreateDynamicSphere(arrGroupLockers[iGroupID][iLocker][g_fLockerPos][0], arrGroupLockers[iGroupID][iLocker][g_fLockerPos][1], arrGroupLockers[iGroupID][iLocker][g_fLockerPos][2], 3.0, .worldid = arrGroupLockers[iGroupID][iLocker][g_iLockerVW]);
 
 					// Streamer_SetIntData(STREAMER_TYPE_AREA, arrGroupLockers[iGroupID][iLocker][g_iLockerAreaID], E_STREAMER_EXTRA_ID, iLocker);
+					SaveGroup(iGroupID);
 				}
 				else if (listitem == 2)
 				{
@@ -2297,6 +2322,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					DestroyDynamic3DTextLabel(arrGroupLockers[iGroupID][iLocker][g_tLocker3DLabel]);
 					format(string, sizeof(string), "You have deleted locker %d of %s", iLocker, arrGroupData[iGroupID][g_szGroupName]);
 					SendClientMessageEx(playerid, COLOR_WHITE, string);
+					SaveGroup(iGroupID);
 				}
 			}
 			return Group_DisplayDialog(playerid, iGroupID);
@@ -2455,7 +2481,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				SendClientMessage(playerid, COLOR_WHITE, "You have deleted all lockers of this group.");
 				format(string, sizeof(string), "%s has deleted all lockers of %s", GetPlayerNameEx(playerid), arrGroupData[iGroupID][g_szGroupName]);
 				Log("logs/editgroup.log", string);
-
+				SaveGroup(iGroupID);
 			}
 			return Group_ListGroups(playerid);
 		}
