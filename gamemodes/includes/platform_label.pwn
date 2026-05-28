@@ -46,10 +46,10 @@
 
 #define MOBILE_GPCI_SERIAL          "ED40ED0E8089CC44C08EE9580F4C8C44EE8EE990"
 
-// Offset Z trên đầu player
-#define PLATFORM_LABEL_OFFSET_Z     1.15
-// Offset Z "bụng" player (khoảng thắt lưng)
-#define GROUP_LABEL_OFFSET_Z        0.0
+// Offset Z trên đầu player (PC/Mobile label - ngay trên đầu, không cao quá)
+#define PLATFORM_LABEL_OFFSET_Z     0.55
+// Offset Z "bụng" player (badge group - ngay bụng)
+#define GROUP_LABEL_OFFSET_Z        -0.20
 
 #define PLATFORM_LABEL_DRAWDIST     30.0
 #define GROUP_LABEL_DRAWDIST        20.0
@@ -263,11 +263,8 @@ hook OnPlayerConnect(playerid)
     }
 
     // PC client sẽ respond, mobile thường không
-    // ReShade bypass: Skip SendClientCheck to prevent anticheatexit.txt crash
-    // SendClientCheck(playerid, PLATFORM_CHECK_ACTION, 0, 0, 2);
-    PlatformLabel_SetPlatform(playerid, PLATFORM_PC);
-    printf("[PlatformLabel] Player %d (%s) -> PC (assumed, SendClientCheck skipped for ReShade compatibility)", playerid, GetPlayerNameExt(playerid));
-    // g_PlatformCheckTimer[playerid] = SetTimerEx("PlatformLabel_FallbackTimer", PLATFORM_CHECK_DELAY, false, "i", playerid);
+    SendClientCheck(playerid, PLATFORM_CHECK_ACTION, 0, 0, 2);
+    g_PlatformCheckTimer[playerid] = SetTimerEx("PlatformLabel_FallbackTimer", PLATFORM_CHECK_DELAY, false, "i", playerid);
 
     return 1;
 }
