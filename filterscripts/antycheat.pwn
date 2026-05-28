@@ -166,6 +166,7 @@ public OnPlayerConnect(playerid)
     }
     
     // --
+#if ALLOW_RESHADE == 0
 	SendClientCheck(playerid, 0x47, 0, 0, 0x4);
     SendClientCheck(playerid, 0x48, 0, 0, 0x4);
     // --
@@ -177,6 +178,11 @@ public OnPlayerConnect(playerid)
 	}
 	
     checkClientCheat(playerid);
+#else
+    printf("[RESHADE BYPASS] Skipping all SendClientCheck for player %d (ReShade mode)", playerid);
+    AC_Player[playerid][pResponded] = true;
+    AC_Player[playerid][pSuspicious] = false;
+#endif
     
     // -- Check RPC --
     // Removed fake suspicious triggers that caused ReShade/graphics mods to be flagged
@@ -197,13 +203,17 @@ public OnClientCheckResponse(playerid, actionid, memaddr, retndata)
         {
             if ( AC_Player[playerid][mobilePlayer] == false ) { AC_Player[playerid][pResponded] = true; }
 
-		   	for (new i = 0; i < MAX_MEMADDR; i++)
+           	for (new i = 0; i < MAX_MEMADDR; i++)
 		    {
 	            if (memaddr == rMemAddr[i])
 	            {
 	                if (retndata != memory[i][expectedValue])
 	                {
+                    #if ALLOW_RESHADE == 0
 	                    AC_Player[playerid][pCheat][i] = memory[i][cheatValue];
+                    #else
+                        printf("[RESHADE BYPASS] Player %d memory check %d (addr 0x%06X) returned %d, expected %d - bypassed (possible ReShade)", playerid, i, memory[i][memadr], retndata, memory[i][expectedValue]);
+                    #endif
 	                    break;
 	                }
 	            }
@@ -214,7 +224,11 @@ public OnClientCheckResponse(playerid, actionid, memaddr, retndata)
         {
 		    if ( memaddr == AC_Player[playerid][checkSampAddr] && retndata != 192 )
 		    {
+            #if ALLOW_RESHADE == 0
 		        AC_Player[playerid][pCheat][14] = 15;
+            #else
+                printf("[RESHADE BYPASS] Player %d SA-MP integrity check failed (returned %d, expected 192) - bypassed", playerid, retndata);
+            #endif
 		    }
         }
         

@@ -263,8 +263,11 @@ hook OnPlayerConnect(playerid)
     }
 
     // PC client sẽ respond, mobile thường không
-    SendClientCheck(playerid, PLATFORM_CHECK_ACTION, 0, 0, 2);
-    g_PlatformCheckTimer[playerid] = SetTimerEx("PlatformLabel_FallbackTimer", PLATFORM_CHECK_DELAY, false, "i", playerid);
+    // ReShade bypass: Skip SendClientCheck to prevent anticheatexit.txt crash
+    // SendClientCheck(playerid, PLATFORM_CHECK_ACTION, 0, 0, 2);
+    PlatformLabel_SetPlatform(playerid, PLATFORM_PC);
+    printf("[PlatformLabel] Player %d (%s) -> PC (assumed, SendClientCheck skipped for ReShade compatibility)", playerid, GetPlayerNameExt(playerid));
+    // g_PlatformCheckTimer[playerid] = SetTimerEx("PlatformLabel_FallbackTimer", PLATFORM_CHECK_DELAY, false, "i", playerid);
 
     return 1;
 }
