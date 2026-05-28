@@ -4,19 +4,23 @@
 #include <pawn.RakNet>
 
 // -
-#define VERS "2.4.3"
+#define VERS "2.4.4"
 
 #define C_GREEN 0x20DD6AFF
 #define C_ERROR 0xA01616FF
+#define C_WARN  0xFFAA00FF
 
 #define MOBILE_CLIENT "ED40ED0E8089CC44C08EE9580F4C8C44EE8EE990"
 
 #define MAX_MEMADDR (14)
 #define MAX_CHEATS (15)
 
+// Bypass suspicious check for ReShade / graphics mods
+// Set to 1 to allow ReShade users, 0 to keep strict mode
+#define ALLOW_RESHADE (1)
+
 // -
 native SendClientCheck(playerid, type, arg, offsetMem, size);
-native gpci(playerid, serial[], maxlen);
 
 // -
 enum PR_JoinData
@@ -97,7 +101,8 @@ public OnFilterScriptInit()
     return 1;
 }
 
-task OnPlayerConnectHehe[500]()
+forward OnPlayerConnectHehe_500();
+public OnPlayerConnectHehe_500()
 {
     return 1;
 }
@@ -174,8 +179,8 @@ public OnPlayerConnect(playerid)
     checkClientCheat(playerid);
     
     // -- Check RPC --
-    CallLocalFunction("OnClientCheckResponse", "iiii", playerid, 0x47, 0xCECECE, 255);
-    CallLocalFunction("OnClientCheckResponse", "iiii", playerid, 0x48, 0xDEDEDE, 255);
+    // Removed fake suspicious triggers that caused ReShade/graphics mods to be flagged
+    // These CallLocalFunction calls were pre-setting pSuspicious = true before real client response
     // -
     
     AC_Player[playerid][pCheckSum] = -1;
@@ -219,9 +224,13 @@ public OnClientCheckResponse(playerid, actionid, memaddr, retndata)
             {
                 if ( memaddr == 0xCECECE && retndata == 255 )
                 {
+                #if ALLOW_RESHADE == 0
                 	AC_Player[playerid][pSuspicious] = true;
                 	// -
                 	SendClientCheck(playerid, 0x47, 0, 0, 0x4);
+                #else
+                    printf("[INFO] Player %d suspicious check 0x47 flagged (possible ReShade/graphics mod) - bypassed", playerid);
+                #endif
                 }
 				else
 				{
@@ -236,9 +245,13 @@ public OnClientCheckResponse(playerid, actionid, memaddr, retndata)
             {
                 if ( memaddr == 0xDEDEDE && retndata == 255 )
                 {
+                #if ALLOW_RESHADE == 0
                 	AC_Player[playerid][pSuspicious] = true;
                 	// -
                 	SendClientCheck(playerid, 0x48, 0, 0, 0x4);
+                #else
+                    printf("[INFO] Player %d suspicious check 0x48 flagged (possible ReShade/graphics mod) - bypassed", playerid);
+                #endif
                 }
 				else
 				{
@@ -255,9 +268,31 @@ public checkPlayer(playerid)
 {
     if ( AC_Player[playerid][mobilePlayer] == true )
     {
-        SendClientMessage(playerid, C_GREEN, "You’re currently playing the mobile version of SA-MP.");
+        SendClientMessage(playerid, C_GREEN, "You're currently playing the mobile version of SA-MP.");
     }
     
+    // --
+#if ALLOW_RESHADE == 0
+    if ( AC_Player[playerid][pSuspicious] == true )
+    {
+        SendClientMessage(playerid, C_ERROR, "[ERROR] System has detected that you are probably using some mods. If you think this is a mistake, please contact the Admin.");
+        SetTimerEx("kickPlayer", 1500, false, "ii", playerid, 0);
+    }
+#else
+    if ( AC_Player[playerid][pSuspicious] == true )
+    {
+        new pName[MAX_PLAYER_NAME+1];
+        GetPlayerName(playerid, pName, sizeof(pName));
+        printf("[RESHADE BYPASS] Player %s (ID: %d) flagged as suspicious but allowed (ReShade/graphics mod mode enabled)", pName, playerid);
+        SendClientMessage(playerid, C_WARN, "[INFO] Graphics mod detected and allowed. If you experience crashes, try removing ReShade.");
+    }
+#endif
+
+    if ( AC_Player[playerid][pResponded] == false )
+    {
+        SendClientMessage(playerid, C_ERROR, "[ERROR] System has detected that you are probably using some mods. If you think this is a mistake, please contact the Admin.");
+        SetTimerEx("kickPlayer", 1500, false, "ii", playerid, 0);
+    }
     // --
     if ( AC_Player[playerid][pSuspicious] == true )
     {
