@@ -240,7 +240,7 @@ stock SaveHouse(houseid) {
 		HouseInfo[houseid][hExtVW],
 		HouseInfo[houseid][hIntIW],
 		HouseInfo[houseid][hIntVW],
-		houseid+1
+		HouseInfo[houseid][hSQLId]
 	);
 	mysql_tquery(MainPipeline, szMiscArray, "OnSaveHouse", "ii", houseid, 0);
 
@@ -303,7 +303,7 @@ stock SaveHouse(houseid) {
 		HouseInfo[houseid][hClosetX],
 		HouseInfo[houseid][hClosetY],
 		HouseInfo[houseid][hClosetZ],
-		houseid+1
+		HouseInfo[houseid][hSQLId]
 	);
 	mysql_tquery(MainPipeline, szMiscArray, "OnSaveHouse", "ii", houseid, 1);
 
@@ -331,7 +331,7 @@ stock SaveHouse(houseid) {
 		HouseInfo[houseid][hInactive],
 		HouseInfo[houseid][hIgnore],
 		HouseInfo[houseid][hCounter],
-		houseid+1
+		HouseInfo[houseid][hSQLId]
 	);
 	mysql_tquery(MainPipeline, szMiscArray, "OnSaveHouse", "ii", houseid, 2);
 
@@ -363,8 +363,8 @@ stock SaveHouse(houseid) {
 		HouseInfo[houseid][LinkedGarage][0],
 		HouseInfo[houseid][LinkedGarage][1],
 		HouseInfo[houseid][h_iLights],
-		houseid+1
-	); // Array starts from zero, MySQL starts at 1 (this is why we are adding one).
+		HouseInfo[houseid][hSQLId]
+	); // Use SQL ID for correct targeting.
 	mysql_tquery(MainPipeline, szMiscArray, "OnSaveHouse", "ii", houseid, 3);
 	return 1;
 }

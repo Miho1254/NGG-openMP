@@ -51,8 +51,8 @@ MetDet_CreateMetDet(playerid)
 	{
 		if(!IsValidDynamicObject(arrMetalDetector[i][metdet_iObjectID]))
 		{
-			mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "INSERT INTO `metaldetectors` (`id`, `posx`, `posy`, `posz`, `rotx`, `roty`, `rotz`, `vw`, `int`)\
-			 VALUES (%d, %f, %f, %f, %f, %f, %f, %i, %i)", i, fPos[0], fPos[1], fPos[2], 0.0, 0.0, 0.0, iVW, iINT);
+			mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "INSERT INTO `metaldetectors` (`posx`, `posy`, `posz`, `rotx`, `roty`, `rotz`, `vw`, `int`)\
+			 VALUES (%f, %f, %f, %f, %f, %f, %i, %i)", fPos[0], fPos[1], fPos[2], 0.0, 0.0, 0.0, iVW, iINT);
 			mysql_tquery(MainPipeline, szMiscArray, "MetDet_OnCreateMetDet", "iifffii", playerid, i, fPos[0], fPos[1], fPos[2], iVW, iINT);
 			return 1;
 		}
@@ -63,7 +63,8 @@ MetDet_CreateMetDet(playerid)
 forward MetDet_OnCreateMetDet(playerid, i, Float:X, Float:Y, Float:Z, iVW, iINT);
 public MetDet_OnCreateMetDet(playerid, i, Float:X, Float:Y, Float:Z, iVW, iINT)
 {
-	format(szMiscArray, sizeof(szMiscArray), "Successfully created a Metal Detector with ID %d", i);
+	arrMetalDetector[i][metdet_iSQLId] = cache_insert_id();
+	format(szMiscArray, sizeof(szMiscArray), "Successfully created a Metal Detector with ID %d (SQL: %d)", i, arrMetalDetector[i][metdet_iSQLId]);
 	SendClientMessageEx(playerid, COLOR_WHITE, szMiscArray);
 	MetDet_Process(i, X, Y, Z, 0.0, 0.0, 0.0, iVW, iINT);
 	return 1;
@@ -72,7 +73,8 @@ public MetDet_OnCreateMetDet(playerid, i, Float:X, Float:Y, Float:Z, iVW, iINT)
 MetDet_DeleteMetDet(playerid, i)
 {
 	if(!IsValidDynamicObject(arrMetalDetector[i][metdet_iObjectID])) return SendClientMessageEx(playerid, COLOR_GRAD1, "This is an invalid metal detector ID.");
-	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "DELETE FROM `metaldetectors` WHERE `id` = %d", i);
+	if(arrMetalDetector[i][metdet_iSQLId] <= 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "This metal detector has no valid SQL ID.");
+	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "DELETE FROM `metaldetectors` WHERE `id` = %d", arrMetalDetector[i][metdet_iSQLId]);
 	return mysql_tquery(MainPipeline, szMiscArray, "MetDet_OnDeleteMetDet", "ii", playerid, i);
 }
 
@@ -123,8 +125,9 @@ public MetDet_OnLoadMetDets()
 	cache_get_row_count(iRows);
 
 	if(!iRows) return print("[Metal Detectors] There are no metaldetectors in the database.");
-	while(iCount < iRows)
+	while(iCount < iRows && iCount < MAX_METALDETECTORS)
 	{
+		cache_get_value_name_int(iCount, "id", arrMetalDetector[iCount][metdet_iSQLId]);
 		MetDet_Process(iCount, cache_get_value_name_float(iCount, "posx", fValue), cache_get_value_name_float(iCount, "posy", fValue), cache_get_value_name_float(iCount, "posz", fValue),
 				cache_get_value_name_float(iCount, "rotx", fValue), cache_get_value_name_float(iCount, "roty", fValue), cache_get_value_name_float(iCount, "rotz", fValue),
 				cache_get_value_name_int(iCount, "vw", value), cache_get_value_name_int(iCount, "int", value));
@@ -172,6 +175,8 @@ MetDet_GetIDFromArea(areaid) {
 
 MetDet_SaveMetDet(id)
 {
+	if(arrMetalDetector[id][metdet_iSQLId] <= 0) return;
+
 	new Float:fPos[6],
 		iAssignData[2];
 
@@ -180,16 +185,15 @@ MetDet_SaveMetDet(id)
 	iAssignData[0] = Streamer_GetIntData(STREAMER_TYPE_OBJECT, arrMetalDetector[id][metdet_iObjectID], E_STREAMER_WORLD_ID);
 	iAssignData[1] = Streamer_GetIntData(STREAMER_TYPE_OBJECT, arrMetalDetector[id][metdet_iObjectID], E_STREAMER_INTERIOR_ID);
 
-	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "UPDATE `metaldetectors` SET `posx` = %f, `posy` = %f, `posz` = %f, `rotx` = %f, `roty` = %f, `rotz` = %f, `vw` = %d, `int` = %d WHERE id = %d",
-			fPos[0], fPos[1], fPos[2], fPos[3], fPos[4], fPos[5], iAssignData[0], iAssignData[1], id);
-	mysql_tquery(MainPipeline, szMiscArray, "MetDet_OnSaveMetDets", "i", id);
-
+	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "UPDATE `metaldetectors` SET `posx` = %f, `posy` = %f, `posz` = %f, `rotx` = %f, `roty` = %f, `rotz` = %f, `vw` = %d, `int` = %d WHERE `id` = %d",
+			fPos[0], fPos[1], fPos[2], fPos[3], fPos[4], fPos[5], iAssignData[0], iAssignData[1], arrMetalDetector[id][metdet_iSQLId]);
+	mysql_tquery(MainPipeline, szMiscArray, "MetDet_OnSaveMetDet", "i", id);
 }
 
 forward MetDet_OnSaveMetDet(id);
 public MetDet_OnSaveMetDet(id)
 {
-	if(mysql_errno(MainPipeline) == 1) return printf("[Metal Detectors] Something went wrong when saving ID %d", id);
+	if(mysql_errno(MainPipeline) == 1) return printf("[Metal Detectors] Something went wrong when saving SQL ID %d", arrMetalDetector[id][metdet_iSQLId]);
 	return 1;
 }
 

@@ -2025,7 +2025,8 @@ enum fPoint
 enum eMetDetData {
 	metdet_iObjectID,
 	metdet_iAreaID,
-	Text3D:metdet_iTextID
+	Text3D:metdet_iTextID,
+	metdet_iSQLId
 }
 new arrMetalDetector[MAX_METALDETECTORS][eMetDetData];
 
