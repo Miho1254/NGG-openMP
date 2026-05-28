@@ -16,6 +16,7 @@ to sell that gun. Make the money come out of the government vault as well. Thank
 new arrWeaponCosts[47]; // array to store the costs in (NOTE: 46 has the open/close value!!)
 
 new GovArmsPoint;
+new GovArmsPoint2;
 
 hook OnGameModeInit()
 {
@@ -142,7 +143,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					new szWeaponName[32],
 						iCount, iAmmo, iWepID;
 
-					if(!IsPlayerInRangeOfPoint(playerid, 5.0, 1464.3099, -1747.5853, 15.6267)) return SendClientMessageEx(playerid, COLOR_GRAD1, "You aren't at the government arms point at City Hall in Los Santos.");
+					if(!IsPlayerInRangeOfPoint(playerid, 5.0, 1464.3099, -1747.5853, 15.6267) && !IsPlayerInRangeOfPoint(playerid, 5.0, -1612.2386, 712.9162, 13.7734)) return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong dung tai Government Arms Center.");
 					if(arrWeaponCosts[46] == 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Chinh phu da ngung thu mua vu khi.");
 					szMiscArray = "Name\tSale Price\n";
 					for(new i; i < 12; ++i) {
@@ -200,6 +201,10 @@ GovGuns_Streamer()
 	CreateDynamicObject(3430, 1464.40723, -1750.29785, 15.8659,   0.00000, 0.00000, 300.33374);
 	CreateDynamic3DTextLabel("Government Arms Center\n{DDDDDD}Nhan phim ~k~~CONVERSATION_YES~ de mo menu", COLOR_YELLOW, 1464.3186,-1747.9330,15.9453, 8.0);
 	GovArmsPoint = CreateDynamicSphere(1464.3186,-1747.9330,15.445, 5.00);
+
+	CreateDynamicObject(3430, -1612.2386, 712.9162, 13.7734, 0.00000, 0.00000, 162.1889);
+	CreateDynamic3DTextLabel("Government Arms Center\n{DDDDDD}Nhan phim ~k~~CONVERSATION_YES~ de mo menu", COLOR_YELLOW, -1612.2386, 712.9162, 13.7734, 8.0);
+	GovArmsPoint2 = CreateDynamicSphere(-1612.2386, 712.9162, 13.7734, 5.00);
 }
 
 GovGuns_IsSellingEdit(i)
@@ -319,7 +324,7 @@ ShowArmsMenu(playerid) {
 
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 
-	if(newkeys & KEY_YES && IsPlayerInDynamicArea(playerid, GovArmsPoint)) {
+	if(newkeys & KEY_YES && (IsPlayerInDynamicArea(playerid, GovArmsPoint) || IsPlayerInDynamicArea(playerid, GovArmsPoint2))) {
 		ShowArmsMenu(playerid);
 	}
 	return 1;

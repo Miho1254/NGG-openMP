@@ -72,6 +72,7 @@ new E_PLATFORM: g_PlayerPlatform[MAX_PLAYERS];
 new Text3D: g_PlatformLabel[MAX_PLAYERS];   // Label trên đầu: Mobile/PC
 new Text3D: g_GroupLabel[MAX_PLAYERS];      // Label bụng: tên group
 new g_PlatformCheckTimer[MAX_PLAYERS];
+new g_LastKnownGroup[MAX_PLAYERS];          // Track group changes
 
 // ============================================================
 // Forwards
@@ -168,6 +169,7 @@ stock PlatformLabel_UpdateGroupLabel(playerid)
     }
 
     new iGroupID = PlayerInfo[playerid][pMember];
+    g_LastKnownGroup[playerid] = iGroupID;
 
     // Không có group → ẩn label
     if (iGroupID < 0 || iGroupID >= MAX_GROUPS) return 1;
@@ -278,6 +280,7 @@ hook OnPlayerDisconnect(playerid, reason)
     }
     PlatformLabel_DestroyLabels(playerid);
     g_PlayerPlatform[playerid] = PLATFORM_UNKNOWN;
+    g_LastKnownGroup[playerid] = -1;
     return 1;
 }
 
@@ -286,6 +289,38 @@ hook OnPlayerSpawn(playerid)
     // Refresh cả 2 labels khi spawn
     PlatformLabel_UpdateLabels(playerid);
     return 1;
+}
+
+hook OnPlayerConnect_Labels(playerid)
+{
+    g_LastKnownGroup[playerid] = -1;
+    // Tạo group label ngay khi connect (không chỉ spawn)
+    SetTimerEx("PlatformLabel_DelayedGroupUpdate", 3000, false, "i", playerid);
+    return 1;
+}
+
+forward PlatformLabel_DelayedGroupUpdate(playerid);
+public PlatformLabel_DelayedGroupUpdate(playerid)
+{
+    if (!IsPlayerConnected(playerid)) return 0;
+    g_LastKnownGroup[playerid] = PlayerInfo[playerid][pMember];
+    PlatformLabel_UpdateGroupLabel(playerid);
+    return 1;
+}
+
+// Periodic check: update group label if pMember changed (every 5s)
+task PlatformLabel_PeriodicCheck[5000]()
+{
+    foreach(new i : Player)
+    {
+        if (IsPlayerNPC(i)) continue;
+        new curGroup = PlayerInfo[i][pMember];
+        if (curGroup != g_LastKnownGroup[i])
+        {
+            g_LastKnownGroup[i] = curGroup;
+            PlatformLabel_UpdateGroupLabel(i);
+        }
+    }
 }
 
 // ============================================================
@@ -321,4 +356,9 @@ public OnClientCheckResponse(playerid, actionid, memaddr, retndata)
 stock bool: PlatformLabel_IsPlayerMobile(playerid)
 {
     return (g_PlayerPlatform[playerid] == PLATFORM_MOBILE);
+}
+
+stock PlatformLabel_RefreshGroup(playerid)
+{
+    return PlatformLabel_UpdateGroupLabel(playerid);
 }

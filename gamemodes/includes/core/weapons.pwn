@@ -147,7 +147,7 @@ stock IsPlayerWeaponRestricted(playerid) {
 }
 
 stock CanPlayerBuyGuns(playerid) {
-	return (PlayerInfo[playerid][pConnectHours] >= 8);
+	return (PlayerInfo[playerid][pConnectHours] >= 2);
 }
 
 stock KickNewbieWeaponHacker(playerid) {
