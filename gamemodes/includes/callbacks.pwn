@@ -5781,6 +5781,25 @@ public OnPlayerModelSelectionEx(playerid, response, extraid, modelid, extralist_
 		        {
 		            ShowPlayerDialog(playerid, ITEM_SKIN24, DIALOG_STYLE_LIST, "[BALO] Trang phuc", "Su dung trang phuc\n{FF0000}Vut trang phuc\nThong tin trang phuc", "Chon", "Thoat");
 		        }
+				if(modelid == ITEM_PHO)
+				{
+					SetPVarInt(playerid, "FoodUsing", ITEM_PHO);
+					ShowPlayerDialogEx(playerid, DIALOG_FOOD_USE, DIALOG_STYLE_MSGBOX, "[BALO] Pho Ha Noi", "Ban co muon an Pho Ha Noi?\n+100% mau\n+100% do doi\n+100% do khat", "An", "Huy");
+				}
+				if(modelid == ITEM_MIQUANG)
+				{
+					SetPVarInt(playerid, "FoodUsing", ITEM_MIQUANG);
+					ShowPlayerDialogEx(playerid, DIALOG_FOOD_USE, DIALOG_STYLE_MSGBOX, "[BALO] Mi Quang", "Ban co muon an Mi Quang?\n+100% mau\n+100% do doi\n+100% do khat", "An", "Huy");
+				}
+				if(modelid == ITEM_COMTAM)
+				{
+					SetPVarInt(playerid, "FoodUsing", ITEM_COMTAM);
+					ShowPlayerDialogEx(playerid, DIALOG_FOOD_USE, DIALOG_STYLE_MSGBOX, "[BALO] Com Tam", "Ban co muon an Com Tam?\n+100% mau\n+100% do doi\n+100% do khat", "An", "Huy");
+				}
+				if(modelid == ITEM_ROTTENFOOD)
+				{
+					ShowPlayerDialogEx(playerid, DIALOG_ROTTENFOOD, DIALOG_STYLE_MSGBOX, "[BALO] Do an oi thiu", "Do an nay da bi oi thiu qua 24 gio!\nKhong the su dung duoc nua.\nBan co muon vut di?", "Vut", "Dong");
+				}
 		   	}
         else SendClientMessage(playerid,-1, "[{F5CB42}BALO{FFFFFF}] Ban da dong balo.");
     }

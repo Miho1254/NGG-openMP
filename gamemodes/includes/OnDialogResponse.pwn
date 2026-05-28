@@ -4013,11 +4013,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				SendClientMessageEx(playerid, COLOR_GRAD4, "Ban khong du tien de mua mat hang nay!");
 			}
 			else {
-				format(pvar, sizeof(pvar), "Business_MenuItem%d", listitem);
 				Businesses[iBusiness][bInventory]--;
 				Businesses[iBusiness][bTotalSales]++;
 				Businesses[iBusiness][bSafeBalance] += TaxSale(cost);
-				//Businesses[iBusiness][bSafeBalance] -= floatround(cost * BIZ_PENALTY);
 				GivePlayerCash(playerid, -cost);
 				if (PlayerInfo[playerid][pBusiness] != InBusiness(playerid)) Businesses[iBusiness][bLevelProgress]++;
 				SaveBusiness(iBusiness);
@@ -4029,46 +4027,23 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				}
 				format(string,sizeof(string),"%s(%d) (IP: %s) has bought a %s in %s (%d) for $%d.",GetPlayerNameEx(playerid), GetPlayerSQLId(playerid), GetPlayerIpEx(playerid),RestaurantItems[iItem], Businesses[iBusiness][bName], iBusiness, cost);
 				Log("logs/business.log", string);
-				format(string,sizeof(string),"* Ban da mua mot %s tu %s voi gia $%d.",RestaurantItems[iItem],Businesses[iBusiness][bName], cost);
-				SendClientMessage(playerid, COLOR_GRAD2, string);
 
-				printf("%s\n%i", RestaurantItems[iItem], iItem);
-				if (strcmp("Starter Meal", RestaurantItems[iItem]) == 0) // starter
-				{
-					if (PlayerInfo[playerid][pFitness] >= 3)
-						PlayerInfo[playerid][pFitness] -= 3;
-					else
-						PlayerInfo[playerid][pFitness] = 0;
-				}
-				if (strcmp("Full Meal", RestaurantItems[iItem]) == 0) // full meal
-				{
-					switch(PlayerInfo[playerid][pBackpack]) {
-						case 1: if(PlayerInfo[playerid][pBItems][0] < 1 && PlayerInfo[playerid][pBEquipped]) {
-							ShowPlayerDialogEx(playerid, DIALOG_BMEALSTORE, DIALOG_STYLE_MSGBOX, "Eat or Store", "You can store this full meal inside your backpack or you can eat it right now", "Store", "Eat");
-							return 1;
-						}
-						case 2: if(PlayerInfo[playerid][pBItems][0] < 4 && PlayerInfo[playerid][pBEquipped]) {
-							ShowPlayerDialogEx(playerid, DIALOG_BMEALSTORE, DIALOG_STYLE_MSGBOX, "Eat or Store", "You can store this full meal inside your backpack or you can eat it right now", "Store", "Eat");
-							return 1;
-						}
-						case 3: if(PlayerInfo[playerid][pBItems][0] < 5 && PlayerInfo[playerid][pBEquipped]) {
-							ShowPlayerDialogEx(playerid, DIALOG_BMEALSTORE, DIALOG_STYLE_MSGBOX, "Eat or Store", "You can store this full meal inside your backpack or you can eat it right now", "Store", "Eat");
-							return 1;
-						}
-					}
-				}
+				new iInventoryItemID;
+				if(iItem == 0) iInventoryItemID = 55;
+				else if(iItem == 1) iInventoryItemID = 56;
+				else if(iItem == 2) iInventoryItemID = 57;
+				else iInventoryItemID = 55;
 
-				SetHealth(playerid, 100.0);
-				if (iItem == 0 || iItem == 1)
-				{
-					PlayerData[playerid][pc_FoodBar] = 100;
-					PlayerData[playerid][pc_WaterBar] = 100;
+				if(GivePlayerItem(playerid, iInventoryItemID, 1) == 0) {
+					SendClientMessageEx(playerid, COLOR_GRAD2, "Balo cua ban da day! Khong the them do an.");
+					GivePlayerCash(playerid, cost);
+					Businesses[iBusiness][bInventory]++;
+					Businesses[iBusiness][bTotalSales]--;
+					Businesses[iBusiness][bSafeBalance] -= TaxSale(cost);
+				} else {
+					format(string,sizeof(string),"* Ban da mua %s va cho vao balo. Mo balo de su dung.",RestaurantItems[iItem]);
+					SendClientMessageEx(playerid, COLOR_GREEN, string);
 				}
-				else if (iItem >= 2 && iItem <= 9)
-				{
-					PlayerData[playerid][pc_WaterBar] = 100;
-				}
-				Update_Hunger(playerid);
 			}
 		}
 		for (new i; i <= 13; i++)
@@ -4078,6 +4053,84 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			format(pvar,sizeof(pvar),"Business_MenuItemPrice%d", i);
 			DeletePVar(playerid, pvar);
 		}
+	}
+	if (dialogid == DIALOG_FOOD_USE)
+	{
+		if (response)
+		{
+			new iFoodModel = GetPVarInt(playerid, "FoodUsing");
+			DeletePVar(playerid, "FoodUsing");
+
+			if(iFoodModel != ITEM_PHO && iFoodModel != ITEM_MIQUANG && iFoodModel != ITEM_COMTAM) return 1;
+
+			new iInventoryItemID;
+			if(iFoodModel == ITEM_PHO) iInventoryItemID = 55;
+			else if(iFoodModel == ITEM_MIQUANG) iInventoryItemID = 56;
+			else if(iFoodModel == ITEM_COMTAM) iInventoryItemID = 57;
+			else return 1;
+
+			new iFoundSlot = -1;
+			for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+			{
+				if(CharacterInfo[playerid][0][cb_ItemID][i] == iInventoryItemID)
+				{
+					iFoundSlot = i;
+					break;
+				}
+			}
+			if(iFoundSlot == -1) return SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong co do an nay trong balo!");
+
+			CharacterInfo[playerid][0][cb_ItemAmount][iFoundSlot]--;
+			if(CharacterInfo[playerid][0][cb_ItemAmount][iFoundSlot] <= 0)
+			{
+				RemovePlayerItem(playerid, iFoundSlot);
+			}
+			Inventory_SaveData(playerid);
+
+			SetHealth(playerid, 100.0);
+			PlayerData[playerid][pc_FoodBar] = 100;
+			PlayerData[playerid][pc_WaterBar] = 100;
+			Update_Hunger(playerid);
+
+			new szFoodName[32];
+			if(iFoodModel == ITEM_PHO) szFoodName = "Pho Ha Noi";
+			else if(iFoodModel == ITEM_MIQUANG) szFoodName = "Mi Quang";
+			else if(iFoodModel == ITEM_COMTAM) szFoodName = "Com Tam";
+
+			new szMsg[128];
+			format(szMsg, sizeof(szMsg), "* Ban da an %s. Mau, do doi va do khat da duoc hoi phuc.", szFoodName);
+			SendClientMessageEx(playerid, COLOR_GREEN, szMsg);
+
+			ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 0, 0, 0, 0, 1);
+		}
+		else
+		{
+			DeletePVar(playerid, "FoodUsing");
+		}
+		return 1;
+	}
+	if (dialogid == DIALOG_ROTTENFOOD)
+	{
+		if (response)
+		{
+			new iFoundSlot = -1;
+			for(new i = 0; i < MAX_PLAYER_CB_ITEM; i++)
+			{
+				if(CharacterInfo[playerid][0][cb_ItemID][i] == ITEM_ROTTENFOOD)
+				{
+					iFoundSlot = i;
+					break;
+				}
+			}
+			if(iFoundSlot != -1)
+			{
+				RemovePlayerItem(playerid, iFoundSlot);
+				Inventory_SaveData(playerid);
+			}
+			SendClientMessageEx(playerid, COLOR_GREY, "* Ban da vut di do an oi thiu.");
+			ApplyAnimation(playerid, "BOMBER", "BOM_Plant", 4.0, 0, 0, 0, 0, 0, 1);
+		}
+		return 1;
 	}
 	if (dialogid == RESTAURANTMENU2)
 	{

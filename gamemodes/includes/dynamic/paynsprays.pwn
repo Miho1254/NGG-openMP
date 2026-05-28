@@ -301,6 +301,12 @@ CMD:repaircar(playerid, params[])
 
 stock SavePayNSpray(id)
 {
+	if(PayNSprays[id][pnsSQLId] <= 0)
+	{
+		if(PayNSprays[id][pnsStatus] > 0)
+			InsertPayNSpray(id);
+		return;
+	}
 	new string[1024];
 	mysql_format(MainPipeline, string, sizeof(string), "UPDATE `paynsprays` SET \
 		`Status`=%d, \
@@ -319,10 +325,36 @@ stock SavePayNSpray(id)
 		PayNSprays[id][pnsInt],
 		PayNSprays[id][pnsGroupCost],
 		PayNSprays[id][pnsRegCost],
-		id
+		PayNSprays[id][pnsSQLId]
 	);
 
 	mysql_tquery(MainPipeline, string, "OnQueryFinish", "i", SENDDATA_THREAD);
+}
+
+stock InsertPayNSpray(id)
+{
+	new string[1024];
+	mysql_format(MainPipeline, string, sizeof(string), "INSERT INTO `paynsprays` \
+		(`Status`, `PosX`, `PosY`, `PosZ`, `VW`, `Int`, `GroupCost`, `RegCost`) \
+		VALUES (%d, %f, %f, %f, %d, %d, %d, %d)",
+		PayNSprays[id][pnsStatus],
+		PayNSprays[id][pnsPosX],
+		PayNSprays[id][pnsPosY],
+		PayNSprays[id][pnsPosZ],
+		PayNSprays[id][pnsVW],
+		PayNSprays[id][pnsInt],
+		PayNSprays[id][pnsGroupCost],
+		PayNSprays[id][pnsRegCost]
+	);
+
+	mysql_tquery(MainPipeline, string, "OnInsertPayNSpray", "i", id);
+}
+
+forward OnInsertPayNSpray(index);
+public OnInsertPayNSpray(index)
+{
+	PayNSprays[index][pnsSQLId] = cache_insert_id();
+	return 1;
 }
 
 stock SavePayNSprays()

@@ -292,8 +292,38 @@ stock RehashTxtLabels()
 	LoadTxtLabels();
 }
 
+stock InsertTxtLabel(labelid)
+{
+	new string[1024];
+	mysql_format(MainPipeline, string, sizeof(string), "INSERT INTO `text_labels` (`Text`, `PosX`, `PosY`, `PosZ`, `VW`, `Int`, `Color`, `PickupModel`) VALUES ('%e', %f, %f, %f, %d, %d, %d, %d)",
+		TxtLabels[labelid][tlText],
+		TxtLabels[labelid][tlPosX],
+		TxtLabels[labelid][tlPosY],
+		TxtLabels[labelid][tlPosZ],
+		TxtLabels[labelid][tlVW],
+		TxtLabels[labelid][tlInt],
+		TxtLabels[labelid][tlColor],
+		TxtLabels[labelid][tlPickupModel]
+	);
+
+	mysql_tquery(MainPipeline, string, "OnInsertTxtLabel", "i", labelid);
+}
+
+forward OnInsertTxtLabel(labelid);
+public OnInsertTxtLabel(labelid)
+{
+	TxtLabels[labelid][tlSQLId] = cache_insert_id();
+	return 1;
+}
+
 stock SaveTxtLabel(labelid)
 {
+	if(TxtLabels[labelid][tlSQLId] == 0)
+	{
+		InsertTxtLabel(labelid);
+		return 1;
+	}
+
 	new string[1024];
 	mysql_format(MainPipeline, string, sizeof(string), "UPDATE `text_labels` SET \
 		`Text`='%e', \
@@ -312,10 +342,11 @@ stock SaveTxtLabel(labelid)
 		TxtLabels[labelid][tlInt],
 		TxtLabels[labelid][tlColor],
 		TxtLabels[labelid][tlPickupModel],
-		labelid+1
-	); // Array starts from zero, MySQL starts at 1 (this is why we are adding one).
+		TxtLabels[labelid][tlSQLId]
+	);
 
 	mysql_tquery(MainPipeline, string, "OnQueryFinish", "i", SENDDATA_THREAD);
+	return 1;
 }
 
 stock LoadTxtLabel(labelid)

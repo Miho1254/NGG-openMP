@@ -4821,8 +4821,6 @@ CMD:gotoid(playerid, params[])
                 SendClientMessageEx(playerid, COLOR_GRAD2, "Ban khong the lam dieu nay khi dang SPEC.");
                 return 1;
             }
-            // Sửa lại text tiếng Anh thành tiếng Việt không dấu
-            if(PlayerInfo[giveplayerid][pAdmin] >= 1337 && !GetPVarType(giveplayerid, "EATeleportable")) return SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong the dich chuyen den lanh dao nay.");
             
             GetPlayerPos(giveplayerid, plocx, plocy, plocz);
             SetPlayerVirtualWorld(playerid, PlayerInfo[giveplayerid][pVW]);

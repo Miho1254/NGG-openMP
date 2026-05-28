@@ -11,7 +11,8 @@
 enum inv
 {
     MSlot,
-    iSlot[21]
+    iSlot[21],
+    iSlotTime[21]
 }
 new SlotBalo[MAX_PLAYERS][inv];
 
@@ -680,6 +681,7 @@ stock XoaItem(playerid,modelid)
     if(SlotBalo[playerid][iSlot][i] == modelid)
     {
     SlotBalo[playerid][iSlot][i] = 0;
+    SlotBalo[playerid][iSlotTime][i] = 0;
     break;
     }
     }
@@ -693,14 +695,19 @@ stock AddItem(playerid,modelid)
     if(SlotBalo[playerid][iSlot][i] == 0)
     {
     SlotBalo[playerid][iSlot][i] = modelid;
-    break;
+    if(modelid == ITEM_PHO || modelid == ITEM_MIQUANG || modelid == ITEM_COMTAM)
+        SlotBalo[playerid][iSlotTime][i] = gettime();
+    else
+        SlotBalo[playerid][iSlotTime][i] = 0;
+    return i;
     }
 
     }
-    return 1;
+    return -1;
 }
 stock ShowBalo(playerid)
 {
+    CheckFoodSpoilage(playerid);
     new iteminv[20];
     for(new i = 0; i < 20;i++)
     {
@@ -713,6 +720,24 @@ stock ShowBalo(playerid)
     }
     SendClientMessage(playerid,-1, "[{F5CB42}BALO{FFFFFF}] Ban da mo balo.");
     ShowModelSelectionMenuEx(playerid, iteminv, 20, "Balo", INVENTORY_MENU, 0.4, 0.4, -20.5);
+    return 1;
+}
+
+stock CheckFoodSpoilage(playerid)
+{
+    new now = gettime();
+    for(new i = 0; i < 20; i++)
+    {
+        new modelid = SlotBalo[playerid][iSlot][i];
+        if(modelid == ITEM_PHO || modelid == ITEM_MIQUANG || modelid == ITEM_COMTAM)
+        {
+            if(SlotBalo[playerid][iSlotTime][i] > 0 && (now - SlotBalo[playerid][iSlotTime][i]) > 86400)
+            {
+                SlotBalo[playerid][iSlot][i] = ITEM_ROTTENFOOD;
+                SlotBalo[playerid][iSlotTime][i] = 0;
+            }
+        }
+    }
     return 1;
 }
 
@@ -742,12 +767,33 @@ stock SaveBalo(playerid)
     dini_IntSet(file, "Slot18", SlotBalo[playerid][iSlot][18]);
     dini_IntSet(file, "Slot19", SlotBalo[playerid][iSlot][19]);
     dini_IntSet(file, "Slot20", SlotBalo[playerid][iSlot][20]);
-
+    dini_IntSet(file, "TSlot0", SlotBalo[playerid][iSlotTime][0]);
+    dini_IntSet(file, "TSlot1", SlotBalo[playerid][iSlotTime][1]);
+    dini_IntSet(file, "TSlot2", SlotBalo[playerid][iSlotTime][2]);
+    dini_IntSet(file, "TSlot3", SlotBalo[playerid][iSlotTime][3]);
+    dini_IntSet(file, "TSlot4", SlotBalo[playerid][iSlotTime][4]);
+    dini_IntSet(file, "TSlot5", SlotBalo[playerid][iSlotTime][5]);
+    dini_IntSet(file, "TSlot6", SlotBalo[playerid][iSlotTime][6]);
+    dini_IntSet(file, "TSlot7", SlotBalo[playerid][iSlotTime][7]);
+    dini_IntSet(file, "TSlot8", SlotBalo[playerid][iSlotTime][8]);
+    dini_IntSet(file, "TSlot9", SlotBalo[playerid][iSlotTime][9]);
+    dini_IntSet(file, "TSlot10", SlotBalo[playerid][iSlotTime][10]);
+    dini_IntSet(file, "TSlot11", SlotBalo[playerid][iSlotTime][11]);
+    dini_IntSet(file, "TSlot12", SlotBalo[playerid][iSlotTime][12]);
+    dini_IntSet(file, "TSlot13", SlotBalo[playerid][iSlotTime][13]);
+    dini_IntSet(file, "TSlot14", SlotBalo[playerid][iSlotTime][14]);
+    dini_IntSet(file, "TSlot15", SlotBalo[playerid][iSlotTime][15]);
+    dini_IntSet(file, "TSlot16", SlotBalo[playerid][iSlotTime][16]);
+    dini_IntSet(file, "TSlot17", SlotBalo[playerid][iSlotTime][17]);
+    dini_IntSet(file, "TSlot18", SlotBalo[playerid][iSlotTime][18]);
+    dini_IntSet(file, "TSlot19", SlotBalo[playerid][iSlotTime][19]);
+    dini_IntSet(file, "TSlot20", SlotBalo[playerid][iSlotTime][20]);
 }
 stock LoadBalo(playerid)
 {
     new file[64];
     format(file, sizeof(file), "balo/%s.ini", GetName(playerid));
+    if(!dini_Exists(file)) return 0;
     SlotBalo[playerid][iSlot][0] = dini_Int(file,"Slot0");
     SlotBalo[playerid][iSlot][1] = dini_Int(file,"Slot1");
     SlotBalo[playerid][iSlot][2] = dini_Int(file,"Slot2");
@@ -769,6 +815,29 @@ stock LoadBalo(playerid)
     SlotBalo[playerid][iSlot][18] = dini_Int(file,"Slot18");
     SlotBalo[playerid][iSlot][19] = dini_Int(file,"Slot19");
     SlotBalo[playerid][iSlot][20] = dini_Int(file,"Slot20");
+    SlotBalo[playerid][iSlotTime][0] = dini_Int(file,"TSlot0");
+    SlotBalo[playerid][iSlotTime][1] = dini_Int(file,"TSlot1");
+    SlotBalo[playerid][iSlotTime][2] = dini_Int(file,"TSlot2");
+    SlotBalo[playerid][iSlotTime][3] = dini_Int(file,"TSlot3");
+    SlotBalo[playerid][iSlotTime][4] = dini_Int(file,"TSlot4");
+    SlotBalo[playerid][iSlotTime][5] = dini_Int(file,"TSlot5");
+    SlotBalo[playerid][iSlotTime][6] = dini_Int(file,"TSlot6");
+    SlotBalo[playerid][iSlotTime][7] = dini_Int(file,"TSlot7");
+    SlotBalo[playerid][iSlotTime][8] = dini_Int(file,"TSlot8");
+    SlotBalo[playerid][iSlotTime][9] = dini_Int(file,"TSlot9");
+    SlotBalo[playerid][iSlotTime][10] = dini_Int(file,"TSlot10");
+    SlotBalo[playerid][iSlotTime][11] = dini_Int(file,"TSlot11");
+    SlotBalo[playerid][iSlotTime][12] = dini_Int(file,"TSlot12");
+    SlotBalo[playerid][iSlotTime][13] = dini_Int(file,"TSlot13");
+    SlotBalo[playerid][iSlotTime][14] = dini_Int(file,"TSlot14");
+    SlotBalo[playerid][iSlotTime][15] = dini_Int(file,"TSlot15");
+    SlotBalo[playerid][iSlotTime][16] = dini_Int(file,"TSlot16");
+    SlotBalo[playerid][iSlotTime][17] = dini_Int(file,"TSlot17");
+    SlotBalo[playerid][iSlotTime][18] = dini_Int(file,"TSlot18");
+    SlotBalo[playerid][iSlotTime][19] = dini_Int(file,"TSlot19");
+    SlotBalo[playerid][iSlotTime][20] = dini_Int(file,"TSlot20");
+    CheckFoodSpoilage(playerid);
+    return 1;
 }
 stock GetName(playerid)
 {

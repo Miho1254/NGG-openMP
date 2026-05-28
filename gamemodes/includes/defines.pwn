@@ -316,6 +316,10 @@ native WP_Hash(buffer[], len, const str[]);
 #define 		ITEM_SCALARM                      	18
 #define 		ITEM_HELMET                      	19
 #define 		ITEM_RAG 							20
+#define 		ITEM_PHO 							19577
+#define 		ITEM_MIQUANG 						19578
+#define 		ITEM_COMTAM 						19579
+#define 		ITEM_ROTTENFOOD 					19580
 #define 		FUEL_PUMP_RATE 						0.1 // Gallons per second
 #define 		BIZ_PENALTY 						0.2
 
@@ -1669,6 +1673,8 @@ native WP_Hash(buffer[], len, const str[]);
 #define				MAX_EVENT_SPAWN 				1
 #define Function:%0(%1) forward%0(%1); public%0(%1)
 #define 			INVENTORY_MENU 					22
+#define 			DIALOG_FOOD_USE					7200
+#define 			DIALOG_ROTTENFOOD				7201
 /* IRC/Slack */
 #define MAX_BOTS (1)
 

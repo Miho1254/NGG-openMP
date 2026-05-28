@@ -208,16 +208,9 @@ new const SexItems[][] =
 
 new const RestaurantItems[][] =
 {
-	"Starter Meal",
-	"Full Meal",
-	"Beer",
-	"Vodka",
-	"Whiskey",
-	"Martini",
-	"Tequilla",
-	"Gin",
-	"Water",
-	"Soda"
+	"Pho Ha Noi",
+	"Mi Quang",
+	"Com Tam"
 };
 
 new const Weapons[][WeaponsEnum] =
@@ -2808,3 +2801,18 @@ enum pc_Info
     pc_ItemTradeNeftExpire_Miner // thời gian neft giao dịch vật phẩm
 };
 new PlayerData[MAX_PLAYERS][pc_Info];
+
+#define MAX_INTERFACE 2
+#define MAX_PLAYER_CB_ITEM 84
+#define MAX_SERIAL_LENGTH 36
+
+enum cb_Info // character inventory info
+{
+    Float:cb_Weight,
+    cb_ItemLock[MAX_PLAYER_CB_ITEM],
+    cb_ItemID[MAX_PLAYER_CB_ITEM],
+    Float:cb_ItemWeight[MAX_PLAYER_CB_ITEM],
+    cb_ItemDurability[MAX_PLAYER_CB_ITEM],
+    cb_ItemAmount[MAX_PLAYER_CB_ITEM]
+};
+new CharacterInfo[MAX_PLAYERS][MAX_INTERFACE][cb_Info];

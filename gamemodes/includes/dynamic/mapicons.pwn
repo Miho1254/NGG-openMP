@@ -100,8 +100,38 @@ public OnLoadDynamicMapIcons()
 	return 1;
 }
 
+stock InsertDynamicMapIcon(mapiconid)
+{
+	new string[512];
+
+	mysql_format(MainPipeline, string, sizeof(string), "INSERT INTO `dmapicons` (`MarkerType`, `Color`, `VW`, `Int`, `PosX`, `PosY`, `PosZ`) VALUES (%d, %d, %d, %d, %f, %f, %f)",
+		DMPInfo[mapiconid][dmpMarkerType],
+		DMPInfo[mapiconid][dmpColor],
+		DMPInfo[mapiconid][dmpVW],
+		DMPInfo[mapiconid][dmpInt],
+		DMPInfo[mapiconid][dmpPosX],
+		DMPInfo[mapiconid][dmpPosY],
+		DMPInfo[mapiconid][dmpPosZ]
+	);
+
+	mysql_tquery(MainPipeline, string, "OnInsertDynamicMapIcon", "i", mapiconid);
+}
+
+forward OnInsertDynamicMapIcon(mapiconid);
+public OnInsertDynamicMapIcon(mapiconid)
+{
+	DMPInfo[mapiconid][dmpSQLId] = cache_insert_id();
+	return 1;
+}
+
 stock SaveDynamicMapIcon(mapiconid)
 {
+	if(DMPInfo[mapiconid][dmpSQLId] == 0)
+	{
+		InsertDynamicMapIcon(mapiconid);
+		return 1;
+	}
+
 	new string[512];
 
 	mysql_format(MainPipeline, string, sizeof(string), "UPDATE `dmapicons` SET \
@@ -120,9 +150,10 @@ stock SaveDynamicMapIcon(mapiconid)
 		DMPInfo[mapiconid][dmpPosY],
 		DMPInfo[mapiconid][dmpPosZ],
 		DMPInfo[mapiconid][dmpSQLId]
-	); // Array starts from zero, MySQL starts at 1 (this is why we are adding one).
+	);
 
 	mysql_tquery(MainPipeline, string, "OnQueryFinish", "i", SENDDATA_THREAD);
+	return 1;
 }
 
 stock SaveDynamicMapIcons()

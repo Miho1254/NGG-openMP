@@ -6,10 +6,6 @@
 
 #include <YSI\y_hooks>
 
-#define MAX_INTERFACE 2
-#define MAX_PLAYER_CB_ITEM 84
-#define MAX_SERIAL_LENGTH 36
-
 // Shared variables used by inventory + guide + event systems
 // Declared here since inventory.inc is included first
 new Guide_ReadPost[MAX_PLAYERS];
@@ -66,17 +62,6 @@ hook OnGameModeInit()
     return 1;
 }
 
-enum cb_Info // character inventory info
-{
-    Float:cb_Weight,
-    cb_ItemLock[MAX_PLAYER_CB_ITEM],
-    cb_ItemID[MAX_PLAYER_CB_ITEM],
-    Float:cb_ItemWeight[MAX_PLAYER_CB_ITEM],
-    cb_ItemDurability[MAX_PLAYER_CB_ITEM],
-    cb_ItemAmount[MAX_PLAYER_CB_ITEM]
-};
-new CharacterInfo[MAX_PLAYERS][MAX_INTERFACE][cb_Info];
-
 new cb_ItemSerial[MAX_PLAYERS][MAX_INTERFACE][MAX_PLAYER_CB_ITEM][MAX_SERIAL_LENGTH];
 
 new Inventory_Character[MAX_PLAYERS];
@@ -117,7 +102,8 @@ new Inventory_ListItems[][] =
     "Jerry can (100 lit)", "Jerry can (200 lit)", "SD-Pistol", "Colt-9mm", "Deagle", "Shotgun", "Sawn-Off", "Spas-12", "Uzi", "Mp5", "AK", "M4",
     "Tec9", "Rifle", "Sniper", "Da tho", "Ca thu", "Ca ngu", "Ca noc", "Ruou & thuoc la", "Hop dan tich hop", "Combo GFC", "Ban do kho bau","M4 LAW",
     "AK LAW", "Deagle LAW", "9mm LAW", "MP5 LAW",    "Sword Katana", "Gay Bong Chay",
-    "Can sa nguyen chat", "Tui zip can sa", "Picklock", "The nang cap balo (+5kg)"
+    "Can sa nguyen chat", "Tui zip can sa", "Picklock", "The nang cap balo (+5kg)",
+    "Pho Ha Noi", "Mi Quang", "Com Tam"
 };
 
 new PlayerText: GTASA_Inventory[MAX_PLAYERS][2][62];
@@ -226,6 +212,10 @@ stock Float:GetItemWeight(item)
         case 54: // The nang cap balo (+5kg)
         {
             return 0.5;
+        }
+        case 55 .. 57: // Pho, Mi Quang, Com Tam
+        {
+            return 0.4;
         }
     }
     return 0.0;
@@ -1863,6 +1853,9 @@ stock GetItemInfo(item)
         case 49: string = "Thanh kiem voi sat thuong lon";
         case 50: string = "Gay bong chay cua cac tuyen thu";
         case 54: string = "Dung de nang cap them 5kg trong luong balo (Toi da 150kg).";
+        case 55: string = "Pho Ha Noi nong hoi thom ngon hoi phuc 100% chi so.";
+        case 56: string = "Mi Quang dac san mien Trung hoi phuc 100% chi so.";
+        case 57: string = "Com Tam Sai Gon thom ngon hoi phuc 100% chi so.";
     }
     return string;
 }
@@ -1886,6 +1879,7 @@ stock GetAmountItemLimit(item)
         case 52: return 100; // Tui zip can sa
         case 53: return 5;   // Picklock
         case 54: return 10;  // The nang cap balo (+5kg)
+        case 55 .. 57: return 5; // Pho, Mi Quang, Com Tam
     }
     return 0;
 }
@@ -2021,6 +2015,7 @@ stock GetItemMDL(item)
         case 52: string = "mdl-2002:item_medkit";   // TODO: thay bang texture tui zip
         case 53: string = "mdl-2002:item_slotcard"; // Picklock
         case 54: string = "mdl-2002:item_slotcard"; // The nang cap balo (+5kg)
+        case 55 .. 57: string = "mdl-2002:item_combo-gfc";
     }
     return string;
 }
@@ -2245,6 +2240,18 @@ stock GetItemName(item)
         case 54:
         {
             string = "The nang cap balo (+5kg)";
+        }
+        case 55:
+        {
+            string = "Pho Ha Noi";
+        }
+        case 56:
+        {
+            string = "Mi Quang";
+        }
+        case 57:
+        {
+            string = "Com Tam";
         }
     }
     return string;
@@ -4003,6 +4010,7 @@ stock Balo_IsUsable(itemid)
     if(itemid == 42) return 1;                   // Combo GFC
     if(itemid == 43) return 1;                   // Treasure map
     if(itemid == 54) return 1;                   // The nang cap balo (+5kg)
+    if(itemid >= 55 && itemid <= 57) return 1;   // Pho, Mi Quang, Com Tam
     return 0;                                    // Weapons, materials, fish = not usable directly
 }
 
@@ -4393,7 +4401,7 @@ Dialog:DIALOG_BALO_MAIN(playerid, response, listitem, inputtext[])
 
     format(str, sizeof(str), "%s{FF6347}Vut bo vat pham\n", str);
 
-    if(!GetIDWeapon(itemid) && itemid < 44)
+    if(!GetIDWeapon(itemid))
         format(str, sizeof(str), "%s{00BFFF}Chuyen cho nguoi choi\n", str);
 
     if(itemid == 21 || itemid == 22)
@@ -4791,6 +4799,30 @@ stock Balo_UseItem(playerid, target, slot, itemid)
                 RemovePlayerItem(playerid, slot);
         }
         SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}BALO{FFFFFF}]: Ban da an Combo GFC. Thuc an va nuoc day.");
+        return Balo_ShowMain(playerid);
+    }
+    // Pho, Mi Quang, Com Tam
+    if(itemid >= 55 && itemid <= 57)
+    {
+        SetHealth(playerid, 100.0);
+        PlayerData[playerid][pc_FoodBar] = 100;
+        PlayerData[playerid][pc_WaterBar] = 100;
+        Update_Hunger(playerid);
+        if(!isAdmin) {
+            CharacterInfo[playerid][0][cb_ItemAmount][slot]--;
+            if(CharacterInfo[playerid][0][cb_ItemAmount][slot] <= 0)
+                RemovePlayerItem(playerid, slot);
+        }
+        new szFoodName[32];
+        if(itemid == 55) szFoodName = "Pho Ha Noi";
+        else if(itemid == 56) szFoodName = "Mi Quang";
+        else if(itemid == 57) szFoodName = "Com Tam";
+        
+        new szMsg[128];
+        format(szMsg, sizeof(szMsg), "[{FFB561}BALO{FFFFFF}]: Ban da an %s. Mau, do doi va do khat da duoc hoi phuc.", szFoodName);
+        SendClientMessageEx(playerid, COLOR_WHITE, szMsg);
+        
+        ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 0, 0, 0, 0, 1);
         return Balo_ShowMain(playerid);
     }
     // Treasure Map

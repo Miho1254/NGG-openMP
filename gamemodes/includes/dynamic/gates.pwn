@@ -679,21 +679,23 @@ CMD:gedit(playerid, params[])
 		    SendClientMessageEx(playerid, COLOR_WHITE, string);
 		    SaveGate(gateid);
 		}
-        else if(strcmp(x_job, "tome", true) == 0)
+		else if(strcmp(x_job, "tome", true) == 0)
 		{
 		    GetPlayerPos(playerid,GateInfo[gateid][gPosX],GateInfo[gateid][gPosY], GateInfo[gateid][gPosZ]);
 		    GateInfo[gateid][gVW] = GetPlayerVirtualWorld(playerid);
 		    GateInfo[gateid][gInt] = GetPlayerInterior(playerid);
 			format(string, sizeof(string), "Gate %d Pos moved to %f %f %f, VW: %d INT: %d", gateid, GateInfo[gateid][gPosX], GateInfo[gateid][gPosY], GateInfo[gateid][gPosZ], GateInfo[gateid][gVW], GateInfo[gateid][gInt]);
 		    SendClientMessageEx(playerid, COLOR_WHITE, string);
-		    if(GateInfo[gateid][gModel] == 0)
+		    new bool:isNewGate = (GateInfo[gateid][gModel] == 0);
+		    if(isNewGate)
 			{
 			    GateInfo[gateid][gModel] = 18631;
 			    GateInfo[gateid][gRange] = 10;
 			    GateInfo[gateid][gSpeed] = 5.0;
 			}
 			CreateGate(gateid);
-			SaveGate(gateid);
+			if(isNewGate) InsertGate(gateid);
+			else SaveGate(gateid);
 
 			format(string, sizeof(string), "%s has edited GateID %d's Position.", GetPlayerNameEx(playerid), gateid);
 		    Log("logs/gedit.log", string);
@@ -928,14 +930,16 @@ CMD:gmove(playerid, params[])
 	GateInfo[gateid][gInt] = GetPlayerInterior(playerid);
 	format(string, sizeof(string), "Gate %d Pos moved to %f %f %f, VW: %d INT: %d", gateid, GateInfo[gateid][gPosX], GateInfo[gateid][gPosY], GateInfo[gateid][gPosZ], GateInfo[gateid][gVW], GateInfo[gateid][gInt]);
 	SendClientMessageEx(playerid, COLOR_WHITE, string);
-	if(GateInfo[gateid][gModel] == 0)
+	new bool:isNewGate = (GateInfo[gateid][gModel] == 0);
+	if(isNewGate)
 	{
 		GateInfo[gateid][gModel] = 18631;
 		GateInfo[gateid][gRange] = 10;
 		GateInfo[gateid][gSpeed] = 5.0;
 	}
 	CreateGate(gateid);
-	SaveGate(gateid);
+	if(isNewGate) InsertGate(gateid);
+	else SaveGate(gateid);
 	format(string, sizeof(string), "%s has edited GateID %d's Position.", GetPlayerNameEx(playerid), gateid);
 	Log("logs/gedit.log", string);
 	if(minfee > fee && minfee > 0)
@@ -1106,6 +1110,55 @@ stock SaveGate(id) {
 	);
 	mysql_tquery(MainPipeline, szMiscArray, "OnQueryFinish", "i", SENDDATA_THREAD);
 	return 0;
+}
+
+stock InsertGate(id) {
+
+	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "INSERT INTO `gates` (`ID`, `HID`, `Speed`, `Range`, `Model`, `VW`, `Int`, `Pass`, `PosX`, `PosY`, `PosZ`, `RotX`, `RotY`, `RotZ`, `PosXM`, `PosYM`, `PosZM`, `RotXM`, `RotYM`, `RotZM`, `Allegiance`, `GroupType`, `GroupID`, `RenderHQ`, `Timer`, `Automate`, `Locked`, `TIndex`, `TModel`, `TTXD`, `TTexture`, `TColor`, `Facility`) \
+		VALUES (%d, %d, %f, %f, %d, %d, %d, '%e', %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%e', '%e', %d, %d)",
+		id+1,
+		GateInfo[id][gHID],
+		GateInfo[id][gSpeed],
+		GateInfo[id][gRange],
+		GateInfo[id][gModel],
+		GateInfo[id][gVW],
+		GateInfo[id][gInt],
+		GateInfo[id][gPass],
+		GateInfo[id][gPosX],
+		GateInfo[id][gPosY],
+		GateInfo[id][gPosZ],
+		GateInfo[id][gRotX],
+		GateInfo[id][gRotY],
+		GateInfo[id][gRotZ],
+		GateInfo[id][gPosXM],
+		GateInfo[id][gPosYM],
+		GateInfo[id][gPosZM],
+		GateInfo[id][gRotXM],
+		GateInfo[id][gRotYM],
+		GateInfo[id][gRotZM],
+		GateInfo[id][gAllegiance],
+		GateInfo[id][gGroupType],
+		GateInfo[id][gGroupID],
+		GateInfo[id][gRenderHQ],
+		GateInfo[id][gTimer],
+		GateInfo[id][gAutomate],
+		GateInfo[id][gLocked],
+		GateInfo[id][gTIndex],
+		GateInfo[id][gTModel],
+		GateInfo[id][gTTXD],
+		GateInfo[id][gTTexture],
+		GateInfo[id][gTColor],
+		GateInfo[id][gFacility]
+	);
+	mysql_tquery(MainPipeline, szMiscArray, "OnInsertGate", "i", id);
+	return 0;
+}
+
+forward OnInsertGate(gateid);
+public OnInsertGate(gateid)
+{
+	printf("[InsertGate] Gate %d inserted into database (DB ID: %d).", gateid, cache_insert_id());
+	return 1;
 }
 
 stock SaveGates()

@@ -63,7 +63,10 @@ CMD:impoundedit(playerid, params[])
 			DestroyDynamic3DTextLabel(ImpoundPoints[id][impoundTextID]);
 			format(string, sizeof(string), "Impound Yard #%d\nType /impound to impound chiec xe", id);
 			ImpoundPoints[id][impoundTextID] = CreateDynamic3DTextLabel(string, COLOR_YELLOW, ImpoundPoints[id][impoundPosX], ImpoundPoints[id][impoundPosY], ImpoundPoints[id][impoundPosZ]+0.6, 5.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, ImpoundPoints[id][impoundVW], ImpoundPoints[id][impoundInt], -1);
-			SaveImpoundPoint(id);
+			if(ImpoundPoints[id][impoundSQLId] == 0)
+				InsertImpoundPoint(id);
+			else
+				SaveImpoundPoint(id);
 			format(string, sizeof(string), "%s has edited Impound Point ID %d's position.", GetPlayerNameEx(playerid), id);
 			Log("logs/impoundedit.log", string);
 			return 1;
@@ -170,6 +173,29 @@ stock IsAtImpoundingPoint(playerid)
 		}
 	}
 	return 0;
+}
+
+stock InsertImpoundPoint(id)
+{
+	new string[256];
+	mysql_format(MainPipeline, string, sizeof(string), "INSERT INTO `impoundpoints` (`PosX`, `PosY`, `PosZ`, `VW`, `Int`) VALUES (%f, %f, %f, %d, %d)",
+		ImpoundPoints[id][impoundPosX],
+		ImpoundPoints[id][impoundPosY],
+		ImpoundPoints[id][impoundPosZ],
+		ImpoundPoints[id][impoundVW],
+		ImpoundPoints[id][impoundInt]
+	);
+	mysql_tquery(MainPipeline, string, "OnInsertImpoundPoint", "i", id);
+}
+
+forward OnInsertImpoundPoint(id);
+public OnInsertImpoundPoint(id)
+{
+	ImpoundPoints[id][impoundSQLId] = cache_insert_id();
+	new string[128];
+	format(string, sizeof(string), "[Impound] Inserted new impound point %d (SQL ID: %d)", id, ImpoundPoints[id][impoundSQLId]);
+	Log("logs/impoundedit.log", string);
+	return 1;
 }
 
 stock SaveImpoundPoint(id)

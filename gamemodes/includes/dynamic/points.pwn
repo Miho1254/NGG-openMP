@@ -713,6 +713,7 @@ PointTypeToName(id)
 }
 
 stock SavePoint(point) {
+	if(DynPoints[point][poID] == 0) return InsertPoint(point);
 	new szQuery[2048];
 	mysql_format(MainPipeline, szQuery, sizeof(szQuery), "UPDATE `dynpoints` SET \
 	`pointname` = '%e', \
@@ -763,11 +764,53 @@ stock SavePoint(point) {
 	DynPoints[point][poAmount][3],
 	DynPoints[point][poAmount][4],
 	DynPoints[point][poLocked],
-	point + 1);
+	DynPoints[point][poID]);
 	mysql_tquery(MainPipeline, szQuery, "OnQueryFinish", "i", SENDDATA_THREAD);
+	return 1;
+}
+
+stock InsertPoint(point) {
+	new szQuery[2048];
+	mysql_format(MainPipeline, szQuery, sizeof(szQuery), "INSERT INTO `dynpoints` (`pointname`, `type`, `posx`, `posy`, `posz`, `pos2x`, `pos2y`, `pos2z`, `vw`, `int`, `vw2`, `int2`, `boatonly`, `capturename`, `capturegroup`, `ready`, `timer`, `amounthour`, `amount0`, `amount1`, `amount2`, `amount3`, `amount4`, `locked`) VALUES ('%e', %d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d, %d, '%e', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)",
+	DynPoints[point][poName],
+	DynPoints[point][poType],
+	DynPoints[point][poPos][0],
+	DynPoints[point][poPos][1],
+	DynPoints[point][poPos][2],
+	DynPoints[point][poPos2][0],
+	DynPoints[point][poPos2][1],
+	DynPoints[point][poPos2][2],
+	DynPoints[point][poVW],
+	DynPoints[point][poInt],
+	DynPoints[point][po2VW],
+	DynPoints[point][po2Int],
+	DynPoints[point][poBoat],
+	DynPoints[point][poCaptureName],
+	DynPoints[point][poCaptureGroup],
+	DynPoints[point][poCapturable],
+	DynPoints[point][poTimer],
+	DynPoints[point][poAmountHour],
+	DynPoints[point][poAmount][0],
+	DynPoints[point][poAmount][1],
+	DynPoints[point][poAmount][2],
+	DynPoints[point][poAmount][3],
+	DynPoints[point][poAmount][4],
+	DynPoints[point][poLocked]);
+	mysql_tquery(MainPipeline, szQuery, "OnInsertPoint", "i", point);
+	return 1;
+}
+
+forward OnInsertPoint(point);
+public OnInsertPoint(point) {
+	DynPoints[point][poID] = cache_insert_id();
+	return 1;
 }
 
 stock SavePointBlocking(point) {
+	if(DynPoints[point][poID] == 0) {
+		InsertPoint(point);
+		return;
+	}
 	new szQuery[2048];
 	mysql_format(MainPipeline, szQuery, sizeof(szQuery), "UPDATE `dynpoints` SET \
 	`pointname` = '%e', \
@@ -818,7 +861,7 @@ stock SavePointBlocking(point) {
 	DynPoints[point][poAmount][3],
 	DynPoints[point][poAmount][4],
 	DynPoints[point][poLocked],
-	point + 1);
+	DynPoints[point][poID]);
 	mysql_query(MainPipeline, szQuery);
 }
 

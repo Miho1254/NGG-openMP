@@ -1857,6 +1857,7 @@ enum FallIntoFun
 
 enum ParkingMeterInfo
 {
+	MeterDBID,
 	MeterActive,
 	MeterRate,
 	Float:MeterRange,

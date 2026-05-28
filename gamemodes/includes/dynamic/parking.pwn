@@ -29,6 +29,11 @@ RemoveVehicleFromMeter(vehicleid)
 
 SaveParkingMeter(meterid)
 {
+	if(ParkingMeterInformation[meterid][MeterDBID] == 0)
+	{
+		InsertParkingMeter(meterid);
+		return 1;
+	}
 	new string[1500];
 	mysql_format(MainPipeline, string, sizeof(string), "UPDATE `parking_meters` SET `MeterActive`=%d, `MeterRate`=%d, `MeterRange`=%f, \
 	`MeterPosition0`=%f, `MeterPosition1`=%f, `MeterPosition2`=%f, `MeterPosition3`=%f, `MeterPosition4`=%f, `MeterPosition5`=%f, \
@@ -37,8 +42,31 @@ SaveParkingMeter(meterid)
 	ParkingMeterInformation[meterid][MeterPosition][0], ParkingMeterInformation[meterid][MeterPosition][1], ParkingMeterInformation[meterid][MeterPosition][2],
 	ParkingMeterInformation[meterid][MeterPosition][3], ParkingMeterInformation[meterid][MeterPosition][4], ParkingMeterInformation[meterid][MeterPosition][5],
 	ParkingMeterInformation[meterid][ParkedPosition][0], ParkingMeterInformation[meterid][ParkedPosition][1],
-	ParkingMeterInformation[meterid][ParkedPosition][2], ParkingMeterInformation[meterid][ParkedPosition][3], meterid+1);
+	ParkingMeterInformation[meterid][ParkedPosition][2], ParkingMeterInformation[meterid][ParkedPosition][3], ParkingMeterInformation[meterid][MeterDBID]);
 	mysql_tquery(MainPipeline, string, "OnQueryFinish", "i", SENDDATA_THREAD);
+	return 1;
+}
+
+InsertParkingMeter(meterid)
+{
+	new string[1500];
+	mysql_format(MainPipeline, string, sizeof(string), "INSERT INTO `parking_meters` (`MeterActive`, `MeterRate`, `MeterRange`, \
+	`MeterPosition0`, `MeterPosition1`, `MeterPosition2`, `MeterPosition3`, `MeterPosition4`, `MeterPosition5`, \
+	`ParkedPosition0`, `ParkedPosition1`, `ParkedPosition2`, `ParkedPosition3`) VALUES (%d, %d, %f, \
+	%f, %f, %f, %f, %f, %f, %f, %f, %f, %f)",
+	ParkingMeterInformation[meterid][MeterActive], ParkingMeterInformation[meterid][MeterRate], ParkingMeterInformation[meterid][MeterRange],
+	ParkingMeterInformation[meterid][MeterPosition][0], ParkingMeterInformation[meterid][MeterPosition][1], ParkingMeterInformation[meterid][MeterPosition][2],
+	ParkingMeterInformation[meterid][MeterPosition][3], ParkingMeterInformation[meterid][MeterPosition][4], ParkingMeterInformation[meterid][MeterPosition][5],
+	ParkingMeterInformation[meterid][ParkedPosition][0], ParkingMeterInformation[meterid][ParkedPosition][1],
+	ParkingMeterInformation[meterid][ParkedPosition][2], ParkingMeterInformation[meterid][ParkedPosition][3]);
+	mysql_tquery(MainPipeline, string, "OnInsertParkingMeter", "i", meterid);
+	return 1;
+}
+
+forward OnInsertParkingMeter(meterid);
+public OnInsertParkingMeter(meterid)
+{
+	ParkingMeterInformation[meterid][MeterDBID] = cache_insert_id();
 	return 1;
 }
 
@@ -91,6 +119,7 @@ hook OnGameModeInit()
 {
 	for(new i = 1; i < sizeof(ParkingMeterInformation); i ++)
 	{
+		ParkingMeterInformation[i][MeterDBID] = 0;
 		ParkingMeterInformation[i][AssignedVehicle] = INVALID_VEHICLE_ID;
 		ParkingMeterInformation[i][PaymentExpiry] = 0;
 	}
@@ -135,6 +164,7 @@ public OnLoadParkingMeters()
 	cache_get_row_count(rows);
 	while(index < rows)
 	{
+		cache_get_value_name_int(index, "MeterID", ParkingMeterInformation[index][MeterDBID]);
 		cache_get_value_name_int(index, "MeterActive", ParkingMeterInformation[index][MeterActive]);
 		cache_get_value_name_int(index, "MeterRate", ParkingMeterInformation[index][MeterRate]); 
 		cache_get_value_name_float(index, "MeterRange", ParkingMeterInformation[index][MeterRange]); 

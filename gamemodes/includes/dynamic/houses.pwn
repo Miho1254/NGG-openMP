@@ -77,7 +77,133 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 	return 0;
 }
 
+stock InsertHouse(houseid) {
+
+	szMiscArray[0] = 0;
+	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "INSERT INTO `houses` (`id`, \
+		`Owned`, `Level`, `Description`, `OwnerID`, \
+		`ExteriorX`, `ExteriorY`, `ExteriorZ`, `ExteriorR`, \
+		`InteriorX`, `InteriorY`, `InteriorZ`, `InteriorR`, \
+		`ExtIW`, `ExtVW`, `IntIW`, `IntVW`, \
+		`Lock`, `Rentable`, `RentFee`, `Value`, \
+		`SafeMoney`, `Pot`, `Crack`, `Materials`, `Heroin`, `Meth`, `Ecstasy`, \
+		`Weapons0`, `Weapons1`, `Weapons2`, `Weapons3`, \
+		`GLUpgrade`, `CustomInterior`, `CustomExterior`, \
+		`ExteriorA`, `InteriorA`, \
+		`MailX`, `MailY`, `MailZ`, `MailA`, `MailType`, \
+		`ClosetX`, `ClosetY`, `ClosetZ`, \
+		`SignDesc`, `SignX`, `SignY`, `SignZ`, `SignA`, `SignExpire`, \
+		`LastLogin`, `Expire`, `Inactive`, `Ignore`, `Counter`, \
+		`Listed`, `PendingApproval`, `ListedTimeStamp`, `ListingPrice`, \
+		`LinkedDoor0`, `LinkedDoor1`, `LinkedDoor2`, `LinkedDoor3`, `LinkedDoor4`, \
+		`ListingDescription`, `LinkedGarage0`, `LinkedGarage1`, `Lights`) \
+		VALUES (%d, \
+		%d, %d, '%s', %d, \
+		%f, %f, %f, %f, \
+		%f, %f, %f, %f, \
+		%d, %d, %d, %d, \
+		%d, %d, %d, %d, \
+		%d, %d, %d, %d, %d, %d, %d, \
+		%d, %d, %d, %d, \
+		%d, %d, %d, \
+		%f, %f, \
+		%f, %f, %f, %f, %d, \
+		%f, %f, %f, \
+		'%s', %f, %f, %f, %f, %d, \
+		%d, %d, %d, %d, %d, \
+		%d, %d, %d, %d, \
+		%d, %d, %d, %d, %d, \
+		'%s', %d, %d, %d)",
+		houseid+1,
+		HouseInfo[houseid][hOwned],
+		HouseInfo[houseid][hLevel],
+		g_mysql_ReturnEscaped(HouseInfo[houseid][hDescription]),
+		HouseInfo[houseid][hOwnerID],
+		HouseInfo[houseid][hExteriorX],
+		HouseInfo[houseid][hExteriorY],
+		HouseInfo[houseid][hExteriorZ],
+		HouseInfo[houseid][hExteriorR],
+		HouseInfo[houseid][hInteriorX],
+		HouseInfo[houseid][hInteriorY],
+		HouseInfo[houseid][hInteriorZ],
+		HouseInfo[houseid][hInteriorR],
+		HouseInfo[houseid][hExtIW],
+		HouseInfo[houseid][hExtVW],
+		HouseInfo[houseid][hIntIW],
+		HouseInfo[houseid][hIntVW],
+		HouseInfo[houseid][hLock],
+		HouseInfo[houseid][hRentable],
+		HouseInfo[houseid][hRentFee],
+		HouseInfo[houseid][hValue],
+		HouseInfo[houseid][hSafeMoney],
+		HouseInfo[houseid][hPot],
+		HouseInfo[houseid][hCrack],
+		HouseInfo[houseid][hMaterials],
+		HouseInfo[houseid][hHeroin],
+		HouseInfo[houseid][hMeth],
+		HouseInfo[houseid][hEcstasy],
+		HouseInfo[houseid][hWeapons][0],
+		HouseInfo[houseid][hWeapons][1],
+		HouseInfo[houseid][hWeapons][2],
+		HouseInfo[houseid][hWeapons][3],
+		HouseInfo[houseid][hGLUpgrade],
+		HouseInfo[houseid][hCustomInterior],
+		HouseInfo[houseid][hCustomExterior],
+		HouseInfo[houseid][hExteriorA],
+		HouseInfo[houseid][hInteriorA],
+		HouseInfo[houseid][hMailX],
+		HouseInfo[houseid][hMailY],
+		HouseInfo[houseid][hMailZ],
+		HouseInfo[houseid][hMailA],
+		HouseInfo[houseid][hMailType],
+		HouseInfo[houseid][hClosetX],
+		HouseInfo[houseid][hClosetY],
+		HouseInfo[houseid][hClosetZ],
+		g_mysql_ReturnEscaped(HouseInfo[houseid][hSignDesc]),
+		HouseInfo[houseid][hSign][0],
+		HouseInfo[houseid][hSign][1],
+		HouseInfo[houseid][hSign][2],
+		HouseInfo[houseid][hSign][3],
+		HouseInfo[houseid][hSignExpire],
+		HouseInfo[houseid][hLastLogin],
+		HouseInfo[houseid][hExpire],
+		HouseInfo[houseid][hInactive],
+		HouseInfo[houseid][hIgnore],
+		HouseInfo[houseid][hCounter],
+		HouseInfo[houseid][Listed],
+		HouseInfo[houseid][PendingApproval],
+		HouseInfo[houseid][ListedTimeStamp],
+		HouseInfo[houseid][ListingPrice],
+		HouseInfo[houseid][LinkedDoor][0],
+		HouseInfo[houseid][LinkedDoor][1],
+		HouseInfo[houseid][LinkedDoor][2],
+		HouseInfo[houseid][LinkedDoor][3],
+		HouseInfo[houseid][LinkedDoor][4],
+		HouseInfo[houseid][ListingDescription],
+		HouseInfo[houseid][LinkedGarage][0],
+		HouseInfo[houseid][LinkedGarage][1],
+		HouseInfo[houseid][h_iLights]
+	);
+	mysql_tquery(MainPipeline, szMiscArray, "OnInsertHouse", "i", houseid);
+}
+
+forward OnInsertHouse(houseid);
+public OnInsertHouse(houseid) {
+
+	if(mysql_errno(MainPipeline)) printf("Error inserting HouseID %d", houseid);
+	else {
+		HouseInfo[houseid][hSQLId] = cache_insert_id();
+		printf("Successfully inserted HouseID %d (SQL ID: %d)", houseid, HouseInfo[houseid][hSQLId]);
+	}
+	return 1;
+}
+
 stock SaveHouse(houseid) {
+
+	if(HouseInfo[houseid][hSQLId] <= 0) {
+		InsertHouse(houseid);
+		return 1;
+	}
 
 	szMiscArray[0] = 0;
 	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "UPDATE `houses` SET \
@@ -240,6 +366,7 @@ stock SaveHouse(houseid) {
 		houseid+1
 	); // Array starts from zero, MySQL starts at 1 (this is why we are adding one).
 	mysql_tquery(MainPipeline, szMiscArray, "OnSaveHouse", "ii", houseid, 3);
+	return 1;
 }
 
 forward OnSaveHouse(i, thread);

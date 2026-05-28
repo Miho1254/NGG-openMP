@@ -159,8 +159,14 @@ ResetPoll(id)
 	return 1;
 }
 
-SavePoll(id) 
+SavePoll(id)
 {
+	if(Polls[id][PollID] == 0)
+	{
+		InsertPoll(id);
+		return 1;
+	}
+
 	szMiscArray[0] = 0;
 	new mistring[64];
 	for(new i; i < MAX_POLLS; i++)
@@ -177,7 +183,37 @@ SavePoll(id)
 		format(szMiscArray, sizeof szMiscArray, "%s, `Votes` = '%s'", szMiscArray, mistring);
 	}
 
-	format(szMiscArray, sizeof szMiscArray, "%s WHERE `id` = %d", szMiscArray, id + 1);
+	format(szMiscArray, sizeof szMiscArray, "%s WHERE `id` = %d", szMiscArray, Polls[id][PollID]);
 	mysql_tquery(MainPipeline, szMiscArray, false, "OnQueryFinish", "i", SENDDATA_THREAD);
+	return 1;
+}
+
+InsertPoll(id)
+{
+	szMiscArray[0] = 0;
+	new mistring[64];
+	format(szMiscArray, sizeof szMiscArray, "INSERT INTO `polls` (`Question`");
+
+	for(new i; i != MAX_POLLS_CHOICES; ++i) format(szMiscArray, sizeof szMiscArray, "%s, `Choice%d`", szMiscArray, i);
+
+	format(szMiscArray, sizeof szMiscArray, "%s, `Votes`) VALUES ('%s'", szMiscArray, Polls[id][PollQuestion]);
+
+	for(new i; i != MAX_POLLS_CHOICES; ++i) format(szMiscArray, sizeof szMiscArray, "%s, '%s'", szMiscArray, PollChoices[id][i]);
+
+	for(new i; i != MAX_POLLS_CHOICES; ++i)
+	{
+		format(mistring, sizeof(mistring), "%s%d", mistring, Polls[id][PollVotes][i]);
+		strcat(mistring, "|");
+	}
+	format(szMiscArray, sizeof szMiscArray, "%s, '%s')", szMiscArray, mistring);
+
+	mysql_tquery(MainPipeline, szMiscArray, "OnInsertPoll", "i", id);
+	return 1;
+}
+
+forward OnInsertPoll(id);
+public OnInsertPoll(id)
+{
+	Polls[id][PollID] = cache_insert_id();
 	return 1;
 }

@@ -549,6 +549,11 @@ public OnLoadGarages()
 
 stock SaveGarage(garageid)
 {
+	if(GarageInfo[garageid][gar_SQLId] <= 0)
+	{
+		InsertGarage(garageid);
+		return 1;
+	}
 	new string[512];
 	mysql_format(MainPipeline, string, sizeof(string), "UPDATE `garages` SET \
 		`Owner`=%d, \
@@ -584,9 +589,46 @@ stock SaveGarage(garageid)
 		GarageInfo[garageid][gar_InteriorVW],
 		GarageInfo[garageid][gar_Pass],
 		GarageInfo[garageid][gar_Locked],
-		garageid
+		GarageInfo[garageid][gar_SQLId]
 	);
 	mysql_tquery(MainPipeline, string, "OnQueryFinish", "i", SENDDATA_THREAD);
+	return 1;
+}
+
+stock InsertGarage(garageid)
+{
+	new string[512];
+	mysql_format(MainPipeline, string, sizeof(string), "INSERT INTO `garages` \
+		(`Owner`, `OwnerName`, `ExteriorX`, `ExteriorY`, `ExteriorZ`, `ExteriorA`, \
+		`ExteriorVW`, `ExteriorInt`, `CustomExterior`, \
+		`InteriorX`, `InteriorY`, `InteriorZ`, `InteriorA`, `InteriorVW`, \
+		`Pass`, `Locked`) \
+		VALUES (%d, '%e', %f, %f, %f, %f, %d, %d, %d, %f, %f, %f, %f, %d, '%e', %d)",
+		GarageInfo[garageid][gar_Owner],
+		GarageInfo[garageid][gar_OwnerName],
+		GarageInfo[garageid][gar_ExteriorX],
+		GarageInfo[garageid][gar_ExteriorY],
+		GarageInfo[garageid][gar_ExteriorZ],
+		GarageInfo[garageid][gar_ExteriorA],
+		GarageInfo[garageid][gar_ExteriorVW],
+		GarageInfo[garageid][gar_ExteriorInt],
+		GarageInfo[garageid][gar_CustomExterior],
+		GarageInfo[garageid][gar_InteriorX],
+		GarageInfo[garageid][gar_InteriorY],
+		GarageInfo[garageid][gar_InteriorZ],
+		GarageInfo[garageid][gar_InteriorA],
+		GarageInfo[garageid][gar_InteriorVW],
+		GarageInfo[garageid][gar_Pass],
+		GarageInfo[garageid][gar_Locked]
+	);
+	mysql_tquery(MainPipeline, string, "OnInsertGarage", "i", garageid);
+}
+
+forward OnInsertGarage(garageid);
+public OnInsertGarage(garageid)
+{
+	GarageInfo[garageid][gar_SQLId] = cache_insert_id();
+	return 1;
 }
 
 stock CreateGarage(garageid)

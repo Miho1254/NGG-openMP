@@ -157,6 +157,30 @@ public OnLoadArrestPoints()
 	}
 }
 
+stock InsertArrestPoint(id)
+{
+	new string[512];
+	mysql_format(MainPipeline, string, sizeof(string), "INSERT INTO `arrestpoints` (`PosX`, `PosY`, `PosZ`, `VW`, `Int`, `Type`) VALUES (%f, %f, %f, %d, %d, %d)",
+		ArrestPoints[id][arrestPosX],
+		ArrestPoints[id][arrestPosY],
+		ArrestPoints[id][arrestPosZ],
+		ArrestPoints[id][arrestVW],
+		ArrestPoints[id][arrestInt],
+		ArrestPoints[id][arrestType]
+	);
+	mysql_tquery(MainPipeline, string, "OnInsertArrestPoint", "i", id);
+}
+
+forward OnInsertArrestPoint(id);
+public OnInsertArrestPoint(id)
+{
+	ArrestPoints[id][arrestSQLId] = cache_insert_id();
+	new string[128];
+	format(string, sizeof(string), "[ArrestPoint] Inserted new arrest point %d (SQL ID: %d)", id, ArrestPoints[id][arrestSQLId]);
+	Log("logs/arrestedit.log", string);
+	return 1;
+}
+
 stock SaveArrestPoint(id)
 {
 	new string[1024];
@@ -335,7 +359,10 @@ CMD:arrestedit(playerid, params[])
 					ArrestPoints[id][arrestPickupID] = CreateDynamicPickup(1247, 23, ArrestPoints[id][arrestPosX], ArrestPoints[id][arrestPosY], ArrestPoints[id][arrestPosZ], ArrestPoints[id][arrestVW]);
 				}
 			}
-			SaveArrestPoint(id);
+			if(ArrestPoints[id][arrestSQLId] == 0)
+				InsertArrestPoint(id);
+			else
+				SaveArrestPoint(id);
 			format(string, sizeof(string), "%s has edited Arrest Point ID %d's position.", GetPlayerNameEx(playerid), id);
 			Log("logs/arrestedit.log", string);
 			return 1;

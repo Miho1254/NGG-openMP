@@ -144,6 +144,11 @@ stock CreateDynamicDoor(doorid)
 
 stock SaveDynamicDoor(doorid)
 {
+	if(DDoorsInfo[doorid][ddSQLId] <= 0)
+	{
+		InsertDynamicDoor(doorid);
+		return 1;
+	}
 	new string[1024];
 
 	mysql_format(MainPipeline, string, sizeof(string), "UPDATE `ddoors` SET \
@@ -230,6 +235,75 @@ stock SaveDynamicDoor(doorid)
 	); // Array starts from zero, MySQL starts at 1 (this is why we are adding one).
 
 	mysql_tquery(MainPipeline, string, "OnQueryFinish", "i", SENDDATA_THREAD);
+	return 1;
+}
+
+stock InsertDynamicDoor(doorid)
+{
+	new string[1024];
+
+	mysql_format(MainPipeline, string, sizeof(string), "INSERT INTO `ddoors` \
+		(`Description`, `Owner`, `OwnerName`, `CustomInterior`, \
+		`ExteriorVW`, `ExteriorInt`, `InteriorVW`, `InteriorInt`, \
+		`ExteriorX`, `ExteriorY`, `ExteriorZ`, `ExteriorA`, \
+		`InteriorX`, `InteriorY`, `InteriorZ`, `InteriorA`, \
+		`CustomExterior`, `Type`, `Rank`, `VIP`, `Famed`, `DPC`, \
+		`Allegiance`, `GroupType`, `Faction`, `Admin`, `Wanted`, \
+		`VehicleAble`, `Color`, `PickupModel`, `Pass`, `Locked`, \
+		`LastLogin`, `Expire`, `Inactive`, `Ignore`, `Counter`) \
+		VALUES ('%e', %d, '%e', %d, %d, %d, %d, %d, %f, %f, %f, %f, %f, %f, %f, %f",
+		DDoorsInfo[doorid][ddDescription],
+		DDoorsInfo[doorid][ddOwner],
+		DDoorsInfo[doorid][ddOwnerName],
+		DDoorsInfo[doorid][ddCustomInterior],
+		DDoorsInfo[doorid][ddExteriorVW],
+		DDoorsInfo[doorid][ddExteriorInt],
+		DDoorsInfo[doorid][ddInteriorVW],
+		DDoorsInfo[doorid][ddInteriorInt],
+		DDoorsInfo[doorid][ddExteriorX],
+		DDoorsInfo[doorid][ddExteriorY],
+		DDoorsInfo[doorid][ddExteriorZ],
+		DDoorsInfo[doorid][ddExteriorA],
+		DDoorsInfo[doorid][ddInteriorX],
+		DDoorsInfo[doorid][ddInteriorY],
+		DDoorsInfo[doorid][ddInteriorZ],
+		DDoorsInfo[doorid][ddInteriorA]
+	);
+
+	mysql_format(MainPipeline, string, sizeof(string), "%s, \
+		%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%e', %d, %d, %d, %d, %d, %d, %d)",
+		string,
+		DDoorsInfo[doorid][ddCustomExterior],
+		DDoorsInfo[doorid][ddType],
+		DDoorsInfo[doorid][ddRank],
+		DDoorsInfo[doorid][ddVIP],
+		DDoorsInfo[doorid][ddFamed],
+		DDoorsInfo[doorid][ddDPC],
+		DDoorsInfo[doorid][ddAllegiance],
+		DDoorsInfo[doorid][ddGroupType],
+		DDoorsInfo[doorid][ddFaction],
+		DDoorsInfo[doorid][ddAdmin],
+		DDoorsInfo[doorid][ddWanted],
+		DDoorsInfo[doorid][ddVehicleAble],
+		DDoorsInfo[doorid][ddColor],
+		DDoorsInfo[doorid][ddPickupModel],
+		DDoorsInfo[doorid][ddPass],
+		DDoorsInfo[doorid][ddLocked],
+		DDoorsInfo[doorid][ddLastLogin],
+		DDoorsInfo[doorid][ddExpire],
+		DDoorsInfo[doorid][ddInactive],
+		DDoorsInfo[doorid][ddIgnore],
+		DDoorsInfo[doorid][ddCounter]
+	);
+
+	mysql_tquery(MainPipeline, string, "OnInsertDynamicDoor", "i", doorid);
+}
+
+forward OnInsertDynamicDoor(doorid);
+public OnInsertDynamicDoor(doorid)
+{
+	DDoorsInfo[doorid][ddSQLId] = cache_insert_id();
+	return 1;
 }
 
 stock LoadDynamicDoor(doorid)
