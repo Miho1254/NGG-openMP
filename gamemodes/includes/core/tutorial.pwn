@@ -47,7 +47,7 @@ AdvanceTutorial(playerid)
 		case -1:
 		{
 			TogglePlayerSpectating(playerid, false);
-			SetPlayerPos(playerid, -1704.8635, 1338.0919, 7.1791);
+			SetPlayerPos(playerid, -1720.9626, 1364.4561, 7.1875);
 			SetPlayerFacingAngle(playerid, 0);
 			SetPlayerSkin(playerid, PlayerInfo[playerid][pModel]);
 			SetPlayerInterior(playerid, 0);
@@ -223,7 +223,7 @@ CharacterCreation(playerid)
 
 			DestroyActor(GetPVarInt(playerid, "pActor"));
 			TogglePlayerSpectating(playerid, false);
-			SetPlayerPos(playerid, -1704.8635, 1338.0919, 7.1791);
+			SetPlayerPos(playerid, -1720.9626, 1364.4561, 7.1875);
 			SetPlayerFacingAngle(playerid, 0);
 			SetPlayerSkin(playerid, PlayerInfo[playerid][pModel]);
 			SetPlayerInterior(playerid, 0);
