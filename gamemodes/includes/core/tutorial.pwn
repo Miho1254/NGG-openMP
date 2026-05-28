@@ -222,7 +222,7 @@ CharacterCreation(playerid)
 		case 14: {
 
 			DestroyActor(GetPVarInt(playerid, "pActor"));
-			TogglePlayerSpectating(playerid, false);
+			HideMainMenuGUI(playerid);
 			SetPlayerPos(playerid, -1720.9626, 1364.4561, 7.1875);
 			SetPlayerFacingAngle(playerid, 0);
 			SetPlayerSkin(playerid, PlayerInfo[playerid][pModel]);
@@ -231,6 +231,12 @@ CharacterCreation(playerid)
 			SetHealth(playerid, 100);
 			ClearChatbox(playerid);
 			PlayerInfo[playerid][pTut] = -1;
+			SetCameraBehindPlayer(playerid);
+			TogglePlayerControllable(playerid, true);
+			PlayerInfo[playerid][pPos_x] = -1720.9626;
+			PlayerInfo[playerid][pPos_y] = 1364.4561;
+			PlayerInfo[playerid][pPos_z] = 7.1875;
+			PlayerInfo[playerid][pPos_r] = 0;
 			if(gPlayerLogged{playerid}) OnPlayerStatsUpdate(playerid);
 
 			//ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK Huong dan", "Ban co muon lam nhiem vu nguoi choi moi khong?", "Co", "Khong");
