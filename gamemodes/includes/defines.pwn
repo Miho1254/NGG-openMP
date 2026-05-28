@@ -1073,6 +1073,7 @@ native WP_Hash(buffer[], len, const str[]);
 
 #define 		DIALOG_AMMUNATION_MAIN		(6043)
 #define 		DIALOG_AMMUNATION_GUNS		(6044)
+#define 		DIALOG_AMMUNATION_AMMO		(6045)
 
 #define 		DIALOG_GANG_CRATE1 			(6046)
 #define 		DIALOG_GANG_CRATE2 			(6047)

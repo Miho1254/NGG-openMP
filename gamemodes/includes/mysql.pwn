@@ -284,7 +284,7 @@ public OnQueryFinish(resultid, extraid, handleid)
 				cache_get_value_name(i, "prisonerMOTD2", prisonerMOTD[1]);
 				cache_get_value_name(i, "prisonerMOTD3", prisonerMOTD[2]);
 
-				for(new x = 0; x < 7; x++)
+				for(new x = 0; x < 12; x++)
 				{
 					format(szResult, sizeof(szResult), "GunPrice%d", x);
 					cache_get_value_name_int(i, szResult, GunPrices[x]);
@@ -1669,7 +1669,13 @@ stock g_mysql_SaveMOTD()
 	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice2` = '%d',", query, GunPrices[2]);
 	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice3` = '%d',", query, GunPrices[3]);
 	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice4` = '%d',", query, GunPrices[4]);
-	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice5` = '%d'", query, GunPrices[5]);
+	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice5` = '%d',", query, GunPrices[5]);
+	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice6` = '%d',", query, GunPrices[6]);
+	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice7` = '%d',", query, GunPrices[7]);
+	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice8` = '%d',", query, GunPrices[8]);
+	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice9` = '%d',", query, GunPrices[9]);
+	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice10` = '%d',", query, GunPrices[10]);
+	mysql_format(MainPipeline, query, sizeof(query), "%s `GunPrice11` = '%d'", query, GunPrices[11]);
 	CallLocalFunction("SaveInactiveResourceSettings", "is", sizeof(query), query);
 
 	new qryLength = strlen(query);

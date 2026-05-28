@@ -2674,7 +2674,7 @@ new Timer:DDSaleTimer[MAX_PLAYERS];
 new bool:DDSalePendingAdmin[MAX_PLAYERS];
 new bool:DDSalePendingPlayer[MAX_PLAYERS];
 
-new GunPrices[7];
+new GunPrices[12] = {15000, 40000, 50000, 25000, 80000, 120000, 140000, 100000, 10000, 0, 0, 0};
 new JobName[MAX_JOBTYPES][32];
 
 new PlayerText:phone_PTextDraw[MAX_PLAYERS][24];
