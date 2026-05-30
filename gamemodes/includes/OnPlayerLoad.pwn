@@ -745,6 +745,20 @@ public OnPlayerLoad(playerid)
 	printf("%s has logged in.", GetPlayerNameEx(playerid));
 	format(string, sizeof(string), "SERVER: Chao mung, %s.", GetPlayerNameEx(playerid));
 	SendClientMessageEx(playerid, COLOR_WHITE, string);
+	if(PlayerInfo[playerid][pFixStuck])
+	{
+		PlayerInfo[playerid][pPos_x] = -2401.7463;
+		PlayerInfo[playerid][pPos_y] = 575.5894;
+		PlayerInfo[playerid][pPos_z] = 24.8906;
+		PlayerInfo[playerid][pPos_r] = 0.0;
+		PlayerInfo[playerid][pInt] = 0;
+		PlayerInfo[playerid][pVW] = 0;
+		PlayerInfo[playerid][pFixStuck] = 0;
+		mysql_format(MainPipeline, string, sizeof(string), "UPDATE `accounts` SET `fixstuck` = 0, `SPos_x` = '-2401.7463', `SPos_y` = '575.5894', `SPos_z` = '24.8906', `SPos_r` = '0', `Int` = 0, `VirtualWorld` = 0 WHERE `id` = %d", GetPlayerSQLId(playerid));
+		mysql_tquery(MainPipeline, string);
+		SendClientMessageEx(playerid, COLOR_YELLOW, "[SYSTEM] Ban da duoc dich chuyen ve vi tri an toan do yeu cau fix ket tu UCP.");
+	}
+
 	SetSpawnInfo(playerid, 0, PlayerInfo[playerid][pModel], PlayerInfo[playerid][pPos_x], PlayerInfo[playerid][pPos_y], PlayerInfo[playerid][pPos_z], 1.0, -1, -1, -1, -1, -1, -1);
 	defer SkinDelay(playerid);
 

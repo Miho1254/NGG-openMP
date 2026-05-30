@@ -158,6 +158,21 @@ stock ShowMainMenuDialog(playerid, frame)
             
             ShowPlayerDialogEx(playerid, MAINMENU3, DIALOG_STYLE_MSGBOX, titlestring, string, "Da ro", "");
         }
+        case 5: // UCP Registration Required
+        {
+            format(titlestring, sizeof(titlestring), "{00FFCC}SAW Community {FFFFFF}>> Dang Ky Tai Khoan");
+            format(string, sizeof(string), "\
+            {FFFFFF}Chao mung, {00FFCC}%s{FFFFFF}!\n\
+            {FFFFFF}Trang thai dinh danh: {FF4C4C}Chua co ho so{FFFFFF}.\n\
+            {A9A9A9}------------------------------------------------\n\n\
+            {FFFFFF}Ban can {00FFCC}dang ky tai khoan{FFFFFF} truoc khi vao game.\n\
+            Vui long truy cap trang web:\n\n\
+            {00FFCC}my.saw-mp.com{FFFFFF}\n\n\
+            {A9A9A9}Sau khi dang ky thanh cong, hay ket noi lai vao game.\n\
+            {A9A9A9}Nhan \"Thoat\" de thoat khoi may chu.", pName);
+
+            ShowPlayerDialogEx(playerid, MAINMENU4, DIALOG_STYLE_MSGBOX, titlestring, string, "Thoat", "");
+        }
     }
     return 1;
 }
@@ -181,7 +196,7 @@ stock SafeLogin(playerid, type)
 				}
 				else
 				{
-				    ShowMainMenuDialog(playerid, 2);
+				    ShowMainMenuDialog(playerid, 5);
 				}
 			}
 			else

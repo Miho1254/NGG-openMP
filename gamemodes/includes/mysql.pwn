@@ -339,6 +339,7 @@ public OnQueryFinish(resultid, extraid, handleid)
 					cache_get_value_name_float(row,  "SPos_y", PlayerInfo[extraid][pPos_y]);
 					cache_get_value_name_float(row,  "SPos_z", PlayerInfo[extraid][pPos_z]);
 					cache_get_value_name_float(row,  "SPos_r", PlayerInfo[extraid][pPos_r]);
+					cache_get_value_name_int(row,  "fixstuck", PlayerInfo[extraid][pFixStuck]);
 					cache_get_value_name_int(row,  "BanAppealer", PlayerInfo[extraid][pBanAppealer]);
 					cache_get_value_name_int(row,  "PR", PlayerInfo[extraid][pPR]);
 					cache_get_value_name_int(row,  "HR", PlayerInfo[extraid][pHR]);

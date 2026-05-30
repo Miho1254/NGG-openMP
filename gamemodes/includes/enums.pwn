@@ -1306,7 +1306,8 @@ enum pInfo
 	pWalkStyle,
 	pFlagCredits,
 	pFlagClaimed,
-	pHorse
+	pHorse,
+	pFixStuck
 };
 
 enum pvInfo

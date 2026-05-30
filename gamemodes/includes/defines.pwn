@@ -338,6 +338,7 @@ native WP_Hash(buffer[], len, const str[]);
 #define			MAINMENU					(50)
 #define			MAINMENU2					(60)
 #define         MAINMENU3                   (70)
+#define         MAINMENU4                   (82)
 #define 		NULLEMAIL                   (80)
 #define 		EMAIL_VALIDATION            (81)
 #define         PMOTDNOTICE                 (90)

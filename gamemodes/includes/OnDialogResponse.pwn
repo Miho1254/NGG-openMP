@@ -2184,6 +2184,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 	{
 		Kick(playerid);
 	}
+	if(dialogid == MAINMENU4)
+	{
+		Kick(playerid);
+	}
 	if (dialogid == ELEVATOR3 && response)
 	{
 		if (listitem == 0)
