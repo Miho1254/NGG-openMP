@@ -49,3 +49,6 @@ ALTER TABLE `inventory` ADD COLUMN `SQLId` int(11) NOT NULL DEFAULT 0 AFTER `Id`
 ALTER TABLE `vehicles` ADD COLUMN `pvHealthcar` float NOT NULL DEFAULT 1000.0;
 ALTER TABLE `vehicles` ADD COLUMN `pvFull` int NOT NULL DEFAULT 0;
 ALTER TABLE `vehicles` ADD COLUMN `pvStolen` int NOT NULL DEFAULT 0;
+
+-- Fix 4: Add fixstuck column to accounts table (UCP fix stuck system)
+ALTER TABLE `accounts` ADD COLUMN `fixstuck` int(11) NOT NULL DEFAULT 0;
