@@ -4,10 +4,10 @@
 ALTER TABLE `accounts` ADD `PollKeyA` VARCHAR(128) NOT NULL AFTER `GuardsGiven`, ADD `PollKeyB` VARCHAR(128) NOT NULL AFTER `PollKeyA`, ADD `PollKeyC` VARCHAR(128) NOT NULL AFTER `PollKeyB`; */
 
 /*
-	GTA.Network Development Team
+	SAW Community Development Team
 
 	Project Name: Dynamic Polling System
-	Author: Westen (westen@ng-gaming.net)
+	Author: Westen (westen@saw-mp.com)
 
 	Documentation: https://docs.google.com/document/d/1emwrE9iCG4ZomJZ5s_BskzHcSBQXlJ7nnRIkR8ChpXs/
 */

@@ -566,7 +566,7 @@ public OnPlayerEnterDynamicArea(playerid, areaid)
 	if(areaid == musicarea)
 	{
 	    StopAudioStreamForPlayer(playerid);
-		PlayAudioStreamForPlayer(playerid, "http://samp.ng-gaming.net:8000/listen.pls", 1330.3715,37.1724,33.1021, 50.0, 1);
+		PlayAudioStreamForPlayer(playerid, "http://samp.saw-mp.com:8000/listen.pls", 1330.3715,37.1724,33.1021, 50.0, 1);
 	}
 	return 1;
 }

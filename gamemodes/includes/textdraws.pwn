@@ -11,7 +11,7 @@
 //--------------------------------[TEXTDRAWS.PWN]--------------------------------
 
 
- * Copyright (c) 2016, GTA.Network, LLC
+ * Copyright (c) 2016, SAW Community, LLC
  *
  * All rights reserved.
  *
@@ -722,7 +722,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // NG-RP Title
-    MainMenuTxtdraw[4] = TextDrawCreate(263.000000, 10.000000, "GTA.Network");
+    MainMenuTxtdraw[4] = TextDrawCreate(263.000000, 10.000000, "SAW Community");
     TextDrawBackgroundColor(MainMenuTxtdraw[4], 255);
     TextDrawFont(MainMenuTxtdraw[4], 2);
     TextDrawLetterSize(MainMenuTxtdraw[4], 0.910000, 4.400001);
@@ -733,7 +733,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // NG-RP Subtitle
-    MainMenuTxtdraw[5] = TextDrawCreate(256.000000, 45.000000, "GTA.Network/4rum");
+    MainMenuTxtdraw[5] = TextDrawCreate(256.000000, 45.000000, "saw-mp.com");
     TextDrawBackgroundColor(MainMenuTxtdraw[5], 255);
     TextDrawFont(MainMenuTxtdraw[5], 2);
     TextDrawLetterSize(MainMenuTxtdraw[5], 0.200000, 1.200001);
@@ -837,7 +837,7 @@ public LoadTextDraws()
     TextDrawSetProportional(TDE_LOGINGTN[0], 0);
     TextDrawSetShadow(TDE_LOGINGTN[0], 0);
 
-    TDE_LOGINGTN[1] = TextDrawCreate(320.000000, 434.000244, "SERVER ~y~GTA NETWORK~w~ 2019");
+    TDE_LOGINGTN[1] = TextDrawCreate(320.000000, 434.000244, "SERVER ~y~SAW Community~w~ 2019");
     TextDrawLetterSize(TDE_LOGINGTN[1], 0.245199, 1.092266);
     TextDrawAlignment(TDE_LOGINGTN[1], 2);
     TextDrawColor(TDE_LOGINGTN[1], -1);
@@ -964,7 +964,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Logo 1)
-    TutTxtdraw[2] = TextDrawCreate(270.000000, 241.000000, "GTA.NetWork");
+    TutTxtdraw[2] = TextDrawCreate(270.000000, 241.000000, "SAW Community");
     TextDrawBackgroundColor(TutTxtdraw[2], 75);
     TextDrawFont(TutTxtdraw[2], 1);
     TextDrawLetterSize(TutTxtdraw[2], 1.119999, 5.599997);
@@ -975,7 +975,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Logo 2)
-    TutTxtdraw[3] = TextDrawCreate(259.000000, 286.000000, "GTA.Network");
+    TutTxtdraw[3] = TextDrawCreate(259.000000, 286.000000, "SAW Community");
     TextDrawBackgroundColor(TutTxtdraw[3], 75);
     TextDrawFont(TutTxtdraw[3], 1);
     TextDrawLetterSize(TutTxtdraw[3], 0.259999, 1.599997);
@@ -986,7 +986,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 1) (Title)
-    TutTxtdraw[4] = TextDrawCreate(168.000000, 120.000000, "Huong Dan - Chao mung ban den voi GTA.Network!");
+    TutTxtdraw[4] = TextDrawCreate(168.000000, 120.000000, "Huong Dan - Chao mung ban den voi SAW Community!");
     TextDrawBackgroundColor(TutTxtdraw[4], 255);
     TextDrawFont(TutTxtdraw[4], 2);
     TextDrawLetterSize(TutTxtdraw[4], 0.209999, 1.000000);
@@ -1037,7 +1037,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 1) (Line 5)
-    TutTxtdraw[9] = TextDrawCreate(175.000000, 203.000000, "la noi de cac ban hoc tap nua neu can thiet truy cap ~y~www.gta.network~w~ - Chung toi");
+    TutTxtdraw[9] = TextDrawCreate(175.000000, 203.000000, "la noi de cac ban hoc tap nua neu can thiet truy cap ~y~saw-mp.com~w~ - Chung toi");
     TextDrawBackgroundColor(TutTxtdraw[9], 255);
     TextDrawFont(TutTxtdraw[9], 2);
     TextDrawLetterSize(TutTxtdraw[9], 0.159999, 0.899999);
@@ -1067,7 +1067,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 1) (Line 8)
-    TutTxtdraw[12] = TextDrawCreate(175.000000, 255.000000, "hon nua cong dong co ho tro ~y~GTA.Network/4rum~w~, de moi nguoi thao luan voi nhau");
+    TutTxtdraw[12] = TextDrawCreate(175.000000, 255.000000, "hon nua cong dong co ho tro ~y~saw-mp.com~w~, de moi nguoi thao luan voi nhau");
     TextDrawBackgroundColor(TutTxtdraw[12], 255);
     TextDrawFont(TutTxtdraw[12], 2);
     TextDrawLetterSize(TutTxtdraw[12], 0.159999, 0.899999);
@@ -1239,7 +1239,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 10) (Line 4)
-    TutTxtdraw[29] = TextDrawCreate(175.000000, 171.000000, "Dien dan may chu la ~y~GTA.Network/4rum~w~.");
+    TutTxtdraw[29] = TextDrawCreate(175.000000, 171.000000, "Dien dan may chu la ~y~saw-mp.com~w~.");
     TextDrawBackgroundColor(TutTxtdraw[29], 255);
     TextDrawFont(TutTxtdraw[29], 2);
     TextDrawLetterSize(TutTxtdraw[29], 0.159998, 0.899999);
@@ -1330,7 +1330,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 11) (Line 4)
-    TutTxtdraw[38] = TextDrawCreate(175.000000, 171.000000, "apply on our forum at ~y~saw-community.net~w~.");
+    TutTxtdraw[38] = TextDrawCreate(175.000000, 171.000000, "apply on our forum at ~y~saw-mp.com~w~.");
     TextDrawBackgroundColor(TutTxtdraw[38], 255);
     TextDrawFont(TutTxtdraw[38], 2);
     TextDrawLetterSize(TutTxtdraw[38], 0.159997, 0.899999);
@@ -1391,7 +1391,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 12) (Line 4)
-    TutTxtdraw[44] = TextDrawCreate(175.000000, 171.000000, "this faction, apply on our forum at ~y~saw-community.net~w~.");
+    TutTxtdraw[44] = TextDrawCreate(175.000000, 171.000000, "this faction, apply on our forum at ~y~saw-mp.com~w~.");
     TextDrawBackgroundColor(TutTxtdraw[44], 255);
     TextDrawFont(TutTxtdraw[44], 2);
     TextDrawLetterSize(TutTxtdraw[44], 0.159997, 0.899999);
@@ -1452,7 +1452,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 13) (Line 4)
-    TutTxtdraw[50] = TextDrawCreate(175.000000, 171.000000, "this faction, apply on our forum at ~y~saw-community.net~w~.");
+    TutTxtdraw[50] = TextDrawCreate(175.000000, 171.000000, "this faction, apply on our forum at ~y~saw-mp.com~w~.");
     TextDrawBackgroundColor(TutTxtdraw[50], 255);
     TextDrawFont(TutTxtdraw[50], 2);
     TextDrawLetterSize(TutTxtdraw[50], 0.159997, 0.899999);
@@ -1503,7 +1503,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 14) (Line 3)
-    TutTxtdraw[55] = TextDrawCreate(175.000000, 161.000000, "If you wish to become a part of this faction, apply on our forum.gta.networks");
+    TutTxtdraw[55] = TextDrawCreate(175.000000, 161.000000, "If you wish to become a part of this faction, apply on our saw-mp.com");
     TextDrawBackgroundColor(TutTxtdraw[55], 255);
     TextDrawFont(TutTxtdraw[55], 2);
     TextDrawLetterSize(TutTxtdraw[55], 0.159997, 0.899999);
@@ -1513,7 +1513,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 14) (Line 4)
-    TutTxtdraw[56] = TextDrawCreate(175.000000, 171.000000, "at ~y~saw-community.net~w~.");
+    TutTxtdraw[56] = TextDrawCreate(175.000000, 171.000000, "at ~y~saw-mp.com~w~.");
     TextDrawBackgroundColor(TutTxtdraw[56], 255);
     TextDrawFont(TutTxtdraw[56], 2);
     TextDrawLetterSize(TutTxtdraw[56], 0.159997, 0.899999);
@@ -1839,7 +1839,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 20) (Line 1)
-    TutTxtdraw[88] = TextDrawCreate(175.000000, 141.000000, "We operate a 24/7 E-Store at ~y~gta.network~w~, you can purchase Vehicles,");
+    TutTxtdraw[88] = TextDrawCreate(175.000000, 141.000000, "We operate a 24/7 E-Store at ~y~SAW Community~w~, you can purchase Vehicles,");
     TextDrawBackgroundColor(TutTxtdraw[88], 255);
     TextDrawFont(TutTxtdraw[88], 2);
     TextDrawLetterSize(TutTxtdraw[88], 0.159998, 0.899999);
@@ -2083,7 +2083,7 @@ public LoadTextDraws()
     textdrawscount++;
 
     // Tutorial (Frame 23) (Line 4)
-    TutTxtdraw[112] = TextDrawCreate(175.000000, 174.000000, "check out ~y~saw-community.net~w~.");
+    TutTxtdraw[112] = TextDrawCreate(175.000000, 174.000000, "check out ~y~saw-mp.com~w~.");
     TextDrawBackgroundColor(TutTxtdraw[112], 255);
     TextDrawFont(TutTxtdraw[112], 2);
     TextDrawLetterSize(TutTxtdraw[112], 0.159998, 0.899999);

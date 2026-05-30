@@ -11,7 +11,7 @@
 //--------------------------------[VARIABLES.PWN]--------------------------------
 
 
- * Copyright (c) 2016, GTA.Network, LLC
+ * Copyright (c) 2016, SAW Community, LLC
  *
  * All rights reserved.
  *
@@ -342,18 +342,18 @@ new Tooltips[][] =
 	"Admin se khong bao gio hoi mat khau cua ban.",
 	"Ban dang chan? Hay lam mot tran ~r~Paintball Arena~w~!",
 	"Nen nho! He thong server co the tu dong phat hien hack.",
-	"We are not just a sa-mp community, don't forget to check our other projects at ~y~saw-community.net~w~!",
-	"Don't forget to check out our E-store at ~y~saw-community.net~w~, Helps keep this server up and running~w~!",
+	"We are not just a sa-mp community, don't forget to check our other projects at ~y~saw-mp.com~w~!",
+	"Don't forget to check out our E-store at ~y~saw-mp.com~w~, Helps keep this server up and running~w~!",
 	"We have a full Advisors staff waiting to help you! Use ~g~/requesthelp~w~ to communicate with them!",
-	"Found a bug? Don't report it to our staff, please goto our bug forum at ~y~diendan.saw-community.net~w~.",
+	"Found a bug? Don't report it to our staff, please goto our bug forum at ~y~saw-mp.com~w~.",
 	"Remember to read the ~r~rules~w~, failure to do so may lead toward punishment or even a ban.",
 	"Wait at least 5 minutes inbetween ~g~/reports~w~, We work hard to get to everyone who reports.",
-	"Want to make a suggestion? Our suggestions box is on our forum at diendan.saw-community.net, submit away!",
+	"Want to make a suggestion? Our suggestions box is on our forum at saw-mp.com, submit away!",
 	"If you get lost, be sure to take a look at the ~r~map~w~, in the Pause Menu.",
-	"Dying to join a gang or faction? Be sure to roleplay with their leaders, or apply on the forum at diendan.saw-community.net!",
+	"Dying to join a gang or faction? Be sure to roleplay with their leaders, or apply on the forum at saw-mp.com!",
 	"Abusing newbie channel will result in mutes, frequent abuse will be punished with a ban.",
 	"It's not nice to DM, it can also lead you to punishment or ban.",
-	"Caught a player breaking the rules? Make a complaint on the forum at diendan.saw-community.net, or simply ~g~/report ~w~it!"
+	"Caught a player breaking the rules? Make a complaint on the forum at saw-mp.com, or simply ~g~/report ~w~it!"
 };
 */
 new Float:HiddenTreasure[23][4] = {

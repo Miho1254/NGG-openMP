@@ -9,8 +9,8 @@
 			| $$ \  $$|  $$$$$$/        | $$  | $$| $$
 			|__/  \__/ \______/         |__/  |__/|__/
 
-                  GTA.Network Animations
-		(created by GTA.Network Development Team)
+                  SAW Community Animations
+		(created by SAW Community Development Team)
 
 		Combined Credits:
 		(***) GhoulSlayeR

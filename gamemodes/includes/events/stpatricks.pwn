@@ -31,7 +31,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 		if(!response) return DeletePVar(playerid, "StPatrickToy");
 		szMiscArray[0] = 0;
 		if(PlayerInfo[playerid][pCredits] < 150)
-			return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong co enough credits to purchase this item. Visit gta.network to purchase credits.");
+			return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong co enough credits to purchase this item. Visit SAW Community to purchase credits.");
 		GivePlayerCredits(playerid, -150, 1);
 		new name[24] = "None";
 		for(new i; i < sizeof(HoldingObjectsAll); i++)

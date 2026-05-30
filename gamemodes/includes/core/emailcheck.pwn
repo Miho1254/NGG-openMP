@@ -27,7 +27,7 @@ public OnInvalidEmailCheck(playerid, response_code, data[])
 		if(result == 1) // Valid from login check
 			if(!GetPVarInt(playerid, "EmailConfirmed"))
 			{
-				SendClientMessageEx(playerid, COLOR_LIGHTRED, "Email cua ban chua duoc xac nhan, vui long thuc hien cac buoc de xac nhan hoac truy cap gta.network de thay doi email.");
+				SendClientMessageEx(playerid, COLOR_LIGHTRED, "Email cua ban chua duoc xac nhan, vui long thuc hien cac buoc de xac nhan hoac truy cap SAW Community de thay doi email.");
 			}
 		if(result == 2) // Valid from dialog
 		{

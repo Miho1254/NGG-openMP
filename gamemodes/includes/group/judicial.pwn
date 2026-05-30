@@ -11,10 +11,10 @@
 
 						Judicial Group Type
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 					
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*
@@ -56,10 +56,10 @@ stock JudgeOnlineCheck()
 
 					Offline Warranting
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 */
 
 // Created by Bohemoth

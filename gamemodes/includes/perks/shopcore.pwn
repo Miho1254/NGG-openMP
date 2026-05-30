@@ -11,10 +11,10 @@
 
 						Shop Core
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 					
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*
@@ -578,7 +578,7 @@ CMD:givemeorder(playerid, params[])
 		if(sscanf(params, "ui", giveplayerid, orderid)) return SendClientMessageEx(playerid, COLOR_GREY, "USAGE: /adjustoid [player] [new orderid]");
 		SendClientMessageEx(playerid, COLOR_WHITE, "Processing..");
   		PlayerInfo[giveplayerid][pOrder] = orderid;
-		format(string, sizeof(string), "gta.network/idcheck.php?id=%d", orderid);
+		format(string, sizeof(string), "SAW Community/idcheck.php?id=%d", orderid);
 		HTTP(giveplayerid, HTTP_GET, string, "", "HttpCallback_ShopIDCheck");
 		format(string, sizeof(string), "%s has edited %s's Order ID to %d", GetPlayerNameEx(playerid), GetPlayerNameEx(giveplayerid), orderid);
 		Log("logs/shoporders.log", string);
@@ -706,7 +706,7 @@ CMD:shoporder(playerid, params[])
 		SendClientMessageEx(playerid,COLOR_GREY, string);
 		return 1;
 	}
-	ShowPlayerDialogEx(playerid, DIALOG_SHOPORDER, DIALOG_STYLE_INPUT, "Shop Order", "This is for shop orders from http://gta.network\n\nIf Ban khong coa shop order then please cancel this dialog box now.\n\nWarning: Abuse of this feature may result to an indefinite block from this command.\n\nPlease enter your shop order ID (if you do not know it put 1):", "Submit", "Cancel" );
+	ShowPlayerDialogEx(playerid, DIALOG_SHOPORDER, DIALOG_STYLE_INPUT, "Shop Order", "This is for shop orders from SAW Community\n\nIf Ban khong coa shop order then please cancel this dialog box now.\n\nWarning: Abuse of this feature may result to an indefinite block from this command.\n\nPlease enter your shop order ID (if you do not know it put 1):", "Submit", "Cancel" );
 	return 1;
 }
 
@@ -906,7 +906,7 @@ CMD:gnshopfkfkdkdj(playerid, params[]) {
 	if(IsPlayerInAnyVehicle(playerid)) return SendClientMessageEx(playerid, COLOR_GREY, "Ban phai o ngoai phuong tien de su dung lenh nay.");
 	if(GetPVarInt(playerid, "ShopTP") == 1) return SendClientMessageEx(playerid, COLOR_GREY, "Ban dang yeu cau dich chuyen den SHOP roi.");
 	
-	SendClientMessageEx(playerid, COLOR_LIGHTBLUE, "[!] Ban dang duoc dich chuyen den SHOP GTA.NETWORK, hay cho 15 giay sau de duoc dich chuyen...");
+	SendClientMessageEx(playerid, COLOR_LIGHTBLUE, "[!] Ban dang duoc dich chuyen den SHOP SAW Community, hay cho 15 giay sau de duoc dich chuyen...");
 	SetTimerEx("TeleportToShop", 15000, false, "i", playerid);
 	TogglePlayerControllable(playerid, 0);
 	SetPVarInt(playerid, "ShopTP", 1);

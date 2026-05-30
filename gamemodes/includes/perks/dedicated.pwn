@@ -11,10 +11,10 @@
 
 						Dedicated System
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 					
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*
@@ -394,7 +394,7 @@ CMD:dpwarn(playerid, params[])
 
 			format(string, sizeof(string), "You have been warned from the Dedicated chat by %s, reason: %s", GetPlayerNameEx(playerid), reason);
 			SendClientMessageEx(giveplayerid, COLOR_WHITE, string);
-			SendClientMessageEx(giveplayerid, COLOR_WHITE, "This action lasts for two hours. To appeal, please visit our forum.gta.networks: www.forum.gta.network.gta.network");
+			SendClientMessageEx(giveplayerid, COLOR_WHITE, "This action lasts for two hours. To appeal, please visit our saw-mp.com");
 
 			PlayerInfo[giveplayerid][pDedicatedWarn] = 120;
 		}	
@@ -503,7 +503,7 @@ CMD:dpmute(playerid, params[])
 		 				return SendClientMessageEx(playerid, COLOR_GRAD1, "You cannot use this command on this person!");
 
 					PlayerInfo[targetid][pDedicatedMuted] = 1;
-					format(string, sizeof(string), "You were muted from the Dedicated chat by %s, reason: %s. You may appeal this mute at www.forum.gta.network.gta.network", GetPlayerNameEx(playerid), reason);
+					format(string, sizeof(string), "You were muted from the Dedicated chat by %s, reason: %s. You may appeal this mute at saw-mp.com", GetPlayerNameEx(playerid), reason);
 					SendClientMessageEx(targetid, COLOR_GRAD2, string);
 					format(string, sizeof(string), "AdmCmd: %s has muted %s from the Dedicated chat, reason: %s.", GetPlayerNameEx(playerid), GetPlayerNameEx(targetid), reason);
 					ABroadCast(COLOR_LIGHTRED, string, 4);

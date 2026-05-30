@@ -11,13 +11,13 @@
 
 				Driving License System
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 	
 	Developers:
 		(*) Connor
 	
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*

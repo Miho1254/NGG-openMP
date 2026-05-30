@@ -11,7 +11,7 @@
 //--------------------------------[CALLBACKS.PWN]--------------------------------
 
 
- * Copyright (c) 2016, GTA.Network, LLC
+ * Copyright (c) 2016, SAW Community, LLC
  *
  * All rights reserved.
  *
@@ -1729,7 +1729,7 @@ public OnPlayerConnect(playerid)
 	SetPlayerVirtualWorld(playerid, 1);
 
 	SetPlayerColor(playerid,TEAM_HIT_COLOR);
-	SendClientMessage( playerid, COLOR_WHITE, "SERVER: Ban dang ket noi voi may chu GTA Netwok." );
+	SendClientMessage( playerid, COLOR_WHITE, "SERVER: Ban dang ket noi voi may chu SAW Community." );
 
 	SyncPlayerTime(playerid);
 

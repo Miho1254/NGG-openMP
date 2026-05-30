@@ -183,7 +183,7 @@ public Maintenance()
 
     ABroadCast(COLOR_YELLOW, "{AA3333}Maintenance{FFFF00}: Force Saving Accounts...", 1);
 	SendRconCommand("password asdatasdhwda");
-	SendRconCommand("hostname GTA.Network [Bao tri]");
+	SendRconCommand("hostname SAW Community [Bao tri]");
 	foreach(new i: Player)
 	{
 		if(gPlayerLogged{i}) {

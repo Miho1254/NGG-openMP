@@ -49,7 +49,7 @@ public CountryCheckResponse(playerid, response_code, data[]) {
 				ABroadCast(COLOR_YELLOW, szMiscArray, 2);
 				format(szMiscArray, sizeof(szMiscArray), "WARNING: %s(%d) (IP:%s) has failed their countrycode check and was auto-kicked.", GetPlayerNameEx(playerid), GetPVarInt(playerid, "pSQLID"), PlayerInfo[playerid][pIP]);
 				Log("logs/geocheck.log", szMiscArray);
-				SendClientMessage(playerid, COLOR_RED, "Your account is not set to log in from your current country. Make an Admin Request @ http://gta.network/4rum");
+				SendClientMessage(playerid, COLOR_RED, "Your account is not set to log in from your current country. Make an Admin Request on SAW Community forum");
 				SetTimerEx("KickEx", 5000, 0, "i", playerid);
 			}
 			case 4: {
@@ -57,7 +57,7 @@ public CountryCheckResponse(playerid, response_code, data[]) {
 				ABroadCast(COLOR_YELLOW, szMiscArray, 2);
 				format(szMiscArray, sizeof(szMiscArray), "WARNING: %s(%d) (IP:%s) has attempted to log in while locked by the Geosecurity system.", GetPlayerNameEx(playerid), GetPVarInt(playerid, "pSQLID"), PlayerInfo[playerid][pIP]);
 				Log("logs/geocheck.log", szMiscArray);
-				SendClientMessage(playerid, COLOR_RED, "Your account is locked due to numerous logins from incorrect countries. Make an Admin Request @ http://gta.network/4rum");
+				SendClientMessage(playerid, COLOR_RED, "Your account is locked due to numerous logins from incorrect countries. Make an Admin Request on SAW Community forum");
 				SetTimerEx("KickEx", 5000, 0, "i", playerid);
 			}
 			default: {

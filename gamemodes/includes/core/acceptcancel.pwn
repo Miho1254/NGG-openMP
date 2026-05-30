@@ -11,10 +11,10 @@
 
 				  Accept / Cancel Commands
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 
-	* Copyright (c) 2016, GTA.Network, LLCLLLL
+	* Copyright (c) 2016, SAW Community, LLCLLLL
 	*
 	* All rights reserved.
 	*
@@ -2392,7 +2392,7 @@ CMD:cancel(playerid, params[])
 	if(strcmp(choice, "nvhuongdan", true) == 0 && PlayerInfo[playerid][pTut] >= 15)
 	{
 		SendClientMessageEx(playerid, COLOR_GREY, "-----------------------------");
-		SendClientMessageEx(playerid, COLOR_WHITE, "Ban da huy huong dan nguoi choi moi. Chao mung den voi GTA.Network!");
+		SendClientMessageEx(playerid, COLOR_WHITE, "Ban da huy huong dan nguoi choi moi. Chao mung den voi SAW Community!");
 		SendClientMessageEx(playerid, COLOR_GREY, "-----------------------------");
 		PlayerInfo[playerid][pTut] = -1;
 		DisablePlayerCheckpoint(playerid);

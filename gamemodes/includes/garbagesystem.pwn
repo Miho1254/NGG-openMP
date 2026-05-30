@@ -11,10 +11,10 @@
 
 						Garbage Job System
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 
-	* Copyright (c) 2014, GTA.Network, LLC
+	* Copyright (c) 2014, SAW Community, LLC
 	*
 	* All rights reserved.
 	*

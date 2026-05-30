@@ -11,7 +11,7 @@
 //--------------------------------[DEFINES.PWN]--------------------------------
 
 
- * Copyright (c) 2016, GTA.Network, LLC
+ * Copyright (c) 2016, SAW Community, LLC
  *
  * All rights reserved.
  *
@@ -63,8 +63,8 @@ native WP_Hash(buffer[], len, const str[]);
 			/*  ---------------- SERVER DEFINES ----------------- */
 #define 		MAX_PING 					1200
 #define			INVALID_SAMP_ID				65535
-#define			SAMP_WEB					"saw-community.net"
-#define			CP_WEB						"cp.saw-community.net"
+#define			SAMP_WEB					"saw-mp.com"
+#define			CP_WEB						"saw-mp.com"
 #define			MAX_SAFE_ZONE				100
 			/*  ---------------- TIMERS ----------------- */
 #define			TYPE_TPMATRUNTIMER 			1

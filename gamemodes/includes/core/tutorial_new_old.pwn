@@ -31,10 +31,10 @@ new Text:TutTextDraw[24];
 
 						Dynamic Group Core
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*
@@ -211,13 +211,13 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 		}
 		case DIALOG_REGISTER_MENU:
 		{
-			if(!response) return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_EXIT, DIALOG_STYLE_MSGBOX, "GTA.NETWORK | Exit", "Are you sure you would like to exit the character creation menu?\nNote: This will {FF0000}delete {FFFFFF}your data!", "Continue", "Quit");
+			if(!response) return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_EXIT, DIALOG_STYLE_MSGBOX, "SAW Community | Exit", "Are you sure you would like to exit the character creation menu?\nNote: This will {FF0000}delete {FFFFFF}your data!", "Continue", "Quit");
 			switch(listitem)
 			{
 				case 0: return Register_MainMenu(playerid);
-				case 1: return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "GTA.NETWORK | Skin Model", "Male\nFemale", "Select", "<<");
+				case 1: return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "SAW Community | Skin Model", "Male\nFemale", "Select", "<<");
 				case 2: return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_MONTH, DIALOG_STYLE_LIST, "{FF0000}Which month was your character born?", "January\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember", "Select", "<<");
-				case 3: return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_NATION, DIALOG_STYLE_LIST, "GTA.NETWORK | Nation", "San Andreas\nNew Robada", "Select", "<<");
+				case 3: return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_NATION, DIALOG_STYLE_LIST, "SAW Community | Nation", "San Andreas\nNew Robada", "Select", "<<");
 				case 4:
 				{
 					szMiscArray[0] = 0;
@@ -249,14 +249,14 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					French accent\n\
 					Korean accent\n\
 					Thai accent";
-					return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_ACCENT, DIALOG_STYLE_LIST, "GTA.NETWORK | Giong noi", szMiscArray, "Select", "<<");
+					return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_ACCENT, DIALOG_STYLE_LIST, "SAW Community | Giong noi", szMiscArray, "Select", "<<");
 				}
 				case 5: return Register_MainMenu(playerid);
 				case 6:
 				{
 					if(PlayerInfo[playerid][pSex] == 0) { 
 						SendClientMessage(playerid, COLOR_YELLOW, "Vui long chon gioi tinh truoc.");
-						return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "GTA.NETWORK | Skin Model", "Nam\nNu", "Select", "<<");
+						return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "SAW Community | Skin Model", "Nam\nNu", "Select", "<<");
 					}
 					
 					/*
@@ -268,7 +268,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
                		}
                		*/
 
-               		ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SKIN, DIALOG_STYLE_INPUT, "GTA.NETWORK | Skin Model", "Vui long nhap skin ID cho nhan vat cua ban.", "Select", "<<");
+               		ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SKIN, DIALOG_STYLE_INPUT, "SAW Community | Skin Model", "Vui long nhap skin ID cho nhan vat cua ban.", "Select", "<<");
                	}
 				case 7: return Register_MainMenu(playerid);
 				case 8:
@@ -276,7 +276,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					if(PlayerInfo[playerid][pSex] == 0)
 					{
 						SendClientMessage(playerid, COLOR_YELLOW, "Vui long chon gioi tinh.");
-						return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "GTA.NETWORK | Skin Model", "Nam\nNu", "Select", "<<");
+						return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "SAW Community | Skin Model", "Nam\nNu", "Select", "<<");
 
 					}
 					if(strcmp(PlayerInfo[playerid][pBirthDate], "0000-00-00") == 0)
@@ -549,7 +549,7 @@ Tutorial_Stage(playerid) {
 			strcat(szMiscArray, "/b allows you to speak out of character, as if you were talking in real life\n");
 			strcat(szMiscArray, "and no longer acting as your in-game character.");
 			strcat(szMiscArray, "\n\n\n_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORKTutorial", szMiscArray, szCount, "");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW CommunityTutorial", szMiscArray, szCount, "");
 		}
 		case 1: {
 			szMiscArray = "_______________________________________________________________________________________________________________________________________________________\n\n\n";
@@ -558,9 +558,9 @@ Tutorial_Stage(playerid) {
 			strcat(szMiscArray, "{FF0000}Killing on Sight (KOS){FFFFFF}: Killing a player without roleplay interaction beforehand.\n\n");
 			strcat(szMiscArray, "{FF0000}Metagaming{FFFFFF}: Using out of character information in-character.\n(Ex. character names that haven't been told to you yet.)\n\n");
 			strcat(szMiscArray, "{FF0000}Powergaming{FFFFFF}: Performing an action which your character is incapable of performing.\n(Ex. Having god-like abilities or forcing roleplay upon others.)");
-			strcat(szMiscArray, "A full list of server offences with their detailed explanation is available at ng-gaming.net\nHere you will also find a full list of In-Character laws.");
+			strcat(szMiscArray, "A full list of server offences with their detailed explanation is available at saw-mp.com\nHere you will also find a full list of In-Character laws.");
 			strcat(szMiscArray, "\n\n\n_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK- Server Offenses", szMiscArray, szCount, "");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community- Server Offenses", szMiscArray, szCount, "");
 		}
 		case 2: {
 			szMiscArray = "_______________________________________________________________________________________________________________________________________________________\n\n\n";
@@ -570,7 +570,7 @@ Tutorial_Stage(playerid) {
 			strcat(szMiscArray, "{FF0000}Seeking Help{FFFFFF}: You can ask for help over /newb or /requesthelp\nYou can also report for an admin using /report.\n\n");
 			strcat(szMiscArray, "A full list of commands is available using /help.");
 			strcat(szMiscArray, "\n\n\n_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK- Basic Commands", szMiscArray, szCount, "");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community- Basic Commands", szMiscArray, szCount, "");
 		}
 		case 3:	{
 			szMiscArray = "_______________________________________________________________________________________________________________________________________________________\n\n\n";
@@ -590,7 +590,7 @@ Tutorial_Stage(playerid) {
 				\t\t\tRazbit\t\tAlexR\t\tAustin\n\
 				\t\t\tDom\t\tRothschild\n");
 			strcat(szMiscArray, "\n\n_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK- Server Offenses", szMiscArray, szCount, "");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community- Server Offenses", szMiscArray, szCount, "");
 		}
 		case 4:	{
 			Tutorial_End(playerid);
@@ -780,7 +780,7 @@ Tutorial_InitTextDraws()
 	TextDrawSetShadow(TutTextDraw[18], 1);
 	TextDrawSetSelectable(TutTextDraw[18], 0);
 
-	TutTextDraw[20] = TextDrawCreate(280.000000, 440.000000, "www.ng-gaming.net");
+	TutTextDraw[20] = TextDrawCreate(280.000000, 440.000000, "saw-mp.com");
 	TextDrawBackgroundColor(TutTextDraw[20], 255);
 	TextDrawFont(TutTextDraw[20], 2);
 	TextDrawLetterSize(TutTextDraw[20], 0.159999, 0.699998);
@@ -807,7 +807,7 @@ Tutorial_InitTextDraws()
 	TextDrawSetProportional(TutTextDraw[22], 0);
 	TextDrawSetSelectable(TutTextDraw[22], 0);
 
-	TutTextDraw[23] = TextDrawCreate(280.000000, 439.000000, "www.ng-gaming.net");
+	TutTextDraw[23] = TextDrawCreate(280.000000, 439.000000, "saw-mp.com");
 	TextDrawBackgroundColor(TutTextDraw[23], 255);
 	TextDrawFont(TutTextDraw[23], 2);
 	TextDrawLetterSize(TutTextDraw[23], 0.159999, 0.699998);
@@ -832,8 +832,8 @@ Register_Questions(playerid)
 	TogglePlayerControllable(playerid, false);
 	SetPlayerCameraPos(playerid, 13.7324, 8.2450, 1631.9706);
 	SetPlayerCameraLookAt(playerid, 12.9696, 8.8893, 1631.6460);
-	ShowPlayerDialogEx(playerid, DIALOG_REGISTER_QUESTIONMAIN, DIALOG_STYLE_MSGBOX, "GTA.NETWORK| RolePlay Questions", "\
-		\n---------- GTA.Network | Questions ----------\n\
+	ShowPlayerDialogEx(playerid, DIALOG_REGISTER_QUESTIONMAIN, DIALOG_STYLE_MSGBOX, "SAW Community| RolePlay Questions", "\
+		\n---------- SAW Community | Questions ----------\n\
 		\n\
 		\n\
 		You wil be asked a series of multiple-choice questions. You will be given {FFFF00}three options{FFFFFF}.\n\
@@ -895,7 +895,7 @@ Register_GetQuestion(playerid, number)
 			SetPVarInt(playerid, "_AnswerKey", 3);
 		}
 	}
-	ShowPlayerDialogEx(playerid, DIALOG_REGISTER_QUESTIONMAIN+number, DIALOG_STYLE_LIST, "GTA.NETWORK| RolePlay Questions", szMiscArray, "Select", "");
+	ShowPlayerDialogEx(playerid, DIALOG_REGISTER_QUESTIONMAIN+number, DIALOG_STYLE_LIST, "SAW Community| RolePlay Questions", szMiscArray, "Select", "");
 	return 1;
 }
 
@@ -949,7 +949,7 @@ Register_MainMenu(iPlayerID)
 		GetPlayerNation(iPlayerID),
 		GetPlayerAccent(iPlayerID),
 		PlayerInfo[iPlayerID][pModel]);
-	return ShowPlayerDialogEx(iPlayerID, DIALOG_REGISTER_MENU, DIALOG_STYLE_TABLIST, "GTA.NETWORK| Character Creation Menu", szMiscArray, "Select", "");
+	return ShowPlayerDialogEx(iPlayerID, DIALOG_REGISTER_MENU, DIALOG_STYLE_TABLIST, "SAW Community| Character Creation Menu", szMiscArray, "Select", "");
 }
 
 Register_FinishSetup(iPlayerID)
@@ -1338,7 +1338,7 @@ public Tutorial_Objectives(playerid) {
 		}
 		case 8:
 		{
-			SendClientMessage(playerid, COLOR_GRAD1, "Ban da hoan thanh phan huong dan , neu ban khong ro ve van de gi truy cap forum.gta.network nhe!");
+			SendClientMessage(playerid, COLOR_GRAD1, "Ban da hoan thanh phan huong dan , neu ban khong ro ve van de gi truy cap saw-mp.com nhe!");
 			SendClientMessage(playerid, 0, "");
 			SendClientMessage(playerid, COLOR_GRAD2, "");
 			DeletePVar(playerid, "pTut");

@@ -11,10 +11,10 @@
 
 						Report System
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 					
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*
@@ -322,7 +322,7 @@ CMD:rmute(playerid, params[])
 				ABroadCast(COLOR_LIGHTRED,string,2);
 				format(string, sizeof(string), "You have been blocked from submitting /reports by %s.", GetPlayerNameEx(playerid));
 				SendClientMessageEx(giveplayerid, COLOR_GRAD2, string);
-				SendClientMessageEx(giveplayerid, COLOR_GRAD2, "You will not be able to submit reports until you are unblocked. To appeal this action contact hr@ng-gaming.net.");
+				SendClientMessageEx(giveplayerid, COLOR_GRAD2, "You will not be able to submit reports until you are unblocked. To appeal this action contact hr@saw-mp.com.");
 				format(string, sizeof(string), "AdmCmd: %s(%d) was blocked from /report by %s", GetPlayerNameEx(giveplayerid), GetPlayerSQLId(giveplayerid), GetPlayerNameEx(playerid));
 				Log("logs/mute.log", string);
 			}
@@ -1083,12 +1083,12 @@ CMD:post(playerid, params[])
 			DeletePVar(Reports[reportid][ReportFrom], "AlertType");
 			if(AlertTime[Reports[reportid][ReportFrom]] != 0) AlertTime[Reports[reportid][ReportFrom]] = 0;
 		}
-		format(string, sizeof(string), "[!] %s has cleared report from %s (RID: %d) due to it needing to be handled on the gta.network/4rum", GetPlayerNameEx(playerid), GetPlayerNameEx(Reports[reportid][ReportFrom]), reportid);
+		format(string, sizeof(string), "[!] %s has cleared report from %s (RID: %d) due to it needing to be handled on the saw-mp.com", GetPlayerNameEx(playerid), GetPlayerNameEx(Reports[reportid][ReportFrom]), reportid);
 		ABroadCast(COLOR_ORANGE, string, 2);
 		Log("logs/report.log", string);
-		format(string, sizeof(string), "%s has reviewed your report and determined this report should be handled on the gta.network/4rum (i.e. complaint or request.)", GetPlayerNameEx(playerid));
+		format(string, sizeof(string), "%s has reviewed your report and determined this report should be handled on the saw-mp.com (i.e. complaint or request.)", GetPlayerNameEx(playerid));
 		SendClientMessageEx(Reports[reportid][ReportFrom], COLOR_WHITE, string);
-		SendClientMessageEx(Reports[reportid][ReportFrom], COLOR_WHITE, "Please only report for items that are actively occuring in game. (www.gta.network/4rum)");
+		SendClientMessageEx(Reports[reportid][ReportFrom], COLOR_WHITE, "Please only report for items that are actively occuring in game. (saw-mp.com)");
         DeletePVar(Reports[reportid][ReportFrom], "HasReport");
 		DeletePVar(Reports[reportid][ReportFrom], "_rAutoM");
 		DeletePVar(Reports[reportid][ReportFrom], "_rRepID");		Reports[reportid][ReportFrom] = INVALID_PLAYER_ID;

@@ -11,7 +11,7 @@
 //--------------------------------[ONPLAYERLOAD.PWN]--------------------------------
 
 
- * Copyright (c) 2016, GTA.Network, LLC
+ * Copyright (c) 2016, SAW Community, LLC
  *
  * All rights reserved.
  *
@@ -51,7 +51,7 @@ public OnPlayerLoad(playerid)
 	{
 		// format(string, sizeof(string), "WARNING: %s (IP:%s) tried to login whilst banned by the old system.", GetPlayerNameEx( playerid ), PlayerInfo[playerid][pIP] );
 		// ABroadCast(COLOR_YELLOW, string, 2);
-		SendClientMessage(playerid, COLOR_RED, "Tai khoan cua ban da bi khoa, co the xin mo khoa tai diendan.saw-community.net");
+		SendClientMessage(playerid, COLOR_RED, "Tai khoan cua ban da bi khoa, co the xin mo khoa tai saw-mp.com");
 		SendClientMessage(playerid, COLOR_RED, "Thoi han mo tai khoan cua ban da duoc dat, khi den thoi han tai khoan se tu dong mo. ");
 		SetTimerEx("KickEx", 1000, 0, "i", playerid);
 		return 1;
@@ -62,7 +62,7 @@ public OnPlayerLoad(playerid)
 
 	if(PlayerInfo[playerid][pDisabled] == 2)
 	{
-		ShowPlayerDialogEx(playerid, DIALOG_DISABLED, DIALOG_STYLE_MSGBOX, "Tai khoan bi vo hieu hoa - Truy cap diendan.saw-community.net", "Tai khoan cua ban da bi vo hieu hoa vi khong hoat dong trong 6 thang.\nVui long truy cap diendan.saw-community.net de lien he Admin tat che do vo hieu hoa cho tai khoan cua ban.", "Ok", "");
+		ShowPlayerDialogEx(playerid, DIALOG_DISABLED, DIALOG_STYLE_MSGBOX, "Tai khoan bi vo hieu hoa - Truy cap saw-mp.com", "Tai khoan cua ban da bi vo hieu hoa vi khong hoat dong trong 6 thang.\nVui long truy cap saw-mp.com de lien he Admin tat che do vo hieu hoa cho tai khoan cua ban.", "Ok", "");
 		SetTimerEx("KickEx", 5000, 0, "i", playerid);
 		return 1;
 	}
@@ -607,7 +607,7 @@ public OnPlayerLoad(playerid)
 	    }
 	    else if(Businesses[PlayerInfo[playerid][pBusiness]][bMonths] - 259200 < gettime())
 	    {
-	        SendClientMessageEx(playerid, COLOR_RED, "Your business expires in less than three days - renew today at saw-community.net! Type /businessdate for more information.");
+	        SendClientMessageEx(playerid, COLOR_RED, "Your business expires in less than three days - renew today at saw-mp.com! Type /businessdate for more information.");
 	    }
 	}
 	if(PlayerInfo[playerid][pJob2] >= 1 && (PlayerInfo[playerid][pDonateRank] < 1 && PlayerInfo[playerid][pFamed] < 1))

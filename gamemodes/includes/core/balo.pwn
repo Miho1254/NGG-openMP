@@ -666,7 +666,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) // AD
 				}
 				if(listitem == 2)
 			    {
-                    ShowPlayerDialog(playerid, 1213051515, DIALOG_STYLE_MSGBOX, "Thong tin trang phuc", "Trang phuc nay kha hiem tai may chu GTA Network", "Xac nhan", "");
+                    ShowPlayerDialog(playerid, 1213051515, DIALOG_STYLE_MSGBOX, "Thong tin trang phuc", "Trang phuc nay kha hiem tai may chu SAW Community", "Xac nhan", "");
 	        		return 1;
 				}
 			}

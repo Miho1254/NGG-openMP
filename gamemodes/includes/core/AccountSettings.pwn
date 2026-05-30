@@ -29,7 +29,7 @@ ShowAccountSettings(playerid, menu = 0) {
 
 			format(szMiscArray, sizeof(szMiscArray), "Item\tStatus\n\
 				{FFFFFF}---CHUNG---\t\n\
-				{FFFFFF}GTA.NETWORK Phone Mod\t%s\n\
+				{FFFFFF}SAW Community Phone Mod\t%s\n\
 				{FFFFFF}Kenh Newb\t%s\n\
 				{FFFFFF}Kenh News\t%s\n\
 				{FFFFFF}Kenh OOC (/b)\t%s\n\
@@ -179,7 +179,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 
 			if(!response) return ShowAccountSettings(playerid, 0);
 			new id = -1;
-			if(strcmp(inputtext, "GTA.NETWORK Phone Mod", true) == 0) id = 20;
+			if(strcmp(inputtext, "SAW Community Phone Mod", true) == 0) id = 20;
 			else if(strcmp(inputtext, "Newb Chat", true) == 0) id = 0;
 			else if(strcmp(inputtext, "News", true) == 0) id = 1;
 			else if(strcmp(inputtext, "OOC Chat", true) == 0) id = 2;

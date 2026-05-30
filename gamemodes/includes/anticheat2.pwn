@@ -10,7 +10,7 @@
 
 new PLoss; // Temp. var to toggle packet loss function.
 
-// From 3DTryg Funcs By AbyssMorgan (http://forum.gta.network.sa-mp.com/showthread.php?t=591010)
+// From 3DTryg Funcs By AbyssMorgan (http://forum.sa-mp.com/showthread.php?t=591010)
 #define GetRotationFor2Point2D(%0,%1,%2,%3,%4)			(CompRotationFloat((atan2((%3)-(%1),(%2)-(%0))-90.0),(%4)))
 #define GetDistanceBetweenPoints3D(%1,%2,%3,%4,%5,%6)	VectorSize((%1)-(%4),(%2)-(%5),(%3)-(%6))
 
@@ -913,7 +913,7 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 	/*
 		AimBot check 2 and:
 		Pro Aim Check by Pottus
-		Reference: http://forum.gta.network.sa-mp.com/showpost.php?p=3038425
+		Reference: http://forum.sa-mp.com/showpost.php?p=3038425
 	*/
 	if(hittype == BULLET_HIT_TYPE_PLAYER) {
 

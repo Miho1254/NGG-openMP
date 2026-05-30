@@ -11,13 +11,13 @@
 
 					Bug Report System
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 	
 	Developers:
 		(*) Miguel
 	
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*
@@ -147,7 +147,7 @@ CMD:bugreport(playerid, params[]) {
 		return SendClientMessageEx(playerid, COLOR_GRAD2, "You are fixing chiec xe!");
 	}
 	if(gettime() - PlayerInfo[playerid][pBugReportTimeout] < 3600) 
-		return ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX , "Bug Report - {FF0000}Error", "You can only submit a bug report once every hour!\nAlternatively, you can visit http://cp.ng-gaming.net and post a bug report there.", "Close", "");
+		return ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX , "Bug Report - {FF0000}Error", "You can only submit a bug report once every hour!\nAlternatively, you can visit http://saw-mp.com and post a bug report there.", "Close", "");
 
 	mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "SELECT * FROM `devcpbans` WHERE `Userid` = %d LIMIT 1", GetPlayerSQLId(playerid));
 	return mysql_tquery(MainPipeline, szMiscArray, "CheckBugReportBans", "ii", playerid, 1);
@@ -156,8 +156,8 @@ CMD:bugreport(playerid, params[]) {
 CMD:changes(playerid, params[])
 {
 	new rev[16], string[64];
-	format(rev, sizeof(rev), "%s", str_replace("GTA.NETWORK", "", SERVER_GM_TEXT));
-	format(string, sizeof(string), "dev.ng-gaming.net/server.php?revision=%s", rev);
+	format(rev, sizeof(rev), "%s", str_replace("SAW Community", "", SERVER_GM_TEXT));
+	format(string, sizeof(string), "saw-mp.com/server.php?revision=%s", rev);
 	HTTP(playerid, HTTP_GET, string, "", "RevisionListHTTP");
 	return 1;
 }
@@ -177,7 +177,7 @@ public OnBugReport(playerid)
 	Log("logs/bugreport.log", string);
 	ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX , "Bug Report Submitted", 
 	"{FFFFFF}Your bug report has been successfully submitted.\n\
-	 We highly suggest adding more information regarding the bug by visiting: http://cp.ng-gaming.net\n\
+	 We highly suggest adding more information regarding the bug by visiting: http://saw-mp.com\n\
 	 {FF8000}Note:{FFFFFF} If you are found abusing this system you will be restricted from submitting future bug reports.", "Close", "");
 	PlayerInfo[playerid][pBugReportTimeout] = gettime();
 	DeletePVar(playerid, "BugStep");
@@ -199,7 +199,7 @@ public CheckBugReportBans(playerid, check)
 	}
 	else
 	{
-		ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "Bug Report - {FF0000}Error", "You are restricted from submitting bug reports.\n\nPlease visit http://cp.ng-gaming.net and select anything from the Bug Report menu\nand your unban date/reason will be displayed.", "Close", "");
+		ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "Bug Report - {FF0000}Error", "You are restricted from submitting bug reports.\n\nPlease visit http://saw-mp.com and select anything from the Bug Report menu\nand your unban date/reason will be displayed.", "Close", "");
 	}
 	return 1;
 }
@@ -220,5 +220,5 @@ public CheckPendingBugReports(playerid)
 		cache_get_value_name(i, "Subject", szResult);
 		format(string, sizeof(string), "%s%s", string, szResult);
 	}
-	return ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "Bug Reports Pending Response - {4A8BC2}http://cp.ng-gaming.net", string, "Close", "");
+	return ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "Bug Reports Pending Response - {4A8BC2}http://saw-mp.com", string, "Close", "");
 }

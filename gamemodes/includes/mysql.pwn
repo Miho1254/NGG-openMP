@@ -11,7 +11,7 @@
 //--------------------------------[MYSQL.PWN]--------------------------------
 
 
- * Copyright (c) 2016, GTA.Network, LLC
+ * Copyright (c) 2016, SAW Community, LLC
  *
  * All rights reserved.
  *
@@ -1089,7 +1089,7 @@ public OnQueryFinish(resultid, extraid, handleid)
 		{
 		    if(rows > 0)
 			{
-				SendClientMessage(extraid, COLOR_RED, "Dia chi IP da bi khoa! Vui long lam don tai dien dan (gta.network/4rum).");
+				SendClientMessage(extraid, COLOR_RED, "Dia chi IP da bi khoa! Vui long lam don tai dien dan (saw-mp.com).");
 				SetTimerEx("KickEx", 1000, 0, "i", extraid);
 			}
 			else

@@ -12,10 +12,10 @@
 						Tutorial System
 								Winterfield
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 					
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*
@@ -217,7 +217,7 @@ CharacterCreation(playerid)
 				GetPlayerNation(playerid),
 				GetPlayerAccent(playerid),
 				PlayerInfo[playerid][pModel]);
-			return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_CREATION, DIALOG_STYLE_TABLIST, "GTA.NETWORK| Tao nhan vat", szMiscArray, "Xac nhan", "");
+			return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_CREATION, DIALOG_STYLE_TABLIST, "SAW Community| Tao nhan vat", szMiscArray, "Xac nhan", "");
 		}
 		case 14: {
 
@@ -239,8 +239,8 @@ CharacterCreation(playerid)
 			PlayerInfo[playerid][pPos_r] = 0;
 			if(gPlayerLogged{playerid}) OnPlayerStatsUpdate(playerid);
 
-			//ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK Huong dan", "Ban co muon lam nhiem vu nguoi choi moi khong?", "Co", "Khong");
-			//ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "GTA.NETWORK Huong dan", "Ban hay di lam pizza de kiem tien mua xe", "Ok", "");
+			//ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community Huong dan", "Ban co muon lam nhiem vu nguoi choi moi khong?", "Co", "Khong");
+			//ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "SAW Community Huong dan", "Ban hay di lam pizza de kiem tien mua xe", "Ok", "");
 		}
 	}
 	return 1;
@@ -259,22 +259,22 @@ ShowTutorialDialog(playerid, stage)
 		{
 			if(betaserver == 0) {
 				szMiscArray = "{FFFFFF}_______________________________________________________________________________________________________________________________________________________\n\n\n";
-				strcat(szMiscArray, "{7091B8}Welcome to GTA.Network!{FFFFFF}\n\n");
+				strcat(szMiscArray, "{7091B8}Welcome to SAW Community!{FFFFFF}\n\n");
 				strcat(szMiscArray, "Chao ban, de di chuyen nhan vat trong tro choi \n");
 				strcat(szMiscArray, "Su dung to hop phim W S A D de di chuyen hoac cac phim mui ten len xuong nhe.\n\n");
 				strcat(szMiscArray, "Chuot trai de tan cong , chuot phai de nham hoac tuong tac voi NPC .\n\n");
 				strcat(szMiscArray, "{FF0000}Bam T hoac phim ` sat ben so 1 de chat va go lenh{FFFFFF}.\n");
 				
 				strcat(szMiscArray, "\n\n\n{FFFFFF}_______________________________________________________________________________________________________________________________________________________");
-				ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.Network - Welcome", szMiscArray, countstring, "");
+				ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community - Welcome", szMiscArray, countstring, "");
 			}
 			else {
 				szMiscArray = "{FFFFFF}___________________________________________________________________________________________\n\n\n";
-				strcat(szMiscArray, "{7091B8}Welcome to GTA.Network Beta Server!{FFFFFF}\n\n");
+				strcat(szMiscArray, "{7091B8}Welcome to SAW Community Beta Server!{FFFFFF}\n\n");
 				strcat(szMiscArray, "Ban khong can phai xem qua huong dan vui long chon \"Da hieu\" ngay cai nut.\n");
 				strcat(szMiscArray, "Ban da duoc dua toi man hinh tao nhan vat .\n\n");
 				strcat(szMiscArray, "\n\n\n{FFFFFF}_______________________________________________________________________________");
-				ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK - Welcome", szMiscArray, "Da hieu", "");
+				ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community - Welcome", szMiscArray, "Da hieu", "");
 			}
 		}
 		case 1:
@@ -286,7 +286,7 @@ ShowTutorialDialog(playerid, stage)
 			strcat(szMiscArray, "Bam phim F hoac Enter.\n\n");
 			strcat(szMiscArray, "De ra vao trong mot chiec xe hoac cuop xe cua ai do.");
 			strcat(szMiscArray, "\n\n\n{FFFFFF}_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK", szMiscArray, countstring, "");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community", szMiscArray, countstring, "");
 		}
 		case 2:
 		{
@@ -295,7 +295,7 @@ ShowTutorialDialog(playerid, stage)
 			strcat(szMiscArray, "Trong khi choi, ban se gap nhung van de khong biet vi vay ban hay dung lenh (/newb) de dat cau hoi, se co nguoi giai dap thac mac giup ban.\n\n");
 			strcat(szMiscArray, "Ban cung co the su dung lenh (/yeucautrogiup) de duoc gap Advisor va giai dap nhung thac mac chi tiet hon!");
 			strcat(szMiscArray, "\n\n\n{FFFFFF}_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK", szMiscArray, countstring, "");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community", szMiscArray, countstring, "");
 		}
 		case 3:
 		{
@@ -304,7 +304,7 @@ ShowTutorialDialog(playerid, stage)
 			strcat(szMiscArray, "Lenh can biet : /timdiadiem.\n\n");
 			strcat(szMiscArray, "/Timdiadiem la lenh de ban co the di khap ban do va tim cong viec, dia diem, noi tap trung can thiet de khong bi lac duong.");
 			strcat(szMiscArray, "\n\n\n{FFFFFF}_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK", szMiscArray, countstring, "");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community", szMiscArray, countstring, "");
 		}
 		case 4:
 		{
@@ -313,18 +313,18 @@ ShowTutorialDialog(playerid, stage)
 			strcat(szMiscArray, "Khi bat dau cac ban nen den cua hang 24/7 (/timdiadiem) de mua cho minh 1 chiec dien thoai va danh ba de lien lac.\n\n");
 			strcat(szMiscArray, "De ra vao nha, cua hang,... ban su dung phim \"N\" hoac lenh \"/vao\" \"/ra\".");
 			strcat(szMiscArray, "\n\n\n{FFFFFF}_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK", szMiscArray, countstring, "");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community", szMiscArray, countstring, "");
 		}
 		case 5:
 		{
 			szMiscArray = "{FFFFFF}_______________________________________________________________________________________________________________________________________________________\n\n\n";
 			strcat(szMiscArray, "{F69500}LOI KET{FFFFFF}\n\n");
 			strcat(szMiscArray, "Tui minh da huong dan xong can ban de ban lam quen thao tac trong game.\n\n");
-			strcat(szMiscArray, "Hau het trong tro choi ban phai tu tim hieu nhieu tu nguoi choi truoc hoac GTA.Network\n\n");
+			strcat(szMiscArray, "Hau het trong tro choi ban phai tu tim hieu nhieu tu nguoi choi truoc hoac SAW Community\n\n");
 			strcat(szMiscArray, "Neu ban muon xem lai phan huong dan thi chon \"Xem lai\" neu khong hay chon \"Tiep tuc\" nhe.\n\n");
 			strcat(szMiscArray, "{FF0000}Ban muon xem lai khong?{FFFFFF}");
 			strcat(szMiscArray, "\n\n\n{FFFFFF}_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK", szMiscArray, "Tiep tuc", "Xem lai");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community", szMiscArray, "Tiep tuc", "Xem lai");
 		}
 		case 6:
 		{
@@ -352,7 +352,7 @@ ShowTutorialDialog(playerid, stage)
 			strcat(szMiscArray, "\t{FF0000}/timdiadiem{FFFFFF} - De xem thong tin vi tri de ban khong bi lac duong (Lenh nay huu ich lam nha)\n");
 			strcat(szMiscArray, "\t{FF0000}/trogiup{FFFFFF} - Xem cac lenh can thiet.\n");
 			strcat(szMiscArray, "\n\n\n{FFFFFF}_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK", szMiscArray, "Tiep tuc", "");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community", szMiscArray, "Tiep tuc", "");
 		}
 		case 12:
 		{
@@ -370,7 +370,7 @@ ShowTutorialDialog(playerid, stage)
 				\t\t\tZeru\n\
 				\t\t{F69500}Cam on cac ban da xem qua{FFFFFF}.\n");
 			strcat(szMiscArray, "\n\n{FFFFFF}_______________________________________________________________________________________________________________________________________________________");
-			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "GTA.NETWORK- Developers", szMiscArray, "Tiep tuc", "");
+			ShowPlayerDialogEx(playerid, DIALOG_TUTORIAL, DIALOG_STYLE_MSGBOX, "SAW Community- Developers", szMiscArray, "Tiep tuc", "");
 		}
 	}
 	return 1;
@@ -521,7 +521,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					{
 						PlayerInfo[playerid][pTut] = -1;
 						DisablePlayerCheckpoint(playerid);
-						return SendClientMessageEx(playerid, -1, "Chao mung den voi GTA.Network! Su dung lenh (/trogiup) de xem cac lenh chinh va su dung lenh (/newb) de dat nhung cau hoi thac mac!");
+						return SendClientMessageEx(playerid, -1, "Chao mung den voi SAW Community! Su dung lenh (/trogiup) de xem cac lenh chinh va su dung lenh (/newb) de dat nhung cau hoi thac mac!");
 					}
 					else
 					{
@@ -538,9 +538,9 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			switch(listitem)
 			{
 				case 0: return CharacterCreation(playerid);
-				case 1: return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "GTA.NETWORK | Chon gioi tinh", "Nam\nNu", "Chon", "Tro ve");
+				case 1: return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "SAW Community | Chon gioi tinh", "Nam\nNu", "Chon", "Tro ve");
 				case 2: return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_MONTH, DIALOG_STYLE_LIST, "{FF0000}Chon ngay sinh", "Thang 1\nThang 2\nThang 3\nThang 4\nThang 5\nThang 6\nThang 7\nThang 8\nThang 9\nThang 10\nThang 11\nThang 12", "Chon", "Tro ve");
-				case 3: return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_NATION, DIALOG_STYLE_LIST, "GTA.NETWORK | Chon quoc tich", "San Andreas\nNew Robada", "Xac nhan", "Tro ve");
+				case 3: return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_NATION, DIALOG_STYLE_LIST, "SAW Community | Chon quoc tich", "San Andreas\nNew Robada", "Xac nhan", "Tro ve");
 				case 4:
 				{
 					szMiscArray[0] = 0;
@@ -573,16 +573,16 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					Dan Choi\n\
 					Super\n\
 					Sieu Nhan";
-					return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_ACCENT, DIALOG_STYLE_LIST, "GTA.NETWORK Tao nhan vat | Giong noi", szMiscArray, "Chon", "<<");
+					return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_ACCENT, DIALOG_STYLE_LIST, "SAW Community Tao nhan vat | Giong noi", szMiscArray, "Chon", "<<");
 				}
 				case 5:
 				{
 					if(PlayerInfo[playerid][pSex] == 0) { 
 						SendClientMessage(playerid, COLOR_YELLOW, "Vui long chon gioi tinh truoc.");
-						return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "GTA.NETWORK Tao nhan vat | Gioi tinh", "Nam\nNu", "Chon", "<<");
+						return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "SAW Community Tao nhan vat | Gioi tinh", "Nam\nNu", "Chon", "<<");
 					}
 
-               		ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SKIN, DIALOG_STYLE_INPUT, "GTA.NETWORK Tao nhan vat| Trang phuc", "Hay nhap ID Skin cho nhan vat cua ban.", "Chon", "<<");
+               		ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SKIN, DIALOG_STYLE_INPUT, "SAW Community Tao nhan vat| Trang phuc", "Hay nhap ID Skin cho nhan vat cua ban.", "Chon", "<<");
                	}
 				
 				case 6:
@@ -590,7 +590,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					if(PlayerInfo[playerid][pSex] == 0)
 					{
 						SendClientMessage(playerid, COLOR_YELLOW, "Vui long chon gioi tinh.");
-						return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "GTA.NETWORK Tao nhan vat | Gioi tinh", "Nam\nNu", "Chon", "<<");
+						return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_SEX, DIALOG_STYLE_LIST, "SAW Community Tao nhan vat | Gioi tinh", "Nam\nNu", "Chon", "<<");
 
 					}
 					if(strcmp(PlayerInfo[playerid][pBirthDate], "0000-00-00") == 0)
@@ -599,7 +599,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 						return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_MONTH, DIALOG_STYLE_LIST, "{FF0000}Nhan vat sinh vao thang may?", "Thang1\nThang2\nThang3\nThang4\nThang5\nThang6\nThang7\nThang8\nThang9\nThang10\nThang11\nThang12", "Chon", "Tro ve");
 					}
 
-					if(PlayerInfo[playerid][pNation] != 0 && PlayerInfo[playerid][pNation] != 1) return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_NATION, DIALOG_STYLE_LIST, "GTA.NETWORK | Nation", "San Andreas\nNew Robada", "Chon", "Tro ve");
+					if(PlayerInfo[playerid][pNation] != 0 && PlayerInfo[playerid][pNation] != 1) return ShowPlayerDialogEx(playerid, DIALOG_REGISTER_NATION, DIALOG_STYLE_LIST, "SAW Community | Nation", "San Andreas\nNew Robada", "Chon", "Tro ve");
 
 					ShowPlayerDialogEx(playerid, DIALOG_REGISTER_REFERRED, DIALOG_STYLE_INPUT, "{FF0000}Gioi thieu", "Hay nhap ten nguoi gioi thieu ban den voi Server (VD: Rick_Tran)\n\nNeu khong co hay nhan 'Bo qua'.", "Tiep tuc", "Bo qua");
 					return 1;
@@ -861,7 +861,7 @@ GetPlayerAccent(iPlayerID)
 		case 29: accent = "Sieu Nhan";
 		case 2003: accent = "{5f773f}Old Member{FFFFFF}";
 		case 2013: accent = "{037899}RGVN{FFFFFF}";
-		case 2019: accent = "{ffe900}GTA-NETWORK{FFFFFF}";
+		case 2019: accent = "{ffe900}SAW-COMMUNITY{FFFFFF}";
 		case 1319: accent = "{59a6ff}Admin{FFFFFF}";
 	}
 	return accent;

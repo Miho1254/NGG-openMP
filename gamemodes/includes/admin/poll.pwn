@@ -12,10 +12,10 @@
 						Poll System
 						  Jingles
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 					
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*
@@ -94,8 +94,8 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					}
 					ShowPlayerDialogEx(playerid, DIALOG_POLLS_OPTIONS, DIALOG_STYLE_LIST, "NGRP Polls | Edit Options", szMiscArray, "Edit", "Cancel");
 				}
-				case 2: ShowPlayerDialogEx(playerid, DIALOG_POLLS_TYPE, DIALOG_STYLE_LIST, "GTA.NETWORK| Polls", "All\nFactions\nGangs\nBusiness\nVIP", "Enter", "Cancel");
-				case 3: ShowPlayerDialogEx(playerid, DIALOG_POLLS_HOURS, DIALOG_STYLE_INPUT, "GTA.NETWORK| Polls", "Enter the minimum amount of playing hours to be able to cast a vote.", "Enter", "Cancel");
+				case 2: ShowPlayerDialogEx(playerid, DIALOG_POLLS_TYPE, DIALOG_STYLE_LIST, "SAW Community| Polls", "All\nFactions\nGangs\nBusiness\nVIP", "Enter", "Cancel");
+				case 3: ShowPlayerDialogEx(playerid, DIALOG_POLLS_HOURS, DIALOG_STYLE_INPUT, "SAW Community| Polls", "Enter the minimum amount of playing hours to be able to cast a vote.", "Enter", "Cancel");
 				case 4: {
 					if(!arrPolls[pol_bActive]) {
 						Poll_TogglePoll(playerid, true);
@@ -302,7 +302,7 @@ public Poll_OnGetVotes(playerid) {
 		}
 	}
 	format(szMiscArray, sizeof(szMiscArray), "%s\nTotal Votes:\t%d", szMiscArray, iTotalCount);
-	ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_TABLIST_HEADERS, "GTA.NETWORK| Poll Results", szMiscArray, "OK", "");
+	ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_TABLIST_HEADERS, "SAW Community| Poll Results", szMiscArray, "OK", "");
 	return 1;
 }
 
@@ -361,7 +361,7 @@ CMD:poll(playerid, params[]) {
 				format(szMiscArray, sizeof(szMiscArray), "%s\n%d. %s", szMiscArray, i, arrPollOption[i]);
 			}
 		}
-		ShowPlayerDialogEx(playerid, DIALOG_POLLS_VOTE, DIALOG_STYLE_LIST, "GTA.NETWORK| Poll", szMiscArray, "Vote", "Cancel");
+		ShowPlayerDialogEx(playerid, DIALOG_POLLS_VOTE, DIALOG_STYLE_LIST, "SAW Community| Poll", szMiscArray, "Vote", "Cancel");
 	}
 	else Poll_GetVotes(playerid);
 	return 1;
@@ -393,6 +393,6 @@ CMD:editpoll(playerid, params[]) {
 		Start\n\
 		End", Poll_GetPollType(arrPolls[pol_iTypeID]), arrPolls[pol_iHours]);
 
-	ShowPlayerDialogEx(playerid, DIALOG_POLLS_EDIT, DIALOG_STYLE_LIST, "GTA.NETWORKPolls | Edit", szMiscArray, "Select", "Cancel");
+	ShowPlayerDialogEx(playerid, DIALOG_POLLS_EDIT, DIALOG_STYLE_LIST, "SAW CommunityPolls | Edit", szMiscArray, "Select", "Cancel");
 	return 1;
 }

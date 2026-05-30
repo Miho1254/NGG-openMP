@@ -11,10 +11,10 @@
 
 						Help Commands
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*
@@ -1474,7 +1474,7 @@ CMD:rules(playerid, params[])
 	format(szMiscArray, sizeof(szMiscArray), "%s\n\nMeta Gaming (MG): Ap dung thong tin OOC vao IC khi dang giao tiep, tuong tac voi mot ai do. Ghi nhung ki tu hoac nhung gi lien quan den OOC vao kenh IC.", szMiscArray);
 	format(szMiscArray, sizeof(szMiscArray), "%s\n\nNonRP Behaviour: Acting in a manner that is deemed unrealstic or non-roleplay, including but not limited to: improper use of toys,\n ramming vehicles into players excessively, car surfing etc", szMiscArray);
 	format(szMiscArray, sizeof(szMiscArray), "%s\n\nSpawn Killing (SK): Tan cong nguoi khac khi nguoi do vua moi load game, log game hoac vua ra vien", szMiscArray);
-	ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "GTA.NETWORK: Luat le co ban tai may chu.", szMiscArray, "Da hieu", "");
+	ShowPlayerDialogEx(playerid, DIALOG_NOTHING, DIALOG_STYLE_MSGBOX, "SAW Community: Luat le co ban tai may chu.", szMiscArray, "Da hieu", "");
 	return 1;
 }
 

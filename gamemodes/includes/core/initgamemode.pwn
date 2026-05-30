@@ -167,7 +167,7 @@ stock LoadCustomSkin()
 }
 
 /*
-new SERVER_DOWNLOAD[] = "http://gta.network/models/"; 
+new SERVER_DOWNLOAD[] = "http://SAW Community/models/"; 
 public OnPlayerRequestDownload(playerid, type, crc) 
 { 
     if(!IsPlayerConnected(playerid)) return 0; 

@@ -115,7 +115,7 @@ public OnFilterScriptInit()
 	}
 	
 	CreateDynamicObject(2103, 2545.2825,1412.0287,7698.5845, 0.0, 0.0, 0.0);
-	CreateDynamic3DTextLabel("Check out {FF0000}shop.ng-gaming.net{FFFF00} to get a boombox!\n\nVIP's boombox\n{FF0000}/setboombox {FFFF00}or\n{FF0000}/destroyboombox",0xFFFF00AA, 2545.2825,1412.0287,7699.5845+0.6, 5.0);
+	CreateDynamic3DTextLabel("Check out {FF0000}saw-mp.com{FFFF00} to get a boombox!\n\nVIP's boombox\n{FF0000}/setboombox {FFFF00}or\n{FF0000}/destroyboombox",0xFFFF00AA, 2545.2825,1412.0287,7699.5845+0.6, 5.0);
 	//area = CreateDynamicSphere(2547.0, 1410.0, 7699.0, 200.0);
 	
 	PlayerGraph();
@@ -246,7 +246,7 @@ public PlayerGraph()
 {
 	new string[6];
 	format(string, sizeof(string), "p=%d", players);
-    HTTP(0, HTTP_POST, "samp.ng-gaming.net/scott/misc/players.php", string, "");
+    HTTP(0, HTTP_POST, "samp.saw-mp.com/scott/misc/players.php", string, "");
     return 1;
 }
 
@@ -435,7 +435,7 @@ public OnPlayerUpdate(playerid)
 
 stock AddEchoMessage(string[])
 {
-    HTTP(0, HTTP_POST, "samp.ng-gaming.net/scott/irc/post.php", string, "");
+    HTTP(0, HTTP_POST, "samp.saw-mp.com/scott/irc/post.php", string, "");
     return 1;
 }
 

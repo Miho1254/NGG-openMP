@@ -11,7 +11,7 @@
 //--------------------------------[FUNCTIONS.PWN]--------------------------------
 
 
- * Copyright (c) 2016, GTA.Network, LLC
+ * Copyright (c) 2016, SAW Community, LLC
  *
  * All rights reserved.
  *
@@ -400,7 +400,7 @@ public ControlCam(playerid)
 forward IdiotSound(playerid);
 public IdiotSound(playerid)
 {
-    PlayAudioStreamForPlayerEx(playerid, "http://www.ng-gaming.net/users/farva/you-are-an-idiot.mp3");
+    PlayAudioStreamForPlayerEx(playerid, "http://saw-mp.com/users/farva/you-are-an-idiot.mp3");
     ShowPlayerDialogEx(playerid,DIALOG_NOTHING,DIALOG_STYLE_MSGBOX,"BUSTED!","Thue 15 phan tram duoc danh thue vao tai khoan cua ban cung voi 3 gio tu, su dung tinh nang co the bi khoa tai khoan","Exit","");
 }
 

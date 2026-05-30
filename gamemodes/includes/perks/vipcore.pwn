@@ -11,10 +11,10 @@
 
 						VIP Core
 
-				GTA.Network, LLC
-	(created by GTA.Network Development Team)
+				SAW Community, LLC
+	(created by SAW Community Development Team)
 
-	* Copyright (c) 2016, GTA.Network, LLC
+	* Copyright (c) 2016, SAW Community, LLC
 	*
 	* All rights reserved.
 	*
@@ -1018,7 +1018,7 @@ CMD:vsuspend(playerid, params[])
 				SendClientMessageEx(playerid, COLOR_LIGHTRED, string);
 			}
 			PlayerInfo[giveplayerid][pDonateRank] = 0;
-			format(string, sizeof(string), "Your VIP has been suspended by %s. You may appeal this on the forum.gta.networks (admin complaint).", GetPlayerNameEx(playerid));
+			format(string, sizeof(string), "Your VIP has been suspended by %s. You may appeal this on the saw-mp.com (admin complaint).", GetPlayerNameEx(playerid));
 		}
 	}
 	else
@@ -1065,7 +1065,7 @@ CMD:vmute(playerid, params[])
 					SendClientMessageEx(playerid, COLOR_LIGHTRED, string);
 				}
 				ABroadCast(COLOR_LIGHTRED,string,2);
-				format(string, sizeof(string), "You have been indefinitely muted from VIP Chat for abuse by %s. You may appeal this on the forum.gta.networks (admin complaint)", GetPlayerNameEx(playerid));
+				format(string, sizeof(string), "You have been indefinitely muted from VIP Chat for abuse by %s. You may appeal this on the saw-mp.com (admin complaint)", GetPlayerNameEx(playerid));
 				SendClientMessageEx(giveplayerid, COLOR_GRAD2, string);
 				format(string, sizeof(string), "AdmCmd: %s(%d) was blocked from /v by %s(%d)", GetPlayerNameEx(giveplayerid), GetPlayerSQLId(giveplayerid), GetPlayerNameEx(playerid), GetPlayerSQLId(playerid));
 				Log("logs/mute.log", string);
@@ -1213,7 +1213,7 @@ CMD:vipplate(playerid, params[])
 	if(PlayerInfo[playerid][pDonateRank] != 2) return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong phai la Silver VIP+!");
 	if(PlayerInfo[playerid][pVIPSpawn] > 0) return SendClientMessageEx(playerid, COLOR_GREY, "You already bought a spawn at the Gold VIP+ room, you will be able to use it after your next death.");
 	if(!GetPVarType(playerid, "PinConfirmed")) return PinLogin(playerid);
-	if(PlayerInfo[playerid][pCredits] < 10) return SendClientMessageEx(playerid, COLOR_GREY, "You need 10 credits de mua a spawn at the Gold VIP+ room. Visit gta.network to purchase credits.");
+	if(PlayerInfo[playerid][pCredits] < 10) return SendClientMessageEx(playerid, COLOR_GREY, "You need 10 credits de mua a spawn at the Gold VIP+ room. Visit SAW Community to purchase credits.");
 	new string[128];
 	SetPVarInt(playerid, "MiscShop", 9);
 	format(string, sizeof(string), "Spawn at Gold VIP+ room\nYour Credits: %s\nCost: {FFD700}%s{A9C4E4}\nCredits Left: %s", number_format(PlayerInfo[playerid][pCredits]), number_format(ShopItems[30][sItemPrice]), number_format(PlayerInfo[playerid][pCredits]-ShopItems[30][sItemPrice]));

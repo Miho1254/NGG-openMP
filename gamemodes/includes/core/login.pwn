@@ -167,7 +167,7 @@ stock ShowMainMenuDialog(playerid, frame)
             {A9A9A9}------------------------------------------------\n\n\
             {FFFFFF}Ban can {00FFCC}dang ky tai khoan{FFFFFF} truoc khi vao game.\n\
             Vui long truy cap trang web:\n\n\
-            {00FFCC}my.saw-mp.com{FFFFFF}\n\n\
+            {00FFCC}saw-mp.com{FFFFFF}\n\n\
             {A9A9A9}Sau khi dang ky thanh cong, hay ket noi lai vao game.\n\
             {A9A9A9}Nhan \"Thoat\" de thoat khoi may chu.", pName);
 
@@ -201,7 +201,7 @@ stock SafeLogin(playerid, type)
 			}
 			else
 			{
-				Dialog_Show(playerid, -1, DIALOG_STYLE_MSGBOX, "ERROR: You were kicked!", "You're unable to create an account on this server!\n\nThis server is for the Beta Team only.\n\nIf you are a beta tester go to http://saw-community.net and create an account.", "Tat", "");
+				Dialog_Show(playerid, -1, DIALOG_STYLE_MSGBOX, "ERROR: You were kicked!", "You're unable to create an account on this server!\n\nThis server is for the Beta Team only.\n\nIf you are a beta tester go to http://saw-mp.com and create an account.", "Tat", "");
 				SetTimerEx("KickEx", 3000, 0, "i", playerid);
 			}
 		}

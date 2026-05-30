@@ -11,7 +11,7 @@
 //--------------------------------[DISCORD.PWN]--------------------------------
 
 
- * Copyright (c) 2016, GTA.Network, LLC
+ * Copyright (c) 2016, SAW Community, LLC
  *
  * All rights reserved.
  *
@@ -93,12 +93,12 @@ public DCC_OnChannelMessage(DCC_Channel:channel, DCC_User:author, const message[
 		if (!DCC_GetUserName(author, user_name))
 			return 0; // invalid user
 		printf("[DCC] OnChannelMessage (Channel %s): Author %s sent message: %s", channel_name, user_name, message);
-		if(!strcmp(channel_name, "admin", true) && strcmp(user_name, "GTA Network", true))
+		if(!strcmp(channel_name, "admin", true) && strcmp(user_name, "SAW Community", true))
 		{
 			format(szMessage, sizeof(szMessage), "* [Discord] Administrator %s: %s", user_name, message);
 			ABroadCast(COLOR_YELLOW, szMessage, 2, true, true);
 		}
-		else if(!strcmp(channel_name, "headadmin", true) && strcmp(user_name, "GTA Network", true))
+		else if(!strcmp(channel_name, "headadmin", true) && strcmp(user_name, "SAW Community", true))
 		{
 			format(szMessage, sizeof(szMessage), "(PRIVATE) [Discord] Administrator %s: %s", user_name, message);
 			ABroadCast(COLOR_GREEN, szMessage, 1337, true, true);
