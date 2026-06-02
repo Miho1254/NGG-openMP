@@ -1394,6 +1394,16 @@ stock ClearEquippedWeaponsOnDeath(playerid)
         {
             if((itemid >= 23 && itemid <= 35) || (itemid >= 44 && itemid <= 48))
             {
+                new currentAmmo = CharacterInfo[playerid][1][cb_ItemAmount][i];
+                for(new k = 0; k < MAX_PLAYER_CB_ITEM; k++)
+                {
+                    if(CharacterInfo[playerid][0][cb_ItemID][k] == itemid)
+                    {
+                        CharacterInfo[playerid][0][cb_ItemAmount][k] = currentAmmo;
+                        break;
+                    }
+                }
+
                 CharacterInfo[playerid][1][cb_ItemID][i] = INVALID_OBJECT_ID;
                 CharacterInfo[playerid][1][cb_ItemWeight][i] = 0.0;
                 CharacterInfo[playerid][1][cb_ItemDurability][i] = 0;
@@ -5043,6 +5053,39 @@ timer ShowBDKBTimer[2000](playerid)
     return 1;
 }
 
+stock Inventory_AutoUnequipDepletedWeapon(playerid, equipSlot, weaponid)
+{
+    new itemid = CharacterInfo[playerid][1][cb_ItemID][equipSlot];
+
+    for(new k = 0; k < MAX_PLAYER_CB_ITEM; k++)
+    {
+        if(CharacterInfo[playerid][0][cb_ItemID][k] == itemid)
+        {
+            CharacterInfo[playerid][0][cb_ItemAmount][k] = 0;
+            break;
+        }
+    }
+
+    CharacterInfo[playerid][1][cb_ItemID][equipSlot] = INVALID_OBJECT_ID;
+    CharacterInfo[playerid][1][cb_ItemWeight][equipSlot] = 0.0;
+    CharacterInfo[playerid][1][cb_ItemDurability][equipSlot] = 0;
+    CharacterInfo[playerid][1][cb_ItemAmount][equipSlot] = 0;
+    PlayerInfo[playerid][pGuns][GetWeaponSlot(weaponid)] = 0;
+
+    ResetPlayerWeapons(playerid);
+    for(new j = 0; j < 7; j++)
+    {
+        if(CharacterInfo[playerid][1][cb_ItemID][j] != INVALID_OBJECT_ID)
+        {
+            new wid = GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][j]);
+            if(wid > 0) GivePlayerValidWeaponEx(playerid, wid, CharacterInfo[playerid][1][cb_ItemAmount][j]);
+        }
+    }
+
+    SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}TUI DO{FFFFFF}]: Vu khi cua ban da het dan - tu dong thao trang bi.");
+    return 1;
+}
+
 hook OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
     new i;
@@ -5057,11 +5100,17 @@ hook OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, 
 					if(CharacterInfo[playerid][1][cb_ItemAmount][i] > 0)
 					{
 						CharacterInfo[playerid][1][cb_ItemAmount][i]--;
-						SetPlayerAmmo(playerid, GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][i]), CharacterInfo[playerid][1][cb_ItemAmount][i]);
+						SetPlayerAmmo(playerid, weaponid, CharacterInfo[playerid][1][cb_ItemAmount][i]);
+
+						if(CharacterInfo[playerid][1][cb_ItemAmount][i] <= 0)
+						{
+							Inventory_AutoUnequipDepletedWeapon(playerid, i, weaponid);
+						}
 					}
 					else
 					{
-						SendClientMessageEx(playerid, COLOR_WHITE, "[{FFB561}TUI DO{FFFFFF}]: Vu khi cua ban da het dan.");
+						Inventory_AutoUnequipDepletedWeapon(playerid, i, weaponid);
+						return 0;
 					}
 				}
 			}

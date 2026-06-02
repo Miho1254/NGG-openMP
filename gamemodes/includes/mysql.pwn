@@ -243,7 +243,12 @@ public OnQueryFinish(resultid, extraid, handleid)
 					ShopItems[z][sItemPrice] = strval(szResult);
 					Price[z] = strval(szResult);
 					if(ShopItems[z][sItemPrice] == 0) ShopItems[z][sItemPrice] = 99999999;
+					Price[z] = ShopItems[z][sItemPrice];
 					printf("Price%d: %d", z, ShopItems[z][sItemPrice]);
+				}
+				if(Price[23] == 99999999) {
+					Price[23] = 200;
+					ShopItems[23][sItemPrice] = 200;
 				}
 				new result[128];
 				cache_get_value_name(i, "MicroPrices", result);

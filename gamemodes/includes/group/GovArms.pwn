@@ -46,14 +46,14 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 						case 0:
 						{
 							arrWeaponCosts[46] = 1;
-							format(szMiscArray, sizeof(szMiscArray), "%s da mo Government Arms Center.", GetPlayerNameEx(playerid));
+							format(szMiscArray, sizeof(szMiscArray), "%s da mo Trung tam Vu khi Chinh phu.", GetPlayerNameEx(playerid));
 							SendGroupMessage(arrGroupData[PlayerInfo[playerid][pMember]][g_iGroupType], DEPTRADIO, szMiscArray);
 							return 1;
 						}
 						default:
 						{
 							arrWeaponCosts[46] = 0;
-							format(szMiscArray, sizeof(szMiscArray), "%s da dong the Government Arms Center.", GetPlayerNameEx(playerid));
+							format(szMiscArray, sizeof(szMiscArray), "%s da dong Trung tam Vu khi Chinh phu.", GetPlayerNameEx(playerid));
 							SendGroupMessage(arrGroupData[PlayerInfo[playerid][pMember]][g_iGroupType], DEPTRADIO, szMiscArray);
 							return 1;
 						}
@@ -68,8 +68,8 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				szMiscArray[0] = 0;
 				new wepid = ListItemTrackId[playerid][listitem];
 				SetPVarInt(playerid, "_GovGun", wepid);
-				format(szMiscArray, sizeof(szMiscArray), "Edit the purchase price of the {00FFFF}%s {FFFFFF}\n\n Current purchase price: $%s", Weapon_ReturnName(wepid), number_format(arrWeaponCosts[wepid]));
-				return ShowPlayerDialogEx(playerid, DIALOG_GOVGUN_EDITPRICE2, DIALOG_STYLE_INPUT, "Government Arms | Edit Weapon Price", szMiscArray, "Proceed", "Cancel");
+				format(szMiscArray, sizeof(szMiscArray), "Chinh gia mua cua {00FFFF}%s {FFFFFF}\n\n Gia mua hien tai: $%s", Weapon_ReturnName(wepid), number_format(arrWeaponCosts[wepid]));
+				return ShowPlayerDialogEx(playerid, DIALOG_GOVGUN_EDITPRICE2, DIALOG_STYLE_INPUT, "Quan ly Vu khi Chinh phu | Chinh gia", szMiscArray, "Xac nhan", "Huy");
 			}
 		}
 		case DIALOG_GOVGUN_SELL:
@@ -80,7 +80,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				new wepid = ListItemTrackId[playerid][listitem];
 				SetPVarInt(playerid, "_GovGun", wepid);
 				format(szMiscArray, sizeof(szMiscArray), "Ban co chac chan ban vu khi %s voi gia: {FF0000}$%s{FFFFFF}?", Weapon_ReturnName(wepid), number_format(arrWeaponCosts[wepid]));
-				return ShowPlayerDialogEx(playerid, DIALOG_GOVGUN_SELL2, DIALOG_STYLE_MSGBOX, "Government Arms | Ban vu khi", szMiscArray, "Ban", "Huy");
+				return ShowPlayerDialogEx(playerid, DIALOG_GOVGUN_SELL2, DIALOG_STYLE_MSGBOX, "Quan ly Vu khi Chinh phu | Ban vu khi", szMiscArray, "Ban", "Huy");
 			}
 		}
 		case DIALOG_GOVGUN_EDITPRICE2:
@@ -92,7 +92,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				arrWeaponCosts[wepid] = strval(inputtext);
 				mysql_format(MainPipeline, szMiscArray, sizeof(szMiscArray), "UPDATE `govgunsales` SET `wepprice` = %d WHERE `wepid` = %d", strval(inputtext), wepid);
 				mysql_tquery(MainPipeline, szMiscArray, "OnQueryFinish", "ii", SENDDATA_THREAD, playerid);
-				format(szMiscArray, sizeof(szMiscArray), "You have edited the %s's price to: {FFFFFF}$%s", Weapon_ReturnName(wepid), number_format(arrWeaponCosts[wepid]));
+				format(szMiscArray, sizeof(szMiscArray), "Ban da chinh gia %s thanh: {FFFFFF}$%s", Weapon_ReturnName(wepid), number_format(arrWeaponCosts[wepid]));
 				SendClientMessageEx(playerid, COLOR_YELLOW, szMiscArray);
 				DeletePVar(playerid, "_GovGun");
 				return GovGuns_EditPrices(playerid);
@@ -113,7 +113,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 				GivePlayerCash(playerid, arrWeaponCosts[wepid]);
 				RemovePlayerWeapon(playerid, wepid);
 				arrGroupData[iGroupID][g_iBudget] -= arrWeaponCosts[wepid];
-	            format(szMiscArray, sizeof(szMiscArray), "%s sold their %s at a cost of $%d to %s's budget fund.",GetPlayerNameEx(playerid), Weapon_ReturnName(wepid), arrWeaponCosts[wepid], arrGroupData[iGroupID][g_szGroupName]);
+	            format(szMiscArray, sizeof(szMiscArray), "%s da ban %s voi gia $%d vao quy %s.",GetPlayerNameEx(playerid), Weapon_ReturnName(wepid), arrWeaponCosts[wepid], arrGroupData[iGroupID][g_szGroupName]);
 				GroupPayLog(iGroupID, szMiscArray);
 				szMiscArray[0] = 0; // unsure if this is needed.
 				format(szMiscArray, sizeof(szMiscArray), "Ban da ban khau sung %s voi gia {008000}$%s{FFFFFF}.", Weapon_ReturnName(wepid), number_format(arrWeaponCosts[wepid]));
@@ -143,9 +143,9 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 					new szWeaponName[32],
 						iCount, iAmmo, iWepID;
 
-					if(!IsPlayerInRangeOfPoint(playerid, 5.0, 1464.3099, -1747.5853, 15.6267) && !IsPlayerInRangeOfPoint(playerid, 5.0, -1612.2386, 712.9162, 13.7734)) return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong dung tai Government Arms Center.");
+					if(!IsPlayerInRangeOfPoint(playerid, 5.0, 1464.3099, -1747.5853, 15.6267) && !IsPlayerInRangeOfPoint(playerid, 5.0, -1612.2386, 712.9162, 13.7734)) return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong dung tai Trung tam Vu khi Chinh phu.");
 					if(arrWeaponCosts[46] == 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Chinh phu da ngung thu mua vu khi.");
-					szMiscArray = "Name\tSale Price\n";
+					szMiscArray = "Ten\tGia ban\n";
 					for(new i; i < 12; ++i) {
 						
 						GetPlayerWeaponData(playerid, i, iWepID, iAmmo);
@@ -157,7 +157,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 						}
 					}
 					if(iCount == 0) return SendClientMessageEx(playerid, COLOR_GRAD1, "Ban khong co vu khi ma chinh phu can mua.");
-					ShowPlayerDialogEx(playerid, DIALOG_GOVGUN_SELL, DIALOG_STYLE_TABLIST_HEADERS, "Government Arms | Ban vu khi", szMiscArray, "Ban", "Huy");	
+					ShowPlayerDialogEx(playerid, DIALOG_GOVGUN_SELL, DIALOG_STYLE_TABLIST_HEADERS, "Quan ly Vu khi Chinh phu | Ban vu khi", szMiscArray, "Ban", "Huy");	
 				}
 				case 1: {
 
@@ -186,8 +186,8 @@ GovGuns_MainMenu(playerid)
 		case 0: szMiscArray = "{FF0000}Dong";
 		case 1: szMiscArray = "{00FF00}Mo";
 	}
-	format(szMiscArray, sizeof(szMiscArray), "List purchases\nEdit purchase prices\nOpen/Close Center (currently: %s{FFFFFF})", szMiscArray);
-	return ShowPlayerDialogEx(playerid, DIALOG_GOVGUN_MAIN, DIALOG_STYLE_LIST, "Government Arms Center | Menu", szMiscArray, "Chon", "");
+	format(szMiscArray, sizeof(szMiscArray), "Danh sach giao dich\nChinh gia thu mua\nMo/Dong Trung tam (hien tai: %s{FFFFFF})", szMiscArray);
+	return ShowPlayerDialogEx(playerid, DIALOG_GOVGUN_MAIN, DIALOG_STYLE_LIST, "Quan ly Vu khi Chinh phu | Menu", szMiscArray, "Chon", "");
 }
 
 GovGuns_LoadCosts()
@@ -199,11 +199,11 @@ GovGuns_LoadCosts()
 GovGuns_Streamer()
 {
 	CreateDynamicObject(3430, 1464.40723, -1750.29785, 15.8659,   0.00000, 0.00000, 300.33374);
-	CreateDynamic3DTextLabel("Government Arms Center\n{DDDDDD}Nhan phim ~k~~CONVERSATION_YES~ de mo menu", COLOR_YELLOW, 1464.3186,-1747.9330,15.9453, 8.0);
+	CreateDynamic3DTextLabel("Trung tam Vu khi Chinh phu\n{DDDDDD}Nhan phim ~k~~CONVERSATION_YES~ de mo menu", COLOR_YELLOW, 1464.3186,-1747.9330,15.9453, 8.0);
 	GovArmsPoint = CreateDynamicSphere(1464.3186,-1747.9330,15.445, 5.00);
 
 	CreateDynamicObject(3430, -1612.2386, 712.9162, 13.7734, 0.00000, 0.00000, 162.1889);
-	CreateDynamic3DTextLabel("Government Arms Center\n{DDDDDD}Nhan phim ~k~~CONVERSATION_YES~ de mo menu", COLOR_YELLOW, -1612.2386, 712.9162, 13.7734, 8.0);
+	CreateDynamic3DTextLabel("Trung tam Vu khi Chinh phu\n{DDDDDD}Nhan phim ~k~~CONVERSATION_YES~ de mo menu", COLOR_YELLOW, -1612.2386, 712.9162, 13.7734, 8.0);
 	GovArmsPoint2 = CreateDynamicSphere(-1612.2386, 712.9162, 13.7734, 5.00);
 }
 
@@ -230,7 +230,7 @@ GovGuns_EditPrices(playerid)
 {
 	szMiscArray[0] = 0;
 	new iCount;
-	szMiscArray = "Name\tPurchase Price\n";
+	szMiscArray = "Ten\tGia mua\n";
 	for(new i; i < 46; ++i)
 	{
 		if(GovGuns_IsSellingEdit(i)) 
@@ -240,7 +240,7 @@ GovGuns_EditPrices(playerid)
 			iCount++;
 		}
 	}
-	return ShowPlayerDialogEx(playerid, DIALOG_GOVGUN_EDITPRICE, DIALOG_STYLE_TABLIST_HEADERS, "Government Arms | Edit Purchase Price", szMiscArray, "Edit", "Cancel");		
+	return ShowPlayerDialogEx(playerid, DIALOG_GOVGUN_EDITPRICE, DIALOG_STYLE_TABLIST_HEADERS, "Quan ly Vu khi Chinh phu | Chinh gia thu mua", szMiscArray, "Sua", "Huy");		
 }
 
 forward GovGuns_OnLoadCosts();
@@ -263,7 +263,7 @@ public GovGuns_OnShowSales(playerid)
 	new iRows, iCount;
 	cache_get_row_count(iRows);
 	if(!iRows) return SendClientMessageEx(playerid, COLOR_GRAD1, "Da xay ra loi, vui long thu lai sau.");
-	szMiscArray = "Name\tSold\n";
+	szMiscArray = "Ten\tDa ban\n";
 	while(iCount < iRows) 
 	{
 		if(GovGuns_IsSellingEdit(iCount))
@@ -273,7 +273,7 @@ public GovGuns_OnShowSales(playerid)
 		}
 		iCount++;
 	}
-	return ShowPlayerDialogEx(playerid, DIALOG_GOVGUNS_SALES, DIALOG_STYLE_TABLIST_HEADERS, "Government Arms | Sales", szMiscArray, "<<", "");
+	return ShowPlayerDialogEx(playerid, DIALOG_GOVGUNS_SALES, DIALOG_STYLE_TABLIST_HEADERS, "Quan ly Vu khi Chinh phu | Lich su ban", szMiscArray, "<<", "");
 }
 
 CMD:govarms(playerid, params[])
@@ -317,7 +317,7 @@ ShowArmsMenu(playerid) {
 	format(szMiscArray, sizeof(szMiscArray), "{FF8000}** {C2A2DA}%s dang tuong tac voi nhan vien.", GetPlayerNameEx(playerid));
 	SetPlayerChatBubble(playerid, szMiscArray, COLOR_PURPLE, 15.0, 5000);
 
-	ShowPlayerDialogEx(playerid, ARMS_MENU, DIALOG_STYLE_LIST, "Goverment Arms Menu", "Ban vu khi\nMua giay phep vu khi", "Chon", "Huy");
+	ShowPlayerDialogEx(playerid, ARMS_MENU, DIALOG_STYLE_LIST, "Trung tam Vu khi Chinh phu", "Ban vu khi\nMua giay phep vu khi", "Chon", "Huy");
 
 	return 1;
 }

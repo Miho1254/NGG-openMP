@@ -11,7 +11,7 @@
 
 	ShowPlayerDialogEx(playerid, APPLY_GUN_LIC, DIALOG_STYLE_MSGBOX, 
 		"Gun License Application", 
-		"You are about to apply for a gun license\nYou will have a background check for crimes for the last 3 weeks\nThis process will cost $100,000", 
+		"You are about to apply for a gun license\nYou will have a background check for crimes for the last 3 weeks\nThis process will cost $350,000", 
 		"Apply", 
 		"Cancel"
 	);
@@ -55,7 +55,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			if(!response) return SendClientMessageEx(playerid, COLOR_WHITE, "You have chosen not to apply for a gun license!");
 			else {
 
-				if(GetPlayerCash(playerid) >= 700000) SubmitGunLicApp(playerid);
+				if(GetPlayerCash(playerid) >= 350000) SubmitGunLicApp(playerid);
 				else SendClientMessageEx(playerid, COLOR_WHITE, "Ban khong du tien.");
 			}
 			
@@ -94,7 +94,7 @@ public OnSubmitGunLicApp(iPlayerID) {
 
 		GivePlayerCash(iPlayerID, -350000);
 		Tax+=100000;
-		format(szMiscArray, sizeof(szMiscArray), "%s has renewed their gun license for $100,000.", GetPlayerNameEx(iPlayerID));
+		format(szMiscArray, sizeof(szMiscArray), "%s has renewed their gun license for $350,000.", GetPlayerNameEx(iPlayerID));
 		Log("logs/licenses.log", szMiscArray);
 	}
 
