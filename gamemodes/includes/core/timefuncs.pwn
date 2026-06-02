@@ -359,27 +359,7 @@ stock date( timestamp, _form=0 )
 
 CalculateWorldGameTime(iTempSVHour, iTempSVMinute)
 {
-	// Note that 1 hour in-game time is equivalent to half an hour server-time. By logic this means the clock 
-	// advances 2x as fast as it should.
-	new iTime = 0; 
-	switch(iTempSVHour)
-	{
-		case 0, 12: iTime = 0; // 00:00
-		case 1, 13: iTime = 2; // 02:00
-		case 2, 14: iTime = 4; // 04:00
-		case 3, 15: iTime = 6; // 06:00
-		case 4, 16: iTime = 8; // 08:00
-		case 5, 17: iTime = 10; // 10:00
-		case 6, 18: iTime = 12; // 12:00
-		case 7, 19: iTime = 14; // 14:00 
-		case 8, 20: iTime = 16; // 16:00
-		case 9, 21: iTime = 18; // 18:00
-		case 10, 22: iTime = 20; // 20:00
-		case 11, 23: iTime = 22;// 22:00
-	}
-	if(iTempSVMinute >= 30) iTime +=1;
-
-	return iTime;
+	return iTempSVHour;
 }
 
 /*CalculateGameMinute(iTempSVSec)
@@ -395,10 +375,5 @@ CalculateWorldGameTime(iTempSVHour, iTempSVMinute)
 
 CalculateGameMinute(iMinute, iSecond)
 {
-	new iTime = 0;
-	if(iMinute == 0 || iMinute == 30) iTime = 0;
-	else if(iMinute > 30) iTime = (iMinute -30) * 2; 
-	else iTime = iMinute * 2;
-	if(iSecond >= 30) iTime += 1; 
-	return iTime; 
+	return iMinute;
 }
