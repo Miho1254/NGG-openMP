@@ -5089,19 +5089,48 @@ stock SZ_FindSimilarCommand(const input[], output[], outlen) {
 	new size = PC_GetArraySize(arr);
 	new bestDist = 999;
 	new bestIdx = -1;
+	new bestPrefix = 0;
 	new tmpName[32];
+	new inputLen = strlen(input);
+
 	for(new i = 0; i < size; i++) {
 		PC_GetCommandName(arr, i, tmpName, sizeof(tmpName));
-		new dist = SZ_Levenshtein(input, tmpName);
-		if(dist < bestDist) {
-			bestDist = dist;
-			bestIdx = i;
+		new nameLen = strlen(tmpName);
+
+		// Check if input is a prefix of this command (case insensitive)
+		new isPrefix = 0;
+		if(inputLen > 0 && inputLen < nameLen) {
+			isPrefix = 1;
+			for(new j = 0; j < inputLen; j++) {
+				new a = input[j], b = tmpName[j];
+				if(a >= 'A' && a <= 'Z') a += 32;
+				if(b >= 'A' && b <= 'Z') b += 32;
+				if(a != b) { isPrefix = 0; break; }
+			}
+		}
+
+		if(isPrefix) {
+			// Prefix match: always prefer over Levenshtein
+			new remainDist = nameLen - inputLen;
+			if(!bestPrefix || remainDist < bestDist) {
+				bestDist = remainDist;
+				bestIdx = i;
+				bestPrefix = 1;
+			}
+		}
+		else if(!bestPrefix) {
+			new dist = SZ_Levenshtein(input, tmpName);
+			if(dist < bestDist) {
+				bestDist = dist;
+				bestIdx = i;
+			}
 		}
 	}
-	if(bestIdx >= 0 && bestDist < 3) {
+
+	if(bestIdx >= 0 && (bestPrefix || bestDist < 3)) {
 		PC_GetCommandName(arr, bestIdx, output, outlen);
 		PC_FreeArray(arr);
-		return bestDist;
+		return bestPrefix ? 0 : bestDist;
 	}
 	PC_FreeArray(arr);
 	output[0] = '\0';
