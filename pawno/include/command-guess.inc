@@ -315,14 +315,23 @@ static CGuess_Init()
         {
             if (Command_IsValid(i))
             {
-                // this ensures for loop to be broken
-                // and, no need to continue the loop.
                 if ((g_sRegisteredCommands + 1) >= CGUESS_MAX_CACHE_COMMAND)
                     break;
 
                 strcopy(g_sCommandName[++g_sRegisteredCommands], Command_GetName(i), 32);
             }
         }
+    #elseif defined PAWNCMD_INC_
+        new CmdArray:arr = PC_GetCommandArray();
+        new size = PC_GetArraySize(arr);
+        for (new i = 0; i < size; i++)
+        {
+            if ((g_sRegisteredCommands + 1) >= CGUESS_MAX_CACHE_COMMAND)
+                break;
+
+            PC_GetCommandName(arr, i, g_sCommandName[++g_sRegisteredCommands], 33);
+        }
+        PC_FreeArray(arr);
     #else
         new 
             hdr[AMX_HDR];
@@ -339,8 +348,6 @@ static CGuess_Init()
 
             if ((trimmedPos = CGuess_CheckInternalFunc(tmpName)) != -1)
             {
-                // this ensures for loop to be broken
-                // and, no need to continue the loop.
                 if ((g_sRegisteredCommands + 1) >= CGUESS_MAX_CACHE_COMMAND)
                     break;
                 
