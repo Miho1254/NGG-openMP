@@ -5064,6 +5064,37 @@ public OnPlayerRequestClass(playerid, classid)
 	return 1;
 }
 
+#define CMD_CACHE_SIZE 3000
+
+static stock
+	g_szCmdCache[CMD_CACHE_SIZE][32],
+	g_szCmdCacheSize = -1;
+
+stock SZ_BuildCommandCache() {
+	if(g_szCmdCacheSize >= 0) return;
+	g_szCmdCacheSize = 0;
+
+	new CmdArray:arr = PC_GetCommandArray();
+	new size = PC_GetArraySize(arr);
+	new cmdName[32];
+
+	for(new i = 0; i < size && g_szCmdCacheSize < CMD_CACHE_SIZE; i++) {
+		PC_GetCommandName(arr, i, cmdName, 32);
+		format(g_szCmdCache[g_szCmdCacheSize], 32, "%s", cmdName);
+		g_szCmdCacheSize++;
+
+		new CmdArray:aliasArr = PC_GetAliasArray(cmdName);
+		new aliasSize = PC_GetArraySize(aliasArr);
+		for(new j = 0; j < aliasSize && g_szCmdCacheSize < CMD_CACHE_SIZE; j++) {
+			PC_GetCommandName(aliasArr, j, g_szCmdCache[g_szCmdCacheSize], 32);
+			g_szCmdCacheSize++;
+		}
+		PC_FreeArray(aliasArr);
+	}
+	PC_FreeArray(arr);
+	printf("[CMD-Guess] Cached %d commands + aliases.", g_szCmdCacheSize);
+}
+
 stock SZ_Levenshtein(const a[], const b[]) {
 	new aLen = strlen(a), bLen = strlen(b);
 	if(aLen == 0) return bLen;
@@ -5085,24 +5116,26 @@ stock SZ_Levenshtein(const a[], const b[]) {
 }
 
 stock SZ_FindSimilarCommand(const input[], output[], outlen) {
-	new CmdArray:arr = PC_GetCommandArray();
-	new size = PC_GetArraySize(arr);
+	SZ_BuildCommandCache();
+
+	if(g_szCmdCacheSize <= 0) {
+		output[0] = '\0';
+		return 999;
+	}
+
 	new bestDist = 999;
 	new bestIdx = -1;
 	new bestPrefix = 0;
-	new tmpName[32];
 	new inputLen = strlen(input);
 
-	for(new i = 0; i < size; i++) {
-		PC_GetCommandName(arr, i, tmpName, sizeof(tmpName));
-		new nameLen = strlen(tmpName);
+	for(new i = 0; i < g_szCmdCacheSize; i++) {
+		new nameLen = strlen(g_szCmdCache[i]);
 
-		// Check if input is a prefix of this command (case insensitive)
 		new isPrefix = 0;
 		if(inputLen > 0 && inputLen < nameLen) {
 			isPrefix = 1;
 			for(new j = 0; j < inputLen; j++) {
-				new a = input[j], b = tmpName[j];
+				new a = input[j], b = g_szCmdCache[i][j];
 				if(a >= 'A' && a <= 'Z') a += 32;
 				if(b >= 'A' && b <= 'Z') b += 32;
 				if(a != b) { isPrefix = 0; break; }
@@ -5110,7 +5143,6 @@ stock SZ_FindSimilarCommand(const input[], output[], outlen) {
 		}
 
 		if(isPrefix) {
-			// Prefix match: always prefer over Levenshtein
 			new remainDist = nameLen - inputLen;
 			if(!bestPrefix || remainDist < bestDist) {
 				bestDist = remainDist;
@@ -5119,7 +5151,7 @@ stock SZ_FindSimilarCommand(const input[], output[], outlen) {
 			}
 		}
 		else if(!bestPrefix) {
-			new dist = SZ_Levenshtein(input, tmpName);
+			new dist = SZ_Levenshtein(input, g_szCmdCache[i]);
 			if(dist < bestDist) {
 				bestDist = dist;
 				bestIdx = i;
@@ -5128,11 +5160,9 @@ stock SZ_FindSimilarCommand(const input[], output[], outlen) {
 	}
 
 	if(bestIdx >= 0 && (bestPrefix || bestDist < 3)) {
-		PC_GetCommandName(arr, bestIdx, output, outlen);
-		PC_FreeArray(arr);
+		format(output, outlen, "%s", g_szCmdCache[bestIdx]);
 		return bestPrefix ? 0 : bestDist;
 	}
-	PC_FreeArray(arr);
 	output[0] = '\0';
 	return 999;
 }
