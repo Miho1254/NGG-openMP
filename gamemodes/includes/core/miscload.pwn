@@ -71,7 +71,7 @@ hook OnGameModeInit() {
 	TextDrawSetProportional(TD_ServerError[1], 1);
 	TextDrawSetShadow(TD_ServerError[1], 0);
 */
-	TD_ServerError[0] = TextDrawCreate(320.000000, 434.000244, "~r~LOI~w~: LENH KHONG TON TAI, HAY THU LAI...");
+	TD_ServerError[0] = TextDrawCreate(320.000000, 434.000244, "~r~CMD ~w~| Lenh khong ton tai, dung ~g~/trogiup ~w~de xem danh sach lenh.");
 	TextDrawLetterSize(TD_ServerError[0], 0.245198, 1.092265);
 	TextDrawAlignment(TD_ServerError[0], 2);
 	TextDrawColor(TD_ServerError[0], -1);

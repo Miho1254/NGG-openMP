@@ -5080,9 +5080,8 @@ public OnPlayerCommandPerformed(playerid, cmd[], params[], result, flags)
 		}
 		else
 		{
-			new string[196];
-			format(string, sizeof(string), "{E84545}CMD {FFFFFF}| {CCCCCC}Lenh {E84545}/%s {CCCCCC}khong ton tai. Dung {2ECC71}/trogiup {CCCCCC}de xem danh sach lenh.", cmd);
-			SendClientMessage(playerid, -1, string);
+			TextDrawShowForPlayer(playerid, TD_ServerError[0]);
+			defer HideServerError(playerid);
 		}
 		return 1;
 	}
@@ -5090,8 +5089,6 @@ public OnPlayerCommandPerformed(playerid, cmd[], params[], result, flags)
 }
 
 timer HideServerError[5000](playerid) {
-
-	TextDrawHideForPlayer(playerid, TD_ServerError[1]);
 	TextDrawHideForPlayer(playerid, TD_ServerError[0]);
 	return 1;
 }
