@@ -11,7 +11,7 @@
   },
   "logo": "",
   "discord": {
-    "invite": ""
+    "invite": "https://discord.gg/kR68t5RbfS"
   },
   "chat_input_filter": true,
   "enable_query": true,
@@ -61,7 +61,7 @@
   },
   "max_bots": 10,
   "max_players": 500,
-  "name": "Next Generation Roleplay (0.3DL)",
+  "name": "SAW COMMUNITY [OPEN BETA] (PC / Mobile)",
   "network": {
     "acks_limit": 3000,
     "aiming_sync_rate": 30,
@@ -82,7 +82,7 @@
     "player_marker_sync_rate": 2500,
     "player_timeout": 10000,
     "port": 7777,
-    "public_addr": "160.187.229.19",
+    "public_addr": "104.234.180.165",
     "stream_radius": 180.0,
     "stream_rate": 1000,
     "time_sync_rate": 30000,
@@ -100,7 +100,7 @@
   },
   "password": "",
   "pawn": {
-    "legacy_plugins": ["mysql", "sscanf", "gvar", "streamer", "Whirlpool", "jit"],
+    "legacy_plugins": ["mysql.so", "sscanf.so", "gvar.so", "streamer.so", "Whirlpool.so", "jit.so"],
     "main_scripts": ["NGRP 1"],
     "side_scripts": [
       "filterscripts/editor-emmet",
@@ -119,9 +119,9 @@
   "rcon": {
     "allow_teleport": false,
     "enable": true,
-    "password": "12313123123123"
+    "password": "GIAIPHONGMIENNAMTHONGNHATDATNUOC3004"
   },
   "sleep": 5.0,
   "use_dyn_ticks": true,
-  "website": "www.sa-mp.com"
+  "website": "www.saw-mp.com"
 }
