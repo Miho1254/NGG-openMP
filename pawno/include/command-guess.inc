@@ -124,6 +124,9 @@ static stock
  */
 stock Command_Guess(output[], const cmdtext[], len = sizeof output)
 {
+    output[0] = '\0';
+    if(g_sRegisteredCommands < 0) return 0x7FFFFFFF;
+
     new 
         dist,
         min_dist = 0x7FFFFFFF, 
@@ -140,6 +143,8 @@ stock Command_Guess(output[], const cmdtext[], len = sizeof output)
             min_idx = i;
         }
     }
+
+    if(min_idx < 0) return 0x7FFFFFFF;
 
     if (('A' <= cmdtext[0] <= 'Z') || ('a' <= cmdtext[0] <= 'z') || ('0' <= cmdtext[0] <= '9')) 
     {
@@ -343,5 +348,6 @@ static CGuess_Init()
             }
         }
     #endif
+    printf("[command-guess] Cached %d commands.", g_sRegisteredCommands + 1);
     return 1;
 }
