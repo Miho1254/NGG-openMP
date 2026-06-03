@@ -101,7 +101,6 @@
   "password": "",
   "pawn": {
     "legacy_plugins": [
-      "jit",
       "mysql",
       "sscanf",
       "gvar",
