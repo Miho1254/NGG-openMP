@@ -5090,6 +5090,7 @@ CMD:gotoco(playerid, params[])
 		SetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 		SetPlayerInterior(playerid, int);
 		SetPlayerVirtualWorld(playerid, vw);
+		SafeZone_Sync(playerid);
 	}
 	return 1;
 }

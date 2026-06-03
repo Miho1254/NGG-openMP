@@ -631,6 +631,7 @@ CMD:goto(playerid, params[])
 		PlayerInfo[playerid][pInt] = int;
 
 		SendClientMessageEx(playerid, COLOR_GRAD1, "Ban da duoc dich chuyen!");
+		SafeZone_Sync(playerid);
 	}
 	else
 	{
@@ -1694,6 +1695,7 @@ CMD:sendto(playerid, params[])
 			PlayerInfo[giveplayerid][pInt] = 0;
 			SetPlayerVirtualWorld(giveplayerid, 0);
 			PlayerInfo[giveplayerid][pVW] = 0;
+			SafeZone_Sync(giveplayerid);
 		}
 	}
 	else

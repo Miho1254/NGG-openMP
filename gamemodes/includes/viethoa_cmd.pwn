@@ -122,8 +122,8 @@ public PC_OnInit()
     SafeRegAlias("buy", "mua");
     SafeRegAlias("se", "datmota");
     SafeRegAlias("examine", "mota");
-    SafeRegAlias("changename", "doiten");
-    SafeRegAlias("drop", "vut");
+    // SafeRegAlias("changename", "doiten"); // CMD:changename bi comment out
+    SafeRegAlias("vut", "drop");
     SafeRegAlias("fix", "sua");
     SafeRegAlias("guard", "bangiap");
 	SafeRegAlias("frisk", "lucsoat");
@@ -188,13 +188,13 @@ public PC_OnInit()
     SafeRegAlias("buddyinvite", "moidungvip");
     SafeRegAlias("denyvoucher", "tuchoivoucher");
     SafeRegAlias("myvouchers", "phieucuatoi");
-    SafeRegAlias("checkvouchers", "kiemtravoucher");
+    SafeRegAlias("admkiemtravouchers", "kiemtravoucher");
 
     // Nhóm lệnh Event / Contract / Misc
     SafeRegAlias("joinevent", "thamgiasukien");
     SafeRegAlias("quitevent", "thoatsukien");
     SafeRegAlias("writecheck", "vietsec");
-    SafeRegAlias("contract", "hopdong");
+    // SafeRegAlias("contract", "hopdong"); // contract.pwn bi comment out
     SafeRegAlias("droplicense", "vutbanglai");
     SafeRegAlias("apply", "doiquoctich");
     SafeRegAlias("calculate", "maytinh");
@@ -203,7 +203,7 @@ public PC_OnInit()
     SafeRegAlias("togglehealthcare", "chamsocsuckhoe");
     SafeRegAlias("sex", "lamtinh");
     SafeRegAlias("resign", "quitbusiness");
-    SafeRegAlias("charity", "tuthien");
+    SafeRegAlias("gtasavncharity5286", "tuthien");
     SafeRegAlias("propose", "cauhon");
     SafeRegAlias("witness", "lamchung");
     SafeRegAlias("divorce", "lyhon");
@@ -233,7 +233,6 @@ public PC_OnInit()
     SafeRegAlias("otoyhelp", "tgtoy");
     SafeRegAlias("orenthelp", "tgthuenha");
     SafeRegAlias("animlist", "hanhdong");
-    SafeRegAlias("ojobhelp", "tgcongviec");
     SafeRegAlias("ofishhelp", "tgcauca");
     SafeRegAlias("omailhelp", "tgmail");
     SafeRegAlias("ovoucherhelp", "tgvoucher");
@@ -246,7 +245,7 @@ public PC_OnInit()
 
     // Lệnh cho Staff/Admin
     SafeRegAlias("staff", "c");
-    SafeRegAlias("oah", "ch");
+    SafeRegAlias("oahelp", "ch");
     SafeRegAlias("destroycar", "dtc");
     SafeRegAlias("destroycars", "dtcs");
     SafeRegAlias("addcrime", "themtoi");
