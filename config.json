@@ -101,12 +101,12 @@
   "password": "",
   "pawn": {
     "legacy_plugins": [
+      "jit",
       "mysql",
       "sscanf",
       "gvar",
       "streamer",
-      "Whirlpool",
-      "jit"
+      "Whirlpool"
     ],
     "main_scripts": [
       "NGRP"
