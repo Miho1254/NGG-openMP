@@ -3005,7 +3005,7 @@ public OnPlayerSpawn(playerid)
 	    new Float:X, Float:Y, Float:Z;
 	    GetVehiclePos(GetPVarInt(playerid, "NGPassengerVeh"), X, Y, Z);
 	    SetPlayerPos(playerid, (X-2.557), (Y-3.049), Z);
-	    SetPlayerWeaponsEx(playerid);
+	    Inventory_SetPlayerWeaponsEx(playerid);
         GivePlayerValidWeapon(playerid, 46);
         SetPlayerSkin(playerid, GetPVarInt(playerid, "NGPassengerSkin"));
         SetHealth(playerid, GetPVarFloat(playerid, "NGPassengerHP"));
@@ -3027,7 +3027,7 @@ public OnPlayerSpawn(playerid)
 		if(GetPVarFloat(playerid, "air_Arm") > 0) {
 			SetArmour(playerid, GetPVarFloat(playerid, "air_Arm"));
 		}
-		SetPlayerWeaponsEx(playerid);
+		Inventory_SetPlayerWeaponsEx(playerid);
 		SetPlayerToTeamColor(playerid);
         SetPlayerSkin(playerid, PlayerInfo[playerid][pModel]);
 		SetPlayerInterior(playerid, GetPVarInt(playerid, "air_Int"));
@@ -3053,7 +3053,7 @@ public OnPlayerSpawn(playerid)
 
 	SetTeam(playerid, NO_TEAM);
 	SetPlayerSpawn(playerid);
-	SetPlayerWeapons(playerid);
+	Inventory_SetPlayerWeapons(playerid);
 	SetPlayerToTeamColor(playerid);
 	IsSpawned[playerid] = 1;
 	SpawnKick[playerid] = 0;
@@ -4524,9 +4524,9 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 				PlayerTextDrawHide(playerid, _crTickets[playerid]);
 				DeletePVar(playerid, "_lastTicketWarning");
 			}
-			SetPlayerWeaponsEx(playerid);
+			Inventory_SetPlayerWeaponsEx(playerid);
 		}
-		else if(oldstate == PLAYER_STATE_PASSENGER) SetPlayerWeaponsEx(playerid);
+		else if(oldstate == PLAYER_STATE_PASSENGER) Inventory_SetPlayerWeaponsEx(playerid);
 
 		if(oldstate == PLAYER_STATE_DRIVER || oldstate == PLAYER_STATE_PASSENGER)
 		{

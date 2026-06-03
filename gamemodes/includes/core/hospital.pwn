@@ -82,6 +82,7 @@ DeliverPlayerToHospital(playerid, iHospital)
 	else PlayerInfo[playerid][pFitness] = 0;
 	if(GetPVarInt(playerid, "_HospitalBeingDelivered") != 1)
 	{
+		Inventory_MoveEquippedToStorage(playerid);
 		ResetPlayerWeaponsEx(playerid);
 		
 		PlayerInfo[playerid][pHasCuff] = 0;

@@ -1403,6 +1403,48 @@ stock ClearEquippedWeaponsOnDeath(playerid)
                         break;
                     }
                 }
+            }
+        }
+    }
+    return 1;
+}
+
+stock Inventory_MoveEquippedToStorage(playerid)
+{
+    for(new i = 0; i < 7; i++)
+    {
+        new itemid = CharacterInfo[playerid][1][cb_ItemID][i];
+        if(itemid != INVALID_OBJECT_ID)
+        {
+            if((itemid >= 23 && itemid <= 35) || (itemid >= 44 && itemid <= 48))
+            {
+                new currentAmmo = CharacterInfo[playerid][1][cb_ItemAmount][i];
+                new bool:bFound = false;
+
+                for(new k = 0; k < MAX_PLAYER_CB_ITEM; k++)
+                {
+                    if(CharacterInfo[playerid][0][cb_ItemID][k] == itemid)
+                    {
+                        CharacterInfo[playerid][0][cb_ItemAmount][k] = currentAmmo;
+                        bFound = true;
+                        break;
+                    }
+                }
+
+                if(!bFound)
+                {
+                    for(new k = 0; k < MAX_PLAYER_CB_ITEM; k++)
+                    {
+                        if(CharacterInfo[playerid][0][cb_ItemID][k] == INVALID_OBJECT_ID)
+                        {
+                            CharacterInfo[playerid][0][cb_ItemID][k] = itemid;
+                            CharacterInfo[playerid][0][cb_ItemWeight][k] = CharacterInfo[playerid][1][cb_ItemWeight][i];
+                            CharacterInfo[playerid][0][cb_ItemDurability][k] = CharacterInfo[playerid][1][cb_ItemDurability][i];
+                            CharacterInfo[playerid][0][cb_ItemAmount][k] = currentAmmo;
+                            break;
+                        }
+                    }
+                }
 
                 CharacterInfo[playerid][1][cb_ItemID][i] = INVALID_OBJECT_ID;
                 CharacterInfo[playerid][1][cb_ItemWeight][i] = 0.0;
@@ -1411,7 +1453,6 @@ stock ClearEquippedWeaponsOnDeath(playerid)
             }
         }
     }
-    return 1;
 }
 
 Function: Inventory_SetPlayerWeapons(playerid)
@@ -1426,13 +1467,17 @@ Function: Inventory_SetPlayerWeapons(playerid)
 			if(zombieevent) GivePlayerValidWeapon(playerid, PlayerInfo[playerid][pGuns][s]);
 			else
             {
+                new bool:bFound = false;
                 for(new z = 0 ; z < 7 ; z++)
                 {
                     if(GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][z]) == PlayerInfo[playerid][pGuns][s])
                     {
                         GivePlayerValidWeaponEx(playerid, GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][z]), CharacterInfo[playerid][1][cb_ItemAmount][z]);
+                        bFound = true;
+                        break;
                     }
                 }
+                if(!bFound) GivePlayerValidWeapon(playerid, PlayerInfo[playerid][pGuns][s]);
             }
 		}
 	}
@@ -1450,13 +1495,17 @@ Function: Inventory_SetPlayerWeaponsEx(playerid)
 			if(zombieevent) GivePlayerValidWeapon(playerid, PlayerInfo[playerid][pGuns][s]);
 			else
             {
+                new bool:bFound = false;
                 for(new z = 0 ; z < 7 ; z++)
                 {
                     if(GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][z]) == PlayerInfo[playerid][pGuns][s])
                     {
                         GivePlayerValidWeaponEx(playerid, GetIDWeapon(CharacterInfo[playerid][1][cb_ItemID][z]), CharacterInfo[playerid][1][cb_ItemAmount][z]);
+                        bFound = true;
+                        break;
                     }
                 }
+                if(!bFound) GivePlayerValidWeapon(playerid, PlayerInfo[playerid][pGuns][s]);
             }
 		}
 	}

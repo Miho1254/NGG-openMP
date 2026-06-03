@@ -100,7 +100,7 @@
   },
   "password": "",
   "pawn": {
-    "legacy_plugins": ["mysql", "sscanf", "gvar", "streamer", "Whirlpool"],
+    "legacy_plugins": ["mysql", "sscanf", "gvar", "streamer", "Whirlpool", "jit"],
     "main_scripts": ["NGRP 1"],
     "side_scripts": [
       "filterscripts/editor-emmet",
