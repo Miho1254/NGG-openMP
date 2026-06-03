@@ -119,6 +119,7 @@ stock GetNativeBacktrace(string[], size = sizeof(string)) { string[0] = 0; retur
 #include <streamer>
 #include <yom_buttons>
 #include <Pawn.CMD>
+#include <command-guess>
 #include <sscanf2>
 #include <YSI\y_timers>
 #include <YSI\y_utils>

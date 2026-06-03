@@ -5066,13 +5066,25 @@ public OnPlayerRequestClass(playerid, classid)
 
 public OnPlayerCommandPerformed(playerid, cmd[], params[], result, flags)
 {
-	// if(!success) SendClientMessageEx(playerid, COLOR_WHITE, "SERVER: Unknown command. Please use /help to list all available commands.");
 	if(result == -1) {
+		new guessCmd[32];
+		new dist = Command_Guess(guessCmd, cmd);
 
-		TextDrawShowForPlayer(playerid, TD_ServerError[1]);
-		TextDrawShowForPlayer(playerid, TD_ServerError[0]);
-
-		defer HideServerError(playerid);
+		if(dist < 3)
+		{
+			new string[196];
+			format(string, sizeof(string), "{E84545}CMD {FFFFFF}| {CCCCCC}Lenh {E84545}/%s {CCCCCC}khong ton tai.", cmd);
+			SendClientMessage(playerid, -1, string);
+			format(string, sizeof(string), "{E84545}CMD {FFFFFF}| {CCCCCC}Co phai ban muon go: {2ECC71}/%s {CCCCCC}?", guessCmd);
+			SendClientMessage(playerid, -1, string);
+		}
+		else
+		{
+			new string[196];
+			format(string, sizeof(string), "{E84545}CMD {FFFFFF}| {CCCCCC}Lenh {E84545}/%s {CCCCCC}khong ton tai. Dung {2ECC71}/trogiup {CCCCCC}de xem danh sach lenh.", cmd);
+			SendClientMessage(playerid, -1, string);
+		}
+		return 1;
 	}
 	return 1;
 }
