@@ -100,20 +100,29 @@
   },
   "password": "",
   "pawn": {
-    "legacy_plugins": ["mysql.so", "sscanf.so", "gvar.so", "streamer.so", "Whirlpool.so", "jit.so"],
-    "main_scripts": ["NGRP 1"],
+    "legacy_plugins": [
+      "mysql",
+      "sscanf",
+      "gvar",
+      "streamer",
+      "Whirlpool",
+      "jit"
+    ],
+    "main_scripts": [
+      "NGRP"
+    ],
     "side_scripts": [
-      "filterscripts/editor-emmet",
-      "filterscripts/FurnitureSystem",
-      "filterscripts/Gang",
-      "filterscripts/ls_apartments1",
-      "filterscripts/ls_beachside",
-      "filterscripts/PlayerExteriors",
-      "filterscripts/PlayerInteriors",
-      "filterscripts/Server",
-      "filterscripts/yom_buttons",
-      "filterscripts/sapd",
-      "filterscripts/sfa"
+      "editor-emmet",
+      "FurnitureSystem",
+      "Gang",
+      "ls_apartments1",
+      "ls_beachside",
+      "PlayerExteriors",
+      "PlayerInteriors",
+      "Server",
+      "yom_buttons",
+      "sapd",
+      "sfa"
     ]
   },
   "rcon": {
