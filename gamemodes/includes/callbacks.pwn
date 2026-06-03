@@ -246,6 +246,7 @@ public OnVehicleSpawn(vehicleid) {
 			SendClientMessageEx(i, COLOR_WHITE, "May bay da bi hu , ban khong the di vao trong duoc!");
 		}
 	}
+	return 1;
 }
 public OnVehicleMod(playerid, vehicleid, componentid)
 {
@@ -452,7 +453,8 @@ public OnPlayerLeaveDynArea(playerid, areaid)
 public OnPlayerUpdate(playerid)
 {
 	// Do not put heavy cpu checks in here. Use the 1 second timer.
-	new Float:health = GetHealth(playerid, health);
+	new Float:health;
+	GetHealth(playerid, health);
 	if(health <= 0)
 	{
 		OnPlayerDeath(playerid, INVALID_PLAYER_ID, 0);
@@ -696,6 +698,7 @@ public OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 			SetTimerEx("SpecUpdate", 1500, false, "i", i);
 		}
 	}
+	return 1;
 }
 
 public OnPlayerPressButton(playerid, buttonid)

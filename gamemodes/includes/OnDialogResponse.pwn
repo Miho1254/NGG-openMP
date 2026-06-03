@@ -9828,6 +9828,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 		}
 		else if(GetPVarInt(playerid, "MiscShop") == 7) // Vehicle Slots
 		{
+			if(ShopItems[23][sItemPrice] <= 0)
+				return SendClientMessageEx(playerid, COLOR_GREY, "Loi: Gia khong hop le, vui long lien he Admin.");
+
 			if(PlayerInfo[playerid][pCredits] < ShopItems[23][sItemPrice])
 				return SendClientMessageEx(playerid, COLOR_GREY, "Ban khong co du credits de mua.");
 

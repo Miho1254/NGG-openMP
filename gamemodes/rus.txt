@@ -1,2 +1,11 @@
+./includes/wrappers.pwn(250) : ïðåäóïðåæäåíèå 201: ïîâòîðíîå îáúÿâëåíèå êîíñòàíòû/ìàêðîñà (èäåíòèôèêàòîð "SetPlayerWeather(%0)")
+./includes/wrappers.pwn(251) : ïðåäóïðåæäåíèå 201: ïîâòîðíîå îáúÿâëåíèå êîíñòàíòû/ìàêðîñà (èäåíòèôèêàòîð "SetPlayerTime(%0)")
+./includes/wrappers.pwn(257) : ïðåäóïðåæäåíèå 201: ïîâòîðíîå îáúÿâëåíèå êîíñòàíòû/ìàêðîñà (èäåíòèôèêàòîð "SetVehiclePos(%0)")
+./includes/wrappers.pwn(269) : ïðåäóïðåæäåíèå 201: ïîâòîðíîå îáúÿâëåíèå êîíñòàíòû/ìàêðîñà (èäåíòèôèêàòîð "SetPlayerInterior(%0)")
+./includes/callbacks.pwn(249) : ïðåäóïðåæäåíèå 209: ôóíêöèÿ "On_VehicleSpawn" äîëæíà âîçâðàùàòü çíà÷åíèå
+./includes/callbacks.pwn(699) : ïðåäóïðåæäåíèå 209: ôóíêöèÿ "On_PlayerInteriorChange" äîëæíà âîçâðàùàòü çíà÷åíèå
+./includes/walkstyle.pwn(243) : ïðåäóïðåæäåíèå 201: ïîâòîðíîå îáúÿâëåíèå êîíñòàíòû/ìàêðîñà (èäåíòèôèêàòîð "TogglePlayerControllable")
 Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
 
+
+Ïðåäóïðåæäåíèé:7.

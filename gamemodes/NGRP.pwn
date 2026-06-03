@@ -79,6 +79,9 @@
 
  #include <a_samp>
 
+#define FIXES_Single 0
+#define FIX_valstr 0
+#include <fixes>
 /*  ---------------- SCRIPT REVISION ----------------- */
 
 // Do not forget to change this everytime you commit - it's mandatory!
@@ -91,13 +94,16 @@
 #define MAX_PLAYERS (500)
 // Block crashdetect.inc from being included (open.mp has built-in debug)
 #define CRASHDETECT_INC
-#pragma tabsize 0
+#pragma tabsize 1
+#pragma warning disable 201
 #pragma warning disable 203
 #pragma warning disable 204
 #pragma warning disable 213
 #pragma warning disable 217
 #pragma warning disable 218
 #pragma warning disable 219
+#pragma warning disable 239
+#pragma warning disable 214
 stock PrintBacktrace() { return 0; }
 stock PrintAmxBacktrace() { return 0; }
 stock PrintNativeBacktrace() { return 0; }
@@ -124,7 +130,7 @@ stock GetNativeBacktrace(string[], size = sizeof(string)) { string[0] = 0; retur
 #include <progress2>
 #include <callbacks>
 #include <attachments>
- // #include <object-loader>
+// #include <object-loader>
 //#include <profiler>
 
 #if defined SOCKET_ENABLED

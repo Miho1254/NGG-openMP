@@ -261,6 +261,10 @@ public OnQueryFinish(resultid, extraid, handleid)
                 //printf("[LOADSHOPDATA] Price0: %d, Price1: %d, Price2: %d, Price3: %d, Price4: %d, Price5: %d, Price6: %d, Price7: %d, Pricr8: %d, Price9: %d, Price10: %d", Price[0], Price[1], Price[2], Price[3], Price[4], Price[5], Price[6], Price[7], Price[8], Price[9], Price[10]);
 				break;
 			}
+			if(ShopItems[23][sItemPrice] <= 0) {
+				ShopItems[23][sItemPrice] = 200;
+				Price[23] = 200;
+			}
 	    }
 		case LOADMOTDDATA_THREAD:
 		{
