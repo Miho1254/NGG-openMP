@@ -5064,12 +5064,66 @@ public OnPlayerRequestClass(playerid, classid)
 	return 1;
 }
 
+stock SZ_Levenshtein(const a[], const b[]) {
+	new aLen = strlen(a), bLen = strlen(b);
+	if(aLen == 0) return bLen;
+	if(bLen == 0) return aLen;
+	if(aLen > 32 || bLen > 32) return 999;
+	new matrix[33][33];
+	for(new i = 0; i <= aLen; i++) matrix[i][0] = i;
+	for(new j = 0; j <= bLen; j++) matrix[0][j] = j;
+	for(new j = 1; j <= bLen; j++) {
+		for(new i = 1; i <= aLen; i++) {
+			new cost = (a[i-1] == b[j-1]) ? 0 : 1;
+			new del = matrix[i-1][j] + 1;
+			new ins = matrix[i][j-1] + 1;
+			new sub = matrix[i-1][j-1] + cost;
+			matrix[i][j] = del < ins ? (del < sub ? del : sub) : (ins < sub ? ins : sub);
+		}
+	}
+	return matrix[aLen][bLen];
+}
+
+stock SZ_FindSimilarCommand(const input[], output[], outlen) {
+	new CmdArray:arr = PC_GetCommandArray();
+	new size = PC_GetArraySize(arr);
+	new bestDist = 999;
+	new bestIdx = -1;
+	new tmpName[32];
+	for(new i = 0; i < size; i++) {
+		PC_GetCommandName(arr, i, tmpName, sizeof(tmpName));
+		new dist = SZ_Levenshtein(input, tmpName);
+		if(dist < bestDist) {
+			bestDist = dist;
+			bestIdx = i;
+		}
+	}
+	if(bestIdx >= 0 && bestDist < 3) {
+		PC_GetCommandName(arr, bestIdx, output, outlen);
+		PC_FreeArray(arr);
+		return bestDist;
+	}
+	PC_FreeArray(arr);
+	output[0] = '\0';
+	return 999;
+}
+
 public OnPlayerCommandPerformed(playerid, cmd[], params[], result, flags)
 {
 	if(result == -1) {
-		new string[196];
-		format(string, sizeof(string), "{E84545}CMD {FFFFFF}| {CCCCCC}Lenh {E84545}/%s {CCCCCC}khong ton tai. Dung {2ECC71}/trogiup {CCCCCC}de xem danh sach lenh.", cmd);
-		SendClientMessage(playerid, -1, string);
+		new guessCmd[32];
+		new dist = SZ_FindSimilarCommand(cmd, guessCmd, sizeof(guessCmd));
+		if(dist < 3 && strlen(guessCmd) > 0) {
+			new string[196];
+			format(string, sizeof(string), "{E84545}CMD {FFFFFF}| {CCCCCC}Lenh {E84545}/%s {CCCCCC}khong ton tai.", cmd);
+			SendClientMessage(playerid, -1, string);
+			format(string, sizeof(string), "{E84545}CMD {FFFFFF}| {CCCCCC}Co phai ban muon go: {2ECC71}/%s {CCCCCC}?", guessCmd);
+			SendClientMessage(playerid, -1, string);
+		} else {
+			new string[196];
+			format(string, sizeof(string), "{E84545}CMD {FFFFFF}| {CCCCCC}Lenh {E84545}/%s {CCCCCC}khong ton tai. Dung {2ECC71}/trogiup {CCCCCC}de xem danh sach lenh.", cmd);
+			SendClientMessage(playerid, -1, string);
+		}
 		return 1;
 	}
 	return 1;
