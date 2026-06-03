@@ -5070,7 +5070,7 @@ public OnPlayerCommandPerformed(playerid, cmd[], params[], result, flags)
 		new guessCmd[32];
 		new dist = Command_Guess(guessCmd, cmd);
 
-		if(dist < 3)
+		if(dist < 3 && dist > 0 && strlen(guessCmd) > 0)
 		{
 			new string[196];
 			format(string, sizeof(string), "{E84545}CMD {FFFFFF}| {CCCCCC}Lenh {E84545}/%s {CCCCCC}khong ton tai.", cmd);
@@ -5080,8 +5080,9 @@ public OnPlayerCommandPerformed(playerid, cmd[], params[], result, flags)
 		}
 		else
 		{
-			TextDrawShowForPlayer(playerid, TD_ServerError[0]);
-			defer HideServerError(playerid);
+			new string[196];
+			format(string, sizeof(string), "{E84545}CMD {FFFFFF}| {CCCCCC}Lenh {E84545}/%s {CCCCCC}khong ton tai. Dung {2ECC71}/trogiup {CCCCCC}de xem danh sach lenh.", cmd);
+			SendClientMessage(playerid, -1, string);
 		}
 		return 1;
 	}
