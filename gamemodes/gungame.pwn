@@ -276,12 +276,8 @@ EndRound()
 
     // Print the top three best players.
     new highest[3] = {INVALID_PLAYER_ID, ...};
-    for(new i = 0; i < MAX_PLAYERS; i++)
+    foreach(new i : Player)
     {
-        if (!IsPlayerConnected(i))
-        {
-            continue;
-        }
         TogglePlayerSpectating(i, true);
         SetPlayerCameraPos(i, -1251.1089, 2551.7546, 104.6863);
         SetPlayerCameraLookAt(i, -1302.1554, 2533.4226, 93.8427);

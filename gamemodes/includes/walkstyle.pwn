@@ -154,9 +154,9 @@ stock RemoveWalkingStyle(styleid)
 	}
 	else
 	{
-	    for (new i = 0; i < MAX_PLAYERS; i ++)
+	    foreach (new i : Player)
 	    {
-	        if (IsPlayerConnected(i) && PlayerInfo[i][pWalkStyle] == styleid)
+	        if (PlayerInfo[i][pWalkStyle] == styleid)
 	        {
 	            ResetPlayerWalkingStyle(i);
 	        }

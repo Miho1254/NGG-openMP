@@ -509,24 +509,21 @@ CMD:endtrievent(playerid, params[])
 		iTotalRacers = 0;
 		//iFinalStarted = 0;
 		iFinalsPosition = 0;
-		for(new i = 0; i < MAX_PLAYERS; i++)
+		foreach(new i : Player)
 		{
-		    if(IsPlayerConnected(i))
-		    {
-				if(GetPVarType(i, "TriEvent")) {
-					SendClientMessage(i, COLOR_WHITE, " ** The triathlon event has ended.");
-					SetPlayerColor(i, 0xFFFFFF00);
-					DeletePVar(i, "TriEvent");
-					DeletePVar(i, "Finalist");
-					SetPlayerVirtualWorld(i, 0);
-					CurrentCheckPoint[i] = 1;
-					DisablePlayerRaceCheckpoint(i);
-					DestroyVehicle(Vehicle[i]);
-					SetPlayerHealth(i, GetPVarFloat(i, "triathHealth"));
-					SetPlayerArmour(i, GetPVarFloat(i, "triathArmor"));
-					DeletePVar(i, "triathHealth");
-					DeletePVar(i, "triathArmor");
-				}
+			if(GetPVarType(i, "TriEvent")) {
+				SendClientMessage(i, COLOR_WHITE, " ** The triathlon event has ended.");
+				SetPlayerColor(i, 0xFFFFFF00);
+				DeletePVar(i, "TriEvent");
+				DeletePVar(i, "Finalist");
+				SetPlayerVirtualWorld(i, 0);
+				CurrentCheckPoint[i] = 1;
+				DisablePlayerRaceCheckpoint(i);
+				DestroyVehicle(Vehicle[i]);
+				SetPlayerHealth(i, GetPVarFloat(i, "triathHealth"));
+				SetPlayerArmour(i, GetPVarFloat(i, "triathArmor"));
+				DeletePVar(i, "triathHealth");
+				DeletePVar(i, "triathArmor");
 			}
 		}
 		SendClientMessageToAll(COLOR_LIGHTBLUE, "** The triathlon has come to an end!");
